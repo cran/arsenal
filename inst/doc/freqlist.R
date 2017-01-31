@@ -2,12 +2,10 @@
 knitr::opts_chunk$set(echo = TRUE, tidy.opts=list(width.cutoff=80), tidy=TRUE,  comment=NA)
 options(width=80, max.print=1000)
 
+## ----message = FALSE----------------------------------------------------------
 require(arsenal)
-# source("/data5/bsi/adhoc/s200555.R-infrastructure/devel/eph/arsenal-eph/R/freqlist.R")
-# source("/data5/bsi/adhoc/s200555.R-infrastructure/devel/eph/arsenal-eph/R/summary.freqlist.R")
-# source("/data5/bsi/adhoc/s200555.R-infrastructure/devel/eph/arsenal-eph/R/freqlist.internal.R")
 
-## ----loading and setting up data----------------------------------------------
+## ----loading.data-------------------------------------------------------------
 # load the data
 data(mockstudy)
 
@@ -23,13 +21,16 @@ noby <- freqlist(tab.ex)
 str(noby)
 
 # view the data frame portion of freqlist output
-noby[["freqlist"]]
+noby[["freqlist"]] ## or use as.data.frame(noby)
 
 ## ---- results = 'asis'--------------------------------------------------------
 summary(noby)
 
 ## ---- results = 'asis'--------------------------------------------------------
 summary(noby, caption="Basic freqlist output")
+
+## -----------------------------------------------------------------------------
+head(as.data.frame(noby))
 
 ## ----labelTranslations, results = 'asis'--------------------------------------
 
@@ -50,7 +51,7 @@ summary(freqlist(tab.ex, na.options="include"))
 summary(freqlist(tab.ex, na.options="showexclude"))
 summary(freqlist(tab.ex, na.options="remove"))
 
-## ----frequency counts, results='asis'-----------------------------------------
+## ----freq.counts, results='asis'----------------------------------------------
 withby <- freqlist(tab.ex, groupBy = c("arm","sex"))
 summary(withby)
 
@@ -65,14 +66,12 @@ summary(noby)
 ## ---- results = 'asis'--------------------------------------------------------
 summary(noby, labelTranslations = c("Hi there", "What up", "Bye"))
 
-## ----xtable setup-------------------------------------------------------------
+## ----xtable.setup-------------------------------------------------------------
 require(xtable)
-#turn off xtable header
-options(xtable.comment = FALSE)
 
-#set up custom function for xtable text
+# set up custom function for xtable text
 italic <- function(x){
-paste0('{\\emph{ ', x, '}}')
+paste0('<i>', x, '</i>')
 }
 
 
@@ -83,7 +82,7 @@ xftbl <- xtable(noby[["freqlist"]],
 # change the column names
 names(xftbl)[1:3] <- c("Arm", "Gender", "LASA QOL")
 
-print(xftbl, sanitize.colnames.function = italic, include.rownames = FALSE)
+print(xftbl, sanitize.colnames.function = italic, include.rownames = FALSE, type = "html", comment = FALSE)
 
 ## -----------------------------------------------------------------------------
 # base table default removes NAs

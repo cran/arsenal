@@ -3,12 +3,9 @@ title: "The freqlist function"
 author: "Tina Gunderson"
 date: '`r format(Sys.time(),"%d %B, %Y")`'
 output:
-  pdf_document:
+  rmarkdown::html_vignette:
     toc: yes
     toc_depth: 3
-  html_document:
-    toc: yes
-    toc_depth: '3'
 header-includes: \usepackage{tabularx}
 vignette: |
   %\VignetteIndexEntry{The freqlist function}
@@ -19,11 +16,6 @@ vignette: |
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, tidy.opts=list(width.cutoff=80), tidy=TRUE,  comment=NA)
 options(width=80, max.print=1000)
-
-require(arsenal)
-# source("/data5/bsi/adhoc/s200555.R-infrastructure/devel/eph/arsenal-eph/R/freqlist.R")
-# source("/data5/bsi/adhoc/s200555.R-infrastructure/devel/eph/arsenal-eph/R/summary.freqlist.R")
-# source("/data5/bsi/adhoc/s200555.R-infrastructure/devel/eph/arsenal-eph/R/freqlist.internal.R")
 ```
 
 \newpage
@@ -34,6 +26,10 @@ require(arsenal)
 `freqlist` provides options for handling missing or sparse data and can provide cumulative counts and percentages based on subgroups.
 It depends on the `knitr` package for printing. 
 
+```{r message = FALSE}
+require(arsenal)
+```
+
 ## Sample dataset
 
 For our examples, we'll load the `mockstudy` data included with this package and use it to create a basic table.
@@ -41,7 +37,7 @@ Because they have fewer levels, for brevity, we'll use the variables arm, sex, a
 We'll retain NAs in the table creation.
 See the appendix for notes regarding default NA handling and other useful information regarding tables in R. 
 
-```{r loading and setting up data}
+```{r loading.data}
 # load the data
 data(mockstudy)
 
@@ -68,7 +64,7 @@ noby <- freqlist(tab.ex)
 str(noby)
 
 # view the data frame portion of freqlist output
-noby[["freqlist"]]
+noby[["freqlist"]] ## or use as.data.frame(noby)
 ```
 
 \newpage
@@ -91,7 +87,11 @@ summary(noby, caption="Basic freqlist output")
 ```
 
 You can also easily pull out the `freqlist` data frame for more complicated formatting or manipulation
-(e.g. with another function such as `xtable` or `pander`). See below.
+(e.g. with another function such as `xtable` or `pander`) using `as.data.frame`:
+
+```{r}
+head(as.data.frame(noby))
+```
 
 \newpage
 
@@ -138,9 +138,11 @@ summary(freqlist(tab.ex, na.options="remove"))
 
 ## Frequency counts and percentages subset by factor levels 
 
-The groupBy argument internally subsets the data by the specified factor  prior to calculating cumulative counts and percentages. By default, when used each subset will print in a separate table. Using the `single = TRUE` option when printing will collapse the subsetted result into a single table.
+The groupBy argument internally subsets the data by the specified factor prior to calculating cumulative counts and percentages.
+By default, when used each subset will print in a separate table. Using the `single = TRUE` option when printing will collapse
+the subsetted result into a single table.
 
-```{r frequency counts, results='asis'}
+```{r freq.counts, results='asis'}
 withby <- freqlist(tab.ex, groupBy = c("arm","sex"))
 summary(withby)
 
@@ -168,14 +170,12 @@ summary(noby, labelTranslations = c("Hi there", "What up", "Bye"))
 
 Fair warning: `xtable` has kind of a steep learning curve. These examples are given without explanation for more advanced users.
 
-```{r xtable setup}
+```{r xtable.setup}
 require(xtable)
-#turn off xtable header
-options(xtable.comment = FALSE)
 
-#set up custom function for xtable text
+# set up custom function for xtable text
 italic <- function(x){
-paste0('{\\emph{ ', x, '}}')
+paste0('<i>', x, '</i>')
 }
 
 ```
@@ -187,7 +187,7 @@ xftbl <- xtable(noby[["freqlist"]],
 # change the column names
 names(xftbl)[1:3] <- c("Arm", "Gender", "LASA QOL")
 
-print(xftbl, sanitize.colnames.function = italic, include.rownames = FALSE)
+print(xftbl, sanitize.colnames.function = italic, include.rownames = FALSE, type = "html", comment = FALSE)
 ```
 
 \newpage

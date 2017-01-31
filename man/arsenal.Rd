@@ -9,6 +9,8 @@
 An Arsenal of 'R' functions for large-scale statistical summaries,
   which are streamlined to work within the latest reporting tools in 'R' and 'RStudio' and
   which use formulas and versatile summary statistics for summary tables and models.
+  
+The package download, NEWS, and README are available on CRAN: \url{https://cran.r-project.org/package=arsenal}
 }
 \section{Functions}{
 
@@ -22,6 +24,8 @@ Below are listed some of the most widely used functions available in \code{arsen
 \code{\link{freqlist}}: Approximate the output from SAS's \code{PROC FREQ} procedure when using the \code{/list} option of the \code{TABLE} statement.
 
 \code{\link{write2word}}, \code{\link{write2html}}, \code{\link{write2pdf}}: Functions to generate a word, html, or pdf document containing a single table.
+
+\code{\link{write2}}: Functions to generate a single document containing a single table. (Also the S3 backbone behind the \code{write2*} functions.)
 
 \code{\link{formulize}}: A shortcut to generate one-, two-, or many-sided formulas.
 

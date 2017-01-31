@@ -6,12 +6,8 @@ require(MASS)
 require(pROC)
 require(rpart)
  
-opts_chunk$set(comment = NA, echo=TRUE, prompt=TRUE ,collapse=TRUE)
+opts_chunk$set(comment = NA, echo=TRUE, prompt=TRUE, collapse=TRUE)
 
-#vignette: >
-#  %\VignetteIndexEntry{modelsum}
-#  %\VignetteEngine{knitr::rmarkdown}
-#  \usepackage[utf8]{inputenc}
 
 ## ---- load-data----------------------------------------------------------
 require(arsenal)
@@ -28,6 +24,9 @@ summary(tab1, text=TRUE)
 
 ## ----simple-markdown, results='asis'-------------------------------------
 summary(tab1)
+
+## ------------------------------------------------------------------------
+as.data.frame(tab1)
 
 ## ----adjust, results="asis"----------------------------------------------
 tab2 <- modelsum(alk.phos ~ arm + ps + hgb, adjust= ~age + sex, data=mockstudy)
@@ -374,15 +373,17 @@ mockstudy$wts <- gpwts[index]
 ## show weights by treatment arm group
 tapply(mockstudy$wts,mockstudy$arm, summary)
 
-## ----results='asis', warning=FALSE---------------------------------------
+## ----results='asis'------------------------------------------------------
 mockstudy$newvarA <- as.numeric(mockstudy$arm=='A: IFL')
 tab1 <- modelsum(newvarA ~ ast + bmi + hgb, data=mockstudy, subset=(arm !='G: IROX'), 
                  family=binomial)
 summary(tab1, title='No Case Weights used')
 
+suppressWarnings({
 tab2 <- modelsum(newvarA ~ ast + bmi + hgb, data=mockstudy, subset=(arm !='G: IROX'), 
                  weights=wts, family=binomial)
 summary(tab2, title='Case Weights used')
+})
 
 ## ------------------------------------------------------------------------
 summary(tab2, text=T)
