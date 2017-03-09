@@ -30,7 +30,8 @@ attr(mdat$Age, "label") <- "Age in Years"
 test_that("A basic modelsum call--no labels, no missings", {
   expect_identical(
     capture.output(summary(modelsum(Age ~ Sex + time, data = mdat), text = TRUE)),
-    c("----------------------------------------------------------------------------------",
+    c(""                                                                                  ,
+      "----------------------------------------------------------------------------------",
       "                    estimate        std.error       p.value         adj.r.squared ",
       "------------------ --------------- --------------- --------------- ---------------",
       "(Intercept)        39.8            0.779           <0.001          -0.011         ",
@@ -45,7 +46,8 @@ test_that("A basic modelsum call--no labels, no missings", {
 test_that("A basic modelsum tableby call--labels, no missings", {
   expect_identical(
     capture.output(summary(modelsum(Age ~ Sex + trt, data = mdat), text = TRUE)),
-    c("----------------------------------------------------------------------------------",
+    c(""                                                                                  ,
+      "----------------------------------------------------------------------------------",
       "                    estimate        std.error       p.value         adj.r.squared ",
       "------------------ --------------- --------------- --------------- ---------------",
       "(Intercept)        39.8            0.779           <0.001          -0.011         ",
@@ -60,7 +62,8 @@ test_that("A basic modelsum tableby call--labels, no missings", {
 test_that("A basic modelsum call--adding adjustment", {
   expect_identical(
     capture.output(summary(modelsum(Age ~ Sex + time, adjust = ~ trt, data = mdat), text = TRUE)),
-    c("----------------------------------------------------------------------------------",
+    c(""                                                                                  ,
+      "----------------------------------------------------------------------------------",
       "                    estimate        std.error       p.value         adj.r.squared ",
       "------------------ --------------- --------------- --------------- ---------------",
       "(Intercept)        40.6            1.02            <0.001          -0.005         ",
@@ -77,7 +80,8 @@ test_that("A basic modelsum call--adding adjustment", {
 test_that("A basic modelsum call--suppressing intercept and/or adjustment vars", {
   expect_identical(
     capture.output(summary(modelsum(Age ~ Sex + time, adjust = ~ trt, data = mdat), text = TRUE, show.intercept = FALSE)),
-    c("----------------------------------------------------------------------------------",
+    c(""                                                                                  ,
+      "----------------------------------------------------------------------------------",
       "                    estimate        std.error       p.value         adj.r.squared ",
       "------------------ --------------- --------------- --------------- ---------------",
       "Sex Male           -0.221          1.11            0.843           -0.005         ",
@@ -89,7 +93,8 @@ test_that("A basic modelsum call--suppressing intercept and/or adjustment vars",
   )
   expect_identical(
     capture.output(summary(modelsum(Age ~ Sex + time, adjust = ~ trt, data = mdat), text = TRUE, show.adjust = FALSE)),
-    c("----------------------------------------------------------------------------------",
+    c(""                                                                                  ,
+      "----------------------------------------------------------------------------------",
       "                    estimate        std.error       p.value         adj.r.squared ",
       "------------------ --------------- --------------- --------------- ---------------",
       "(Intercept)        40.6            1.02            <0.001          -0.005         ",
@@ -101,7 +106,8 @@ test_that("A basic modelsum call--suppressing intercept and/or adjustment vars",
   )
   expect_identical(
     capture.output(summary(modelsum(Age ~ Sex + time, adjust = ~ trt, data = mdat), text = TRUE, show.intercept = FALSE, show.adjust = FALSE)),
-    c("----------------------------------------------------------------------------------",
+    c(""                                                                                  ,
+      "----------------------------------------------------------------------------------",
       "                    estimate        std.error       p.value         adj.r.squared ",
       "------------------ --------------- --------------- --------------- ---------------",
       "Sex Male           -0.221          1.11            0.843           -0.005         ",
@@ -124,7 +130,8 @@ dat <- data.frame(short.name = rnorm(100), really.long.name = rnorm(100),
 test_that("01/26/2017: Brendan Broderick's Bold Text Wrapping Problem", {
   expect_identical(
     capture.output(summary(modelsum(short.name ~ really.long.name + as.long.as.this, adjust = ~ why.would.you.name.something, data = dat))),
-    c("--------------------------------------------------------------------------------------------",
+    c(""                                                                                            ,
+      "--------------------------------------------------------------------------------------------",
       "                      estimate          std.error         p.value           adj.r.squared   ",
       "-------------------- ----------------- ----------------- ----------------- -----------------",
       "(Intercept)          0.035             0.099             0.721             -0.001           ",
@@ -145,3 +152,69 @@ test_that("01/26/2017: Brendan Broderick's Bold Text Wrapping Problem", {
     )
   )
 })
+rm(dat)
+
+#################################################################################################################################
+
+test_that("02/07/2017: Ryan Lennon's R Markdown spacing problem", {
+  expect_identical(capture.output(summary(modelsum(Age ~ Sex + time, data = mdat), text = TRUE))[1], "")
+})
+
+#################################################################################################################################
+
+
+test_that("02/13/2017: Krista Goergen's survival subset and NA problems", {
+  if(require(survival))
+  {
+    mdat.tmp <- mdat
+    
+    form <- Surv(time, status) ~ Sex + ethan
+    expect_identical(capture.output(summary(modelsum(form, data = mdat.tmp, subset = Group=="High", family="survival"), text = TRUE)),
+                     capture.output(summary(modelsum(form, data = mdat.tmp[mdat.tmp$Group=="High",], family="survival"), text = TRUE)))
+    
+    mdat.tmp[3:4,"time"] <- c(NA,NA)
+    expect_identical(capture.output(summary(modelsum(form, data = mdat.tmp, subset = Group=="High", family="survival"), text = TRUE)),
+                     capture.output(summary(modelsum(form, data = mdat.tmp[mdat.tmp$Group=="High",], family="survival"), text = TRUE)))
+
+    expect_identical(capture.output(summary(modelsum(form, adjust = ~Age, data = mdat.tmp, subset = Group=="High", family="survival"), text = TRUE)),
+                     capture.output(summary(modelsum(form, adjust = ~Age, data = mdat.tmp[mdat.tmp$Group=="High",], family="survival"), text = TRUE)))    
+    
+    expect_identical(
+      capture.output(summary(modelsum(form, adjust = ~Age, data = mdat.tmp, subset = Group=="High", family="survival"), text = TRUE)),
+      c(""                                                                                                           ,
+        "-----------------------------------------------------------------------------------------------------------",
+        "                   HR             CI.lower.HR    CI.upper.HR    p.value        concordance    Nmiss        ",
+        "----------------- -------------- -------------- -------------- -------------- -------------- --------------",
+        "Sex Male          0.612          0.21           1.79           0.369          0.592          0             ",
+        "Age               1.06           0.968          1.16           0.205          .              .             ",
+        "ethan Heinzen     1.02           0.297          3.5            0.976          0.639          2             ",
+        "Age               1.06           0.96           1.17           0.258          .              .             ",
+        "-----------------------------------------------------------------------------------------------------------"
+      )
+    )
+    
+    rm(mdat.tmp)
+  } else skip("survival package not available.")
+})
+
+#################################################################################################################################
+
+set.seed(99)
+dat <- rbind(data.frame(y = rnorm(100, 0, 1), x = "A", z = rnorm(100), stringsAsFactors = F),
+             data.frame(y = rnorm(100, 1, 1), x = "B", z = rnorm(100), stringsAsFactors = F))
+
+
+test_that("02/23/2017: Ethan Heinzen's Missing Row in as.data.frame.modelsum", {
+  expect_identical(
+    capture.output(as.data.frame(modelsum(y ~ x, adjust = ~ z, data = dat), digits.test = 13)),
+    c("         term model endpoint estimate std.error      p.value adj.r.squared",
+      "1 (Intercept)     1        y   -0.100     0.102 3.269503e-01          0.21",
+      "2         x B     1        y    1.060     0.144 4.400000e-12          0.21",
+      "3           z     1        y    0.044     0.069 5.302928e-01          0.21"
+    )
+  )
+})
+rm(dat)
+
+#################################################################################################################################
+

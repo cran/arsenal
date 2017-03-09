@@ -1,8 +1,9 @@
 ## ----include = FALSE-----------------------------------------------------
-knitr::opts_chunk$set(eval = FALSE)
+knitr::opts_chunk$set(eval = FALSE, message = FALSE)
 
 ## ------------------------------------------------------------------------
-#  library(arsenal)
+#  # library(arsenal)
+#  devtools::load_all()
 #  data(mockstudy)
 #  tmpdir <- tempdir()
 
@@ -54,6 +55,38 @@ knitr::opts_chunk$set(eval = FALSE)
 #  write2word(pander::pander_return(head(mockstudy)), file = paste0(tmpdir, "/test.pander.doc"), quiet = TRUE)
 
 ## ------------------------------------------------------------------------
+#  mylist <- list(tableby(sex ~ age, data = mockstudy),
+#                 freqlist(table(mockstudy[, c("sex", "arm")])),
+#                 knitr::kable(head(mockstudy)))
+#  
+#  write2pdf(mylist, paste0(tmpdir, "/test.mylist.pdf"), quiet = TRUE)
+#  
+
+## ------------------------------------------------------------------------
+#  mylist2 <- list("# Header 1",
+#                  "This is a small paragraph introducting tableby.",
+#                  tableby(sex ~ age, data = mockstudy),
+#                  "<hr>",
+#                  "# Header 2",
+#                  "<font color='red'>I can change color of my text!</font>")
+#  write2html(mylist2, paste0(tmpdir, "/test.mylist2.html"), quiet = TRUE)
+
+## ------------------------------------------------------------------------
+#  write2pdf(list(mylist2, mylist), paste0(tmpdir, "/test.mylists.pdf"), quiet = TRUE)
+
+## ------------------------------------------------------------------------
+#  age.lm <- summary(lm(age ~ sex, data = mockstudy))
+#  write2pdf(age.lm, paste0(tmpdir, "/test.lm.pdf"), quiet = TRUE)
+
+## ------------------------------------------------------------------------
+#  tab4 <- tableby(arm ~ sex + age, data=mockstudy)
+#  write2html(verbatim(tab4), paste0(tmpdir, "/test.print.tableby.html"), quiet = TRUE)
+
+## ------------------------------------------------------------------------
+#  chr <- paste0("MyVector", 1:10)
+#  write2pdf(verbatim(chr), paste0(tmpdir, "/test.character.pdf"), quiet = TRUE)
+
+## ------------------------------------------------------------------------
 #  write2html(knitr::kable(head(mockstudy)), paste0(tmpdir, "/test.kable.quiet.html"),
 #             quiet = TRUE # passed to rmarkdown::render
 #             )
@@ -63,6 +96,20 @@ knitr::opts_chunk$set(eval = FALSE)
 #             quiet = TRUE, # passed to rmarkdown::render
 #             keep.md = TRUE
 #             )
+
+## ------------------------------------------------------------------------
+#  write2html(knitr::kable(head(mockstudy)), paste0(tmpdir, "/test.kable.dont.render.html"),
+#             render. = FALSE
+#             )
+
+## ------------------------------------------------------------------------
+#  mylist2 <- list("# Header 1",
+#                  "This is a small paragraph introducting tableby.",
+#                  tableby(sex ~ age, data = mockstudy),
+#                  "<hr>",
+#                  "# Header 2",
+#                  "<font color='red'>I can change color of my text!</font>")
+#  write2html(mylist2, paste0(tmpdir, "/test.mylist2.html"), quiet = TRUE)
 
 ## ------------------------------------------------------------------------
 #  write2html(knitr::kable(head(mockstudy)), paste0(tmpdir, "/test.kable.theme.html"),

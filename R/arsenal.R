@@ -17,11 +17,14 @@
 #' 
 #' \code{\link{modelsum}}: Fit models over each of a set of independent variables with a response variable.
 #' 
-#' \code{\link{freqlist}}: Approximate the output from SAS's \code{PROC FREQ} procedure when using the \code{/list} option of the \code{TABLE} statement.
+#' \code{\link{freqlist}}: Approximate the output from SAS's \code{PROC FREQ} procedure when using
+#'  the \code{/list} option of the \code{TABLE} statement.
 #' 
-#' \code{\link{write2word}}, \code{\link{write2html}}, \code{\link{write2pdf}}: Functions to generate a word, html, or pdf document containing a single table.
+#' \code{\link{write2word}}, \code{\link{write2html}}, \code{\link{write2pdf}}: Functions to output
+#'   tables to a single Word, HTML, or PDF document.
 #' 
-#' \code{\link{write2}}: Functions to generate a single document containing a single table. (Also the S3 backbone behind the \code{write2*} functions.)
+#' \code{\link{write2}}: Functions to output tables to a single document.
+#'   (Also the S3 backbone behind the \code{write2*} functions.)
 #' 
 #' \code{\link{formulize}}: A shortcut to generate one-, two-, or many-sided formulas.
 #' 
@@ -44,8 +47,8 @@ NULL
 # devtools::test()
 # devtools::check()
 # withr::with_libpaths(c("/data5/bsi/adhoc/s200555.R-infrastructure/devel/eph/testinstalls/", .libPaths()),
-#                      devtools::install("../arsenal-eph/", build_vignettes = TRUE, dependencies = FALSE))
-# devtools::build("../arsenal-eph/")
+#                      devtools::install("../arsenal-eph-git/", build_vignettes = TRUE, dependencies = FALSE))
+# devtools::build("../arsenal-eph-git/")
 ## < restart R >
 ## library(arsenal, lib.loc = "/data5/bsi/adhoc/s200555.R-infrastructure/devel/eph/testinstalls/")
 

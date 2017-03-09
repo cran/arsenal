@@ -69,7 +69,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">The tableby function</h1>
 <h4 class="author"><em>Beth Atkinson, Jason Sinnwell, Shannon McDonnell and Greg Dougherty</em></h4>
-<h4 class="date"><em>31 January, 2017</em></h4>
+<h4 class="date"><em>09 March, 2017</em></h4>
 
 
 <div id="TOC">
@@ -121,7 +121,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <div id="introduction" class="section level1">
 <h1>Introduction</h1>
-<p>One of the most common tables in medical literature includes summary statistics for a set of variables, often stratified by some group (e.g. treatment arm). Locally, the SAS macros <code>%table</code> and <code>%summary</code> were written to create summary tables with a single call. With the increasing interest in R, we have developed the function <code>tableby</code> to create similar tables within the R environment.</p>
+<p>One of the most common tables in medical literature includes summary statistics for a set of variables, often stratified by some group (e.g. treatment arm). Locally at Mayo, the SAS macros <code>%table</code> and <code>%summary</code> were written to create summary tables with a single call. With the increasing interest in R, we have developed the function <code>tableby</code> to create similar tables within the R environment.</p>
 <p>In developing the <code>tableby</code> function, the goal was to bring the best features of these macros into an R function. However, the task was not simply to duplicate all the functionality, but rather to make use of R’s strengths (modeling, method dispersion, flexibility in function definition and output format) and make a tool that fits the needs of R users. Additionally, the results needed to fit within the general reproducible research framework so the tables could be displayed within an R markdown report.</p>
 <p>This report provides step-by-step directions for using the functions associated with <code>tableby</code>. All functions presented here are available within the <code>arsenal</code> package. An assumption is made that users are somewhat familiar with R markdown documents. For those who are new to the topic, a good initial resource is available at <a href="http://rmarkdown.rstudio.com">rmarkdown.rstudio.com</a>.</p>
 </div>
@@ -160,9 +160,10 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>If you want to take a quick look at the table, you can use <code>summary</code> on your tableby object and the table will print out as text in your R console window. If you use <code>summary</code> without any options you will see a number of <span class="math inline">\(\&amp;nbsp;\)</span> statements which translates to “space” in HTML.</p>
 <div id="pretty-text-version-of-table" class="section level2">
 <h2>Pretty text version of table</h2>
-<p>If you want a nicer version in your console window then adding the <code>text=TRUE</code> option.</p>
+<p>If you want a nicer version in your console window then add the <code>text=TRUE</code> option.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(tab1, <span class="dt">text=</span><span class="ot">TRUE</span>)</code></pre></div>
-<pre><code>## ---------------------------------------------------------------------------------------------------------------------------
+<pre><code>## 
+## ---------------------------------------------------------------------------------------------------------------------------
 ##                          A: IFL (N=428)      F: FOLFOX (N=691)   G: IROX (N=380)     Total (N=1499)      p value           
 ## ----------------------- ------------------- ------------------- ------------------- ------------------- -------------------
 ## Sex                                                                                                                   0.190
@@ -1280,62 +1281,55 @@ tab2 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm ~<span cl
 <td align="center">0.067</td>
 </tr>
 <tr class="even">
-<td>    N-Miss</td>
-<td align="center">0</td>
-<td align="center">0</td>
-<td align="center">0</td>
-<td align="center"></td>
-</tr>
-<tr class="odd">
 <td>    10-19</td>
 <td align="center">1 (0.109%)</td>
 <td align="center">0 (0%)</td>
 <td align="center">1 (0.067%)</td>
 <td align="center"></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>    20-29</td>
 <td align="center">8 (0.873%)</td>
 <td align="center">11 (1.89%)</td>
 <td align="center">19 (1.27%)</td>
 <td align="center"></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>    30-39</td>
 <td align="center">37 (4.04%)</td>
 <td align="center">30 (5.15%)</td>
 <td align="center">67 (4.47%)</td>
 <td align="center"></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>    40-49</td>
 <td align="center">127 (13.9%)</td>
 <td align="center">83 (14.2%)</td>
 <td align="center">210 (14%)</td>
 <td align="center"></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>    50-59</td>
 <td align="center">257 (28.1%)</td>
 <td align="center">179 (30.7%)</td>
 <td align="center">436 (29.1%)</td>
 <td align="center"></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>    60-69</td>
 <td align="center">298 (32.5%)</td>
 <td align="center">170 (29.2%)</td>
 <td align="center">468 (31.2%)</td>
 <td align="center"></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>    70-79</td>
 <td align="center">168 (18.3%)</td>
 <td align="center">101 (17.3%)</td>
 <td align="center">269 (17.9%)</td>
 <td align="center"></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>    80-89</td>
 <td align="center">20 (2.18%)</td>
 <td align="center">9 (1.54%)</td>
@@ -1757,7 +1751,7 @@ RHS</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## The formulize function does the paste and as.formula steps
 tmp &lt;-<span class="st"> </span><span class="kw">formulize</span>(<span class="st">'arm'</span>,myvars[<span class="dv">8</span>:<span class="dv">10</span>])
 tmp</code></pre></div>
-<p>arm ~ ps + hgb + bmi &lt;environment: 0x5ca23f8&gt;</p>
+<p>arm ~ ps + hgb + bmi &lt;environment: 0x674d838&gt;</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## More complex formulas could also be written using formulize
 tmp2 &lt;-<span class="st"> </span><span class="kw">formulize</span>(<span class="st">'arm'</span>,<span class="kw">c</span>(<span class="st">'ps'</span>,<span class="st">'hgb^2'</span>,<span class="st">'bmi'</span>))
 
@@ -4090,7 +4084,8 @@ render(&quot;Test.md&quot;, pdf_document(keep_tex=TRUE))
 <p>When looking at multiple variables it is sometimes useful to export the results to a csv file. The <code>as.data.frame</code> function creates a data frame object that can be exported or further manipulated within R.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tab1 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm~sex+age, <span class="dt">data=</span>mockstudy)
 <span class="kw">summary</span>(tab1, <span class="dt">text=</span>T)</code></pre></div>
-<pre><code>## ---------------------------------------------------------------------------------------------------------------------------
+<pre><code>## 
+## ---------------------------------------------------------------------------------------------------------------------------
 ##                          A: IFL (N=428)      F: FOLFOX (N=691)   G: IROX (N=380)     Total (N=1499)      p value           
 ## ----------------------- ------------------- ------------------- ------------------- ------------------- -------------------
 ## Gender                                                                                                                0.190

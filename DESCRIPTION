@@ -1,8 +1,8 @@
 Package: arsenal
 Title: An Arsenal of 'R' Functions for Large-Scale Statistical
         Summaries
-Version: 0.2.0
-Date: 2017-01-31
+Version: 0.3.0
+Date: 2017-03-09
 URL: https://cran.r-project.org/package=arsenal
 Authors@R: c(
     person("Ethan", "Heinzen", email = "heinzen.ethan@mayo.edu", role = c("aut", "cre")),
@@ -22,7 +22,8 @@ Description: An Arsenal of 'R' functions for large-scale statistical summaries,
   summary of multiple variable types 'by' the levels of a categorical
   variable; modelsum(), which performs simple model fits on the same endpoint
   for many variables (univariate or adjusted for standard covariates);
-  and freqlist(), a powerful frequency table across many categorical variables.
+  freqlist(), a powerful frequency table across many categorical variables; and
+  write2(), a function to output tables to a document.
 Suggests: knitr, rmarkdown, xtable, pander, survival, testthat, coin,
         pROC, MASS, gam, rpart
 Depends: R (>= 3.2.0), stats (>= 3.2.0)
@@ -31,7 +32,7 @@ VignetteBuilder: knitr
 License: GPL (>= 2)
 RoxygenNote: 5.0.1
 NeedsCompilation: no
-Packaged: 2017-01-31 23:21:39 UTC; m144326
+Packaged: 2017-03-09 19:29:28 UTC; m144326
 Author: Ethan Heinzen [aut, cre],
   Jason Sinnwell [aut],
   Elizabeth Atkinson [aut],
@@ -43,4 +44,4 @@ Author: Ethan Heinzen [aut, cre],
   Emily Lundt [ctb]
 Maintainer: Ethan Heinzen <heinzen.ethan@mayo.edu>
 Repository: CRAN
-Date/Publication: 2017-02-01 00:41:55
+Date/Publication: 2017-03-10 00:24:55

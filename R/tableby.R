@@ -266,13 +266,13 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
         attributes(modeldf[,eff])$stats
       } else { 
         control$ordered.stats
-      }
+      }     
       ## if no missings, and control says not to show missings,
       ## remove Nmiss stat fun
       if(sum(is.na(modeldf[,eff])) == 0 && any(grepl("Nmiss$",ordered.stats))) {
         ordered.stats <- ordered.stats[!grepl("Nmiss$", ordered.stats)]
       }
-      for(statfun in control$ordered.stats) {
+      for(statfun in ordered.stats) {
         ostyles <- c(ostyles, ifelse(statfun %in% c("countpct"), "percent",NA))
 
         bystatlist <- list()
@@ -322,7 +322,7 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
       if(class(modeldf[,eff])=="logical") {
         modeldf[,eff]<- factor(modeldf[,eff], levels=c(FALSE, TRUE))
       }
-      
+   
       ## to make sure all levels of cat variable are counted, need to pass values along
       xlevels <- if(is.factor(modeldf[,eff])) {
         levels(modeldf[,eff])
@@ -356,7 +356,7 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
           cstatList[[statfun]]$Total <- eval(call(statfun,modeldf[,eff], levels=xlevels, weights=weights))
         }
       }
-      
+    
       ## simplify, only do if num-levels is 2       
       if(control$cat.simplify==TRUE &
          !is.null(nrow(cstatList[[statfun]][[1]])) && nrow(cstatList[[statfun]][[1]])==2) {

@@ -69,7 +69,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">The write2 function</h1>
 <h4 class="author"><em>Ethan Heinzen</em></h4>
-<h4 class="date"><em>31 January, 2017</em></h4>
+<h4 class="date"><em>09 March, 2017</em></h4>
 
 
 <div id="TOC">
@@ -85,9 +85,13 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><a href="#xtablextable"><code>xtable::xtable()</code></a></li>
 <li><a href="#panderpander_return"><code>pander::pander_return()</code></a></li>
 </ul></li>
+<li><a href="#output-multiple-tables-to-one-document">Output Multiple Tables to One Document</a></li>
+<li><a href="#output-other-objects-monospaced-as-if-in-a-terminal">Output Other Objects Monospaced (as if in a terminal)</a></li>
 <li><a href="#faqs">FAQs</a><ul>
 <li><a href="#how-do-i-suppress-the-note-about-my-document-getting-rendered">How do I suppress the note about my document getting rendered?</a></li>
 <li><a href="#how-do-i-look-at-the-temporary-.md-file">How do I look at the temporary <code>.md</code> file?</a></li>
+<li><a href="#how-do-i-prevent-my-document-from-being-rendered">How do I prevent my document from being rendered?</a></li>
+<li><a href="#how-do-i-output-headers-raw-htmllatex-paragraphs-etc.">How do I output headers, raw HTML/LaTeX, paragraphs, etc.?</a></li>
 <li><a href="#how-do-i-tweak-the-default-format-from-write2word-write2html-or-write2pdf">How do I tweak the default format from <code>write2word()</code>, <code>write2html()</code>, or <code>write2pdf()</code>?</a></li>
 <li><a href="#how-do-i-output-to-a-file-format-other-than-word-html-and-pdf">How do I output to a file format other than word, HTML, and PDF?</a></li>
 </ul></li>
@@ -106,7 +110,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </div>
 <div id="examples-using-arsenal-objects" class="section level1">
 <h1>Examples Using <code>arsenal</code> Objects</h1>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(arsenal)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># library(arsenal)</span>
+devtools::<span class="kw">load_all</span>()
 <span class="kw">data</span>(mockstudy)
 tmpdir &lt;-<span class="st"> </span><span class="kw">tempdir</span>()</code></pre></div>
 <div id="tableby" class="section level2">
@@ -172,6 +177,38 @@ tab1 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm ~<span cl
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">write2word</span>(pander::<span class="kw">pander_return</span>(<span class="kw">head</span>(mockstudy)), <span class="dt">file =</span> <span class="kw">paste0</span>(tmpdir, <span class="st">&quot;/test.pander.doc&quot;</span>), <span class="dt">quiet =</span> <span class="ot">TRUE</span>)</code></pre></div>
 </div>
 </div>
+<div id="output-multiple-tables-to-one-document" class="section level1">
+<h1>Output Multiple Tables to One Document</h1>
+<p>To output multiple tables into a document, simply make a list of them and call the same function as before.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mylist &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="kw">tableby</span>(sex ~<span class="st"> </span>age, <span class="dt">data =</span> mockstudy),
+               <span class="kw">freqlist</span>(<span class="kw">table</span>(mockstudy[, <span class="kw">c</span>(<span class="st">&quot;sex&quot;</span>, <span class="st">&quot;arm&quot;</span>)])),
+               knitr::<span class="kw">kable</span>(<span class="kw">head</span>(mockstudy)))
+
+<span class="kw">write2pdf</span>(mylist, <span class="kw">paste0</span>(tmpdir, <span class="st">&quot;/test.mylist.pdf&quot;</span>), <span class="dt">quiet =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<p>One neat side-effect of this function is that you can output text and headers, etc. The possibilities are endless!</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mylist2 &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="st">&quot;# Header 1&quot;</span>,
+                <span class="st">&quot;This is a small paragraph introducting tableby.&quot;</span>,
+                <span class="kw">tableby</span>(sex ~<span class="st"> </span>age, <span class="dt">data =</span> mockstudy),
+                <span class="st">&quot;&lt;hr&gt;&quot;</span>,
+                <span class="st">&quot;# Header 2&quot;</span>,
+                <span class="st">&quot;&lt;font color='red'&gt;I can change color of my text!&lt;/font&gt;&quot;</span>)
+<span class="kw">write2html</span>(mylist2, <span class="kw">paste0</span>(tmpdir, <span class="st">&quot;/test.mylist2.html&quot;</span>), <span class="dt">quiet =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<p>In fact, you can even recurse on the lists!</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">write2pdf</span>(<span class="kw">list</span>(mylist2, mylist), <span class="kw">paste0</span>(tmpdir, <span class="st">&quot;/test.mylists.pdf&quot;</span>), <span class="dt">quiet =</span> <span class="ot">TRUE</span>)</code></pre></div>
+</div>
+<div id="output-other-objects-monospaced-as-if-in-a-terminal" class="section level1">
+<h1>Output Other Objects Monospaced (as if in a terminal)</h1>
+<p>It may be useful at times to write output that would normally be copied from the terminal. The default method for <code>write2()</code> does this automatically. To output the results of <code>summary.lm()</code>, for example:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">age.lm &lt;-<span class="st"> </span><span class="kw">summary</span>(<span class="kw">lm</span>(age ~<span class="st"> </span>sex, <span class="dt">data =</span> mockstudy))
+<span class="kw">write2pdf</span>(age.lm, <span class="kw">paste0</span>(tmpdir, <span class="st">&quot;/test.lm.pdf&quot;</span>), <span class="dt">quiet =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<p>The <code>verbatim()</code> function is another option to explicitly alert <code>write2()</code> to do this. This becomes particularly helpful to overrule existing S3 methods.</p>
+<p>For example, suppose you wanted to just print a tableby object (as if it were to print in the terminal):</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tab4 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm ~<span class="st"> </span>sex +<span class="st"> </span>age, <span class="dt">data=</span>mockstudy)
+<span class="kw">write2html</span>(<span class="kw">verbatim</span>(tab4), <span class="kw">paste0</span>(tmpdir, <span class="st">&quot;/test.print.tableby.html&quot;</span>), <span class="dt">quiet =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<p>Or suppose you wanted to print a character vector (as if it were to print in the terminal):</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">chr &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;MyVector&quot;</span>, <span class="dv">1</span>:<span class="dv">10</span>)
+<span class="kw">write2pdf</span>(<span class="kw">verbatim</span>(chr), <span class="kw">paste0</span>(tmpdir, <span class="st">&quot;/test.character.pdf&quot;</span>), <span class="dt">quiet =</span> <span class="ot">TRUE</span>)</code></pre></div>
+</div>
 <div id="faqs" class="section level1">
 <h1>FAQs</h1>
 <div id="how-do-i-suppress-the-note-about-my-document-getting-rendered" class="section level2">
@@ -188,6 +225,24 @@ tab1 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm ~<span cl
            <span class="dt">quiet =</span> <span class="ot">TRUE</span>, <span class="co"># passed to rmarkdown::render</span>
            <span class="dt">keep.md =</span> <span class="ot">TRUE</span>
            )</code></pre></div>
+</div>
+<div id="how-do-i-prevent-my-document-from-being-rendered" class="section level2">
+<h2>How do I prevent my document from being rendered?</h2>
+<p>This is easily accomplished by using the option <code>render. = FALSE</code>. Note that this will then default to <code>keep.md = TRUE</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">write2html</span>(knitr::<span class="kw">kable</span>(<span class="kw">head</span>(mockstudy)), <span class="kw">paste0</span>(tmpdir, <span class="st">&quot;/test.kable.dont.render.html&quot;</span>),
+           <span class="dt">render. =</span> <span class="ot">FALSE</span>
+           )</code></pre></div>
+</div>
+<div id="how-do-i-output-headers-raw-htmllatex-paragraphs-etc." class="section level2">
+<h2>How do I output headers, raw HTML/LaTeX, paragraphs, etc.?</h2>
+<p>One can simply abuse the list S3 method for <code>write2()</code>!</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mylist2 &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="st">&quot;# Header 1&quot;</span>,
+                <span class="st">&quot;This is a small paragraph introducting tableby.&quot;</span>,
+                <span class="kw">tableby</span>(sex ~<span class="st"> </span>age, <span class="dt">data =</span> mockstudy),
+                <span class="st">&quot;&lt;hr&gt;&quot;</span>,
+                <span class="st">&quot;# Header 2&quot;</span>,
+                <span class="st">&quot;&lt;font color='red'&gt;I can change color of my text!&lt;/font&gt;&quot;</span>)
+<span class="kw">write2html</span>(mylist2, <span class="kw">paste0</span>(tmpdir, <span class="st">&quot;/test.mylist2.html&quot;</span>), <span class="dt">quiet =</span> <span class="ot">TRUE</span>)</code></pre></div>
 </div>
 <div id="how-do-i-tweak-the-default-format-from-write2word-write2html-or-write2pdf" class="section level2">
 <h2>How do I tweak the default format from <code>write2word()</code>, <code>write2html()</code>, or <code>write2pdf()</code>?</h2>
