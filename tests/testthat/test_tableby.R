@@ -1,6 +1,10 @@
 ## Tests for tableby
 
 
+## Jason's code for sourcing .R files
+## fl <- list.files(path="../../R", pattern="*.R", full.names=TRUE, include.dirs=TRUE)
+## for(file in fl) source(file)
+
 context("Testing the tableby output")
 
 options(stringsAsFactors=FALSE)
@@ -22,6 +26,8 @@ mdat$Group.fac <- factor(mdat$Group)
 attr(mdat$ht_in, "label") <- "Height in Inches"
 attr(mdat$trt, "label") <- "Treatment Arm"
 attr(mdat$Age, "label") <- "Age in Years"
+
+class(mdat$Sex) <- c("dummyClassToTriggerErrors", class(mdat$Sex))
 
 ###########################################################################################################
 #### Basic two-sided tableby
@@ -398,7 +404,7 @@ test_that("Changing tests", {
       "--------------------------------------------------------------------------------------------"
     )
   )
-  
+
   expect_identical(
     capture.output(summary(tableby(Group ~ Sex + Age, data = mdat, numeric.test = "kwt", cat.test = "fe"), text = TRUE)),
     c(""                                                                                            ,
@@ -415,6 +421,44 @@ test_that("Changing tests", {
       "--------------------------------------------------------------------------------------------"
     )
   )
+})
+
+
+round.p <- function(x)
+{
+  x$p.value <- round(x$p.value, 5)
+  row.names(x) <- NULL
+  x
+}
+
+set.seed(1000)
+test_that("05/25/2017: simulate.p.value option for chisq.test", {
+  expect_true(identical(
+    round.p(tests(tableby(Group ~ Sex + time + dt, data = mdat,  subset=Group != "High",simulate.p.value=TRUE))),
+    data.frame(Variable = c("Sex", "time", "dt"), p.value = c(0.61169, 0.20595, 0.17144),
+               Method = c("Pearson's Chi-squared test with simulated p-value\n\t (based on 2000 replicates)",
+                          "Linear Model ANOVA", "Kruskal-Wallis rank sum test"), stringsAsFactors = FALSE)
+  ))
+})
+
+test_that("05/25/2017: chisq.correct=FALSE option for chisq.test", {
+  expect_true(identical(
+    round.p(tests(tableby(Group ~ Sex + time + dt, data = mdat, subset=Group != "High", chisq.correct=FALSE))),
+    data.frame(Variable = c("Sex", "time", "dt"), p.value = c(0.43832, 0.20595, 0.17144),
+               Method = c("Pearson's Chi-squared test", "Linear Model ANOVA", "Kruskal-Wallis rank sum test"),
+               stringsAsFactors = FALSE)
+  ))
+})
+
+
+set.seed(1000)
+test_that("05/25/2017: simulate.p.value=TRUE option for fisher.test", {
+  expect_true(identical(
+    round.p(tests(tableby(Group ~ fe(Sex) + time + dt, data = mdat, simulate.p.value=TRUE))),
+    data.frame(Variable = c("Sex", "time", "dt"), p.value = c(0.80010, 0.02480, 0.39127),
+               Method = c("Fisher's Exact Test for Count Data with simulated p-value\n\t (based on 2000 replicates)",
+                          "Linear Model ANOVA", "Kruskal-Wallis rank sum test"), stringsAsFactors = FALSE)
+  ))
 })
 
 
@@ -477,11 +521,85 @@ test_that("02/07/2017: Jason Sinnwell's chisq problem", {
 })
 rm(dat)
 
+test_that("03/17/2017: Beth's medianq1q3 label", {
+  expect_identical(
+    capture.output(summary(tableby(Group ~ ht_in + time, data = mdat,
+                                   control = tableby.control(numeric.stats = c("Nmiss2", "medianq1q3"))), text = TRUE)),
+    c(""                                                                                            ,
+      "--------------------------------------------------------------------------------------------",
+      "                   High (N=30)    Low (N=30)     Med (N=30)     Total (N=90)   p value      ",
+      "----------------- -------------- -------------- -------------- -------------- --------------",
+      "Height in Inches                                                                       0.785",
+      "   N-Miss         0              0              0              0             "               ,
+      "   Median (Q1,    64.5 (62, 68)  64 (61, 68.8)  64.5 (62, 68)  64 (62, 68)   "               ,
+      "   Q3)                                                                       "               ,
+      "time                                                                                   0.025",
+      "   N-Miss         0              0              0              0             "               ,
+      "   Median (Q1,    5 (3.25, 6)    3 (1.25, 5)    4 (2, 5)       4 (2, 6)      "               ,
+      "   Q3)                                                                       "               ,
+      "--------------------------------------------------------------------------------------------"
+    )
+  )
+})
 
 
+test_that("04/12/2017: Katherine King's cat.simplify vs tableby.control", {
+  expect_identical(
+    capture.output(summary(tableby(Group ~ trt + Sex, data = mdat, control = tableby.control(), cat.simplify = TRUE), text = TRUE)),
+    c(""                                                                                            ,
+      "--------------------------------------------------------------------------------------------",
+      "                   High (N=30)    Low (N=30)     Med (N=30)     Total (N=90)   p value      ",
+      "----------------- -------------- -------------- -------------- -------------- --------------",
+      "Treatment Arm     16 (53.3%)     19 (63.3%)     19 (63.3%)     54 (60%)                0.659",
+      "Sex               15 (50%)       13 (43.3%)     16 (53.3%)     44 (48.9%)              0.733",
+      "--------------------------------------------------------------------------------------------"
+    )
+  )
+})
+
+data(mockstudy)
+temp <- mockstudy[1:5,]
+test_that("05/24/2017: Katherine King's count vs countpct", {
+  expect_identical(
+    capture.output(summary(tableby(arm ~ sex + age, data=temp,cat.stats="count", test = FALSE), text = TRUE)),
+    c(""                                                                                            ,
+      "--------------------------------------------------------------------------------------------",
+      "                      A: IFL (N=2)      F: FOLFOX (N=2)   G: IROX (N=1)     Total (N=5)     ",
+      "-------------------- ----------------- ----------------- ----------------- -----------------",
+      "sex                 "                                                                        ,
+      "   Male              0                 1                 0                 1                ",
+      "   Female            2                 1                 1                 4                ",
+      "age                 "                                                                        ,
+      "   Mean (SD)         62 (17)           68 (1.41)         71 (NaN)          66.2 (9.42)      ",
+      "   Q1, Q3            56, 68            67.5, 68.5        71, 71            67, 71           ",
+      "   Range             50 - 74           67 - 69           71 - 71           50 - 74          ",
+      "--------------------------------------------------------------------------------------------"
+    )
+  )
+})
 
 
+df <- data.frame(x = c("a ", "a ", "b", "b ", "c", "c"), y = c("A", "A", "A", "B", "B", "B"), stringsAsFactors = FALSE)
+##table(df$x, df$y)
+test_that("05/24/2017: Missy Larson and Ethan Heinzen trailing spaces on char x variable", {
+  expect_identical(
+    capture.output(summary(tableby(y ~ x, data = df, test = FALSE), text = TRUE)),
+    c(""                                                         ,
+      "----------------------------------------------------------",
+      "                  A (N=3)       B (N=3)       Total (N=6) ",
+      "---------------- ------------- ------------- -------------",
+      "x               "                                          ,
+      "   a             2 (66.7%)     0 (0%)        2 (33.3%)    ",
+      "   b             1 (33.3%)     0 (0%)        1 (16.7%)    ",
+      "   b             0 (0%)        1 (33.3%)     1 (16.7%)    ",
+      "   c             0 (0%)        2 (66.7%)     2 (33.3%)    ",
+      "----------------------------------------------------------"
+    )
+  )
+})
 
 
-
+test_that("08/02/2017: Chi-square warnings are suppressed", {
+  expect_warning(tableby(arm ~ sex, data = mockstudy, subset = 1:5), NA)
+})
 

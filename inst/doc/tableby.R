@@ -53,6 +53,12 @@ attr(mockstudy$sex,'label')  <- 'Gender'
 tab1 <- tableby(arm ~ sex + age, data=mockstudy)
 summary(tab1)
 
+## ---- results = 'asis'----------------------------------------------------------------------------
+labels(mockstudy)  <- c(age = 'Age, yrs', sex = "Gender")
+
+tab1 <- tableby(arm ~ sex + age, data=mockstudy)
+summary(tab1)
+
 ## ---- results='asis'------------------------------------------------------------------------------
 mylabels <- list( sex = "SEX", age ="Age, yrs")
 summary(tab1, labelTranslations = mylabels)
@@ -90,6 +96,18 @@ summary(tab.test)
 tab.test <- tableby(arm ~ kwt(ast, "Nmiss2","median") + anova(age, "N","mean") +
                     kwt(bmi, "Nmiss","median"), data=mockstudy)
 summary(tab.test)
+
+## ---- simfe, results='asis'-----------------------------------------------------------------------
+set.seed(100)
+tab.catsim <- tableby(arm ~ sex + race, cat.test="fe", simulate.p.value=TRUE, B=500, data=mockstudy)
+tests(tab.catsim)
+
+## ---- chisqcorrect, results='asis'----------------------------------------------------------------
+cat.correct <- tableby(arm ~ sex + race, cat.test="chisq", subset = !grepl("^F", arm), data=mockstudy)
+tests(cat.correct)
+cat.nocorrect <- tableby(arm ~ sex + race, cat.test="chisq", subset = !grepl("^F", arm),
+     chisq.correct=FALSE, data=mockstudy)
+tests(cat.nocorrect)
 
 ## ---- nobyvar, results='asis'---------------------------------------------------------------------
 tab.noby <- tableby(~ bmi + sex + age, data=mockstudy)

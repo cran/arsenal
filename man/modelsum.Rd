@@ -2,13 +2,14 @@
 % Please edit documentation in R/modelsum.R
 \name{modelsum}
 \alias{modelsum}
+\alias{modelsum}
 \alias{print.modelsum}
 \alias{print.modelsumList}
 \title{Fit models over each of a set of independent variables with a response variable}
 \usage{
 modelsum(formula, family = "gaussian", data, adjust = NULL,
   na.action = na.modelsum, subset = NULL, weights = NULL,
-  control = list(...), ...)
+  control = NULL, ...)
 
 \method{print}{modelsum}(x, ...)
 
@@ -36,10 +37,11 @@ Works as vector of logicals or an index.}
 
 \item{weights}{an optional vector specifying the weights to apply to each data observation (rows of \code{data})}
 
-\item{control}{control parameters to handle optional settings within \code{modelsum}. Control arguments can be passed to \code{modelsum},
-which are carried forward to \code{modelsum.control} via the \code{...} argument. See \code{\link{modelsum.control}} for more details.}
+\item{control}{control parameters to handle optional settings within \code{modelsum}.  Arguments for \code{modelsum.control}
+can be passed to \code{modelsum} via the \code{...} argument, but if a control object and \code{...} arguments are both supplied,
+the latter are used. See \code{\link{modelsum.control}} for other details.}
 
-\item{...}{additional arguments to be passed to internal \code{modelsum} functions. See "Details" for information.}
+\item{...}{additional arguments to be passed to internal \code{modelsum} functions.}
 
 \item{x}{An object of class \code{'modelsum'}, or a list of such objects.}
 }
@@ -56,7 +58,7 @@ An object with class \code{'modelsum'}, which is effectively a list with the var
 Fit and summarize models for each independent (x) variable with a response variable (y), with options to adjust by variables for each model.
 }
 \examples{
- 
+
 data(mockstudy)
 
 tab1 <- modelsum(bmi ~ sex + age, data = mockstudy)
@@ -72,10 +74,9 @@ tab2.df <- as.data.frame(tab2)
 
 tab2.df[1:5,]
 }
-\author{
-Jason Sinnwell, Patrick Votruba, Beth Atkinson, Gregory Dougherty, adapted from SAS Macro of the same name
-}
 \seealso{
 \code{\link{modelsum.control}}, \code{\link{summary.modelsum}}, \code{\link{formulize}}
 }
-
+\author{
+Jason Sinnwell, Patrick Votruba, Beth Atkinson, Gregory Dougherty, adapted from SAS Macro of the same name
+}

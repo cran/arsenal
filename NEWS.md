@@ -1,3 +1,53 @@
+# arsenal 0.5.0
+
+* Code all now in GitHub; issues can now be submitted there. Checking is now performed automatically on Travis-CI.
+
+* Included documentation for getting a caption with `write2()` and `freqlist()`. (#16)
+
+* Fixed subsetting in `modelsum()`. (#14)
+
+* Fixed multiple class errors in `tableby()`. (#17)
+
+* Fixed subset dropping labels in `tableby()` and `modelsum()` with new function `keep.labels()` to make labels "stick". (#1)
+
+* Added a vignette discussing labels.
+
+* Add `compare.data.frame()`, with an accompanying vignette.
+
+# arsenal 0.4.2
+
+* Updated `labelTranslation` documentation
+
+* Changed `format.translations` list to `defaultLabelTranslations()` function, and removed labels for sex and age.
+
+* Tweaked `labels<-.freqlist` to allow for list input.
+
+# arsenal 0.4.1
+
+* Updated `tableby()` vignette.
+
+# arsenal 0.4.0
+
+* Tweaked `freqlist()` to behave better with data.frame subsetting and the infamous `drop=TRUE`.
+
+* Added `dupLabels=` argument to `summary.freqlist()`. (#6)
+
+* Added a label for `medianq1q3()` in `tableby.control()`. (#4)
+
+* Changed the `...` vs. `control=` action in `tableby()` and `modelsum()` to fix which
+  arguments are used over which other arguments. (#5)
+  
+* Moved import `broom` and `stringr` to "Suggests",
+  adding `magrittr` for piping.
+  
+* Added piping to `write2*()` vignette.
+  
+* Several `tableby()` fixes for counts and percents.
+
+* New options in `tableby.control()` to modify the statistical tests performed. (#2)
+
+* Fixed trailing whitespace issue in `tableby()` (#3)
+
 # arsenal 0.3.0
 
 * The CRAN release of the locally stable 0.2.3. For NEWS on this version, see below.

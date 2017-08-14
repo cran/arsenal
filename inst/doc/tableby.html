@@ -4,7 +4,7 @@
 
 <head>
 
-<meta charset="utf-8">
+<meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 
@@ -69,7 +69,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">The tableby function</h1>
 <h4 class="author"><em>Beth Atkinson, Jason Sinnwell, Shannon McDonnell and Greg Dougherty</em></h4>
-<h4 class="date"><em>09 March, 2017</em></h4>
+<h4 class="date"><em>14 August, 2017</em></h4>
 
 
 <div id="TOC">
@@ -85,6 +85,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><a href="#add-labels">Add labels</a></li>
 <li><a href="#change-summary-statistics-globally">Change summary statistics globally</a></li>
 <li><a href="#change-summary-statistics-within-the-formula">Change summary statistics within the formula</a></li>
+<li><a href="#controlling-options-for-categorical-tests-chisq-and-fishers">Controlling Options for Categorical Tests (Chisq and Fisher’s)</a></li>
 <li><a href="#modifying-the-look-feel-in-word-documents">Modifying the look &amp; feel in Word documents</a></li>
 </ul></li>
 <li><a href="#additional-examples">Additional Examples</a><ul>
@@ -166,7 +167,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 ## ---------------------------------------------------------------------------------------------------------------------------
 ##                          A: IFL (N=428)      F: FOLFOX (N=691)   G: IROX (N=380)     Total (N=1499)      p value           
 ## ----------------------- ------------------- ------------------- ------------------- ------------------- -------------------
-## Sex                                                                                                                   0.190
+## sex                                                                                                                   0.190
 ##    Male                 277 (64.7%)         411 (59.5%)         228 (60%)           916 (61.1%)        
 ##    Female               151 (35.3%)         280 (40.5%)         152 (40%)           583 (38.9%)        
 ## Age in Years                                                                                                          0.614
@@ -200,7 +201,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </thead>
 <tbody>
 <tr class="odd">
-<td><strong>Sex</strong></td>
+<td><strong>sex</strong></td>
 <td align="center"></td>
 <td align="center"></td>
 <td align="center"></td>
@@ -263,7 +264,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>If you want a data.frame version, simply use <code>as.data.frame</code>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">as.data.frame</span>(tab1)</code></pre></div>
 <pre><code>##           term variable A: IFL (N=428) F: FOLFOX (N=691) G: IROX (N=380) Total (N=1499) p value
-## 1          Sex      sex                                                                   0.190
+## 1          sex      sex                                                                   0.190
 ## 2         Male      sex    277 (64.7%)       411 (59.5%)       228 (60%)    916 (61.1%)        
 ## 3       Female      sex    151 (35.3%)       280 (40.5%)       152 (40%)    583 (38.9%)        
 ## 4 Age in Years      age                                                                   0.614
@@ -408,6 +409,89 @@ tab1 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm ~<span cl
 </tr>
 </tbody>
 </table>
+<p>You can also use the built-in <code>data.frame</code> method for <code>labels&lt;-</code>:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">labels</span>(mockstudy)  &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dt">age =</span> <span class="st">'Age, yrs'</span>, <span class="dt">sex =</span> <span class="st">&quot;Gender&quot;</span>)
+
+tab1 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm ~<span class="st"> </span>sex +<span class="st"> </span>age, <span class="dt">data=</span>mockstudy)
+<span class="kw">summary</span>(tab1)</code></pre></div>
+<table style="width:100%;">
+<colgroup>
+<col width="19%"></col>
+<col width="16%"></col>
+<col width="16%"></col>
+<col width="16%"></col>
+<col width="16%"></col>
+<col width="16%"></col>
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th align="center">A: IFL (N=428)</th>
+<th align="center">F: FOLFOX (N=691)</th>
+<th align="center">G: IROX (N=380)</th>
+<th align="center">Total (N=1499)</th>
+<th align="center">p value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Gender</strong></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center">0.190</td>
+</tr>
+<tr class="even">
+<td>    Male</td>
+<td align="center">277 (64.7%)</td>
+<td align="center">411 (59.5%)</td>
+<td align="center">228 (60%)</td>
+<td align="center">916 (61.1%)</td>
+<td align="center"></td>
+</tr>
+<tr class="odd">
+<td>    Female</td>
+<td align="center">151 (35.3%)</td>
+<td align="center">280 (40.5%)</td>
+<td align="center">152 (40%)</td>
+<td align="center">583 (38.9%)</td>
+<td align="center"></td>
+</tr>
+<tr class="even">
+<td><strong>Age, yrs</strong></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center">0.614</td>
+</tr>
+<tr class="odd">
+<td>    Mean (SD)</td>
+<td align="center">59.7 (11.4)</td>
+<td align="center">60.3 (11.6)</td>
+<td align="center">59.8 (11.5)</td>
+<td align="center">60 (11.5)</td>
+<td align="center"></td>
+</tr>
+<tr class="even">
+<td>    Q1, Q3</td>
+<td align="center">53, 68</td>
+<td align="center">52, 69</td>
+<td align="center">52, 68</td>
+<td align="center">52, 68</td>
+<td align="center"></td>
+</tr>
+<tr class="odd">
+<td>    Range</td>
+<td align="center">27 - 88</td>
+<td align="center">19 - 88</td>
+<td align="center">26 - 85</td>
+<td align="center">19 - 88</td>
+<td align="center"></td>
+</tr>
+</tbody>
+</table>
 <p>Another option is to add labels after you have created the table</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mylabels &lt;-<span class="st"> </span><span class="kw">list</span>( <span class="dt">sex =</span> <span class="st">&quot;SEX&quot;</span>, <span class="dt">age =</span><span class="st">&quot;Age, yrs&quot;</span>)
 <span class="kw">summary</span>(tab1, <span class="dt">labelTranslations =</span> mylabels)</code></pre></div>
@@ -489,10 +573,10 @@ tab1 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm ~<span cl
 </tr>
 </tbody>
 </table>
-<p>Alternatively, you can check the variable labels and manipulate them with a function called labels, which works on the tableby object.</p>
+<p>Alternatively, you can check the variable labels and manipulate them with a function called <code>labels</code>, which works on the <code>tableby</code> object.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">labels</span>(tab1)</code></pre></div>
 <pre><code>##             arm             sex             age 
-## &quot;Treatment Arm&quot;        &quot;Gender&quot;  &quot;Age in Years&quot;</code></pre>
+## &quot;Treatment Arm&quot;        &quot;Gender&quot;      &quot;Age, yrs&quot;</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">labels</span>(tab1) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dt">arm=</span><span class="st">&quot;Treatment Assignment&quot;</span>, <span class="dt">age=</span><span class="st">&quot;Baseline Age (yrs)&quot;</span>)
 <span class="kw">labels</span>(tab1)</code></pre></div>
 <pre><code>##                    arm                    sex                    age 
@@ -622,7 +706,7 @@ tab2 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm ~<span cl
 <td align="center">152 (40%)</td>
 </tr>
 <tr class="even">
-<td><strong>Age in Years</strong></td>
+<td><strong>Age, yrs</strong></td>
 <td align="center"></td>
 <td align="center"></td>
 <td align="center"></td>
@@ -686,7 +770,7 @@ tab2 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm ~<span cl
 <td align="center">152 (40%)</td>
 </tr>
 <tr class="even">
-<td><strong>Age in Years</strong></td>
+<td><strong>Age, yrs</strong></td>
 <td align="center"></td>
 <td align="center"></td>
 <td align="center"></td>
@@ -713,7 +797,7 @@ tab2 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm ~<span cl
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tab.test &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm ~<span class="st"> </span><span class="kw">kwt</span>(age) +<span class="st"> </span><span class="kw">anova</span>(bmi) +<span class="st"> </span><span class="kw">kwt</span>(ast), <span class="dt">data=</span>mockstudy)
 <span class="kw">tests</span>(tab.test)</code></pre></div>
 <pre><code>##                     Variable    p.value                       Method
-## age             Age in Years 0.63906143 Kruskal-Wallis rank sum test
+## age                 Age, yrs 0.63906143 Kruskal-Wallis rank sum test
 ## bmi Body Mass Index (kg/m^2) 0.89165522           Linear Model ANOVA
 ## ast                      ast 0.03902803 Kruskal-Wallis rank sum test</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(tab.test)</code></pre></div>
@@ -738,7 +822,7 @@ tab2 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm ~<span cl
 </thead>
 <tbody>
 <tr class="odd">
-<td><strong>Age in Years</strong></td>
+<td><strong>Age, yrs</strong></td>
 <td align="center"></td>
 <td align="center"></td>
 <td align="center"></td>
@@ -900,7 +984,7 @@ tab2 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm ~<span cl
 <td align="center"></td>
 </tr>
 <tr class="even">
-<td><strong>Age in Years</strong></td>
+<td><strong>Age, yrs</strong></td>
 <td align="center"></td>
 <td align="center"></td>
 <td align="center"></td>
@@ -949,6 +1033,25 @@ tab2 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm ~<span cl
 </tr>
 </tbody>
 </table>
+</div>
+<div id="controlling-options-for-categorical-tests-chisq-and-fishers" class="section level2">
+<h2>Controlling Options for Categorical Tests (Chisq and Fisher’s)</h2>
+<p>The formal tests for categorical variables against the levels of the by variable, chisq and fe, have options to simulate p-values. We show how to turn on the simulations for these with 500 replicates for the Fisher’s test (fe).</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">set.seed</span>(<span class="dv">100</span>)
+tab.catsim &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm ~<span class="st"> </span>sex +<span class="st"> </span>race, <span class="dt">cat.test=</span><span class="st">&quot;fe&quot;</span>, <span class="dt">simulate.p.value=</span><span class="ot">TRUE</span>, <span class="dt">B=</span><span class="dv">500</span>, <span class="dt">data=</span>mockstudy)
+<span class="kw">tests</span>(tab.catsim)</code></pre></div>
+<pre><code> Variable   p.value</code></pre>
+<p>sex Gender 0.2195609 race Race 0.3093812 Method sex Fisher’s Exact Test for Count Data with simulated p-value(based on 500 replicates) race Fisher’s Exact Test for Count Data with simulated p-value(based on 500 replicates)</p>
+<p>The chis-square test on 2x2 tables applies Yates’ continuity correction by default, so we provide an option to turn off the correction. We show the results with and without the correction that is applied to treatment arm by sex, if we use subset to ignore one of the three treatment arms.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">cat.correct &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm ~<span class="st"> </span>sex +<span class="st"> </span>race, <span class="dt">cat.test=</span><span class="st">&quot;chisq&quot;</span>, <span class="dt">subset =</span> !<span class="kw">grepl</span>(<span class="st">&quot;^F&quot;</span>, arm), <span class="dt">data=</span>mockstudy)
+<span class="kw">tests</span>(cat.correct)</code></pre></div>
+<pre><code> Variable   p.value                                                       Method</code></pre>
+<p>sex Gender 0.1900861 Pearson’s Chi-squared test with Yates’ continuity correction race Race 0.8108543 Pearson’s Chi-squared test</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">cat.nocorrect &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm ~<span class="st"> </span>sex +<span class="st"> </span>race, <span class="dt">cat.test=</span><span class="st">&quot;chisq&quot;</span>, <span class="dt">subset =</span> !<span class="kw">grepl</span>(<span class="st">&quot;^F&quot;</span>, arm),
+     <span class="dt">chisq.correct=</span><span class="ot">FALSE</span>, <span class="dt">data=</span>mockstudy)
+<span class="kw">tests</span>(cat.nocorrect)</code></pre></div>
+<pre><code> Variable   p.value                     Method</code></pre>
+<p>sex Gender 0.1666280 Pearson’s Chi-squared test race Race 0.8108543 Pearson’s Chi-squared test</p>
 </div>
 <div id="modifying-the-look-feel-in-word-documents" class="section level2">
 <h2>Modifying the look &amp; feel in Word documents</h2>
@@ -1011,7 +1114,7 @@ tab2 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm ~<span cl
 <td align="center">583 (38.9%)</td>
 </tr>
 <tr class="odd">
-<td><strong>Age in Years</strong></td>
+<td><strong>Age, yrs</strong></td>
 <td align="center"></td>
 </tr>
 <tr class="even">
@@ -1077,7 +1180,7 @@ tab2 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm ~<span cl
 <td align="center"></td>
 </tr>
 <tr class="even">
-<td><strong>Age in Years</strong></td>
+<td><strong>Age, yrs</strong></td>
 <td align="center"></td>
 <td align="center"></td>
 <td align="center"></td>
@@ -1751,7 +1854,7 @@ RHS</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## The formulize function does the paste and as.formula steps
 tmp &lt;-<span class="st"> </span><span class="kw">formulize</span>(<span class="st">'arm'</span>,myvars[<span class="dv">8</span>:<span class="dv">10</span>])
 tmp</code></pre></div>
-<p>arm ~ ps + hgb + bmi &lt;environment: 0x674d838&gt;</p>
+<p>arm ~ ps + hgb + bmi &lt;environment: 0x8e340f8&gt;</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## More complex formulas could also be written using formulize
 tmp2 &lt;-<span class="st"> </span><span class="kw">formulize</span>(<span class="st">'arm'</span>,<span class="kw">c</span>(<span class="st">'ps'</span>,<span class="st">'hgb^2'</span>,<span class="st">'bmi'</span>))
 
@@ -2047,9 +2150,9 @@ tmp2 &lt;-<span class="st"> </span><span class="kw">formulize</span>(<span class
 <li>The second approach does the same analysis but uses the subset argument within <code>tableby</code> to subset the data.</li>
 </ul>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(<span class="kw">tableby</span>(sex ~<span class="st"> </span>ps +<span class="st"> </span>hgb +<span class="st"> </span>bmi, <span class="dt">subset=</span>age&gt;<span class="dv">50</span> &amp;<span class="st"> </span>arm==<span class="st">&quot;F: FOLFOX&quot;</span>, <span class="dt">data=</span>mockstudy))</code></pre></div>
-<table style="width:100%;">
+<table>
 <colgroup>
-<col width="22%"></col>
+<col width="23%"></col>
 <col width="19%"></col>
 <col width="19%"></col>
 <col width="19%"></col>
@@ -2136,7 +2239,7 @@ tmp2 &lt;-<span class="st"> </span><span class="kw">formulize</span>(<span class
 <td align="center"></td>
 </tr>
 <tr class="odd">
-<td><strong>bmi</strong></td>
+<td><strong>Body Mass Index (kg/m^2)</strong></td>
 <td align="center"></td>
 <td align="center"></td>
 <td align="center"></td>
@@ -2276,7 +2379,7 @@ tmp2 &lt;-<span class="st"> </span><span class="kw">formulize</span>(<span class
 </thead>
 <tbody>
 <tr class="odd">
-<td><strong>Age</strong></td>
+<td><strong>Age, yrs</strong></td>
 <td align="center"></td>
 <td align="center"></td>
 <td align="center"></td>
@@ -2312,7 +2415,7 @@ tmp2 &lt;-<span class="st"> </span><span class="kw">formulize</span>(<span class
 <td align="center"></td>
 </tr>
 <tr class="odd">
-<td><strong>bmi</strong></td>
+<td><strong>Body Mass Index (kg/m^2)</strong></td>
 <td align="center"></td>
 <td align="center"></td>
 <td align="center"></td>
@@ -2787,7 +2890,7 @@ mytab2 &lt;-<span class="st"> </span>mytab[<span class="kw">c</span>(<span class
 </thead>
 <tbody>
 <tr class="odd">
-<td><strong>Age in Years</strong></td>
+<td><strong>Age, yrs</strong></td>
 <td align="center"></td>
 <td align="center"></td>
 <td align="center"></td>
@@ -2906,7 +3009,7 @@ mytab2 &lt;-<span class="st"> </span>mytab[<span class="kw">c</span>(<span class
 </thead>
 <tbody>
 <tr class="odd">
-<td><strong>Age in Years</strong></td>
+<td><strong>Age, yrs</strong></td>
 <td align="center"></td>
 <td align="center"></td>
 <td align="center"></td>
@@ -2985,7 +3088,7 @@ mytab2 &lt;-<span class="st"> </span>mytab[<span class="kw">c</span>(<span class
 </thead>
 <tbody>
 <tr class="odd">
-<td><strong>Age in Years</strong></td>
+<td><strong>Age, yrs</strong></td>
 <td align="center"></td>
 <td align="center"></td>
 <td align="center"></td>
@@ -3103,7 +3206,7 @@ tab2 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm ~<span cl
 <td align="center"></td>
 </tr>
 <tr class="even">
-<td><strong>Age in Years</strong></td>
+<td><strong>Age, yrs</strong></td>
 <td align="center"></td>
 <td align="center"></td>
 <td align="center"></td>
@@ -3226,7 +3329,7 @@ tab2 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm ~<span cl
 <td align="center"></td>
 </tr>
 <tr class="even">
-<td><strong>Age in Years</strong></td>
+<td><strong>Age, yrs</strong></td>
 <td align="center"></td>
 <td align="center"></td>
 <td align="center"></td>
@@ -3313,7 +3416,7 @@ tab2 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm ~<span cl
 <td align="center"></td>
 </tr>
 <tr class="even">
-<td><strong>Age in Years</strong></td>
+<td><strong>Age, yrs</strong></td>
 <td align="center"></td>
 <td align="center"></td>
 <td align="center">0.048</td>
@@ -3370,7 +3473,7 @@ tab2 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm ~<span cl
 <td align="center"></td>
 </tr>
 <tr class="even">
-<td><strong>Age in Years</strong></td>
+<td><strong>Age, yrs</strong></td>
 <td align="center"></td>
 <td align="center"></td>
 <td align="center">0.048</td>
@@ -3427,7 +3530,7 @@ tab2 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm ~<span cl
 <td align="center"></td>
 </tr>
 <tr class="even">
-<td><strong>Age in Years</strong></td>
+<td><strong>Age, yrs</strong></td>
 <td align="center"></td>
 <td align="center"></td>
 <td align="center">0.048</td>
@@ -3472,7 +3575,7 @@ tab2 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm ~<span cl
 <td align="center"></td>
 </tr>
 <tr class="odd">
-<td><strong>Age in Years</strong></td>
+<td><strong>Age, yrs</strong></td>
 <td align="center"></td>
 <td align="center"></td>
 <td align="center">0.048</td>
@@ -3541,7 +3644,7 @@ tab2 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm ~<span cl
 <td align="center"></td>
 </tr>
 <tr class="even">
-<td><strong>Age in Years</strong></td>
+<td><strong>Age, yrs</strong></td>
 <td align="center"></td>
 <td align="center"></td>
 <td align="center"></td>
@@ -3716,7 +3819,7 @@ mockstudy$wts &lt;-<span class="st"> </span>gpwts[index]
 <span class="kw">tapply</span>(mockstudy$wts,mockstudy$fake_arm, summary)</code></pre></div>
 <pre><code>## $A
 ##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-##   1.774   1.894   2.069   2.276   2.082  24.710 
+##   1.774   1.894   2.069   2.276   2.082  24.714 
 ## 
 ## $B
 ##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
@@ -3741,7 +3844,7 @@ mockstudy$wts &lt;-<span class="st"> </span>gpwts[index]
 </thead>
 <tbody>
 <tr class="odd">
-<td><strong>Age in Years</strong></td>
+<td><strong>Age, yrs</strong></td>
 <td align="center"></td>
 <td align="center"></td>
 <td align="center"></td>
@@ -3822,7 +3925,7 @@ mockstudy$wts &lt;-<span class="st"> </span>gpwts[index]
 </thead>
 <tbody>
 <tr class="odd">
-<td><strong>Age in Years</strong></td>
+<td><strong>Age, yrs</strong></td>
 <td align="center"></td>
 <td align="center"></td>
 <td align="center"></td>
@@ -3913,7 +4016,7 @@ tab2 &lt;-<span class="st"> </span><span class="kw">modpval.tableby</span>(tab1,
 </thead>
 <tbody>
 <tr class="odd">
-<td><strong>Age in Years</strong></td>
+<td><strong>Age, yrs</strong></td>
 <td align="center"></td>
 <td align="center"></td>
 <td align="center"></td>
@@ -4091,21 +4194,21 @@ render(&quot;Test.md&quot;, pdf_document(keep_tex=TRUE))
 ## Gender                                                                                                                0.190
 ##    Male                 277 (64.7%)         411 (59.5%)         228 (60%)           916 (61.1%)        
 ##    Female               151 (35.3%)         280 (40.5%)         152 (40%)           583 (38.9%)        
-## Age in Years                                                                                                          0.614
+## Age, yrs                                                                                                              0.614
 ##    Mean (SD)            59.7 (11.4)         60.3 (11.6)         59.8 (11.5)         60 (11.5)          
 ##    Q1, Q3               53, 68              52, 69              52, 68              52, 68             
 ##    Range                27 - 88             19 - 88             26 - 85             19 - 88            
 ## ---------------------------------------------------------------------------------------------------------------------------</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tmp &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(tab1)
 tmp</code></pre></div>
-<pre><code>##           term variable A: IFL (N=428) F: FOLFOX (N=691) G: IROX (N=380) Total (N=1499) p value
-## 1       Gender      sex                                                                   0.190
-## 2         Male      sex    277 (64.7%)       411 (59.5%)       228 (60%)    916 (61.1%)        
-## 3       Female      sex    151 (35.3%)       280 (40.5%)       152 (40%)    583 (38.9%)        
-## 4 Age in Years      age                                                                   0.614
-## 5    Mean (SD)      age    59.7 (11.4)       60.3 (11.6)     59.8 (11.5)      60 (11.5)        
-## 6       Q1, Q3      age         53, 68            52, 69          52, 68         52, 68        
-## 7        Range      age        27 - 88           19 - 88         26 - 85        19 - 88</code></pre>
+<pre><code>##        term variable A: IFL (N=428) F: FOLFOX (N=691) G: IROX (N=380) Total (N=1499) p value
+## 1    Gender      sex                                                                   0.190
+## 2      Male      sex    277 (64.7%)       411 (59.5%)       228 (60%)    916 (61.1%)        
+## 3    Female      sex    151 (35.3%)       280 (40.5%)       152 (40%)    583 (38.9%)        
+## 4  Age, yrs      age                                                                   0.614
+## 5 Mean (SD)      age    59.7 (11.4)       60.3 (11.6)     59.8 (11.5)      60 (11.5)        
+## 6    Q1, Q3      age         53, 68            52, 69          52, 68         52, 68        
+## 7     Range      age        27 - 88           19 - 88         26 - 85        19 - 88</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># write.csv(tmp, '/my/path/here/mymodel.csv')</span></code></pre></div>
 </div>
 <div id="write-tableby-object-to-a-separate-word-or-html-file" class="section level2">
@@ -4169,10 +4272,11 @@ tab1 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm ~<span cl
 ##     ordered.stats = c(&quot;Nmiss&quot;, &quot;countpct&quot;), surv.stats = c(&quot;Nevents&quot;, 
 ##         &quot;medSurv&quot;), date.stats = c(&quot;Nmiss&quot;, &quot;median&quot;, &quot;range&quot;), 
 ##     stats.labels = list(Nmiss = &quot;N-Miss&quot;, Nmiss2 = &quot;N-Miss&quot;, 
-##         meansd = &quot;Mean (SD)&quot;, q1q3 = &quot;Q1, Q3&quot;, range = &quot;Range&quot;, 
-##         countpct = &quot;Count (Pct)&quot;, Nevents = &quot;Events&quot;, medsurv = &quot;Median Survival&quot;), 
-##     digits = 3, digits.test = NULL, nsmall = NULL, nsmall.pct = NULL, 
-##     ...) 
+##         meansd = &quot;Mean (SD)&quot;, medianq1q3 = &quot;Median (Q1, Q3)&quot;, 
+##         q1q3 = &quot;Q1, Q3&quot;, range = &quot;Range&quot;, countpct = &quot;Count (Pct)&quot;, 
+##         Nevents = &quot;Events&quot;, medsurv = &quot;Median Survival&quot;), digits = 3, 
+##     digits.test = NULL, nsmall = NULL, nsmall.pct = NULL, chisq.correct = TRUE, 
+##     simulate.p.value = FALSE, B = 2000, ...) 
 ## NULL</code></pre>
 <p>Settings:</p>
 <ul>
@@ -4224,7 +4328,7 @@ tab1 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm ~<span cl
   (function () {
     var script = document.createElement("script");
     script.type = "text/javascript";
-    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
     document.getElementsByTagName("head")[0].appendChild(script);
   })();
 </script>

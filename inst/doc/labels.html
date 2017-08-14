@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<meta name="author" content="Ethan Heinzen" />
+
+
+<title>A Few Notes on Labels</title>
+
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+
+
+<link href="data:text/css;charset=utf-8,body%20%7B%0Abackground%2Dcolor%3A%20%23fff%3B%0Amargin%3A%201em%20auto%3B%0Amax%2Dwidth%3A%20700px%3B%0Aoverflow%3A%20visible%3B%0Apadding%2Dleft%3A%202em%3B%0Apadding%2Dright%3A%202em%3B%0Afont%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0Afont%2Dsize%3A%2014px%3B%0Aline%2Dheight%3A%201%2E35%3B%0A%7D%0A%23header%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0A%23TOC%20%7B%0Aclear%3A%20both%3B%0Amargin%3A%200%200%2010px%2010px%3B%0Apadding%3A%204px%3B%0Awidth%3A%20400px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Aborder%2Dradius%3A%205px%3B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Afont%2Dsize%3A%2013px%3B%0Aline%2Dheight%3A%201%2E3%3B%0A%7D%0A%23TOC%20%2Etoctitle%20%7B%0Afont%2Dweight%3A%20bold%3B%0Afont%2Dsize%3A%2015px%3B%0Amargin%2Dleft%3A%205px%3B%0A%7D%0A%23TOC%20ul%20%7B%0Apadding%2Dleft%3A%2040px%3B%0Amargin%2Dleft%3A%20%2D1%2E5em%3B%0Amargin%2Dtop%3A%205px%3B%0Amargin%2Dbottom%3A%205px%3B%0A%7D%0A%23TOC%20ul%20ul%20%7B%0Amargin%2Dleft%3A%20%2D2em%3B%0A%7D%0A%23TOC%20li%20%7B%0Aline%2Dheight%3A%2016px%3B%0A%7D%0Atable%20%7B%0Amargin%3A%201em%20auto%3B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dcolor%3A%20%23DDDDDD%3B%0Aborder%2Dstyle%3A%20outset%3B%0Aborder%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0Aborder%2Dwidth%3A%202px%3B%0Apadding%3A%205px%3B%0Aborder%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dstyle%3A%20inset%3B%0Aline%2Dheight%3A%2018px%3B%0Apadding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0Aborder%2Dleft%2Dstyle%3A%20none%3B%0Aborder%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Ap%20%7B%0Amargin%3A%200%2E5em%200%3B%0A%7D%0Ablockquote%20%7B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Apadding%3A%200%2E25em%200%2E75em%3B%0A%7D%0Ahr%20%7B%0Aborder%2Dstyle%3A%20solid%3B%0Aborder%3A%20none%3B%0Aborder%2Dtop%3A%201px%20solid%20%23777%3B%0Amargin%3A%2028px%200%3B%0A%7D%0Adl%20%7B%0Amargin%2Dleft%3A%200%3B%0A%7D%0Adl%20dd%20%7B%0Amargin%2Dbottom%3A%2013px%3B%0Amargin%2Dleft%3A%2013px%3B%0A%7D%0Adl%20dt%20%7B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Aul%20%7B%0Amargin%2Dtop%3A%200%3B%0A%7D%0Aul%20li%20%7B%0Alist%2Dstyle%3A%20circle%20outside%3B%0A%7D%0Aul%20ul%20%7B%0Amargin%2Dbottom%3A%200%3B%0A%7D%0Apre%2C%20code%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0Aborder%2Dradius%3A%203px%3B%0Acolor%3A%20%23333%3B%0Awhite%2Dspace%3A%20pre%2Dwrap%3B%20%0A%7D%0Apre%20%7B%0Aborder%2Dradius%3A%203px%3B%0Amargin%3A%205px%200px%2010px%200px%3B%0Apadding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Acode%20%7B%0Afont%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0Afont%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0Apadding%3A%202px%200px%3B%0A%7D%0Adiv%2Efigure%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0Abackground%2Dcolor%3A%20%23FFFFFF%3B%0Apadding%3A%202px%3B%0Aborder%3A%201px%20solid%20%23DDDDDD%3B%0Aborder%2Dradius%3A%203px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Amargin%3A%200%205px%3B%0A%7D%0Ah1%20%7B%0Amargin%2Dtop%3A%200%3B%0Afont%2Dsize%3A%2035px%3B%0Aline%2Dheight%3A%2040px%3B%0A%7D%0Ah2%20%7B%0Aborder%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Apadding%2Dbottom%3A%202px%3B%0Afont%2Dsize%3A%20145%25%3B%0A%7D%0Ah3%20%7B%0Aborder%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Afont%2Dsize%3A%20120%25%3B%0A%7D%0Ah4%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0Amargin%2Dleft%3A%208px%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Ah5%2C%20h6%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23ccc%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Aa%20%7B%0Acolor%3A%20%230033dd%3B%0Atext%2Ddecoration%3A%20none%3B%0A%7D%0Aa%3Ahover%20%7B%0Acolor%3A%20%236666ff%3B%20%7D%0Aa%3Avisited%20%7B%0Acolor%3A%20%23800080%3B%20%7D%0Aa%3Avisited%3Ahover%20%7B%0Acolor%3A%20%23BB00BB%3B%20%7D%0Aa%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0Aa%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%20code%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%0A" rel="stylesheet" type="text/css" />
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">A Few Notes on Labels</h1>
+<h4 class="author"><em>Ethan Heinzen</em></h4>
+<h4 class="date"><em>14 August, 2017</em></h4>
+
+
+<div id="TOC">
+<ul>
+<li><a href="#introduction">Introduction</a></li>
+<li><a href="#examples">Examples</a><ul>
+<li><a href="#set-labels-in-the-function-call">Set labels in the function call</a></li>
+<li><a href="#modify-labels-after-the-fact">Modify labels after the fact</a></li>
+<li><a href="#add-labels-to-a-data.frame">Add labels to a <code>data.frame</code></a></li>
+</ul></li>
+</ul>
+</div>
+
+<div id="introduction" class="section level1">
+<h1>Introduction</h1>
+<p>The <code>arsenal</code> package relies somewhat heavily on variable labels to make output more “pretty”. A <code>label</code> here is understood to be a single character string with “pretty” text (i.e., not an “ugly” variable name). Three of the main <code>arsenal</code> function use labels in their <code>summary()</code> output. There are several ways to set these labels.</p>
+<p>We’ll use the <code>mockstudy</code> dataset for all examples here:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(arsenal)
+<span class="kw">data</span>(mockstudy)
+<span class="kw">library</span>(magrittr)
+
+<span class="co"># for 'freqlist' examples</span>
+tab.ex &lt;-<span class="st"> </span><span class="kw">table</span>(mockstudy[, <span class="kw">c</span>(<span class="st">&quot;arm&quot;</span>, <span class="st">&quot;sex&quot;</span>, <span class="st">&quot;mdquality.s&quot;</span>)], <span class="dt">useNA=</span><span class="st">&quot;ifany&quot;</span>)</code></pre></div>
+</div>
+<div id="examples" class="section level1">
+<h1>Examples</h1>
+<div id="set-labels-in-the-function-call" class="section level2">
+<h2>Set labels in the function call</h2>
+<p>The <code>summary()</code> method for <code>tableby()</code>, <code>modelsum()</code>, and <code>freqlist()</code> objects contains a <code>labelTranslations =</code> argument to specify labels in the function call. Note that the <code>freqlist()</code> function matches labels in order, whereas the other two match labels by name. The labels can be input as a list or a character vector.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(<span class="kw">freqlist</span>(tab.ex),
+        <span class="dt">labelTranslations =</span> <span class="kw">c</span>(<span class="st">&quot;Treatment Arm&quot;</span>, <span class="st">&quot;Gender&quot;</span>, <span class="st">&quot;LASA QOL&quot;</span>))</code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Treatment Arm</th>
+<th align="left">Gender</th>
+<th align="left">LASA QOL</th>
+<th align="right">Freq</th>
+<th align="right">cumFreq</th>
+<th align="right">freqPercent</th>
+<th align="right">cumPercent</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">A: IFL</td>
+<td align="left">Male</td>
+<td align="left">0</td>
+<td align="right">29</td>
+<td align="right">29</td>
+<td align="right">1.93</td>
+<td align="right">1.93</td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">1</td>
+<td align="right">214</td>
+<td align="right">243</td>
+<td align="right">14.28</td>
+<td align="right">16.21</td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">NA</td>
+<td align="right">34</td>
+<td align="right">277</td>
+<td align="right">2.27</td>
+<td align="right">18.48</td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left">Female</td>
+<td align="left">0</td>
+<td align="right">12</td>
+<td align="right">289</td>
+<td align="right">0.80</td>
+<td align="right">19.28</td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">1</td>
+<td align="right">118</td>
+<td align="right">407</td>
+<td align="right">7.87</td>
+<td align="right">27.15</td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">NA</td>
+<td align="right">21</td>
+<td align="right">428</td>
+<td align="right">1.40</td>
+<td align="right">28.55</td>
+</tr>
+<tr class="odd">
+<td align="left">F: FOLFOX</td>
+<td align="left">Male</td>
+<td align="left">0</td>
+<td align="right">31</td>
+<td align="right">459</td>
+<td align="right">2.07</td>
+<td align="right">30.62</td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">1</td>
+<td align="right">285</td>
+<td align="right">744</td>
+<td align="right">19.01</td>
+<td align="right">49.63</td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">NA</td>
+<td align="right">95</td>
+<td align="right">839</td>
+<td align="right">6.34</td>
+<td align="right">55.97</td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left">Female</td>
+<td align="left">0</td>
+<td align="right">21</td>
+<td align="right">860</td>
+<td align="right">1.40</td>
+<td align="right">57.37</td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">1</td>
+<td align="right">198</td>
+<td align="right">1058</td>
+<td align="right">13.21</td>
+<td align="right">70.58</td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">NA</td>
+<td align="right">61</td>
+<td align="right">1119</td>
+<td align="right">4.07</td>
+<td align="right">74.65</td>
+</tr>
+<tr class="odd">
+<td align="left">G: IROX</td>
+<td align="left">Male</td>
+<td align="left">0</td>
+<td align="right">17</td>
+<td align="right">1136</td>
+<td align="right">1.13</td>
+<td align="right">75.78</td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">1</td>
+<td align="right">187</td>
+<td align="right">1323</td>
+<td align="right">12.47</td>
+<td align="right">88.26</td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">NA</td>
+<td align="right">24</td>
+<td align="right">1347</td>
+<td align="right">1.60</td>
+<td align="right">89.86</td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left">Female</td>
+<td align="left">0</td>
+<td align="right">14</td>
+<td align="right">1361</td>
+<td align="right">0.93</td>
+<td align="right">90.79</td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">1</td>
+<td align="right">121</td>
+<td align="right">1482</td>
+<td align="right">8.07</td>
+<td align="right">98.87</td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">NA</td>
+<td align="right">17</td>
+<td align="right">1499</td>
+<td align="right">1.13</td>
+<td align="right">100.00</td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(<span class="kw">tableby</span>(arm ~<span class="st"> </span>sex +<span class="st"> </span>age, <span class="dt">data =</span> mockstudy),
+        <span class="dt">labelTranslations =</span> <span class="kw">c</span>(<span class="dt">sex =</span> <span class="st">&quot;SEX&quot;</span>, <span class="dt">age =</span> <span class="st">&quot;Age, yrs&quot;</span>))</code></pre></div>
+<table style="width:100%;">
+<colgroup>
+<col width="19%"></col>
+<col width="16%"></col>
+<col width="16%"></col>
+<col width="16%"></col>
+<col width="16%"></col>
+<col width="16%"></col>
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th align="center">A: IFL (N=428)</th>
+<th align="center">F: FOLFOX (N=691)</th>
+<th align="center">G: IROX (N=380)</th>
+<th align="center">Total (N=1499)</th>
+<th align="center">p value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>SEX</strong></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center">0.190</td>
+</tr>
+<tr class="even">
+<td>    Male</td>
+<td align="center">277 (64.7%)</td>
+<td align="center">411 (59.5%)</td>
+<td align="center">228 (60%)</td>
+<td align="center">916 (61.1%)</td>
+<td align="center"></td>
+</tr>
+<tr class="odd">
+<td>    Female</td>
+<td align="center">151 (35.3%)</td>
+<td align="center">280 (40.5%)</td>
+<td align="center">152 (40%)</td>
+<td align="center">583 (38.9%)</td>
+<td align="center"></td>
+</tr>
+<tr class="even">
+<td><strong>Age, yrs</strong></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center">0.614</td>
+</tr>
+<tr class="odd">
+<td>    Mean (SD)</td>
+<td align="center">59.7 (11.4)</td>
+<td align="center">60.3 (11.6)</td>
+<td align="center">59.8 (11.5)</td>
+<td align="center">60 (11.5)</td>
+<td align="center"></td>
+</tr>
+<tr class="even">
+<td>    Q1, Q3</td>
+<td align="center">53, 68</td>
+<td align="center">52, 69</td>
+<td align="center">52, 68</td>
+<td align="center">52, 68</td>
+<td align="center"></td>
+</tr>
+<tr class="odd">
+<td>    Range</td>
+<td align="center">27 - 88</td>
+<td align="center">19 - 88</td>
+<td align="center">26 - 85</td>
+<td align="center">19 - 88</td>
+<td align="center"></td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(<span class="kw">modelsum</span>(bmi ~<span class="st"> </span>age, <span class="dt">adjust =</span> ~sex, <span class="dt">data =</span> mockstudy),
+        <span class="dt">labelTranslations =</span> <span class="kw">list</span>(<span class="dt">sexFemale =</span> <span class="st">&quot;Female&quot;</span>, <span class="dt">age =</span> <span class="st">&quot;Age, yrs&quot;</span>))</code></pre></div>
+<table>
+<colgroup>
+<col width="22%"></col>
+<col width="19%"></col>
+<col width="19%"></col>
+<col width="19%"></col>
+<col width="19%"></col>
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th align="center">estimate</th>
+<th align="center">std.error</th>
+<th align="center">p.value</th>
+<th align="center">adj.r.squared</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>(Intercept)</td>
+<td align="center">26.8</td>
+<td align="center">0.766</td>
+<td align="center">&lt;0.001</td>
+<td align="center">0.004</td>
+</tr>
+<tr class="even">
+<td><strong>Age, yrs</strong></td>
+<td align="center">0.012</td>
+<td align="center">0.012</td>
+<td align="center">0.348</td>
+<td align="center">.</td>
+</tr>
+<tr class="odd">
+<td><strong>sex Female</strong></td>
+<td align="center">-0.718</td>
+<td align="center">0.291</td>
+<td align="center">0.014</td>
+<td align="center">.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="modify-labels-after-the-fact" class="section level2">
+<h2>Modify labels after the fact</h2>
+<p>Another option is to add labels after you have created the object. To do this, you can use the form <code>labels(x) &lt;- value</code> or use the pipe-able version, <code>set_labels()</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># the non-pipe version; somewhat clunky</span>
+tmp &lt;-<span class="st"> </span><span class="kw">freqlist</span>(tab.ex)
+<span class="kw">labels</span>(tmp) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Treatment Arm&quot;</span>, <span class="st">&quot;Gender&quot;</span>, <span class="st">&quot;LASA QOL&quot;</span>)
+<span class="kw">summary</span>(tmp)</code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Treatment Arm</th>
+<th align="left">Gender</th>
+<th align="left">LASA QOL</th>
+<th align="right">Freq</th>
+<th align="right">cumFreq</th>
+<th align="right">freqPercent</th>
+<th align="right">cumPercent</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">A: IFL</td>
+<td align="left">Male</td>
+<td align="left">0</td>
+<td align="right">29</td>
+<td align="right">29</td>
+<td align="right">1.93</td>
+<td align="right">1.93</td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">1</td>
+<td align="right">214</td>
+<td align="right">243</td>
+<td align="right">14.28</td>
+<td align="right">16.21</td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">NA</td>
+<td align="right">34</td>
+<td align="right">277</td>
+<td align="right">2.27</td>
+<td align="right">18.48</td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left">Female</td>
+<td align="left">0</td>
+<td align="right">12</td>
+<td align="right">289</td>
+<td align="right">0.80</td>
+<td align="right">19.28</td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">1</td>
+<td align="right">118</td>
+<td align="right">407</td>
+<td align="right">7.87</td>
+<td align="right">27.15</td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">NA</td>
+<td align="right">21</td>
+<td align="right">428</td>
+<td align="right">1.40</td>
+<td align="right">28.55</td>
+</tr>
+<tr class="odd">
+<td align="left">F: FOLFOX</td>
+<td align="left">Male</td>
+<td align="left">0</td>
+<td align="right">31</td>
+<td align="right">459</td>
+<td align="right">2.07</td>
+<td align="right">30.62</td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">1</td>
+<td align="right">285</td>
+<td align="right">744</td>
+<td align="right">19.01</td>
+<td align="right">49.63</td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">NA</td>
+<td align="right">95</td>
+<td align="right">839</td>
+<td align="right">6.34</td>
+<td align="right">55.97</td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left">Female</td>
+<td align="left">0</td>
+<td align="right">21</td>
+<td align="right">860</td>
+<td align="right">1.40</td>
+<td align="right">57.37</td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">1</td>
+<td align="right">198</td>
+<td align="right">1058</td>
+<td align="right">13.21</td>
+<td align="right">70.58</td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">NA</td>
+<td align="right">61</td>
+<td align="right">1119</td>
+<td align="right">4.07</td>
+<td align="right">74.65</td>
+</tr>
+<tr class="odd">
+<td align="left">G: IROX</td>
+<td align="left">Male</td>
+<td align="left">0</td>
+<td align="right">17</td>
+<td align="right">1136</td>
+<td align="right">1.13</td>
+<td align="right">75.78</td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">1</td>
+<td align="right">187</td>
+<td align="right">1323</td>
+<td align="right">12.47</td>
+<td align="right">88.26</td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">NA</td>
+<td align="right">24</td>
+<td align="right">1347</td>
+<td align="right">1.60</td>
+<td align="right">89.86</td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left">Female</td>
+<td align="left">0</td>
+<td align="right">14</td>
+<td align="right">1361</td>
+<td align="right">0.93</td>
+<td align="right">90.79</td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">1</td>
+<td align="right">121</td>
+<td align="right">1482</td>
+<td align="right">8.07</td>
+<td align="right">98.87</td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">NA</td>
+<td align="right">17</td>
+<td align="right">1499</td>
+<td align="right">1.13</td>
+<td align="right">100.00</td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># piped--much cleaner</span>
+mockstudy %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">tableby</span>(arm ~<span class="st"> </span>sex +<span class="st"> </span>age, <span class="dt">data =</span> .) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">set_labels</span>(<span class="kw">c</span>(<span class="dt">sex =</span> <span class="st">&quot;SEX&quot;</span>, <span class="dt">age =</span> <span class="st">&quot;Age, yrs&quot;</span>)) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">summary</span>()</code></pre></div>
+<table style="width:100%;">
+<colgroup>
+<col width="19%"></col>
+<col width="16%"></col>
+<col width="16%"></col>
+<col width="16%"></col>
+<col width="16%"></col>
+<col width="16%"></col>
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th align="center">A: IFL (N=428)</th>
+<th align="center">F: FOLFOX (N=691)</th>
+<th align="center">G: IROX (N=380)</th>
+<th align="center">Total (N=1499)</th>
+<th align="center">p value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>SEX</strong></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center">0.190</td>
+</tr>
+<tr class="even">
+<td>    Male</td>
+<td align="center">277 (64.7%)</td>
+<td align="center">411 (59.5%)</td>
+<td align="center">228 (60%)</td>
+<td align="center">916 (61.1%)</td>
+<td align="center"></td>
+</tr>
+<tr class="odd">
+<td>    Female</td>
+<td align="center">151 (35.3%)</td>
+<td align="center">280 (40.5%)</td>
+<td align="center">152 (40%)</td>
+<td align="center">583 (38.9%)</td>
+<td align="center"></td>
+</tr>
+<tr class="even">
+<td><strong>Age, yrs</strong></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center">0.614</td>
+</tr>
+<tr class="odd">
+<td>    Mean (SD)</td>
+<td align="center">59.7 (11.4)</td>
+<td align="center">60.3 (11.6)</td>
+<td align="center">59.8 (11.5)</td>
+<td align="center">60 (11.5)</td>
+<td align="center"></td>
+</tr>
+<tr class="even">
+<td>    Q1, Q3</td>
+<td align="center">53, 68</td>
+<td align="center">52, 69</td>
+<td align="center">52, 68</td>
+<td align="center">52, 68</td>
+<td align="center"></td>
+</tr>
+<tr class="odd">
+<td>    Range</td>
+<td align="center">27 - 88</td>
+<td align="center">19 - 88</td>
+<td align="center">26 - 85</td>
+<td align="center">19 - 88</td>
+<td align="center"></td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mockstudy %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">modelsum</span>(bmi ~<span class="st"> </span>age, <span class="dt">adjust =</span> ~<span class="st"> </span>sex, <span class="dt">data =</span> .) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">set_labels</span>(<span class="kw">list</span>(<span class="dt">sexFemale =</span> <span class="st">&quot;Female&quot;</span>, <span class="dt">age =</span> <span class="st">&quot;Age, yrs&quot;</span>)) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">summary</span>()</code></pre></div>
+<table>
+<colgroup>
+<col width="22%"></col>
+<col width="19%"></col>
+<col width="19%"></col>
+<col width="19%"></col>
+<col width="19%"></col>
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th align="center">estimate</th>
+<th align="center">std.error</th>
+<th align="center">p.value</th>
+<th align="center">adj.r.squared</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>(Intercept)</td>
+<td align="center">26.8</td>
+<td align="center">0.766</td>
+<td align="center">&lt;0.001</td>
+<td align="center">0.004</td>
+</tr>
+<tr class="even">
+<td><strong>Age, yrs</strong></td>
+<td align="center">0.012</td>
+<td align="center">0.012</td>
+<td align="center">0.348</td>
+<td align="center">.</td>
+</tr>
+<tr class="odd">
+<td><strong>Female</strong></td>
+<td align="center">-0.718</td>
+<td align="center">0.291</td>
+<td align="center">0.014</td>
+<td align="center">.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="add-labels-to-a-data.frame" class="section level2">
+<h2>Add labels to a <code>data.frame</code></h2>
+<p><code>tableby()</code> and <code>modelsum()</code> also allow you to have label attributes on the data. Note that by default these attributes get dropped upon subsetting, hence the call to <code>keep.labels()</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mockstudy.lab &lt;-<span class="st"> </span><span class="kw">keep.labels</span>(mockstudy)</code></pre></div>
+<p>You can set attributes one at a time:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">attr</span>(mockstudy.lab$sex, <span class="st">&quot;label&quot;</span>) &lt;-<span class="st"> &quot;Sex&quot;</span>
+<span class="kw">attr</span>(mockstudy.lab$age, <span class="st">&quot;label&quot;</span>) &lt;-<span class="st"> &quot;Age, yrs&quot;</span></code></pre></div>
+<p>…or all at once:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">labels</span>(mockstudy.lab) &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">sex =</span> <span class="st">&quot;Sex&quot;</span>, <span class="dt">age =</span> <span class="st">&quot;Age, yrs&quot;</span>)
+<span class="kw">summary</span>(<span class="kw">tableby</span>(arm ~<span class="st"> </span>sex +<span class="st"> </span>age, <span class="dt">data =</span> mockstudy.lab))</code></pre></div>
+<table style="width:100%;">
+<colgroup>
+<col width="19%"></col>
+<col width="16%"></col>
+<col width="16%"></col>
+<col width="16%"></col>
+<col width="16%"></col>
+<col width="16%"></col>
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th align="center">A: IFL (N=428)</th>
+<th align="center">F: FOLFOX (N=691)</th>
+<th align="center">G: IROX (N=380)</th>
+<th align="center">Total (N=1499)</th>
+<th align="center">p value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Sex</strong></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center">0.190</td>
+</tr>
+<tr class="even">
+<td>    Male</td>
+<td align="center">277 (64.7%)</td>
+<td align="center">411 (59.5%)</td>
+<td align="center">228 (60%)</td>
+<td align="center">916 (61.1%)</td>
+<td align="center"></td>
+</tr>
+<tr class="odd">
+<td>    Female</td>
+<td align="center">151 (35.3%)</td>
+<td align="center">280 (40.5%)</td>
+<td align="center">152 (40%)</td>
+<td align="center">583 (38.9%)</td>
+<td align="center"></td>
+</tr>
+<tr class="even">
+<td><strong>Age, yrs</strong></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center">0.614</td>
+</tr>
+<tr class="odd">
+<td>    Mean (SD)</td>
+<td align="center">59.7 (11.4)</td>
+<td align="center">60.3 (11.6)</td>
+<td align="center">59.8 (11.5)</td>
+<td align="center">60 (11.5)</td>
+<td align="center"></td>
+</tr>
+<tr class="even">
+<td>    Q1, Q3</td>
+<td align="center">53, 68</td>
+<td align="center">52, 69</td>
+<td align="center">52, 68</td>
+<td align="center">52, 68</td>
+<td align="center"></td>
+</tr>
+<tr class="odd">
+<td>    Range</td>
+<td align="center">27 - 88</td>
+<td align="center">19 - 88</td>
+<td align="center">26 - 85</td>
+<td align="center">19 - 88</td>
+<td align="center"></td>
+</tr>
+</tbody>
+</table>
+<p>You can pipe this, too.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mockstudy %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">set_labels</span>(<span class="kw">list</span>(<span class="dt">sex =</span> <span class="st">&quot;SEX&quot;</span>, <span class="dt">age =</span> <span class="st">&quot;Age, yrs&quot;</span>)) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">modelsum</span>(bmi ~<span class="st"> </span>age, <span class="dt">adjust =</span> ~<span class="st"> </span>sex, <span class="dt">data =</span> .) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">summary</span>()</code></pre></div>
+<table>
+<colgroup>
+<col width="22%"></col>
+<col width="19%"></col>
+<col width="19%"></col>
+<col width="19%"></col>
+<col width="19%"></col>
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th align="center">estimate</th>
+<th align="center">std.error</th>
+<th align="center">p.value</th>
+<th align="center">adj.r.squared</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>(Intercept)</td>
+<td align="center">26.8</td>
+<td align="center">0.766</td>
+<td align="center">&lt;0.001</td>
+<td align="center">0.004</td>
+</tr>
+<tr class="even">
+<td><strong>Age, yrs</strong></td>
+<td align="center">0.012</td>
+<td align="center">0.012</td>
+<td align="center">0.348</td>
+<td align="center">.</td>
+</tr>
+<tr class="odd">
+<td><strong>SEX Female</strong></td>
+<td align="center">-0.718</td>
+<td align="center">0.291</td>
+<td align="center">0.014</td>
+<td align="center">.</td>
+</tr>
+</tbody>
+</table>
+<p>To extract labels from a <code>data.frame</code>, simply use the <code>labels()</code> function:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">labels</span>(mockstudy.lab)</code></pre></div>
+<pre><code>## $case
+## NULL
+## 
+## $age
+## [1] &quot;Age, yrs&quot;
+## 
+## $arm
+## [1] &quot;Treatment Arm&quot;
+## 
+## $sex
+## [1] &quot;Sex&quot;
+## 
+## $race
+## [1] &quot;Race&quot;
+## 
+## $fu.time
+## NULL
+## 
+## $fu.stat
+## NULL
+## 
+## $ps
+## NULL
+## 
+## $hgb
+## NULL
+## 
+## $bmi
+## [1] &quot;Body Mass Index (kg/m^2)&quot;
+## 
+## $alk.phos
+## NULL
+## 
+## $ast
+## NULL
+## 
+## $mdquality.s
+## NULL
+## 
+## $age.ord
+## NULL</code></pre>
+</div>
+</div>
+
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

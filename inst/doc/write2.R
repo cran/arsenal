@@ -2,8 +2,8 @@
 knitr::opts_chunk$set(eval = FALSE, message = FALSE)
 
 ## ------------------------------------------------------------------------
-#  # library(arsenal)
-#  devtools::load_all()
+#  library(arsenal)
+#  library(magrittr)
 #  data(mockstudy)
 #  tmpdir <- tempdir()
 
@@ -27,29 +27,49 @@ knitr::opts_chunk$set(eval = FALSE, message = FALSE)
 #            )
 
 ## ------------------------------------------------------------------------
-#  tab3 <- freqlist(table(mockstudy[, c("arm", "sex", "mdquality.s")], useNA = "ifany"), groupBy = c("arm", "sex"))
-#  
-#  write2word(tab3, paste0(tmpdir, "/test.freqlist.doc"), quiet = TRUE,
-#             single = FALSE # passed to summary.freqlist
-#             )
+#  mockstudy[, c("arm", "sex", "mdquality.s")] %>%
+#    table(useNA = "ifany") %>%
+#    freqlist(groupBy = c("arm", "sex")) %>%
+#    write2word(paste0(tmpdir, "/test.freqlist.doc"), quiet = TRUE,
+#               single = FALSE # passed to summary.freqlist
+#               )
 
 ## ------------------------------------------------------------------------
-#  write2html(knitr::kable(head(mockstudy)), paste0(tmpdir, "/test.kable.html"), quiet = TRUE)
+#  mockstudy[, c("arm", "sex", "mdquality.s")] %>%
+#    table(useNA = "ifany") %>%
+#    freqlist(groupBy = c("arm", "sex")) %>%
+#    write2word(paste0(tmpdir, "/test.freqlist.doc"), quiet = TRUE,
+#               single = FALSE,              # passed to summary.freqlist
+#               caption = "My cool caption", # passed to knitr::kable
+#               format = "pandoc"            # or any other format, passed to knitr::kable
+#               )
 
 ## ------------------------------------------------------------------------
-#  write2pdf(xtable::xtable(head(mockstudy), caption = "My xtable"), paste0(tmpdir, "/test.xtable.pdf"), quiet = TRUE,
-#            comment = FALSE, # passed to print.xtable to turn off the default message about xtable version
-#            include.rownames = FALSE, # passed to print.xtable
-#            caption.placement = "top" # passed to print.xtable
-#            )
+#  mockstudy %>%
+#    head() %>%
+#    knitr::kable() %>%
+#    write2html(paste0(tmpdir, "/test.kable.html"), quiet = TRUE)
 
 ## ------------------------------------------------------------------------
-#  write2html(xtable::xtable(head(mockstudy), caption = "My xtable"), paste0(tmpdir, "/test.xtable.html"), quiet = TRUE,
-#             type = "html",            # passed to print.xtable
-#             comment = FALSE, # passed to print.xtable to turn off the default message about xtable version
-#             include.rownames = FALSE, # passed to print.xtable
-#             caption.placement = "top" # passed to print.xtable
-#             )
+#  mockstudy %>%
+#    head() %>%
+#    xtable::xtable(caption = "My xtable") %>%
+#    write2pdf(paste0(tmpdir, "/test.xtable.pdf"), quiet = TRUE,
+#              comment = FALSE, # passed to print.xtable to turn off the default message about xtable version
+#              include.rownames = FALSE, # passed to print.xtable
+#              caption.placement = "top" # passed to print.xtable
+#              )
+
+## ------------------------------------------------------------------------
+#  mockstudy %>%
+#    head() %>%
+#    xtable::xtable(caption = "My xtable") %>%
+#    write2html(paste0(tmpdir, "/test.xtable.html"), quiet = TRUE,
+#               type = "html",            # passed to print.xtable
+#               comment = FALSE, # passed to print.xtable to turn off the default message about xtable version
+#               include.rownames = FALSE, # passed to print.xtable
+#               caption.placement = "top" # passed to print.xtable
+#               )
 
 ## ------------------------------------------------------------------------
 #  write2word(pander::pander_return(head(mockstudy)), file = paste0(tmpdir, "/test.pander.doc"), quiet = TRUE)
@@ -75,8 +95,9 @@ knitr::opts_chunk$set(eval = FALSE, message = FALSE)
 #  write2pdf(list(mylist2, mylist), paste0(tmpdir, "/test.mylists.pdf"), quiet = TRUE)
 
 ## ------------------------------------------------------------------------
-#  age.lm <- summary(lm(age ~ sex, data = mockstudy))
-#  write2pdf(age.lm, paste0(tmpdir, "/test.lm.pdf"), quiet = TRUE)
+#  lm(age ~ sex, data = mockstudy) %>%
+#    summary() %>%
+#    write2pdf(paste0(tmpdir, "/test.lm.pdf"), quiet = TRUE)
 
 ## ------------------------------------------------------------------------
 #  tab4 <- tableby(arm ~ sex + age, data=mockstudy)

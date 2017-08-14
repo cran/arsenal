@@ -4,7 +4,7 @@
 
 <head>
 
-<meta charset="utf-8">
+<meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 
@@ -69,12 +69,13 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">The write2 function</h1>
 <h4 class="author"><em>Ethan Heinzen</em></h4>
-<h4 class="date"><em>09 March, 2017</em></h4>
+<h4 class="date"><em>14 August, 2017</em></h4>
 
 
 <div id="TOC">
 <ul>
 <li><a href="#introduction">Introduction</a></li>
+<li><a href="#a-note-on-piping">A note on piping</a></li>
 <li><a href="#examples-using-arsenal-objects">Examples Using <code>arsenal</code> Objects</a><ul>
 <li><a href="#tableby"><code>tableby</code></a></li>
 <li><a href="#modelsum"><code>modelsum</code></a></li>
@@ -108,10 +109,16 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><p>How the <code>...</code> arguments are passed. To change the options for the summary-like or print-like function, you can pass named arguments which will in turn get passed to the appropriate function. Details for each object specifically are described below.</p></li>
 </ol>
 </div>
+<div id="a-note-on-piping" class="section level1">
+<h1>A note on piping</h1>
+<p><code>arsenal</code> is piping-compatible!</p>
+<p>The <code>write2*()</code> functions are probably the most useful place to take advantage of the <code>magrittr</code> package’s piping framework, since commands are often nested several functions deep in the context of <code>write2*()</code>. Piping also allows the <code>arsenal</code> package to become a part of more standard analysis pipelines; instead of needing to write separate R Markdown programs, intermediate analysis tables and output can be easily incorporated into piped statements.</p>
+<p>This vignette will sprinkle the foward pipe (<code>%&gt;%</code>) throughout as a hint at the power and flexibility of <code>arsenal</code> and piping.</p>
+</div>
 <div id="examples-using-arsenal-objects" class="section level1">
 <h1>Examples Using <code>arsenal</code> Objects</h1>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># library(arsenal)</span>
-devtools::<span class="kw">load_all</span>()
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(arsenal)
+<span class="kw">library</span>(magrittr)
 <span class="kw">data</span>(mockstudy)
 tmpdir &lt;-<span class="st"> </span><span class="kw">tempdir</span>()</code></pre></div>
 <div id="tableby" class="section level2">
@@ -140,11 +147,21 @@ tab1 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm ~<span cl
 <div id="freqlist" class="section level2">
 <h2><code>freqlist</code></h2>
 <p>For <code>freqlist</code> objects, the output function in <code>write2()</code> is <code>summary()</code>. For available arguments, see the help pages for <code>summary.freqlist()</code>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tab3 &lt;-<span class="st"> </span><span class="kw">freqlist</span>(<span class="kw">table</span>(mockstudy[, <span class="kw">c</span>(<span class="st">&quot;arm&quot;</span>, <span class="st">&quot;sex&quot;</span>, <span class="st">&quot;mdquality.s&quot;</span>)], <span class="dt">useNA =</span> <span class="st">&quot;ifany&quot;</span>), <span class="dt">groupBy =</span> <span class="kw">c</span>(<span class="st">&quot;arm&quot;</span>, <span class="st">&quot;sex&quot;</span>))
-
-<span class="kw">write2word</span>(tab3, <span class="kw">paste0</span>(tmpdir, <span class="st">&quot;/test.freqlist.doc&quot;</span>), <span class="dt">quiet =</span> <span class="ot">TRUE</span>,
-           <span class="dt">single =</span> <span class="ot">FALSE</span> <span class="co"># passed to summary.freqlist</span>
-           )</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mockstudy[, <span class="kw">c</span>(<span class="st">&quot;arm&quot;</span>, <span class="st">&quot;sex&quot;</span>, <span class="st">&quot;mdquality.s&quot;</span>)] %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">table</span>(<span class="dt">useNA =</span> <span class="st">&quot;ifany&quot;</span>) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">freqlist</span>(<span class="dt">groupBy =</span> <span class="kw">c</span>(<span class="st">&quot;arm&quot;</span>, <span class="st">&quot;sex&quot;</span>)) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">write2word</span>(<span class="kw">paste0</span>(tmpdir, <span class="st">&quot;/test.freqlist.doc&quot;</span>), <span class="dt">quiet =</span> <span class="ot">TRUE</span>,
+             <span class="dt">single =</span> <span class="ot">FALSE</span> <span class="co"># passed to summary.freqlist</span>
+             )</code></pre></div>
+<p>To specify a caption unfortunately requires two parameter specifications:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mockstudy[, <span class="kw">c</span>(<span class="st">&quot;arm&quot;</span>, <span class="st">&quot;sex&quot;</span>, <span class="st">&quot;mdquality.s&quot;</span>)] %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">table</span>(<span class="dt">useNA =</span> <span class="st">&quot;ifany&quot;</span>) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">freqlist</span>(<span class="dt">groupBy =</span> <span class="kw">c</span>(<span class="st">&quot;arm&quot;</span>, <span class="st">&quot;sex&quot;</span>)) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">write2word</span>(<span class="kw">paste0</span>(tmpdir, <span class="st">&quot;/test.freqlist.doc&quot;</span>), <span class="dt">quiet =</span> <span class="ot">TRUE</span>,
+             <span class="dt">single =</span> <span class="ot">FALSE</span>,              <span class="co"># passed to summary.freqlist</span>
+             <span class="dt">caption =</span> <span class="st">&quot;My cool caption&quot;</span>, <span class="co"># passed to knitr::kable</span>
+             <span class="dt">format =</span> <span class="st">&quot;pandoc&quot;</span>            <span class="co"># or any other format, passed to knitr::kable</span>
+             )</code></pre></div>
 </div>
 </div>
 <div id="examples-using-other-objects" class="section level1">
@@ -152,23 +169,32 @@ tab1 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm ~<span cl
 <div id="knitrkable" class="section level2">
 <h2><code>knitr::kable()</code></h2>
 <p>For objects resulting from a call to <code>kable()</code>, the output function in <code>write2()</code> is <code>print()</code>. There aren’t any arguments to the <code>print.knitr_kable()</code> function.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">write2html</span>(knitr::<span class="kw">kable</span>(<span class="kw">head</span>(mockstudy)), <span class="kw">paste0</span>(tmpdir, <span class="st">&quot;/test.kable.html&quot;</span>), <span class="dt">quiet =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mockstudy %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">head</span>() %&gt;%<span class="st"> </span>
+<span class="st">  </span>knitr::<span class="kw">kable</span>() %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">write2html</span>(<span class="kw">paste0</span>(tmpdir, <span class="st">&quot;/test.kable.html&quot;</span>), <span class="dt">quiet =</span> <span class="ot">TRUE</span>)</code></pre></div>
 </div>
 <div id="xtablextable" class="section level2">
 <h2><code>xtable::xtable()</code></h2>
 <p>For <code>xtable</code> objects, the output function in <code>write2()</code> is <code>print()</code>. For available arguments, see the help pages for <code>print.xtable()</code>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">write2pdf</span>(xtable::<span class="kw">xtable</span>(<span class="kw">head</span>(mockstudy), <span class="dt">caption =</span> <span class="st">&quot;My xtable&quot;</span>), <span class="kw">paste0</span>(tmpdir, <span class="st">&quot;/test.xtable.pdf&quot;</span>), <span class="dt">quiet =</span> <span class="ot">TRUE</span>,
-          <span class="dt">comment =</span> <span class="ot">FALSE</span>, <span class="co"># passed to print.xtable to turn off the default message about xtable version</span>
-          <span class="dt">include.rownames =</span> <span class="ot">FALSE</span>, <span class="co"># passed to print.xtable</span>
-          <span class="dt">caption.placement =</span> <span class="st">&quot;top&quot;</span> <span class="co"># passed to print.xtable</span>
-          )</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mockstudy %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">head</span>() %&gt;%<span class="st"> </span>
+<span class="st">  </span>xtable::<span class="kw">xtable</span>(<span class="dt">caption =</span> <span class="st">&quot;My xtable&quot;</span>) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">write2pdf</span>(<span class="kw">paste0</span>(tmpdir, <span class="st">&quot;/test.xtable.pdf&quot;</span>), <span class="dt">quiet =</span> <span class="ot">TRUE</span>,
+            <span class="dt">comment =</span> <span class="ot">FALSE</span>, <span class="co"># passed to print.xtable to turn off the default message about xtable version</span>
+            <span class="dt">include.rownames =</span> <span class="ot">FALSE</span>, <span class="co"># passed to print.xtable</span>
+            <span class="dt">caption.placement =</span> <span class="st">&quot;top&quot;</span> <span class="co"># passed to print.xtable</span>
+            )</code></pre></div>
 <p>To make an HTML document, use the <code>print.xtable()</code> option <code>type = &quot;html&quot;</code>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">write2html</span>(xtable::<span class="kw">xtable</span>(<span class="kw">head</span>(mockstudy), <span class="dt">caption =</span> <span class="st">&quot;My xtable&quot;</span>), <span class="kw">paste0</span>(tmpdir, <span class="st">&quot;/test.xtable.html&quot;</span>), <span class="dt">quiet =</span> <span class="ot">TRUE</span>,
-           <span class="dt">type =</span> <span class="st">&quot;html&quot;</span>,            <span class="co"># passed to print.xtable</span>
-           <span class="dt">comment =</span> <span class="ot">FALSE</span>, <span class="co"># passed to print.xtable to turn off the default message about xtable version</span>
-           <span class="dt">include.rownames =</span> <span class="ot">FALSE</span>, <span class="co"># passed to print.xtable</span>
-           <span class="dt">caption.placement =</span> <span class="st">&quot;top&quot;</span> <span class="co"># passed to print.xtable</span>
-           )</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mockstudy %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">head</span>() %&gt;%<span class="st"> </span>
+<span class="st">  </span>xtable::<span class="kw">xtable</span>(<span class="dt">caption =</span> <span class="st">&quot;My xtable&quot;</span>) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">write2html</span>(<span class="kw">paste0</span>(tmpdir, <span class="st">&quot;/test.xtable.html&quot;</span>), <span class="dt">quiet =</span> <span class="ot">TRUE</span>,
+             <span class="dt">type =</span> <span class="st">&quot;html&quot;</span>,            <span class="co"># passed to print.xtable</span>
+             <span class="dt">comment =</span> <span class="ot">FALSE</span>, <span class="co"># passed to print.xtable to turn off the default message about xtable version</span>
+             <span class="dt">include.rownames =</span> <span class="ot">FALSE</span>, <span class="co"># passed to print.xtable</span>
+             <span class="dt">caption.placement =</span> <span class="st">&quot;top&quot;</span> <span class="co"># passed to print.xtable</span>
+             )</code></pre></div>
 <p>User beware! <code>xtable()</code> is not compatible with <code>write2word()</code>.</p>
 </div>
 <div id="panderpander_return" class="section level2">
@@ -199,8 +225,9 @@ tab1 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm ~<span cl
 <div id="output-other-objects-monospaced-as-if-in-a-terminal" class="section level1">
 <h1>Output Other Objects Monospaced (as if in a terminal)</h1>
 <p>It may be useful at times to write output that would normally be copied from the terminal. The default method for <code>write2()</code> does this automatically. To output the results of <code>summary.lm()</code>, for example:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">age.lm &lt;-<span class="st"> </span><span class="kw">summary</span>(<span class="kw">lm</span>(age ~<span class="st"> </span>sex, <span class="dt">data =</span> mockstudy))
-<span class="kw">write2pdf</span>(age.lm, <span class="kw">paste0</span>(tmpdir, <span class="st">&quot;/test.lm.pdf&quot;</span>), <span class="dt">quiet =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">lm</span>(age ~<span class="st"> </span>sex, <span class="dt">data =</span> mockstudy) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">summary</span>() %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">write2pdf</span>(<span class="kw">paste0</span>(tmpdir, <span class="st">&quot;/test.lm.pdf&quot;</span>), <span class="dt">quiet =</span> <span class="ot">TRUE</span>)</code></pre></div>
 <p>The <code>verbatim()</code> function is another option to explicitly alert <code>write2()</code> to do this. This becomes particularly helpful to overrule existing S3 methods.</p>
 <p>For example, suppose you wanted to just print a tableby object (as if it were to print in the terminal):</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tab4 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm ~<span class="st"> </span>sex +<span class="st"> </span>age, <span class="dt">data=</span>mockstudy)
@@ -270,7 +297,7 @@ tab1 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm ~<span cl
   (function () {
     var script = document.createElement("script");
     script.type = "text/javascript";
-    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
     document.getElementsByTagName("head")[0].appendChild(script);
   })();
 </script>

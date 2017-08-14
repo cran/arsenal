@@ -11,9 +11,11 @@ tableby.control(test = TRUE, total = TRUE, test.pname = NULL,
   cat.stats = c("Nmiss", "countpct"), ordered.stats = c("Nmiss",
   "countpct"), surv.stats = c("Nevents", "medSurv"), date.stats = c("Nmiss",
   "median", "range"), stats.labels = list(Nmiss = "N-Miss", Nmiss2 = "N-Miss",
-  meansd = "Mean (SD)", q1q3 = "Q1, Q3", range = "Range", countpct =
-  "Count (Pct)", Nevents = "Events", medsurv = "Median Survival"), digits = 3,
-  digits.test = NULL, nsmall = NULL, nsmall.pct = NULL, ...)
+  meansd = "Mean (SD)", medianq1q3 = "Median (Q1, Q3)", q1q3 = "Q1, Q3", range =
+  "Range", countpct = "Count (Pct)", Nevents = "Events", medsurv =
+  "Median Survival"), digits = 3, digits.test = NULL, nsmall = NULL,
+  nsmall.pct = NULL, chisq.correct = TRUE, simulate.p.value = FALSE,
+  B = 2000, ...)
 }
 \arguments{
 \item{test}{logical, telling \code{tableby} whether to perform tests of x variables across levels of the group variable.}
@@ -65,6 +67,12 @@ e.g., list(countpct="Count(Pct)").}
 
 \item{nsmall.pct}{digits to print after decimal point for percentages}
 
+\item{chisq.correct}{logical, correction factor for chisq.test}
+
+\item{simulate.p.value}{logical, simulate p-value for categorical tests (fe and chisq)}
+
+\item{B}{number of simulations to perform for simulation-based p-value}
+
 \item{...}{additional arguments to be passed to internal \code{tableby} functions and kept for summary method options, such as digits.}
 }
 \value{
@@ -84,7 +92,7 @@ mdat <- data.frame(Response=c(0,0,0,0,0,1,1,1,1,1),
                    Sex=sample(c("Male", "Female"), 10,replace=TRUE),
                    Age=round(rnorm(10,mean=40, sd=5)),
                    HtIn=round(rnorm(10,mean=65,sd=5)))
-                   
+
 ## allow default summaries in RHS variables, and pass control args to
 ## main function, to be picked up with ... when calling tableby.control
 outResp <- tableby(Response ~ Sex + Age + HtIn, data=mdat, total=FALSE, test=TRUE)
@@ -94,10 +102,9 @@ outCtl <- tableby(Response ~ Sex + Age + HtIn, data=mdat,
 summary(outResp, text=TRUE)
 summary(outCtl, text=TRUE)
 }
-\author{
-Jason Sinnwell, Beth Atkinson, Terry Therneau, adapted from SAS Macros written by Paul Novotny and Ryan Lennon
-}
 \seealso{
 \code{\link[stats]{anova}}, \code{\link[stats]{chisq.test}}, \code{\link{tableby}}, \code{\link{summary.tableby}}
 }
-
+\author{
+Jason Sinnwell, Beth Atkinson, Terry Therneau, adapted from SAS Macros written by Paul Novotny and Ryan Lennon
+}

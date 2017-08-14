@@ -9,7 +9,8 @@
 An Arsenal of 'R' functions for large-scale statistical summaries,
   which are streamlined to work within the latest reporting tools in 'R' and 'RStudio' and
   which use formulas and versatile summary statistics for summary tables and models.
-  
+}
+\details{
 The package download, NEWS, and README are available on CRAN: \url{https://cran.r-project.org/package=arsenal}
 }
 \section{Functions}{
@@ -24,15 +25,24 @@ Below are listed some of the most widely used functions available in \code{arsen
 \code{\link{freqlist}}: Approximate the output from SAS's \code{PROC FREQ} procedure when using
  the \code{/list} option of the \code{TABLE} statement.
 
+\code{\link{compare.data.frame}}: Compare two data.frames and report any differences between them,
+ much like SAS's \code{PROC COMPARE} procedure.
+
 \code{\link{write2word}}, \code{\link{write2html}}, \code{\link{write2pdf}}: Functions to output
   tables to a single Word, HTML, or PDF document.
 
 \code{\link{write2}}: Functions to output tables to a single document.
   (Also the S3 backbone behind the \code{write2*} functions.)
 
+\code{\link{keep.labels}}: Keep the \code{'label'} attribute on an R object when subsetting.
+
 \code{\link{formulize}}: A shortcut to generate one-, two-, or many-sided formulas.
 
 \code{\link{mdy.Date}} and \code{\link{Date.mdy}}: Convert numeric dates for month, day, and year to Date object, and vice versa.
+
+\code{\link{is.Date}}: Test if an object is a date.
+
+\code{\link{\%nin\%}}: Test for "not in".
 }
 
 \section{Data}{
@@ -40,8 +50,8 @@ Below are listed some of the most widely used functions available in \code{arsen
 
 \code{\link{mockstudy}}: Mock study data for examples.
 }
+
 \examples{
 library(arsenal)
 
 }
-

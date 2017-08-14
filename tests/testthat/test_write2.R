@@ -8,11 +8,11 @@ data(mockstudy)
 expect_write2_worked <- function(FUN, object, reference, ...)
 {
   FUN <- match.fun(FUN)
-  filename <- tempfile(fileext = ".html")
+  filename <- tempfile()
   on.exit(expect_true(file.remove(paste0(filename, ".md"))))
   if(!file.exists(reference)) skip("Couldn't find the reference file.")
   if(!file.create(paste0(filename, ".md"))) skip("Couldn't create the temporary file.")
-  if(!grepl("/data5/bsi/adhoc/s200555.R-infrastructure/devel/eph/arsenal-eph-git/", getwd(), fixed = TRUE)) skip("These tests only run in Ethan's space.")
+  if(!grepl("rpkg-arsenal/", getwd(), fixed = TRUE)) skip("These tests only run in Ethan's space.")
   FUN(object, file = filename, ..., render. = FALSE, keep.md = TRUE, append. = FALSE)
   generated <- readLines(paste0(filename, ".md"))
   expect_output_file(cat(generated, sep = "\n"), reference)
@@ -36,6 +36,11 @@ test_that("write2.modelsum -> HTML", {
 test_that("write2.freqlist -> HTML", {
   expect_write2_worked(write2html, freqlist(table(mockstudy[, c("arm", "sex", "mdquality.s")], useNA = "ifany"), groupBy = c("arm", "sex")),
                        reference = "write2.freqlist.html.md", single = TRUE)
+})
+
+test_that("write2.freqlist -> doc", {
+  expect_write2_worked(write2word, freqlist(table(mockstudy[, c("arm", "sex", "mdquality.s")], useNA = "ifany"), groupBy = c("arm", "sex")),
+                       reference = "write2.freqlist.doc.md", single = TRUE, caption = "My cool caption", format = "pandoc")
 })
 
 ###########################################################################################################
@@ -110,35 +115,38 @@ test_that("write2.verbatim -> html", {
 ###########################################################################################################
 #### Code used to generate the files
 ###########################################################################################################
-# 
-#  write2html(tableby(arm ~ sex + age, data=mockstudy), "/data5/bsi/adhoc/s200555.R-infrastructure/devel/eph/arsenal-eph/tests/testthat/write2.tableby.html",
+#
+#  write2html(tableby(arm ~ sex + age, data=mockstudy), "tests/testthat/write2.tableby.html",
 #             title = "My test table", labelTranslations = list(sex = "SEX", age ="Age, yrs"), total = FALSE, render. = FALSE)
-# 
+#
 #  write2html(modelsum(alk.phos ~ arm + ps + hgb, adjust= ~ age + sex, family = "gaussian", data = mockstudy),
-#             "/data5/bsi/adhoc/s200555.R-infrastructure/devel/eph/arsenal-eph/tests/testthat/write2.modelsum.html",
+#             "tests/testthat/write2.modelsum.html",
 #             title = "My test table", show.intercept = FALSE, digits = 5, render. = FALSE)
-# 
+#
 #  write2html(freqlist(table(mockstudy[, c("arm", "sex", "mdquality.s")], useNA = "ifany"), groupBy = c("arm", "sex")),
-#             "/data5/bsi/adhoc/s200555.R-infrastructure/devel/eph/arsenal-eph/tests/testthat/write2.freqlist.html", single = TRUE, render. = FALSE)
-# 
+#             "tests/testthat/write2.freqlist.html", single = TRUE, render. = FALSE)
+#
+# write2word(freqlist(table(mockstudy[, c("arm", "sex", "mdquality.s")], useNA = "ifany"), groupBy = c("arm", "sex")),
+#            "tests/testthat/write2.freqlist.doc", single = TRUE, caption = "My cool caption", format = "pandoc", render. = FALSE)
+#
 #  write2html(knitr::kable(head(mockstudy)),
-#             "/data5/bsi/adhoc/s200555.R-infrastructure/devel/eph/arsenal-eph/tests/testthat/write2.kable.html", render. = FALSE)
-# 
+#             "tests/testthat/write2.kable.html", render. = FALSE)
+#
 #  write2html(xtable::xtable(head(mockstudy), caption = "My xtable"),
-#             "/data5/bsi/adhoc/s200555.R-infrastructure/devel/eph/arsenal-eph/tests/testthat/write2.xtable.html",
+#             "tests/testthat/write2.xtable.html",
 #             type = "html", comment = FALSE, include.rownames = FALSE, caption.placement = "top", render. = FALSE)
-# 
+#
 #  write2html(pander::pander_return(head(mockstudy)),
-#             "/data5/bsi/adhoc/s200555.R-infrastructure/devel/eph/arsenal-eph/tests/testthat/write2.pander.html", render. = FALSE)
-# 
-# 
-# write2pdf(mylist, "/data5/bsi/adhoc/s200555.R-infrastructure/devel/eph/arsenal-eph/tests/testthat/write2.mylist.pdf", render. = FALSE)
-# write2word(mylist2, "/data5/bsi/adhoc/s200555.R-infrastructure/devel/eph/arsenal-eph/tests/testthat/write2.mylist2.doc", render. = FALSE)
-# write2pdf(list(mylist2, mylist), "/data5/bsi/adhoc/s200555.R-infrastructure/devel/eph/arsenal-eph/tests/testthat/write2.mylists.pdf", render. = FALSE)
-# 
-# write2pdf(verbatim(my.lm), "/data5/bsi/adhoc/s200555.R-infrastructure/devel/eph/arsenal-eph/tests/testthat/write2.lm.pdf", render. = FALSE)
+#             "tests/testthat/write2.pander.html", render. = FALSE)
+#
+#
+# write2pdf(mylist, "tests/testthat/write2.mylist.pdf", render. = FALSE)
+# write2word(mylist2, "tests/testthat/write2.mylist2.doc", render. = FALSE)
+# write2pdf(list(mylist2, mylist), "tests/testthat/write2.mylists.pdf", render. = FALSE)
+#
+# write2pdf(verbatim(my.lm), "tests/testthat/write2.lm.pdf", render. = FALSE)
 # write2html(verbatim(paste0("Hi.", 1:5)),
-#            "/data5/bsi/adhoc/s200555.R-infrastructure/devel/eph/arsenal-eph/tests/testthat/write2.char.html", render. = FALSE)
+#            "tests/testthat/write2.char.html", render. = FALSE)
 
 ###########################################################################################################
 #### Reported bugs for write2

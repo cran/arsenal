@@ -51,7 +51,7 @@ require(gam)
 fit3 <- lm(log(alk.phos) ~ arm + ns(age, df=2) + sex, data=mockstudy)
 
 # test whether there is a difference between models 
-anova(fit2,fit3)
+stats::anova(fit2,fit3)
 
 # look at functional form of age
 termplot(fit3, term=2, se=T, rug=T)
@@ -156,7 +156,7 @@ data(solder)
 hist(solder$skips)
 
 fit <- glm(skips ~ Opening + Solder + Mask , data=solder, family=poisson)
-anova(fit, test='Chi')
+stats::anova(fit, test='Chi')
 summary(fit)
 
 ## ------------------------------------------------------------------------
@@ -226,6 +226,12 @@ cbind(sapply(mockstudy,attr,'label'))
 
 ## ----add-label, results='asis'-------------------------------------------
 attr(mockstudy$age,'label')  <- 'Age, yrs'
+
+tab1 <- modelsum(bmi ~  age, adjust=~sex, data=mockstudy)
+summary(tab1)
+
+## ---- results = 'asis'---------------------------------------------------
+labels(mockstudy)  <- c(age = 'Age, yrs')
 
 tab1 <- modelsum(bmi ~  age, adjust=~sex, data=mockstudy)
 summary(tab1)

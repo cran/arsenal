@@ -1,5 +1,5 @@
 #' freqlist
-#' 
+#'
 #' Approximate the output from SAS's \code{PROC FREQ} procedure when using the \code{/list} option of the \code{TABLE} statement.
 #'
 #' @param tab an object of class \code{"table"} or class \code{"xtabs"}
@@ -41,11 +41,12 @@ freqlist <- function(tab, sparse = FALSE, na.options = c('include', 'showexclude
   if (length(digits) > 1) stop("digits must be a single numeric value")
   if ((digits %% 1) != 0 || (digits < 0)) stop("digits must be a positive whole number")
   if (!is.null(groupBy) && any(groupBy %nin% names(dimnames(tab)))) stop("groupBy variable not found in table names")
+  if (is.list(labelTranslations)) labelTranslations <- unlist(labelTranslations)
   if (!is.null(labelTranslations) && (!is.character(labelTranslations) || length(labelTranslations) != length(dim(tab))))
     stop("length of variable names does not match table object dimensions")
-  
+
   if("varnames" %in% names(list(...))){warning("The 'varnames' argument has been deprecated. Please use 'labelTranslations' instead.")}
-  
+
   cumfun <- function(x) {
     # function to create a cumulative sum retaining NAs, but omitting in sum function
     x2 <- rep(NA, length(x))
@@ -81,7 +82,7 @@ freqlist <- function(tab, sparse = FALSE, na.options = c('include', 'showexclude
       freqPct = 100 * data$Freq / sum(data$Freq)
       cumPct = cumsum(freqPct)
     } else if(na.options == 'showexclude') {
-      freq_tmp <- data[, "Freq"]
+      freq_tmp <- data$Freq
       freq_tmp[na.index != 0] <- NA
       cumFreq = cumfun(freq_tmp)
       freqPct = 100 * freq_tmp / max(stats::na.omit(cumFreq), na.rm = TRUE)
@@ -95,15 +96,15 @@ freqlist <- function(tab, sparse = FALSE, na.options = c('include', 'showexclude
   if(!is.null(groupBy)) {
     if(na.options != 'exclude') {
       for(i in match(groupBy, names(tab.freq))) {
-        if(sum(is.na(tab.freq[, i])) > 0) {tab.freq[, i] <- addNA(tab.freq[, i])}
+        if(sum(is.na(tab.freq[[i]])) > 0) {tab.freq[[i]] <- addNA(tab.freq[[i]])}
       }
     }
-    byObject <- by(tab.freq, tab.freq[, groupBy], FUN = internalTable, na.options = na.options, digits = digits)
+    byObject <- by(tab.freq, tab.freq[, groupBy, drop = FALSE], FUN = internalTable, na.options = na.options, digits = digits)
     tableout <- do.call(rbind, byObject)
     factorIndex <- match(groupBy, names(tableout))
-    tableout <- cbind(tableout[, groupBy], tableout[, -factorIndex])
+    tableout <- cbind(tableout[, groupBy, drop = FALSE], tableout[, -factorIndex, drop = FALSE])
     names(tableout)[1:length(groupBy)] <- groupBy
-    rownames(tableout) <- NULL
+    row.names(tableout) <- NULL
     tableout <- tableout[do.call(order, tableout), ]
   } else {
     tableout <- internalTable(tab.freq, na.options = na.options, digits = digits)
@@ -116,13 +117,9 @@ freqlist <- function(tab, sparse = FALSE, na.options = c('include', 'showexclude
   if (!is.null(labelTranslations)) {
     # applies new variable names, reordering to match current data frame output
     variable_labels <- labelTranslations[match(names(tableout)[1:length(labelTranslations)], oldnames)]
-  } 
+  }
   outlist <- list(freqlist=tableout, byVar=groupBy, labels=variable_labels)
   class(outlist) <- "freqlist"
-  ##  if(!usingRCF() & !usingNCSA()) {
-  ##    cat(paste0("R-", version$major,".", version$minor, "\t", system("echo $USER",intern=TRUE), "\t", Sys.Date(), "\n"),
-  ##        file="/projects/bsi/infrastructure/s200555.Rinfrastructure/rlogs/freqlist.log",append=TRUE)  
-  ##  }
   return(outlist)
 }
 
