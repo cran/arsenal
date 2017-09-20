@@ -69,7 +69,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">The write2 function</h1>
 <h4 class="author"><em>Ethan Heinzen</em></h4>
-<h4 class="date"><em>14 August, 2017</em></h4>
+<h4 class="date"><em>20 September, 2017</em></h4>
 
 
 <div id="TOC">
@@ -80,6 +80,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><a href="#tableby"><code>tableby</code></a></li>
 <li><a href="#modelsum"><code>modelsum</code></a></li>
 <li><a href="#freqlist"><code>freqlist</code></a></li>
+<li><a href="#compare"><code>compare</code></a></li>
 </ul></li>
 <li><a href="#examples-using-other-objects">Examples Using Other Objects</a><ul>
 <li><a href="#knitrkable"><code>knitr::kable()</code></a></li>
@@ -88,6 +89,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </ul></li>
 <li><a href="#output-multiple-tables-to-one-document">Output Multiple Tables to One Document</a></li>
 <li><a href="#output-other-objects-monospaced-as-if-in-a-terminal">Output Other Objects Monospaced (as if in a terminal)</a></li>
+<li><a href="#add-a-yaml-header-to-the-output">Add a YAML Header to the Output</a></li>
 <li><a href="#faqs">FAQs</a><ul>
 <li><a href="#how-do-i-suppress-the-note-about-my-document-getting-rendered">How do I suppress the note about my document getting rendered?</a></li>
 <li><a href="#how-do-i-look-at-the-temporary-.md-file">How do I look at the temporary <code>.md</code> file?</a></li>
@@ -95,6 +97,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><a href="#how-do-i-output-headers-raw-htmllatex-paragraphs-etc.">How do I output headers, raw HTML/LaTeX, paragraphs, etc.?</a></li>
 <li><a href="#how-do-i-tweak-the-default-format-from-write2word-write2html-or-write2pdf">How do I tweak the default format from <code>write2word()</code>, <code>write2html()</code>, or <code>write2pdf()</code>?</a></li>
 <li><a href="#how-do-i-output-to-a-file-format-other-than-word-html-and-pdf">How do I output to a file format other than word, HTML, and PDF?</a></li>
+<li><a href="#how-do-i-avoid-prefixes-on-my-table-captions-in-pdf">How do I avoid prefixes on my table captions in PDF?</a></li>
 </ul></li>
 </ul>
 </div>
@@ -163,6 +166,10 @@ tab1 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm ~<span cl
              <span class="dt">format =</span> <span class="st">&quot;pandoc&quot;</span>            <span class="co"># or any other format, passed to knitr::kable</span>
              )</code></pre></div>
 </div>
+<div id="compare" class="section level2">
+<h2><code>compare</code></h2>
+<p>For <code>compare.data.frame</code> objects, the output function in <code>write2()</code> is <code>summary()</code>. For <code>summary.compare.data.frame</code> objects, the output function is <code>print()</code>.</p>
+</div>
 </div>
 <div id="examples-using-other-objects" class="section level1">
 <h1>Examples Using Other Objects</h1>
@@ -213,7 +220,7 @@ tab1 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm ~<span cl
 <span class="kw">write2pdf</span>(mylist, <span class="kw">paste0</span>(tmpdir, <span class="st">&quot;/test.mylist.pdf&quot;</span>), <span class="dt">quiet =</span> <span class="ot">TRUE</span>)</code></pre></div>
 <p>One neat side-effect of this function is that you can output text and headers, etc. The possibilities are endless!</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mylist2 &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="st">&quot;# Header 1&quot;</span>,
-                <span class="st">&quot;This is a small paragraph introducting tableby.&quot;</span>,
+                <span class="st">&quot;This is a small paragraph introducing tableby.&quot;</span>,
                 <span class="kw">tableby</span>(sex ~<span class="st"> </span>age, <span class="dt">data =</span> mockstudy),
                 <span class="st">&quot;&lt;hr&gt;&quot;</span>,
                 <span class="st">&quot;# Header 2&quot;</span>,
@@ -235,6 +242,26 @@ tab1 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm ~<span cl
 <p>Or suppose you wanted to print a character vector (as if it were to print in the terminal):</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">chr &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;MyVector&quot;</span>, <span class="dv">1</span>:<span class="dv">10</span>)
 <span class="kw">write2pdf</span>(<span class="kw">verbatim</span>(chr), <span class="kw">paste0</span>(tmpdir, <span class="st">&quot;/test.character.pdf&quot;</span>), <span class="dt">quiet =</span> <span class="ot">TRUE</span>)</code></pre></div>
+</div>
+<div id="add-a-yaml-header-to-the-output" class="section level1">
+<h1>Add a YAML Header to the Output</h1>
+<p>You can add a YAML header to <code>write2()</code> output using the <code>yaml()</code> function.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mylist3 &lt;-<span class="st"> </span><span class="kw">list</span>(
+  <span class="kw">yaml</span>(<span class="dt">title =</span> <span class="st">&quot;Test YAML Title&quot;</span>, <span class="dt">author =</span> <span class="st">&quot;My cool author name&quot;</span>),
+  <span class="st">&quot;# Header 1&quot;</span>,
+  <span class="st">&quot;This is a small paragraph introducing tableby.&quot;</span>,
+  <span class="kw">tableby</span>(sex ~<span class="st"> </span>age, <span class="dt">data =</span> mockstudy)
+)
+<span class="kw">write2html</span>(mylist3, <span class="kw">paste0</span>(tmpdir, <span class="st">&quot;/test.yaml.html&quot;</span>), <span class="dt">quiet =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<p>In fact, all detected YAML pieces will be moved as the first output, so that the above code chunk gives the same output as this one:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mylist4 &lt;-<span class="st"> </span><span class="kw">list</span>(
+  <span class="st">&quot;# Header 1&quot;</span>,
+  <span class="st">&quot;This is a small paragraph introducing tableby.&quot;</span>,
+  <span class="kw">yaml</span>(<span class="dt">title =</span> <span class="st">&quot;Test YAML Title&quot;</span>),
+  <span class="kw">tableby</span>(sex ~<span class="st"> </span>age, <span class="dt">data =</span> mockstudy),
+  <span class="kw">yaml</span>(<span class="dt">author =</span> <span class="st">&quot;My cool author name&quot;</span>)
+)
+<span class="kw">write2html</span>(mylist3, <span class="kw">paste0</span>(tmpdir, <span class="st">&quot;/test.yaml2.html&quot;</span>), <span class="dt">quiet =</span> <span class="ot">TRUE</span>)</code></pre></div>
 </div>
 <div id="faqs" class="section level1">
 <h1>FAQs</h1>
@@ -264,7 +291,7 @@ tab1 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm ~<span cl
 <h2>How do I output headers, raw HTML/LaTeX, paragraphs, etc.?</h2>
 <p>One can simply abuse the list S3 method for <code>write2()</code>!</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mylist2 &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="st">&quot;# Header 1&quot;</span>,
-                <span class="st">&quot;This is a small paragraph introducting tableby.&quot;</span>,
+                <span class="st">&quot;This is a small paragraph introducing tableby.&quot;</span>,
                 <span class="kw">tableby</span>(sex ~<span class="st"> </span>age, <span class="dt">data =</span> mockstudy),
                 <span class="st">&quot;&lt;hr&gt;&quot;</span>,
                 <span class="st">&quot;# Header 2&quot;</span>,
@@ -287,6 +314,17 @@ tab1 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm ~<span cl
        <span class="dt">quiet =</span> <span class="ot">TRUE</span>,  <span class="co"># passed to rmarkdown::render</span>
        <span class="dt">output_format =</span> rmarkdown::rtf_document
        )</code></pre></div>
+</div>
+<div id="how-do-i-avoid-prefixes-on-my-table-captions-in-pdf" class="section level2">
+<h2>How do I avoid prefixes on my table captions in PDF?</h2>
+<p>You can do this pretty easily with the <code>yaml()</code> function:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mylist5 &lt;-<span class="st"> </span><span class="kw">list</span>(
+  <span class="kw">yaml</span>(<span class="st">&quot;header-includes&quot;</span> =<span class="st"> </span><span class="kw">list</span>(<span class="st">&quot;</span><span class="ch">\\</span><span class="st">usepackage[labelformat=empty]{caption}&quot;</span>)),
+  <span class="st">&quot;# Header 1&quot;</span>,
+  <span class="st">&quot;This is a small paragraph introducing tableby.&quot;</span>,
+  <span class="kw">tableby</span>(sex ~<span class="st"> </span>age, <span class="dt">data =</span> mockstudy)
+)
+<span class="kw">write2pdf</span>(mylist5, <span class="kw">paste0</span>(tmpdir, <span class="st">&quot;/test.noprefixes.pdf&quot;</span>), <span class="dt">title =</span> <span class="st">&quot;My tableby&quot;</span>)</code></pre></div>
 </div>
 </div>
 

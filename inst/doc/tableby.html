@@ -69,7 +69,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">The tableby function</h1>
 <h4 class="author"><em>Beth Atkinson, Jason Sinnwell, Shannon McDonnell and Greg Dougherty</em></h4>
-<h4 class="date"><em>14 August, 2017</em></h4>
+<h4 class="date"><em>20 September, 2017</em></h4>
 
 
 <div id="TOC">
@@ -1854,7 +1854,7 @@ RHS</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## The formulize function does the paste and as.formula steps
 tmp &lt;-<span class="st"> </span><span class="kw">formulize</span>(<span class="st">'arm'</span>,myvars[<span class="dv">8</span>:<span class="dv">10</span>])
 tmp</code></pre></div>
-<p>arm ~ ps + hgb + bmi &lt;environment: 0x8e340f8&gt;</p>
+<p>arm ~ ps + hgb + bmi</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## More complex formulas could also be written using formulize
 tmp2 &lt;-<span class="st"> </span><span class="kw">formulize</span>(<span class="st">'arm'</span>,<span class="kw">c</span>(<span class="st">'ps'</span>,<span class="st">'hgb^2'</span>,<span class="st">'bmi'</span>))
 
@@ -2489,7 +2489,7 @@ tmp2 &lt;-<span class="st"> </span><span class="kw">formulize</span>(<span class
 </thead>
 <tbody>
 <tr class="odd">
-<td><strong>I(age/10)</strong></td>
+<td><strong>Age, yrs</strong></td>
 <td align="center"></td>
 <td align="center"></td>
 <td align="center"></td>
@@ -2521,7 +2521,7 @@ tmp2 &lt;-<span class="st"> </span><span class="kw">formulize</span>(<span class
 <td align="center"></td>
 </tr>
 <tr class="odd">
-<td><strong>log(bmi)</strong></td>
+<td><strong>Body Mass Index (kg/m^2)</strong></td>
 <td align="center"></td>
 <td align="center"></td>
 <td align="center"></td>
@@ -2599,9 +2599,9 @@ tmp2 &lt;-<span class="st"> </span><span class="kw">formulize</span>(<span class
 <pre><code>##                                                           arm 
 ##                                               &quot;Treatment Arm&quot; 
 ##                                                     I(age/10) 
-##                                                   &quot;I(age/10)&quot; 
+##                                                    &quot;Age, yrs&quot; 
 ##                                                      log(bmi) 
-##                                                    &quot;log(bmi)&quot; 
+##                                    &quot;Body Mass Index (kg/m^2)&quot; 
 ##       factor(mdquality.s, levels = 0:1, labels = c(&quot;N&quot;, &quot;Y&quot;)) 
 ## &quot;factor(mdquality.s, levels = 0:1, labels = c(\&quot;N\&quot;, \&quot;Y\&quot;))&quot;</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">labels</span>(trans)[<span class="dv">2</span>:<span class="dv">4</span>] &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">'Age per 10 yrs'</span>, <span class="st">'log(BMI)'</span>, <span class="st">'MD Quality'</span>)

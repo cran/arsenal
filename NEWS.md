@@ -1,3 +1,29 @@
+# arsenal 0.6.0
+
+* Update `freqlist()` to be more efficient. (#20)
+
+* Allow named labels for `freqlist()`.
+
+* Fixed one-sided formula detection in `tableby()` when used with `formulize()`. (#21)
+
+* Changed environment of formula returned by `formulize()`.
+
+* Added variable-name subsetting to `[.tableby()`. One can now subset by logicals, numerics, or character vectors.
+
+* Fixed a bug in `tableby()` related to zero-length factor levels. (#22)
+
+* Fixed a bug in `tableby()` and `modelsum()` when calling them without loading the package. (#25)
+
+* Allow `nsmall = ` and `digits = ` to be 0, for rounding to integers. (#23)
+
+* Added `yaml()` function to use with `write2()`. (#28)
+
+* Added the `yaml` package as a suggested package.
+
+* Added `write2()` methods for `compare.data.frame()` objects. (#27)
+
+* Updated documentation.
+
 # arsenal 0.5.0
 
 * Code all now in GitHub; issues can now be submitted there. Checking is now performed automatically on Travis-CI.

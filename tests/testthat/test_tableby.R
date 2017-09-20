@@ -180,19 +180,7 @@ test_that("A basic two-sided tableby call--no p-value, no total", {
   )
   expect_identical(
     capture.output(summary(tableby(Group ~ Age + Sex, data = mdat), test = FALSE, total = FALSE, text = TRUE)),
-    c(""                                                          ,
-      "----------------------------------------------------------",
-      "                  High (N=30)   Low (N=30)    Med (N=30)  ",
-      "---------------- ------------- ------------- -------------",
-      "Age in Years    "                                          ,
-      "   Mean (SD)     40 (6.22)     39.6 (3.87)   39.4 (5.57)  ",
-      "   Q1, Q3        36, 44.5      37.2, 41.8    35.2, 44     ",
-      "   Range         29 - 53       32 - 48       30 - 52      ",
-      "Sex             "                                          ,
-      "   Female        15 (50%)      17 (56.7%)    14 (46.7%)   ",
-      "   Male          15 (50%)      13 (43.3%)    16 (53.3%)   ",
-      "----------------------------------------------------------"
-    )
+    capture.output(summary(tableby(Group ~ Age + Sex, data = mdat, test = FALSE, total = FALSE), text = TRUE))
   )
 })
 
@@ -363,6 +351,25 @@ test_that("Reordering variables", {
       "--------------------------------------------------------------------------------------------"
     )
   )
+
+  expect_identical(
+    capture.output(summary(tableby(Group ~ fe(Sex) + dt + Age, data = mdat)[c(3,1,2)], text = TRUE)),
+    capture.output(summary(tableby(Group ~ fe(Sex) + dt + Age, data = mdat)[c("Age", "Sex", "dt")], text = TRUE))
+  )
+
+  expect_identical(
+    capture.output(summary(tableby(Group ~ fe(Sex) + dt + Age, data = mdat)[1:2], text = TRUE)),
+    capture.output(summary(tableby(Group ~ fe(Sex) + dt + Age, data = mdat)[c(TRUE, TRUE, FALSE)], text = TRUE))
+  )
+
+  expect_identical(
+    capture.output(summary(tableby(Group ~ fe(Sex) + dt + Age, data = mdat), text = TRUE)),
+    capture.output(summary(tableby(Group ~ fe(Sex) + dt + Age, data = mdat)[], text = TRUE))
+  )
+
+  expect_warning(tableby(Group ~ fe(Sex) + dt + Age, data = mdat)[1:4], "Some indices not found")
+  expect_error(tableby(Group ~ fe(Sex) + dt + Age, data = mdat)[TRUE], "Logical vector")
+
 })
 
 
@@ -407,19 +414,7 @@ test_that("Changing tests", {
 
   expect_identical(
     capture.output(summary(tableby(Group ~ Sex + Age, data = mdat, numeric.test = "kwt", cat.test = "fe"), text = TRUE)),
-    c(""                                                                                            ,
-      "--------------------------------------------------------------------------------------------",
-      "                   High (N=30)    Low (N=30)     Med (N=30)     Total (N=90)   p value      ",
-      "----------------- -------------- -------------- -------------- -------------- --------------",
-      "Sex                                                                                    0.806",
-      "   Female         15 (50%)       17 (56.7%)     14 (46.7%)     46 (51.1%)    "               ,
-      "   Male           15 (50%)       13 (43.3%)     16 (53.3%)     44 (48.9%)    "               ,
-      "Age in Years                                                                           0.869",
-      "   Mean (SD)      40 (6.22)      39.6 (3.87)    39.4 (5.57)    39.7 (5.26)   "               ,
-      "   Q1, Q3         36, 44.5       37.2, 41.8     35.2, 44       36, 43        "               ,
-      "   Range          29 - 53        32 - 48        30 - 52        29 - 53       "               ,
-      "--------------------------------------------------------------------------------------------"
-    )
+    capture.output(summary(tableby(Group ~ fe(Sex) + kwt(Age), data = mdat), text = TRUE))
   )
 })
 
@@ -603,3 +598,44 @@ test_that("08/02/2017: Chi-square warnings are suppressed", {
   expect_warning(tableby(arm ~ sex, data = mockstudy, subset = 1:5), NA)
 })
 
+test_that("08/26/2017: Richard Pendegraft and using formulize and tableby (#21)", {
+  # tableby was having trouble identifying one-sided formulas when you use formulize
+  expect_warning(tableby(formulize(x = 11, data = mdat), data = mdat, na.action = na.tableby))
+
+  expect_identical(
+    capture.output(summary(tableby(Group ~ fe(Sex) + kwt(Age), data = mdat), text = TRUE)),
+    capture.output(summary(tableby(formulize("Group", c("fe(Sex)", "kwt(Age)")), data = mdat), text = TRUE))
+  )
+})
+
+df <- data.frame(a = c("b", "b", "b", "a", "a"), d = NA_character_, e = c(1, 2, 2, 1, 2), stringsAsFactors = FALSE)
+test_that("08/30/2017: Brendan Broderick and zero-length levels (#22)", {
+  expect_warning(tableby(a ~ d + e, data = df), "Zero-length levels")
+  expect_error(suppressWarnings(tableby(a ~ d, data = df)), "No x-variables successfully")
+})
+
+
+test_that("09/13/2017: Peter Martin and rounding to integers (#23)", {
+  expect_identical(
+    capture.output(summary(tableby(Group ~ Sex + time + dt, data = mdat, nsmall = 0, digits = 0, digits.test = 3, nsmall.pct = 1), text = TRUE)),
+    c(""                                                                                            ,
+      "--------------------------------------------------------------------------------------------",
+      "                   High (N=30)    Low (N=30)     Med (N=30)     Total (N=90)   p value      ",
+      "----------------- -------------- -------------- -------------- -------------- --------------",
+      "Sex                                                                                    0.733",
+      "   Female         15 (50.0%)     17 (56.7%)     14 (46.7%)     46 (51.1%)    "               ,
+      "   Male           15 (50.0%)     13 (43.3%)     16 (53.3%)     44 (48.9%)    "               ,
+      "time                                                                                   0.025",
+      "   Mean (SD)      5 (2)          3 (2)          4 (2)          4 (2)         "               ,
+      "   Q1, Q3         3, 6           1, 5           2, 5           2, 6          "               ,
+      "   Range          0 - 7          0 - 6          1 - 7          0 - 7         "               ,
+      "dt                                                                                     0.391",
+      "   median         1950-01-07     1951-06-13     1948-09-13     1949-10-07    "               ,
+      "   Range          1935-08-15 -   1937-02-08 -   1939-04-01 -   1935-08-15 -  "               ,
+      "                  1968-05-14     1959-09-06     1958-07-30     1968-05-14    "               ,
+      "--------------------------------------------------------------------------------------------"
+    )
+  )
+  expect_warning(tableby(Group ~ Sex + time + dt, data = mdat, nsmall = -1))
+  expect_warning(tableby(Group ~ Sex + time + dt, data = mdat, digits = -1))
+})

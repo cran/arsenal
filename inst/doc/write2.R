@@ -84,7 +84,7 @@ knitr::opts_chunk$set(eval = FALSE, message = FALSE)
 
 ## ------------------------------------------------------------------------
 #  mylist2 <- list("# Header 1",
-#                  "This is a small paragraph introducting tableby.",
+#                  "This is a small paragraph introducing tableby.",
 #                  tableby(sex ~ age, data = mockstudy),
 #                  "<hr>",
 #                  "# Header 2",
@@ -108,6 +108,25 @@ knitr::opts_chunk$set(eval = FALSE, message = FALSE)
 #  write2pdf(verbatim(chr), paste0(tmpdir, "/test.character.pdf"), quiet = TRUE)
 
 ## ------------------------------------------------------------------------
+#  mylist3 <- list(
+#    yaml(title = "Test YAML Title", author = "My cool author name"),
+#    "# Header 1",
+#    "This is a small paragraph introducing tableby.",
+#    tableby(sex ~ age, data = mockstudy)
+#  )
+#  write2html(mylist3, paste0(tmpdir, "/test.yaml.html"), quiet = TRUE)
+
+## ------------------------------------------------------------------------
+#  mylist4 <- list(
+#    "# Header 1",
+#    "This is a small paragraph introducing tableby.",
+#    yaml(title = "Test YAML Title"),
+#    tableby(sex ~ age, data = mockstudy),
+#    yaml(author = "My cool author name")
+#  )
+#  write2html(mylist3, paste0(tmpdir, "/test.yaml2.html"), quiet = TRUE)
+
+## ------------------------------------------------------------------------
 #  write2html(knitr::kable(head(mockstudy)), paste0(tmpdir, "/test.kable.quiet.html"),
 #             quiet = TRUE # passed to rmarkdown::render
 #             )
@@ -125,7 +144,7 @@ knitr::opts_chunk$set(eval = FALSE, message = FALSE)
 
 ## ------------------------------------------------------------------------
 #  mylist2 <- list("# Header 1",
-#                  "This is a small paragraph introducting tableby.",
+#                  "This is a small paragraph introducing tableby.",
 #                  tableby(sex ~ age, data = mockstudy),
 #                  "<hr>",
 #                  "# Header 2",
@@ -143,4 +162,13 @@ knitr::opts_chunk$set(eval = FALSE, message = FALSE)
 #         quiet = TRUE,  # passed to rmarkdown::render
 #         output_format = rmarkdown::rtf_document
 #         )
+
+## ------------------------------------------------------------------------
+#  mylist5 <- list(
+#    yaml("header-includes" = list("\\usepackage[labelformat=empty]{caption}")),
+#    "# Header 1",
+#    "This is a small paragraph introducing tableby.",
+#    tableby(sex ~ age, data = mockstudy)
+#  )
+#  write2pdf(mylist5, paste0(tmpdir, "/test.noprefixes.pdf"), title = "My tableby")
 
