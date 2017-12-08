@@ -69,7 +69,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">A Few Notes on Labels</h1>
 <h4 class="author"><em>Ethan Heinzen</em></h4>
-<h4 class="date"><em>20 September, 2017</em></h4>
+<h4 class="date"><em>08 December, 2017</em></h4>
 
 
 <div id="TOC">
@@ -278,7 +278,7 @@ tab.ex &lt;-<span class="st"> </span><span class="kw">table</span>(mockstudy[, <
 </tr>
 </tbody>
 </table>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(<span class="kw">tableby</span>(arm ~<span class="st"> </span>sex +<span class="st"> </span>age, <span class="dt">data =</span> mockstudy),
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(<span class="kw">tableby</span>(arm <span class="op">~</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span>age, <span class="dt">data =</span> mockstudy),
         <span class="dt">labelTranslations =</span> <span class="kw">c</span>(<span class="dt">sex =</span> <span class="st">&quot;SEX&quot;</span>, <span class="dt">age =</span> <span class="st">&quot;Age, yrs&quot;</span>))</code></pre></div>
 <table style="width:100%;">
 <colgroup>
@@ -358,7 +358,7 @@ tab.ex &lt;-<span class="st"> </span><span class="kw">table</span>(mockstudy[, <
 </tr>
 </tbody>
 </table>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(<span class="kw">modelsum</span>(bmi ~<span class="st"> </span>age, <span class="dt">adjust =</span> ~sex, <span class="dt">data =</span> mockstudy),
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(<span class="kw">modelsum</span>(bmi <span class="op">~</span><span class="st"> </span>age, <span class="dt">adjust =</span> <span class="op">~</span>sex, <span class="dt">data =</span> mockstudy),
         <span class="dt">labelTranslations =</span> <span class="kw">list</span>(<span class="dt">sexFemale =</span> <span class="st">&quot;Female&quot;</span>, <span class="dt">age =</span> <span class="st">&quot;Age, yrs&quot;</span>))</code></pre></div>
 <table>
 <colgroup>
@@ -587,9 +587,9 @@ tmp &lt;-<span class="st"> </span><span class="kw">freqlist</span>(tab.ex)
 </tbody>
 </table>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># piped--much cleaner</span>
-mockstudy %&gt;%<span class="st"> </span>
-<span class="st">  </span><span class="kw">tableby</span>(arm ~<span class="st"> </span>sex +<span class="st"> </span>age, <span class="dt">data =</span> .) %&gt;%<span class="st"> </span>
-<span class="st">  </span><span class="kw">set_labels</span>(<span class="kw">c</span>(<span class="dt">sex =</span> <span class="st">&quot;SEX&quot;</span>, <span class="dt">age =</span> <span class="st">&quot;Age, yrs&quot;</span>)) %&gt;%<span class="st"> </span>
+mockstudy <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">tableby</span>(arm <span class="op">~</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span>age, <span class="dt">data =</span> .) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">set_labels</span>(<span class="kw">c</span>(<span class="dt">sex =</span> <span class="st">&quot;SEX&quot;</span>, <span class="dt">age =</span> <span class="st">&quot;Age, yrs&quot;</span>)) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">summary</span>()</code></pre></div>
 <table style="width:100%;">
 <colgroup>
@@ -669,9 +669,9 @@ mockstudy %&gt;%<span class="st"> </span>
 </tr>
 </tbody>
 </table>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mockstudy %&gt;%<span class="st"> </span>
-<span class="st">  </span><span class="kw">modelsum</span>(bmi ~<span class="st"> </span>age, <span class="dt">adjust =</span> ~<span class="st"> </span>sex, <span class="dt">data =</span> .) %&gt;%<span class="st"> </span>
-<span class="st">  </span><span class="kw">set_labels</span>(<span class="kw">list</span>(<span class="dt">sexFemale =</span> <span class="st">&quot;Female&quot;</span>, <span class="dt">age =</span> <span class="st">&quot;Age, yrs&quot;</span>)) %&gt;%<span class="st"> </span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mockstudy <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">modelsum</span>(bmi <span class="op">~</span><span class="st"> </span>age, <span class="dt">adjust =</span> <span class="op">~</span><span class="st"> </span>sex, <span class="dt">data =</span> .) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">set_labels</span>(<span class="kw">list</span>(<span class="dt">sexFemale =</span> <span class="st">&quot;Female&quot;</span>, <span class="dt">age =</span> <span class="st">&quot;Age, yrs&quot;</span>)) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">summary</span>()</code></pre></div>
 <table>
 <colgroup>
@@ -720,11 +720,11 @@ mockstudy %&gt;%<span class="st"> </span>
 <p><code>tableby()</code> and <code>modelsum()</code> also allow you to have label attributes on the data. Note that by default these attributes get dropped upon subsetting, hence the call to <code>keep.labels()</code>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mockstudy.lab &lt;-<span class="st"> </span><span class="kw">keep.labels</span>(mockstudy)</code></pre></div>
 <p>You can set attributes one at a time:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">attr</span>(mockstudy.lab$sex, <span class="st">&quot;label&quot;</span>) &lt;-<span class="st"> &quot;Sex&quot;</span>
-<span class="kw">attr</span>(mockstudy.lab$age, <span class="st">&quot;label&quot;</span>) &lt;-<span class="st"> &quot;Age, yrs&quot;</span></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">attr</span>(mockstudy.lab<span class="op">$</span>sex, <span class="st">&quot;label&quot;</span>) &lt;-<span class="st"> &quot;Sex&quot;</span>
+<span class="kw">attr</span>(mockstudy.lab<span class="op">$</span>age, <span class="st">&quot;label&quot;</span>) &lt;-<span class="st"> &quot;Age, yrs&quot;</span></code></pre></div>
 <p>…or all at once:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">labels</span>(mockstudy.lab) &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">sex =</span> <span class="st">&quot;Sex&quot;</span>, <span class="dt">age =</span> <span class="st">&quot;Age, yrs&quot;</span>)
-<span class="kw">summary</span>(<span class="kw">tableby</span>(arm ~<span class="st"> </span>sex +<span class="st"> </span>age, <span class="dt">data =</span> mockstudy.lab))</code></pre></div>
+<span class="kw">summary</span>(<span class="kw">tableby</span>(arm <span class="op">~</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span>age, <span class="dt">data =</span> mockstudy.lab))</code></pre></div>
 <table style="width:100%;">
 <colgroup>
 <col width="19%"></col>
@@ -804,9 +804,9 @@ mockstudy %&gt;%<span class="st"> </span>
 </tbody>
 </table>
 <p>You can pipe this, too.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mockstudy %&gt;%<span class="st"> </span>
-<span class="st">  </span><span class="kw">set_labels</span>(<span class="kw">list</span>(<span class="dt">sex =</span> <span class="st">&quot;SEX&quot;</span>, <span class="dt">age =</span> <span class="st">&quot;Age, yrs&quot;</span>)) %&gt;%<span class="st"> </span>
-<span class="st">  </span><span class="kw">modelsum</span>(bmi ~<span class="st"> </span>age, <span class="dt">adjust =</span> ~<span class="st"> </span>sex, <span class="dt">data =</span> .) %&gt;%<span class="st"> </span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mockstudy <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">set_labels</span>(<span class="kw">list</span>(<span class="dt">sex =</span> <span class="st">&quot;SEX&quot;</span>, <span class="dt">age =</span> <span class="st">&quot;Age, yrs&quot;</span>)) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">modelsum</span>(bmi <span class="op">~</span><span class="st"> </span>age, <span class="dt">adjust =</span> <span class="op">~</span><span class="st"> </span>sex, <span class="dt">data =</span> .) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">summary</span>()</code></pre></div>
 <table>
 <colgroup>

@@ -69,7 +69,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">The compare function</h1>
 <h4 class="author"><em>Ethan Heinzen, Ryan Lennon, Andrew Hanson</em></h4>
-<h4 class="date"><em>20 September, 2017</em></h4>
+<h4 class="date"><em>08 December, 2017</em></h4>
 
 
 <div id="TOC">
@@ -110,16 +110,16 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div id="basic-examples" class="section level1">
 <h1>Basic examples</h1>
 <p>We first build two similar data.frames to compare.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">df1 &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">id =</span> <span class="kw">paste0</span>(<span class="st">&quot;person&quot;</span>, <span class="dv">1</span>:<span class="dv">3</span>),
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">df1 &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">id =</span> <span class="kw">paste0</span>(<span class="st">&quot;person&quot;</span>, <span class="dv">1</span><span class="op">:</span><span class="dv">3</span>),
                   <span class="dt">a =</span> <span class="kw">c</span>(<span class="st">&quot;a&quot;</span>, <span class="st">&quot;b&quot;</span>, <span class="st">&quot;c&quot;</span>),
                   <span class="dt">b =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">4</span>),
                   <span class="dt">c =</span> <span class="kw">c</span>(<span class="st">&quot;f&quot;</span>, <span class="st">&quot;e&quot;</span>, <span class="st">&quot;d&quot;</span>),
-                  <span class="dt">row.names =</span> <span class="kw">paste0</span>(<span class="st">&quot;rn&quot;</span>, <span class="dv">1</span>:<span class="dv">3</span>),
+                  <span class="dt">row.names =</span> <span class="kw">paste0</span>(<span class="st">&quot;rn&quot;</span>, <span class="dv">1</span><span class="op">:</span><span class="dv">3</span>),
                   <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>)
-df2 &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">id =</span> <span class="kw">paste0</span>(<span class="st">&quot;person&quot;</span>, <span class="dv">3</span>:<span class="dv">1</span>),
+df2 &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">id =</span> <span class="kw">paste0</span>(<span class="st">&quot;person&quot;</span>, <span class="dv">3</span><span class="op">:</span><span class="dv">1</span>),
                   <span class="dt">a =</span> <span class="kw">c</span>(<span class="st">&quot;c&quot;</span>, <span class="st">&quot;b&quot;</span>, <span class="st">&quot;a&quot;</span>),
                   <span class="dt">b =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">4</span>),
-                  <span class="dt">d =</span> <span class="kw">paste0</span>(<span class="st">&quot;rn&quot;</span>, <span class="dv">1</span>:<span class="dv">3</span>),
+                  <span class="dt">d =</span> <span class="kw">paste0</span>(<span class="st">&quot;rn&quot;</span>, <span class="dv">1</span><span class="op">:</span><span class="dv">3</span>),
                   <span class="dt">row.names =</span> <span class="kw">paste0</span>(<span class="st">&quot;rn&quot;</span>, <span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">3</span>,<span class="dv">2</span>)),
                   <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>)</code></pre></div>
 <p>To compare these datasets, simply pass them to the <code>compare()</code> function:</p>
@@ -162,7 +162,6 @@ Differences found in 2/3 variables compared.
 </tbody>
 </table>
 <table>
-<caption>Other variables not compared</caption>
 <tbody>
 <tr class="odd">
 <td align="left">No other variables not compared</td>
@@ -170,7 +169,7 @@ Differences found in 2/3 variables compared.
 </tbody>
 </table>
 <table>
-<caption>Observations not shared</caption>
+<caption>Differences detected by variable</caption>
 <tbody>
 <tr class="odd">
 <td align="left">No observations not shared</td>
@@ -178,7 +177,7 @@ Differences found in 2/3 variables compared.
 </tbody>
 </table>
 <table>
-<caption>Differences detected by variable</caption>
+<caption>First 10 differences detected per variable</caption>
 <thead>
 <tr class="header">
 <th align="left">var.x</th>
@@ -209,7 +208,6 @@ Differences found in 2/3 variables compared.
 </tbody>
 </table>
 <table>
-<caption>First 10 differences detected per variable</caption>
 <thead>
 <tr class="header">
 <th align="left">var.x</th>
@@ -261,7 +259,6 @@ Differences found in 2/3 variables compared.
 </tbody>
 </table>
 <table>
-<caption>Non-identical attributes</caption>
 <tbody>
 <tr class="odd">
 <td align="left">No non-identical attributes</td>
@@ -296,7 +293,6 @@ Differences found in 2/3 variables compared.
 </tbody>
 </table>
 <table>
-<caption>Other variables not compared</caption>
 <tbody>
 <tr class="odd">
 <td align="left">No other variables not compared</td>
@@ -304,7 +300,7 @@ Differences found in 2/3 variables compared.
 </tbody>
 </table>
 <table>
-<caption>Observations not shared</caption>
+<caption>Differences detected by variable</caption>
 <tbody>
 <tr class="odd">
 <td align="left">No observations not shared</td>
@@ -312,7 +308,7 @@ Differences found in 2/3 variables compared.
 </tbody>
 </table>
 <table>
-<caption>Differences detected by variable</caption>
+<caption>First 10 differences detected per variable</caption>
 <thead>
 <tr class="header">
 <th align="left">var.x</th>
@@ -337,7 +333,6 @@ Differences found in 2/3 variables compared.
 </tbody>
 </table>
 <table>
-<caption>First 10 differences detected per variable</caption>
 <thead>
 <tr class="header">
 <th align="left">var.x</th>
@@ -371,7 +366,6 @@ Differences found in 2/3 variables compared.
 </tbody>
 </table>
 <table>
-<caption>Non-identical attributes</caption>
 <tbody>
 <tr class="odd">
 <td align="left">No non-identical attributes</td>
@@ -2883,7 +2877,7 @@ mockstudy2 &lt;-<span class="st"> </span><span class="kw">muck_up_mockstudy</spa
 </tbody>
 </table>
 <table>
-<caption>Other variables not compared</caption>
+<caption>Observations not shared</caption>
 <tbody>
 <tr class="odd">
 <td align="left">No other variables not compared</td>
@@ -2891,7 +2885,7 @@ mockstudy2 &lt;-<span class="st"> </span><span class="kw">muck_up_mockstudy</spa
 </tbody>
 </table>
 <table>
-<caption>Observations not shared</caption>
+<caption>Differences detected by variable</caption>
 <thead>
 <tr class="header">
 <th align="left">version</th>
@@ -2923,7 +2917,7 @@ mockstudy2 &lt;-<span class="st"> </span><span class="kw">muck_up_mockstudy</spa
 </tbody>
 </table>
 <table>
-<caption>Differences detected by variable</caption>
+<caption>First 10 differences detected per variable (1531 differences not shown)</caption>
 <thead>
 <tr class="header">
 <th align="left">var.x</th>
@@ -3008,7 +3002,7 @@ mockstudy2 &lt;-<span class="st"> </span><span class="kw">muck_up_mockstudy</spa
 </tbody>
 </table>
 <table>
-<caption>First 10 differences detected per variable (1531 differences not shown)</caption>
+<caption>Non-identical attributes</caption>
 <thead>
 <tr class="header">
 <th align="left">var.x</th>
@@ -3222,7 +3216,6 @@ mockstudy2 &lt;-<span class="st"> </span><span class="kw">muck_up_mockstudy</spa
 </tbody>
 </table>
 <table>
-<caption>Non-identical attributes</caption>
 <thead>
 <tr class="header">
 <th align="left">var.x</th>
@@ -3300,7 +3293,7 @@ mockstudy2 &lt;-<span class="st"> </span><span class="kw">muck_up_mockstudy</spa
 </tbody>
 </table>
 <table>
-<caption>Other variables not compared</caption>
+<caption>Observations not shared</caption>
 <tbody>
 <tr class="odd">
 <td align="left">No other variables not compared</td>
@@ -3308,7 +3301,7 @@ mockstudy2 &lt;-<span class="st"> </span><span class="kw">muck_up_mockstudy</spa
 </tbody>
 </table>
 <table>
-<caption>Observations not shared</caption>
+<caption>Differences detected by variable</caption>
 <thead>
 <tr class="header">
 <th align="left">version</th>
@@ -3340,7 +3333,7 @@ mockstudy2 &lt;-<span class="st"> </span><span class="kw">muck_up_mockstudy</spa
 </tbody>
 </table>
 <table>
-<caption>Differences detected by variable</caption>
+<caption>First 10 differences detected per variable (256 differences not shown)</caption>
 <thead>
 <tr class="header">
 <th align="left">var.x</th>
@@ -3425,7 +3418,7 @@ mockstudy2 &lt;-<span class="st"> </span><span class="kw">muck_up_mockstudy</spa
 </tbody>
 </table>
 <table>
-<caption>First 10 differences detected per variable (256 differences not shown)</caption>
+<caption>Non-identical attributes</caption>
 <thead>
 <tr class="header">
 <th align="left">var.x</th>
@@ -3549,7 +3542,6 @@ mockstudy2 &lt;-<span class="st"> </span><span class="kw">muck_up_mockstudy</spa
 </tbody>
 </table>
 <table>
-<caption>Non-identical attributes</caption>
 <thead>
 <tr class="header">
 <th align="left">var.x</th>
@@ -3623,9 +3615,9 @@ mockstudy2 &lt;-<span class="st"> </span><span class="kw">muck_up_mockstudy</spa
 <div id="example-1" class="section level3">
 <h3>Example 1</h3>
 <p>Suppose we want to ignore any dates which are later in the second dataset than the first. We define a custom tolerance function.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">my.tol &lt;-<span class="st"> </span>function(x, y, tol)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">my.tol &lt;-<span class="st"> </span><span class="cf">function</span>(x, y, tol)
 {
-  <span class="kw">tol.NA</span>(x, y, x &gt;<span class="st"> </span>y)
+  <span class="kw">tol.NA</span>(x, y, x <span class="op">&gt;</span><span class="st"> </span>y)
 }
 
 date.df1 &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">dt =</span> <span class="kw">as.Date</span>(<span class="kw">c</span>(<span class="st">&quot;2017-09-07&quot;</span>, <span class="st">&quot;2017-08-08&quot;</span>, <span class="st">&quot;2017-07-09&quot;</span>, <span class="ot">NA</span>)))
@@ -3641,11 +3633,11 @@ date.df2 &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span 
 <h3>Example 2</h3>
 <p>(Continuing our mockstudy example)</p>
 <p>Suppose we’re okay with NAs getting replaced by -9.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tol.minus9 &lt;-<span class="st"> </span>function(x, y, tol)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tol.minus9 &lt;-<span class="st"> </span><span class="cf">function</span>(x, y, tol)
 {
-  idx1 &lt;-<span class="st"> </span><span class="kw">is.na</span>(x) &amp;<span class="st"> </span>!<span class="kw">is.na</span>(y) &amp;<span class="st"> </span>y ==<span class="st"> </span>-<span class="dv">9</span>
+  idx1 &lt;-<span class="st"> </span><span class="kw">is.na</span>(x) <span class="op">&amp;</span><span class="st"> </span><span class="op">!</span><span class="kw">is.na</span>(y) <span class="op">&amp;</span><span class="st"> </span>y <span class="op">==</span><span class="st"> </span><span class="op">-</span><span class="dv">9</span>
   idx2 &lt;-<span class="st"> </span><span class="kw">tol.num.absolute</span>(x, y, tol) <span class="co"># find other absolute differences</span>
-  <span class="kw">return</span>(!idx1 &amp;<span class="st"> </span>idx2)
+  <span class="kw">return</span>(<span class="op">!</span>idx1 <span class="op">&amp;</span><span class="st"> </span>idx2)
 }
 
 <span class="kw">summary</span>(<span class="kw">compare</span>(mockstudy, mockstudy2, <span class="dt">by =</span> <span class="st">&quot;case&quot;</span>,
@@ -3677,7 +3669,7 @@ date.df2 &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span 
 </tbody>
 </table>
 <table>
-<caption>Other variables not compared</caption>
+<caption>Observations not shared</caption>
 <tbody>
 <tr class="odd">
 <td align="left">No other variables not compared</td>
@@ -3685,7 +3677,7 @@ date.df2 &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span 
 </tbody>
 </table>
 <table>
-<caption>Observations not shared</caption>
+<caption>Differences detected by variable</caption>
 <thead>
 <tr class="header">
 <th align="left">version</th>
@@ -3717,7 +3709,7 @@ date.df2 &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span 
 </tbody>
 </table>
 <table>
-<caption>Differences detected by variable</caption>
+<caption>First 10 differences detected per variable</caption>
 <thead>
 <tr class="header">
 <th align="left">var.x</th>
@@ -3802,7 +3794,7 @@ date.df2 &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span 
 </tbody>
 </table>
 <table>
-<caption>First 10 differences detected per variable</caption>
+<caption>Non-identical attributes</caption>
 <thead>
 <tr class="header">
 <th align="left">var.x</th>
@@ -3836,7 +3828,6 @@ date.df2 &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span 
 </tbody>
 </table>
 <table>
-<caption>Non-identical attributes</caption>
 <thead>
 <tr class="header">
 <th align="left">var.x</th>
@@ -3940,7 +3931,7 @@ date.df2 &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span 
 <li><p>a data.frame of by-variables and row numbers of observations not shared between datasets</p></li>
 <li><p>the number of shared observations</p></li>
 </ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">print</span>(obj$frame.summary)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">print</span>(obj<span class="op">$</span>frame.summary)</code></pre></div>
 <pre><code>  version ncol nrow   by        attrs       unique n.shared
 1       x   14 1499 case 3 attributes 4 unique obs     1495
 2       y   13 1495 case 3 attributes 0 unique obs     1495</code></pre>
@@ -3959,7 +3950,7 @@ date.df2 &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span 
 <li><p>The attributes for x and y, set to <code>NA</code> if non-existant</p></li>
 </ul></li>
 </ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">print</span>(obj$vars.summary)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">print</span>(obj<span class="op">$</span>vars.summary)</code></pre></div>
 <pre><code>         var.x pos.x         class.x       var.y pos.y         class.y           values        attrs
 8         case     1         integer        case     1         integer      by-variable 0 attributes
 17         sex     4          factor         sex     2          factor 1495 differences 2 attributes

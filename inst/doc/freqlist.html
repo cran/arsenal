@@ -69,7 +69,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">The freqlist function</h1>
 <h4 class="author"><em>Tina Gunderson</em></h4>
-<h4 class="date"><em>20 September, 2017</em></h4>
+<h4 class="date"><em>08 December, 2017</em></h4>
 
 
 <div id="TOC">
@@ -2429,14 +2429,14 @@ nobysparse &lt;-<span class="st"> </span><span class="kw">freqlist</span>(tab.sp
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">require</span>(xtable)</code></pre></div>
 <pre><code>Loading required package: xtable</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># set up custom function for xtable text</span>
-italic &lt;-<span class="st"> </span>function(x) {
+italic &lt;-<span class="st"> </span><span class="cf">function</span>(x) {
     <span class="kw">paste0</span>(<span class="st">&quot;&lt;i&gt;&quot;</span>, x, <span class="st">&quot;&lt;/i&gt;&quot;</span>)
 }</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">xftbl &lt;-<span class="st"> </span><span class="kw">xtable</span>(noby[[<span class="st">&quot;freqlist&quot;</span>]], <span class="dt">caption =</span> <span class="st">&quot;xtable formatted output of freqlist data frame&quot;</span>, 
     <span class="dt">align =</span> <span class="st">&quot;|r|r|r|r|c|c|c|r|&quot;</span>)
 
 <span class="co"># change the column names</span>
-<span class="kw">names</span>(xftbl)[<span class="dv">1</span>:<span class="dv">3</span>] &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Arm&quot;</span>, <span class="st">&quot;Gender&quot;</span>, <span class="st">&quot;LASA QOL&quot;</span>)
+<span class="kw">names</span>(xftbl)[<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>] &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Arm&quot;</span>, <span class="st">&quot;Gender&quot;</span>, <span class="st">&quot;LASA QOL&quot;</span>)
 
 <span class="kw">print</span>(xftbl, <span class="dt">sanitize.colnames.function =</span> italic, <span class="dt">include.rownames =</span> <span class="ot">FALSE</span>, <span class="dt">type =</span> <span class="st">&quot;html&quot;</span>, 
     <span class="dt">comment =</span> <span class="ot">FALSE</span>)</code></pre></div>
@@ -2885,7 +2885,7 @@ Female
 <h2>NAs</h2>
 <p>There are several widely used options for basic tables in R. The <code>table</code> function in base R is probably the most common; by default it excludes NA values. You can change NA handling in <code>base::table</code> using the useNA or exclude arguments.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># base table default removes NAs</span>
-tab.d1 &lt;-<span class="st"> </span>base::<span class="kw">table</span>(mockstudy[, <span class="kw">c</span>(<span class="st">&quot;arm&quot;</span>, <span class="st">&quot;sex&quot;</span>, <span class="st">&quot;mdquality.s&quot;</span>)], <span class="dt">useNA =</span> <span class="st">&quot;ifany&quot;</span>)
+tab.d1 &lt;-<span class="st"> </span>base<span class="op">::</span><span class="kw">table</span>(mockstudy[, <span class="kw">c</span>(<span class="st">&quot;arm&quot;</span>, <span class="st">&quot;sex&quot;</span>, <span class="st">&quot;mdquality.s&quot;</span>)], <span class="dt">useNA =</span> <span class="st">&quot;ifany&quot;</span>)
 tab.d1</code></pre></div>
 <pre><code>, , mdquality.s = 0
 
@@ -2912,7 +2912,7 @@ arm         Male Female
   G: IROX     24     17</code></pre>
 <p><code>xtabs</code> is similar to <code>table</code>, but uses a formula-based syntax. However, there is not an option for retaining NAs in the <code>xtabs</code> function; instead, NAs must be added to each level of the factor where present using the <code>addNA</code> function.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># without specifying addNA</span>
-tab.d2 &lt;-<span class="st"> </span><span class="kw">xtabs</span>(<span class="dt">formula =</span> ~arm +<span class="st"> </span>sex +<span class="st"> </span>mdquality.s, <span class="dt">data =</span> mockstudy)
+tab.d2 &lt;-<span class="st"> </span><span class="kw">xtabs</span>(<span class="dt">formula =</span> <span class="op">~</span>arm <span class="op">+</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span>mdquality.s, <span class="dt">data =</span> mockstudy)
 tab.d2</code></pre></div>
 <pre><code>, , mdquality.s = 0
 
@@ -2930,7 +2930,7 @@ arm         Male Female
   F: FOLFOX  285    198
   G: IROX    187    121</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># now with addNA</span>
-tab.d3 &lt;-<span class="st"> </span><span class="kw">xtabs</span>(~arm +<span class="st"> </span>sex +<span class="st"> </span><span class="kw">addNA</span>(mdquality.s), <span class="dt">data =</span> mockstudy)
+tab.d3 &lt;-<span class="st"> </span><span class="kw">xtabs</span>(<span class="op">~</span>arm <span class="op">+</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span><span class="kw">addNA</span>(mdquality.s), <span class="dt">data =</span> mockstudy)
 tab.d3</code></pre></div>
 <pre><code>, , addNA(mdquality.s) = 0
 
@@ -2961,7 +2961,7 @@ arm         Male Female
 <p>Supplying a data.frame to the <code>table</code> function without giving columns individually will create a contingency table using all variables in the data.frame.</p>
 <p>However, if the columns of a data.frame or matrix are supplied separately (i.e., as vectors), column names will not be preserved.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># providing variables separately (as vectors) drops column names</span>
-tab.d4 &lt;-<span class="st"> </span>base::<span class="kw">table</span>(mockstudy[, <span class="st">&quot;arm&quot;</span>], mockstudy[, <span class="st">&quot;sex&quot;</span>], mockstudy[, <span class="st">&quot;mdquality.s&quot;</span>])
+tab.d4 &lt;-<span class="st"> </span>base<span class="op">::</span><span class="kw">table</span>(mockstudy[, <span class="st">&quot;arm&quot;</span>], mockstudy[, <span class="st">&quot;sex&quot;</span>], mockstudy[, <span class="st">&quot;mdquality.s&quot;</span>])
 tab.d4</code></pre></div>
 <pre><code>, ,  = 0
 
@@ -2980,7 +2980,7 @@ tab.d4</code></pre></div>
   G: IROX    187    121</code></pre>
 <p>If desired, you can use the <code>dnn</code> argument to pass variable names.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># add the column name labels back using dnn option in base::table</span>
-tab.dnn &lt;-<span class="st"> </span>base::<span class="kw">table</span>(mockstudy[, <span class="st">&quot;arm&quot;</span>], mockstudy[, <span class="st">&quot;sex&quot;</span>], mockstudy[, <span class="st">&quot;mdquality.s&quot;</span>], 
+tab.dnn &lt;-<span class="st"> </span>base<span class="op">::</span><span class="kw">table</span>(mockstudy[, <span class="st">&quot;arm&quot;</span>], mockstudy[, <span class="st">&quot;sex&quot;</span>], mockstudy[, <span class="st">&quot;mdquality.s&quot;</span>], 
     <span class="dt">dnn =</span> <span class="kw">c</span>(<span class="st">&quot;Amy&quot;</span>, <span class="st">&quot;Susan&quot;</span>, <span class="st">&quot;George&quot;</span>))
 tab.dnn</code></pre></div>
 <pre><code>, , George = 0
