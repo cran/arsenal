@@ -10,6 +10,8 @@ The goal of `library(arsenal)` is to make statistical reporting easy. It include
 in his/her "arsenal" of functions. There are, at this time, 5 main functions, documented below. Each of these functions is
 motivated by a local SAS macro or procedure of similar functionality.
 
+Note that `arsenal` v1.0.0 is not backwards compatible with previous versions. See the `NEWS` file for more details.
+
 ## The `tableby()` Function
 
 `tableby()` is a function to easily summarize a set of independent variables by a categorical variable.
@@ -64,3 +66,5 @@ Other S3 methods are implemented for objects of class `"compare.data.frame"`, in
 * `is.Date`: tests if an object is a date.
 
 * `%nin%` tests for "not in", the negation of `%in%`.
+
+* `allNA()` tests for all elements being NA, and `includeNA()` makes NAs explicit values.

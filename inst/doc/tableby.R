@@ -28,12 +28,7 @@ tmp <- table(Gender=mockstudy$sex, "Study Arm"=mockstudy$arm)
 tmp
 
 # Note: The continuity correction is applied by default in R (not used in %table)
-chisq.test(tmp) 
-
-## gmodels frequency example
-#require(gmodels)
-#CrossTable(mockstudy$sex, mockstudy$arm, prop.r=F, prop.t=F, 
-#           prop.chisq=F, chisq=T, dnn=c('Gender','Study Arm'))
+chisq.test(tmp)
 
 ## base R numeric summary example
 tapply(mockstudy$age, mockstudy$arm, summary)
@@ -46,6 +41,7 @@ attr(mockstudy$age,'label')
 
 ## See all the variables with a label
 unlist(lapply(mockstudy,'attr','label'))
+# Can also use labels(mockstudy)
 
 ## ---- add-label, results='asis'-------------------------------------------------------------------
 attr(mockstudy$sex,'label')  <- 'Gender'
@@ -60,7 +56,7 @@ tab1 <- tableby(arm ~ sex + age, data=mockstudy)
 summary(tab1)
 
 ## ---- results='asis'------------------------------------------------------------------------------
-mylabels <- list( sex = "SEX", age ="Age, yrs")
+mylabels <- list(sex = "SEX", age = "Age, yrs")
 summary(tab1, labelTranslations = mylabels)
 
 ## ---- assignlabels--------------------------------------------------------------------------------
@@ -220,8 +216,8 @@ summary(tableby(arm ~ chisq(mdquality.s, "Nmiss","countpct"), data=mockstudy))
 mytab <- tableby(arm ~ sex + alk.phos + age, data=mockstudy)
 mytab2 <- mytab[c('age','sex','alk.phos')]
 summary(mytab2)
-summary(mytab[c('age','sex')], nsmall = 2)
-summary(mytab[c(3,1)], nsmall = 3)
+summary(mytab[c('age','sex')], digits = 2)
+summary(mytab[c(3,1)], digits = 3)
 
 
 ## ---- results="asis"------------------------------------------------------------------------------
@@ -264,17 +260,13 @@ summary(tableby(sex ~ ast + age, data=mockstudy,
 summary(tableby(sex ~ ast + age, data=mockstudy, 
                 control=tableby.control(numeric.stats=c("mean"),total=FALSE)))
 
-## ---- results='asis'------------------------------------------------------------------------------
-summary(tableby(arm ~ sex + age + fu.time, data=mockstudy), digits=4, digits.test=2, nsmall.pct=1)
+## ---- results = 'asis'----------------------------------------------------------------------------
+mockstudy$ps.cat <- factor(mockstudy$ps)
+attr(mockstudy$ps.cat, "label") <- "ps"
+summary(tableby(sex ~ includeNA(ps.cat), data = mockstudy, cat.stats = "countpct"))
 
-## -------------------------------------------------------------------------------------------------
-format(pi, digits=1)
-format(pi, digits=3)
-format(pi, digits=4)
-format(pi*10, digits=4)
-format(pi*100, digits=4)
-format(pi*100, nsmall=4)
-format(pi*100, nsmall=2, digits=4)
+## ---- results='asis'------------------------------------------------------------------------------
+summary(tableby(arm ~ sex + age + fu.time, data=mockstudy), digits=4, digits.p=2, digits.pct=1)
 
 ## ---- results='asis'------------------------------------------------------------------------------
 myfunc <- function(x, weights=rep(1,length(x)), ...){
@@ -328,10 +320,7 @@ summary(table2, labelTranslations=c(sex="Female", "factor(mdquality.s)"="MD Qual
 
 ## -------------------------------------------------------------------------------------------------
 tab1 <- tableby(arm~sex+age, data=mockstudy)
-summary(tab1, text=T)
-
-tmp <- as.data.frame(tab1)
-tmp
+as.data.frame(tab1)
 
 # write.csv(tmp, '/my/path/here/mymodel.csv')
 

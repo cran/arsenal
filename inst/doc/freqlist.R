@@ -9,9 +9,6 @@ require(arsenal)
 # load the data
 data(mockstudy)
 
-# examine the data
-str(mockstudy)
-
 # retain NAs when creating the table using the useNA argument
 tab.ex <- table(mockstudy[, c("arm", "sex", "mdquality.s")], useNA="ifany")
 
@@ -21,30 +18,28 @@ noby <- freqlist(tab.ex)
 str(noby)
 
 # view the data frame portion of freqlist output
-noby[["freqlist"]] ## or use as.data.frame(noby)
+head(noby[["freqlist"]]) ## or use as.data.frame(noby)
 
 ## ---- results = 'asis'--------------------------------------------------------
 summary(noby)
 
 ## ---- results = 'asis'--------------------------------------------------------
-summary(noby, caption="Basic freqlist output")
+summary(noby, title="Basic freqlist output")
 
 ## -----------------------------------------------------------------------------
 head(as.data.frame(noby))
 
+## -----------------------------------------------------------------------------
+### this works in R >= 3.4.0
+# summary(freqlist(~ arm + sex + mdquality.s, data = mockstudy, addNA = TRUE))
+summary(freqlist(~ arm + sex + addNA(mdquality.s), data = mockstudy))
+
 ## ----labelTranslations, results = 'asis'--------------------------------------
-
 withnames <- freqlist(tab.ex, labelTranslations = c("Treatment Arm","Gender","LASA QOL"), digits = 0)
-
 summary(withnames)
 
-
 ## ----sparse, results = 'asis'-------------------------------------------------
-# we create a second table example to showcase the sparse argument
-tab.sparse <- table(mockstudy[, c("race","sex","arm")])
-
-nobysparse <- freqlist(tab.sparse, sparse = TRUE, digits=1)
-summary(nobysparse)
+summary(freqlist(~ race + sex + arm, data = mockstudy, sparse = TRUE, digits=1))
 
 ## ----na.options, results = 'asis'---------------------------------------------
 summary(freqlist(tab.ex, na.options="include"))
@@ -60,11 +55,11 @@ summary(withby, single = TRUE)
 
 
 ## ----changelabs, results = 'asis'---------------------------------------------
-labels(noby) <- c("Arm", "Sex", "OtherThing")
+labels(noby) <- c("Arm", "Sex", "QOL")
 summary(noby)
 
 ## ---- results = 'asis'--------------------------------------------------------
-summary(noby, labelTranslations = c("Hi there", "What up", "Bye"))
+summary(noby, labelTranslations = c("Arm", "Sex", "QOL"))
 
 ## ----xtable.setup-------------------------------------------------------------
 require(xtable)
@@ -101,11 +96,11 @@ tab.d3
 
 ## -----------------------------------------------------------------------------
 # providing variables separately (as vectors) drops column names
-tab.d4 <- base::table(mockstudy[, "arm"], mockstudy[, "sex"], mockstudy[, "mdquality.s"])
+tab.d4 <- base::table(mockstudy$arm, mockstudy$sex, mockstudy$mdquality.s)
 tab.d4
 
 ## -----------------------------------------------------------------------------
 # add the column name labels back using dnn option in base::table
-tab.dnn <- base::table(mockstudy[, "arm"], mockstudy[, "sex"], mockstudy[, "mdquality.s"], dnn=c("Amy", "Susan", "George"))
+tab.dnn <- base::table(mockstudy$arm, mockstudy$sex, mockstudy$mdquality.s, dnn=c("Arm", "Sex", "QOL"))
 tab.dnn
 

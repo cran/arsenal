@@ -69,7 +69,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">The write2 function</h1>
 <h4 class="author"><em>Ethan Heinzen</em></h4>
-<h4 class="date"><em>08 December, 2017</em></h4>
+<h4 class="date"><em>02 February, 2018</em></h4>
 
 
 <div id="TOC">
@@ -154,16 +154,8 @@ tab1 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 <span class="st">  </span><span class="kw">table</span>(<span class="dt">useNA =</span> <span class="st">&quot;ifany&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">freqlist</span>(<span class="dt">groupBy =</span> <span class="kw">c</span>(<span class="st">&quot;arm&quot;</span>, <span class="st">&quot;sex&quot;</span>)) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">write2word</span>(<span class="kw">paste0</span>(tmpdir, <span class="st">&quot;/test.freqlist.doc&quot;</span>), <span class="dt">quiet =</span> <span class="ot">TRUE</span>,
-             <span class="dt">single =</span> <span class="ot">FALSE</span> <span class="co"># passed to summary.freqlist</span>
-             )</code></pre></div>
-<p>To specify a caption unfortunately requires two parameter specifications:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mockstudy[, <span class="kw">c</span>(<span class="st">&quot;arm&quot;</span>, <span class="st">&quot;sex&quot;</span>, <span class="st">&quot;mdquality.s&quot;</span>)] <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">table</span>(<span class="dt">useNA =</span> <span class="st">&quot;ifany&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">freqlist</span>(<span class="dt">groupBy =</span> <span class="kw">c</span>(<span class="st">&quot;arm&quot;</span>, <span class="st">&quot;sex&quot;</span>)) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">write2word</span>(<span class="kw">paste0</span>(tmpdir, <span class="st">&quot;/test.freqlist.doc&quot;</span>), <span class="dt">quiet =</span> <span class="ot">TRUE</span>,
-             <span class="dt">single =</span> <span class="ot">FALSE</span>,              <span class="co"># passed to summary.freqlist</span>
-             <span class="dt">caption =</span> <span class="st">&quot;My cool caption&quot;</span>, <span class="co"># passed to knitr::kable</span>
-             <span class="dt">format =</span> <span class="st">&quot;pandoc&quot;</span>            <span class="co"># or any other format, passed to knitr::kable</span>
+             <span class="dt">single =</span> <span class="ot">FALSE</span>,         <span class="co"># passed to summary.freqlist</span>
+             <span class="dt">title =</span> <span class="st">&quot;My cool title&quot;</span> <span class="co"># passed to summary.freqlist</span>
              )</code></pre></div>
 </div>
 <div id="compare" class="section level2">

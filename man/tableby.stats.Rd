@@ -8,12 +8,18 @@
 \alias{range}
 \alias{Nevents}
 \alias{medSurv}
+\alias{NeventsSurv}
+\alias{NriskSurv}
+\alias{medTime}
+\alias{rangeTime}
 \alias{q1q3}
 \alias{medianq1q3}
 \alias{Nmiss}
+\alias{Nmiss2}
 \alias{N}
 \alias{count}
 \alias{countpct}
+\alias{countrowpct}
 \title{tableby Summary Statistics Functions}
 \usage{
 meansd(x, na.rm = TRUE, weights = rep(1, length(x)), ...)
@@ -24,15 +30,25 @@ median(x, na.rm = TRUE, weights = rep(1, length(x)), ...)
 
 range(x, na.rm = TRUE, ...)
 
-Nevents(x, ...)
+Nevents(x, na.rm = TRUE, weights = rep(1, nrow(x)), ...)
 
-medSurv(x, ...)
+medSurv(x, na.rm = TRUE, weights = rep(1, nrow(x)), ...)
+
+NeventsSurv(x, na.rm = TRUE, weights = rep(1, nrow(x)), times = 1:5, ...)
+
+NriskSurv(x, na.rm = TRUE, weights = rep(1, nrow(x)), times = 1:5, ...)
+
+medTime(x, na.rm = TRUE, weights = rep(1, nrow(x)), ...)
+
+rangeTime(x, na.rm = TRUE, ...)
 
 q1q3(x, na.rm = TRUE, weights = rep(1, length(x)), ...)
 
 medianq1q3(x, na.rm = TRUE, weights = rep(1, length(x)), ...)
 
 Nmiss(x, levels = NULL, na.rm = TRUE, weights = rep(1, length(x)), ...)
+
+Nmiss2(x, levels = NULL, na.rm = TRUE, weights = rep(1, length(x)), ...)
 
 N(x, levels = NULL, na.rm = TRUE, weights = rep(1, length(x)), ...)
 
@@ -41,6 +57,9 @@ count(x, levels = sort(unique(x)), na.rm = TRUE, weights = rep(1,
 
 countpct(x, levels = sort(unique(x)), na.rm = TRUE, weights = rep(1,
   length(x)), ...)
+
+countrowpct(x, levels = sort(unique(x)), by, by.levels = sort(unique(by)),
+  na.rm = TRUE, weights = rep(1, length(x)), ...)
 }
 \arguments{
 \item{x}{Usually a vector.}
@@ -51,7 +70,13 @@ countpct(x, levels = sort(unique(x)), na.rm = TRUE, weights = rep(1,
 
 \item{...}{Other arguments.}
 
+\item{times}{A vector of times to use for survival summaries.}
+
 \item{levels}{A vector of levels that character \code{x}s should have.}
+
+\item{by}{a vector of the by-values.}
+
+\item{by.levels}{a vector of the levels of \code{by}.}
 }
 \value{
 Usually a vector of the appropriate numbers.
@@ -63,4 +88,7 @@ A collection of functions that will report summary statistics. To create a custo
 }
 \details{
 Not all these functions are exported, in order to avoid conflicting NAMESPACES.
+}
+\seealso{
+\code{\link{includeNA}}, \code{\link{tableby.control}}
 }

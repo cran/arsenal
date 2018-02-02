@@ -23,7 +23,8 @@ expect_write2_worked <- function(FUN, object, reference, ...)
 ###########################################################################################################
 
 test_that("write2.tableby -> HTML", {
-  expect_write2_worked(write2html, tableby(arm ~ sex + age, data=mockstudy), reference = "write2.tableby.html.md",
+  expect_write2_worked(write2html, tableby(arm ~ sex + age, data=mockstudy, numeric.stats = c("meansd", "q1q3", "range")),
+                       reference = "write2.tableby.html.md",
                        title = "My test table", labelTranslations = list(sex = "SEX", age ="Age, yrs"), total = FALSE)
 })
 
@@ -40,11 +41,11 @@ test_that("write2.freqlist -> HTML", {
 
 test_that("write2.freqlist -> doc", {
   expect_write2_worked(write2word, freqlist(table(mockstudy[, c("arm", "sex", "mdquality.s")], useNA = "ifany"), groupBy = c("arm", "sex")),
-                       reference = "write2.freqlist.doc.md", single = TRUE, caption = "My cool caption", format = "pandoc")
+                       reference = "write2.freqlist.doc.md", single = TRUE, title = "My cool title")
 })
 
 ###########################################################################################################
-#### External output
+#### External output, commented out on 11/9/17 because of external package changes
 ###########################################################################################################
 #
 # test_that("write2.knitr_kable -> HTML", {
@@ -74,12 +75,12 @@ test_that("write2.freqlist -> doc", {
 ###########################################################################################################
 
 
-mylist <- list(tableby(sex ~ age, data = mockstudy),
+mylist <- list(tableby(sex ~ age, data = mockstudy, numeric.stats = c("meansd", "q1q3", "range")),
                freqlist(table(mockstudy[, c("sex", "arm")])),
                knitr::kable(head(mockstudy)))
 mylist2 <- list("# Header 1",
                 "This is a small paragraph.",
-                tableby(sex ~ age, data = mockstudy))
+                tableby(sex ~ age, data = mockstudy, numeric.stats = c("meansd", "q1q3", "range")))
 
 test_that("write2.list -> PDF", {
   expect_write2_worked(write2pdf, mylist, reference = "write2.mylist.pdf.md")
@@ -118,7 +119,7 @@ test_that("write2.verbatim -> html", {
 mylist3 <- list(
   "# Header 1",
   "This is a small paragraph.",
-  tableby(sex ~ age, data = mockstudy),
+  tableby(sex ~ age, data = mockstudy, numeric.stats = c("meansd", "q1q3", "range")),
   yaml(title = "My title"),
   my.lm,
   yaml(author = "Ethan P Heinzen"),
@@ -129,7 +130,7 @@ mylist4 <- list(
   yaml(title = "My title", author = "Ethan P Heinzen", "header-includes" = list("\\usepackage[labelformat=empty]{caption}")),
   "# Header 1",
   "This is a small paragraph.",
-  tableby(sex ~ age, data = mockstudy),
+  tableby(sex ~ age, data = mockstudy, numeric.stats = c("meansd", "q1q3", "range")),
   my.lm
 )
 
@@ -143,7 +144,7 @@ test_that("write2.yaml -> PDF", {
 #### Code used to generate the files
 ###########################################################################################################
 #
-#  write2html(tableby(arm ~ sex + age, data=mockstudy), "tests/testthat/write2.tableby.html",
+#  write2html(tableby(arm ~ sex + age, data=mockstudy), "tests/testthat/write2.tableby.html", numeric.stats = c("meansd", "q1q3", "range"),
 #             title = "My test table", labelTranslations = list(sex = "SEX", age ="Age, yrs"), total = FALSE, render. = FALSE)
 #
 #  write2html(modelsum(alk.phos ~ arm + ps + hgb, adjust= ~ age + sex, family = "gaussian", data = mockstudy),
@@ -154,7 +155,7 @@ test_that("write2.yaml -> PDF", {
 #             "tests/testthat/write2.freqlist.html", single = TRUE, render. = FALSE)
 #
 # write2word(freqlist(table(mockstudy[, c("arm", "sex", "mdquality.s")], useNA = "ifany"), groupBy = c("arm", "sex")),
-#            "tests/testthat/write2.freqlist.doc", single = TRUE, caption = "My cool caption", format = "pandoc", render. = FALSE)
+#            "tests/testthat/write2.freqlist.doc", single = TRUE, title = "My cool title", render. = FALSE)
 #
 #  write2html(knitr::kable(head(mockstudy)),
 #             "tests/testthat/write2.kable.html", render. = FALSE)

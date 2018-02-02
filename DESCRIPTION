@@ -1,8 +1,8 @@
 Package: arsenal
 Title: An Arsenal of 'R' Functions for Large-Scale Statistical
         Summaries
-Version: 0.6.1
-Date: 2017-12-08
+Version: 1.0.0
+Date: 2018-02-02
 Authors@R: c(
     person("Ethan", "Heinzen", email = "heinzen.ethan@mayo.edu", role = c("aut", "cre")),
     person("Jason", "Sinnwell", role="aut"),
@@ -27,7 +27,7 @@ Description: An Arsenal of 'R' functions for large-scale statistical summaries,
   compare.data.frame(), the S3 method for comparing data.frames; and
   write2(), a function to output tables to a document.
 Suggests: broom, stringr, magrittr, knitr, rmarkdown, xtable, pander,
-        survival, coin, pROC, MASS, gam, rpart, yaml
+        survival (>= 2.41-3), coin, pROC, MASS, gam, rpart, yaml
 Depends: R (>= 3.2.0), stats (>= 3.2.0)
 Imports: testthat
 URL: https://github.com/eheinzen/arsenal,
@@ -38,7 +38,7 @@ License: GPL (>= 2)
 RoxygenNote: 6.0.1
 LazyData: true
 NeedsCompilation: no
-Packaged: 2017-12-08 22:31:46 UTC; m144326
+Packaged: 2018-02-02 21:18:59 UTC; m144326
 Author: Ethan Heinzen [aut, cre],
   Jason Sinnwell [aut],
   Elizabeth Atkinson [aut],
@@ -52,4 +52,4 @@ Author: Ethan Heinzen [aut, cre],
   Brendan Broderick [ctb]
 Maintainer: Ethan Heinzen <heinzen.ethan@mayo.edu>
 Repository: CRAN
-Date/Publication: 2017-12-08 22:42:46 UTC
+Date/Publication: 2018-02-02 21:41:25 UTC

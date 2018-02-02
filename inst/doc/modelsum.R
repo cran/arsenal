@@ -355,15 +355,6 @@ summary(modelsum(bmi ~ ast + age, data=mockstudy,
 summary(modelsum(bmi ~ sex + age + fu.time, data=mockstudy), digits=4, digits.test=2)
 
 ## ------------------------------------------------------------------------
-format(pi, digits=1)
-format(pi, digits=3)
-format(pi, digits=4)
-format(pi*10, digits=4)
-format(pi*100, digits=4)
-format(pi*100, nsmall=4)
-format(pi*100, nsmall=2, digits=4)
-
-## ------------------------------------------------------------------------
 mockstudy$agegp <- cut(mockstudy$age, breaks=c(18,50,60,70,90), right=FALSE)
 
 ## create weights based on agegp and sex distribution
@@ -397,12 +388,12 @@ tmp <- as.data.frame(tab2)
 tmp
 # write.csv(tmp, '/my/path/here/mymodel.csv')
 
-## ------------------------------------------------------------------------
-## write to an HTML document
-# write2html(tab2, "~/ibm/trash.html")
-
-## write to a Word document
-# write2word(tab2, "~/ibm/trash.doc", title="My table in Word")
+## ----eval = FALSE--------------------------------------------------------
+#  ## write to an HTML document
+#  write2html(tab2, "~/ibm/trash.html")
+#  
+#  ## write to a Word document
+#  write2word(tab2, "~/ibm/trash.doc", title="My table in Word")
 
 ## ------------------------------------------------------------------------
 args(modelsum.control)

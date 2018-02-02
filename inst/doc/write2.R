@@ -31,17 +31,8 @@ knitr::opts_chunk$set(eval = FALSE, message = FALSE)
 #    table(useNA = "ifany") %>%
 #    freqlist(groupBy = c("arm", "sex")) %>%
 #    write2word(paste0(tmpdir, "/test.freqlist.doc"), quiet = TRUE,
-#               single = FALSE # passed to summary.freqlist
-#               )
-
-## ------------------------------------------------------------------------
-#  mockstudy[, c("arm", "sex", "mdquality.s")] %>%
-#    table(useNA = "ifany") %>%
-#    freqlist(groupBy = c("arm", "sex")) %>%
-#    write2word(paste0(tmpdir, "/test.freqlist.doc"), quiet = TRUE,
-#               single = FALSE,              # passed to summary.freqlist
-#               caption = "My cool caption", # passed to knitr::kable
-#               format = "pandoc"            # or any other format, passed to knitr::kable
+#               single = FALSE,         # passed to summary.freqlist
+#               title = "My cool title" # passed to summary.freqlist
 #               )
 
 ## ------------------------------------------------------------------------

@@ -10,7 +10,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<meta name="author" content="Tina Gunderson" />
+<meta name="author" content="Tina Gunderson and Ethan Heinzen" />
 
 
 <title>The freqlist function</title>
@@ -68,8 +68,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 
 <h1 class="title toc-ignore">The freqlist function</h1>
-<h4 class="author"><em>Tina Gunderson</em></h4>
-<h4 class="date"><em>08 December, 2017</em></h4>
+<h4 class="author"><em>Tina Gunderson and Ethan Heinzen</em></h4>
+<h4 class="date"><em>02 February, 2018</em></h4>
 
 
 <div id="TOC">
@@ -78,14 +78,15 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><a href="#sample-dataset">Sample dataset</a></li>
 </ul></li>
 <li><a href="#the-freqlist-object">The <code>freqlist</code> object</a></li>
-<li><a href="#basic-output-using-summary">Basic output using <code>summary</code></a></li>
+<li><a href="#basic-output-using-summary">Basic output using <code>summary()</code></a></li>
+<li><a href="#using-a-formula-with-freqlist">Using a formula with <code>freqlist</code></a></li>
 <li><a href="#rounding-percentage-digits-or-changing-variable-names-for-printing">Rounding percentage digits or changing variable names for printing</a></li>
 <li><a href="#additional-examples">Additional examples</a><ul>
 <li><a href="#including-combinations-with-frequencies-of-zero">Including combinations with frequencies of zero</a></li>
 <li><a href="#options-for-na-handling">Options for NA handling</a></li>
 <li><a href="#frequency-counts-and-percentages-subset-by-factor-levels">Frequency counts and percentages subset by factor levels</a></li>
 <li><a href="#change-labels-on-the-fly">Change labels on the fly</a></li>
-<li><a href="#using-xtable-to-format-and-print-freqlist-results">Using <code>xtable</code> to format and print <code>freqlist</code> results</a></li>
+<li><a href="#using-xtable-to-format-and-print-freqlist-results">Using <code>xtable()</code> to format and print <code>freqlist()</code> results</a></li>
 </ul></li>
 <li><a href="#appendix-notes-regarding-table-options-in-r">Appendix: Notes regarding table options in R</a><ul>
 <li><a href="#nas">NAs</a></li>
@@ -94,10 +95,9 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </ul>
 </div>
 
-
 <div id="overview" class="section level1">
 <h1>Overview</h1>
-<p><code>freqlist</code> is a function meant to produce output similar to SAS’s <code>PROC FREQ</code> procedure when using the <code>/list</code> option of the <code>TABLE</code> statement. <code>freqlist</code> provides options for handling missing or sparse data and can provide cumulative counts and percentages based on subgroups. It depends on the <code>knitr</code> package for printing.</p>
+<p><code>freqlist()</code> is a function meant to produce output similar to SAS’s <code>PROC FREQ</code> procedure when using the <code>/list</code> option of the <code>TABLE</code> statement. <code>freqlist()</code> provides options for handling missing or sparse data and can provide cumulative counts and percentages based on subgroups. It depends on the <code>knitr</code> package for printing.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">require</span>(arsenal)</code></pre></div>
 <div id="sample-dataset" class="section level2">
 <h2>Sample dataset</h2>
@@ -105,39 +105,18 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># load the data</span>
 <span class="kw">data</span>(mockstudy)
 
-<span class="co"># examine the data</span>
-<span class="kw">str</span>(mockstudy)</code></pre></div>
-<pre><code>'data.frame':   1499 obs. of  14 variables:
- $ case       : int  110754 99706 105271 105001 112263 86205 99508 90158 88989 90515 ...
- $ age        : atomic  67 74 50 71 69 56 50 57 51 63 ...
-  ..- attr(*, &quot;label&quot;)= chr &quot;Age in Years&quot;
- $ arm        : atomic  F: FOLFOX A: IFL A: IFL G: IROX ...
-  ..- attr(*, &quot;label&quot;)= chr &quot;Treatment Arm&quot;
- $ sex        : Factor w/ 2 levels &quot;Male&quot;,&quot;Female&quot;: 1 2 2 2 2 1 1 1 2 1 ...
- $ race       : atomic  Caucasian Caucasian Caucasian Caucasian ...
-  ..- attr(*, &quot;label&quot;)= chr &quot;Race&quot;
- $ fu.time    : int  922 270 175 128 233 120 369 421 387 363 ...
- $ fu.stat    : int  2 2 2 2 2 2 2 2 2 2 ...
- $ ps         : int  0 1 1 1 0 0 0 0 1 1 ...
- $ hgb        : num  11.5 10.7 11.1 12.6 13 10.2 13.3 12.1 13.8 12.1 ...
- $ bmi        : atomic  25.1 19.5 NA 29.4 26.4 ...
-  ..- attr(*, &quot;label&quot;)= chr &quot;Body Mass Index (kg/m^2)&quot;
- $ alk.phos   : int  160 290 700 771 350 569 162 152 231 492 ...
- $ ast        : int  35 52 100 68 35 27 16 12 25 18 ...
- $ mdquality.s: int  NA 1 1 1 NA 1 1 1 1 1 ...
- $ age.ord    : Ord.factor w/ 8 levels &quot;10-19&quot;&lt;&quot;20-29&quot;&lt;..: 6 7 4 7 6 5 4 5 5 6 ...</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># retain NAs when creating the table using the useNA argument</span>
+<span class="co"># retain NAs when creating the table using the useNA argument</span>
 tab.ex &lt;-<span class="st"> </span><span class="kw">table</span>(mockstudy[, <span class="kw">c</span>(<span class="st">&quot;arm&quot;</span>, <span class="st">&quot;sex&quot;</span>, <span class="st">&quot;mdquality.s&quot;</span>)], <span class="dt">useNA =</span> <span class="st">&quot;ifany&quot;</span>)</code></pre></div>
-
 </div>
 </div>
 <div id="the-freqlist-object" class="section level1">
 <h1>The <code>freqlist</code> object</h1>
-<p>The <code>freqlist</code> function returns an object of class <code>freqlist</code>, which has three parts: <code>freqlist</code>, <code>byVar</code>, and <code>labels</code>.</p>
+<p>The <code>freqlist()</code> function returns an object of class <code>&quot;freqlist&quot;</code>, which has three parts: <code>freqlist</code>, <code>byVar</code>, and <code>labels</code>.</p>
 <ul>
 <li><p><code>freqlist</code> is a single data frame containing all contingency tables with calculated frequencies, cumulative frequencies, percentages, and cumulative percentages.</p></li>
 <li><p><code>byVar</code> and <code>labels</code> are used in the <code>summary</code> method for subgroups and variable names, which will be covered in later examples.</p></li>
 </ul>
+<p>Note that <code>freqlist()</code> is an S3 generic, with methods for tables and formulas.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">noby &lt;-<span class="st"> </span><span class="kw">freqlist</span>(tab.ex)
 
 <span class="kw">str</span>(noby)</code></pre></div>
@@ -154,31 +133,18 @@ tab.ex &lt;-<span class="st"> </span><span class="kw">table</span>(mockstudy[, <
  $ labels  : NULL
  - attr(*, &quot;class&quot;)= chr &quot;freqlist&quot;</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># view the data frame portion of freqlist output</span>
-noby[[<span class="st">&quot;freqlist&quot;</span>]]  ## or use as.data.frame(noby)</code></pre></div>
-<pre><code>         arm    sex mdquality.s Freq cumFreq freqPercent cumPercent
-1     A: IFL   Male           0   29      29        1.93       1.93
-2     A: IFL   Male           1  214     243       14.28      16.21
-3     A: IFL   Male        &lt;NA&gt;   34     277        2.27      18.48
-4     A: IFL Female           0   12     289        0.80      19.28
-5     A: IFL Female           1  118     407        7.87      27.15
-6     A: IFL Female        &lt;NA&gt;   21     428        1.40      28.55
-7  F: FOLFOX   Male           0   31     459        2.07      30.62
-8  F: FOLFOX   Male           1  285     744       19.01      49.63
-9  F: FOLFOX   Male        &lt;NA&gt;   95     839        6.34      55.97
-10 F: FOLFOX Female           0   21     860        1.40      57.37
-11 F: FOLFOX Female           1  198    1058       13.21      70.58
-12 F: FOLFOX Female        &lt;NA&gt;   61    1119        4.07      74.65
-13   G: IROX   Male           0   17    1136        1.13      75.78
-14   G: IROX   Male           1  187    1323       12.47      88.26
-15   G: IROX   Male        &lt;NA&gt;   24    1347        1.60      89.86
-16   G: IROX Female           0   14    1361        0.93      90.79
-17   G: IROX Female           1  121    1482        8.07      98.87
-18   G: IROX Female        &lt;NA&gt;   17    1499        1.13     100.00</code></pre>
-
+<span class="kw">head</span>(noby[[<span class="st">&quot;freqlist&quot;</span>]])  ## or use as.data.frame(noby)</code></pre></div>
+<pre><code>     arm    sex mdquality.s Freq cumFreq freqPercent cumPercent
+1 A: IFL   Male           0   29      29        1.93       1.93
+2 A: IFL   Male           1  214     243       14.28      16.21
+3 A: IFL   Male        &lt;NA&gt;   34     277        2.27      18.48
+4 A: IFL Female           0   12     289        0.80      19.28
+5 A: IFL Female           1  118     407        7.87      27.15
+6 A: IFL Female        &lt;NA&gt;   21     428        1.40      28.55</code></pre>
 </div>
 <div id="basic-output-using-summary" class="section level1">
-<h1>Basic output using <code>summary</code></h1>
-<p>The <code>summary</code> method for <code>freqlist</code> relies on the <code>kable</code> function (in the <code>knitr</code> package) for printing. <code>knitr::kable</code> converts the output to markdown which can be printed in the console or easily rendered in Word, pdf, or html documents.</p>
+<h1>Basic output using <code>summary()</code></h1>
+<p>The <code>summary</code> method for <code>freqlist()</code> relies on the <code>kable()</code> function (in the <code>knitr</code> package) for printing. <code>knitr::kable()</code> converts the output to markdown which can be printed in the console or easily rendered in Word, PDF, or HTML documents.</p>
 <p>Note that you must supply <code>results=&quot;asis&quot;</code> to properly format the markdown output.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(noby)</code></pre></div>
 <table>
@@ -358,8 +324,8 @@ noby[[<span class="st">&quot;freqlist&quot;</span>]]  ## or use as.data.frame(no
 </tr>
 </tbody>
 </table>
-<p>Additional arguments (except digits) in the <code>kable</code> function can be passed through. Perhaps the most useful is <code>caption</code>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(noby, <span class="dt">caption =</span> <span class="st">&quot;Basic freqlist output&quot;</span>)</code></pre></div>
+<p>You can print a title for the table using the <code>title=</code> argument.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(noby, <span class="dt">title =</span> <span class="st">&quot;Basic freqlist output&quot;</span>)</code></pre></div>
 <table>
 <caption>Basic freqlist output</caption>
 <thead>
@@ -538,7 +504,7 @@ noby[[<span class="st">&quot;freqlist&quot;</span>]]  ## or use as.data.frame(no
 </tr>
 </tbody>
 </table>
-<p>You can also easily pull out the <code>freqlist</code> data frame for more complicated formatting or manipulation (e.g. with another function such as <code>xtable</code> or <code>pander</code>) using <code>as.data.frame</code>:</p>
+<p>You can also easily pull out the <code>freqlist</code> data frame for more complicated formatting or manipulation (e.g. with another function such as <code>xtable()</code> or <code>pander()</code>) using <code>as.data.frame()</code>:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(<span class="kw">as.data.frame</span>(noby))</code></pre></div>
 <pre><code>     arm    sex mdquality.s Freq cumFreq freqPercent cumPercent
 1 A: IFL   Male           0   29      29        1.93       1.93
@@ -547,14 +513,42 @@ noby[[<span class="st">&quot;freqlist&quot;</span>]]  ## or use as.data.frame(no
 4 A: IFL Female           0   12     289        0.80      19.28
 5 A: IFL Female           1  118     407        7.87      27.15
 6 A: IFL Female        &lt;NA&gt;   21     428        1.40      28.55</code></pre>
+</div>
+<div id="using-a-formula-with-freqlist" class="section level1">
+<h1>Using a formula with <code>freqlist</code></h1>
+<p>Instead of passing a pre-computed table to <code>freqlist()</code>, you can instead pass a formula, which will be in turn passed to the <code>xtabs()</code> function. Additional <code>freqlist()</code> arguments are passed through the <code>...</code> to the <code>freqlist()</code> table method.</p>
+<p>Note that the <code>addNA=</code> argument was added to <code>xtabs()</code> in R 3.4.0. In previous versions, NAs have to be added to relevant columns using <code>addNA()</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">### this works in R &gt;= 3.4.0 summary(freqlist(~ arm + sex + mdquality.s, data =
+### mockstudy, addNA = TRUE))
+<span class="kw">summary</span>(<span class="kw">freqlist</span>(<span class="op">~</span>arm <span class="op">+</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span><span class="kw">addNA</span>(mdquality.s), <span class="dt">data =</span> mockstudy))</code></pre></div>
+<pre><code>
 
+arm         sex      addNA.mdquality.s.    Freq   cumFreq   freqPercent   cumPercent
+----------  -------  -------------------  -----  --------  ------------  -----------
+A: IFL      Male     0                       29        29          1.93         1.93
+                     1                      214       243         14.28        16.21
+                     NA                      34       277          2.27        18.48
+            Female   0                       12       289          0.80        19.28
+                     1                      118       407          7.87        27.15
+                     NA                      21       428          1.40        28.55
+F: FOLFOX   Male     0                       31       459          2.07        30.62
+                     1                      285       744         19.01        49.63
+                     NA                      95       839          6.34        55.97
+            Female   0                       21       860          1.40        57.37
+                     1                      198      1058         13.21        70.58
+                     NA                      61      1119          4.07        74.65
+G: IROX     Male     0                       17      1136          1.13        75.78
+                     1                      187      1323         12.47        88.26
+                     NA                      24      1347          1.60        89.86
+            Female   0                       14      1361          0.93        90.79
+                     1                      121      1482          8.07        98.87
+                     NA                      17      1499          1.13       100.00</code></pre>
 </div>
 <div id="rounding-percentage-digits-or-changing-variable-names-for-printing" class="section level1">
 <h1>Rounding percentage digits or changing variable names for printing</h1>
-<p>The digits argument takes a single numeric value and controls the rounding of percentages in the output. The labelTranslations argument is a character vector whose length must be equal to the number of factors used in the table. Note: this does not change the names of the data frame in the freqlist object, only those used in printing. Both options are applied in the following example.</p>
+<p>The <code>digits=</code> argument takes a single numeric value and controls the rounding of percentages in the output. The <code>labelTranslations=</code> argument is a character vector or list whose length must be equal to the number of factors used in the table. Note: this does not change the names of the data frame in the freqlist object, only those used in printing. Both options are applied in the following example.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">withnames &lt;-<span class="st"> </span><span class="kw">freqlist</span>(tab.ex, <span class="dt">labelTranslations =</span> <span class="kw">c</span>(<span class="st">&quot;Treatment Arm&quot;</span>, <span class="st">&quot;Gender&quot;</span>, <span class="st">&quot;LASA QOL&quot;</span>), 
     <span class="dt">digits =</span> <span class="dv">0</span>)
-
 <span class="kw">summary</span>(withnames)</code></pre></div>
 <table>
 <thead>
@@ -733,18 +727,13 @@ noby[[<span class="st">&quot;freqlist&quot;</span>]]  ## or use as.data.frame(no
 </tr>
 </tbody>
 </table>
-
 </div>
 <div id="additional-examples" class="section level1">
 <h1>Additional examples</h1>
 <div id="including-combinations-with-frequencies-of-zero" class="section level2">
 <h2>Including combinations with frequencies of zero</h2>
-<p>The sparse argument takes a single logical value as input. The default option is FALSE. If set to TRUE, the sparse option will include combinations with frequencies of zero in the list of results. As our initial table did not have any such levels, we create a second table to use in our example.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># we create a second table example to showcase the sparse argument</span>
-tab.sparse &lt;-<span class="st"> </span><span class="kw">table</span>(mockstudy[, <span class="kw">c</span>(<span class="st">&quot;race&quot;</span>, <span class="st">&quot;sex&quot;</span>, <span class="st">&quot;arm&quot;</span>)])
-
-nobysparse &lt;-<span class="st"> </span><span class="kw">freqlist</span>(tab.sparse, <span class="dt">sparse =</span> <span class="ot">TRUE</span>, <span class="dt">digits =</span> <span class="dv">1</span>)
-<span class="kw">summary</span>(nobysparse)</code></pre></div>
+<p>The <code>sparse=</code> argument takes a single logical value as input. The default option is <code>FALSE</code>. If set to <code>TRUE</code>, the sparse option will include combinations with frequencies of zero in the list of results. As our initial table did not have any such levels, we create a second table to use in our example.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(<span class="kw">freqlist</span>(<span class="op">~</span>race <span class="op">+</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span>arm, <span class="dt">data =</span> mockstudy, <span class="dt">sparse =</span> <span class="ot">TRUE</span>, <span class="dt">digits =</span> <span class="dv">1</span>))</code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -1141,7 +1130,7 @@ nobysparse &lt;-<span class="st"> </span><span class="kw">freqlist</span>(tab.sp
 </div>
 <div id="options-for-na-handling" class="section level2">
 <h2>Options for NA handling</h2>
-<p>The various na.options allow you to include or exclude data with missing values for one or more factor levels in the counts and percentages as well as show the missing data but exclude it from the cumulative counts and percentages. The default option is to include all combinations with missing values.</p>
+<p>The various <code>na.options=</code> allow you to include or exclude data with missing values for one or more factor levels in the counts and percentages, as well as show the missing data but exclude it from the cumulative counts and percentages. The default option is to include all combinations with missing values.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(<span class="kw">freqlist</span>(tab.ex, <span class="dt">na.options =</span> <span class="st">&quot;include&quot;</span>))</code></pre></div>
 <table>
 <thead>
@@ -1625,7 +1614,7 @@ nobysparse &lt;-<span class="st"> </span><span class="kw">freqlist</span>(tab.sp
 </div>
 <div id="frequency-counts-and-percentages-subset-by-factor-levels" class="section level2">
 <h2>Frequency counts and percentages subset by factor levels</h2>
-<p>The groupBy argument internally subsets the data by the specified factor prior to calculating cumulative counts and percentages. By default, when used each subset will print in a separate table. Using the <code>single = TRUE</code> option when printing will collapse the subsetted result into a single table.</p>
+<p>The <code>groupBy=</code> argument internally subsets the data by the specified factor prior to calculating cumulative counts and percentages. By default, when used each subset will print in a separate table. Using the <code>single = TRUE</code> option when printing will collapse the subsetted result into a single table.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">withby &lt;-<span class="st"> </span><span class="kw">freqlist</span>(tab.ex, <span class="dt">groupBy =</span> <span class="kw">c</span>(<span class="st">&quot;arm&quot;</span>, <span class="st">&quot;sex&quot;</span>))
 <span class="kw">summary</span>(withby)</code></pre></div>
 <table>
@@ -2064,14 +2053,14 @@ nobysparse &lt;-<span class="st"> </span><span class="kw">freqlist</span>(tab.sp
 <div id="change-labels-on-the-fly" class="section level2">
 <h2>Change labels on the fly</h2>
 <p>At this time, the labels can be changed just for the variables (e.g. not the frequency columns).</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">labels</span>(noby) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Arm&quot;</span>, <span class="st">&quot;Sex&quot;</span>, <span class="st">&quot;OtherThing&quot;</span>)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">labels</span>(noby) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Arm&quot;</span>, <span class="st">&quot;Sex&quot;</span>, <span class="st">&quot;QOL&quot;</span>)
 <span class="kw">summary</span>(noby)</code></pre></div>
 <table>
 <thead>
 <tr class="header">
 <th align="left">Arm</th>
 <th align="left">Sex</th>
-<th align="left">OtherThing</th>
+<th align="left">QOL</th>
 <th align="right">Freq</th>
 <th align="right">cumFreq</th>
 <th align="right">freqPercent</th>
@@ -2243,14 +2232,14 @@ nobysparse &lt;-<span class="st"> </span><span class="kw">freqlist</span>(tab.sp
 </tr>
 </tbody>
 </table>
-<p>You can also supply <code>labelTranslations</code> to <code>summary</code>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(noby, <span class="dt">labelTranslations =</span> <span class="kw">c</span>(<span class="st">&quot;Hi there&quot;</span>, <span class="st">&quot;What up&quot;</span>, <span class="st">&quot;Bye&quot;</span>))</code></pre></div>
+<p>You can also supply <code>labelTranslations=</code> to <code>summary()</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(noby, <span class="dt">labelTranslations =</span> <span class="kw">c</span>(<span class="st">&quot;Arm&quot;</span>, <span class="st">&quot;Sex&quot;</span>, <span class="st">&quot;QOL&quot;</span>))</code></pre></div>
 <table>
 <thead>
 <tr class="header">
-<th align="left">Hi there</th>
-<th align="left">What up</th>
-<th align="left">Bye</th>
+<th align="left">Arm</th>
+<th align="left">Sex</th>
+<th align="left">QOL</th>
 <th align="right">Freq</th>
 <th align="right">cumFreq</th>
 <th align="right">freqPercent</th>
@@ -2424,8 +2413,8 @@ nobysparse &lt;-<span class="st"> </span><span class="kw">freqlist</span>(tab.sp
 </table>
 </div>
 <div id="using-xtable-to-format-and-print-freqlist-results" class="section level2">
-<h2>Using <code>xtable</code> to format and print <code>freqlist</code> results</h2>
-<p>Fair warning: <code>xtable</code> has kind of a steep learning curve. These examples are given without explanation for more advanced users.</p>
+<h2>Using <code>xtable()</code> to format and print <code>freqlist()</code> results</h2>
+<p>Fair warning: <code>xtable()</code> has kind of a steep learning curve. These examples are given without explanation, for more advanced users.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">require</span>(xtable)</code></pre></div>
 <pre><code>Loading required package: xtable</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># set up custom function for xtable text</span>
@@ -2876,14 +2865,13 @@ Female
 </td>
 </tr>
 </table>
-
 </div>
 </div>
 <div id="appendix-notes-regarding-table-options-in-r" class="section level1">
 <h1>Appendix: Notes regarding table options in R</h1>
 <div id="nas" class="section level2">
 <h2>NAs</h2>
-<p>There are several widely used options for basic tables in R. The <code>table</code> function in base R is probably the most common; by default it excludes NA values. You can change NA handling in <code>base::table</code> using the useNA or exclude arguments.</p>
+<p>There are several widely used options for basic tables in R. The <code>table()</code> function in base R is probably the most common; by default it excludes NA values. You can change NA handling in <code>base::table()</code> using the <code>useNA=</code> or <code>exclude=</code> arguments.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># base table default removes NAs</span>
 tab.d1 &lt;-<span class="st"> </span>base<span class="op">::</span><span class="kw">table</span>(mockstudy[, <span class="kw">c</span>(<span class="st">&quot;arm&quot;</span>, <span class="st">&quot;sex&quot;</span>, <span class="st">&quot;mdquality.s&quot;</span>)], <span class="dt">useNA =</span> <span class="st">&quot;ifany&quot;</span>)
 tab.d1</code></pre></div>
@@ -2910,7 +2898,7 @@ arm         Male Female
   A: IFL      34     21
   F: FOLFOX   95     61
   G: IROX     24     17</code></pre>
-<p><code>xtabs</code> is similar to <code>table</code>, but uses a formula-based syntax. However, there is not an option for retaining NAs in the <code>xtabs</code> function; instead, NAs must be added to each level of the factor where present using the <code>addNA</code> function.</p>
+<p><code>xtabs()</code> is similar to <code>table()</code>, but uses a formula-based syntax. However, there is not an option for retaining NAs in the <code>xtabs()</code> function; instead, NAs must be added to each level of the factor where present using the <code>addNA()</code> function, or (in R &gt;= 3.4.0) using the argument <code>addNA = TRUE</code>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># without specifying addNA</span>
 tab.d2 &lt;-<span class="st"> </span><span class="kw">xtabs</span>(<span class="dt">formula =</span> <span class="op">~</span>arm <span class="op">+</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span>mdquality.s, <span class="dt">data =</span> mockstudy)
 tab.d2</code></pre></div>
@@ -2955,13 +2943,14 @@ arm         Male Female
   A: IFL      34     21
   F: FOLFOX   95     61
   G: IROX     24     17</code></pre>
+<p>Since the formula method of <code>freqlist()</code> uses <code>xtabs()</code>, NAs should be treated in the same way.</p>
 </div>
 <div id="table-dimname-names-dnn" class="section level2">
 <h2>Table dimname names (dnn)</h2>
-<p>Supplying a data.frame to the <code>table</code> function without giving columns individually will create a contingency table using all variables in the data.frame.</p>
+<p>Supplying a data.frame to the <code>table()</code> function without giving columns individually will create a contingency table using all variables in the data.frame.</p>
 <p>However, if the columns of a data.frame or matrix are supplied separately (i.e., as vectors), column names will not be preserved.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># providing variables separately (as vectors) drops column names</span>
-tab.d4 &lt;-<span class="st"> </span>base<span class="op">::</span><span class="kw">table</span>(mockstudy[, <span class="st">&quot;arm&quot;</span>], mockstudy[, <span class="st">&quot;sex&quot;</span>], mockstudy[, <span class="st">&quot;mdquality.s&quot;</span>])
+tab.d4 &lt;-<span class="st"> </span>base<span class="op">::</span><span class="kw">table</span>(mockstudy<span class="op">$</span>arm, mockstudy<span class="op">$</span>sex, mockstudy<span class="op">$</span>mdquality.s)
 tab.d4</code></pre></div>
 <pre><code>, ,  = 0
 
@@ -2978,27 +2967,27 @@ tab.d4</code></pre></div>
   A: IFL     214    118
   F: FOLFOX  285    198
   G: IROX    187    121</code></pre>
-<p>If desired, you can use the <code>dnn</code> argument to pass variable names.</p>
+<p>If desired, you can use the <code>dnn=</code> argument to pass variable names.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># add the column name labels back using dnn option in base::table</span>
-tab.dnn &lt;-<span class="st"> </span>base<span class="op">::</span><span class="kw">table</span>(mockstudy[, <span class="st">&quot;arm&quot;</span>], mockstudy[, <span class="st">&quot;sex&quot;</span>], mockstudy[, <span class="st">&quot;mdquality.s&quot;</span>], 
-    <span class="dt">dnn =</span> <span class="kw">c</span>(<span class="st">&quot;Amy&quot;</span>, <span class="st">&quot;Susan&quot;</span>, <span class="st">&quot;George&quot;</span>))
+tab.dnn &lt;-<span class="st"> </span>base<span class="op">::</span><span class="kw">table</span>(mockstudy<span class="op">$</span>arm, mockstudy<span class="op">$</span>sex, mockstudy<span class="op">$</span>mdquality.s, <span class="dt">dnn =</span> <span class="kw">c</span>(<span class="st">&quot;Arm&quot;</span>, 
+    <span class="st">&quot;Sex&quot;</span>, <span class="st">&quot;QOL&quot;</span>))
 tab.dnn</code></pre></div>
-<pre><code>, , George = 0
+<pre><code>, , QOL = 0
 
-           Susan
-Amy         Male Female
+           Sex
+Arm         Male Female
   A: IFL      29     12
   F: FOLFOX   31     21
   G: IROX     17     14
 
-, , George = 1
+, , QOL = 1
 
-           Susan
-Amy         Male Female
+           Sex
+Arm         Male Female
   A: IFL     214    118
   F: FOLFOX  285    198
   G: IROX    187    121</code></pre>
-<p>If using <code>freqlist</code>, you can provide the labels directly to <code>freqlist</code> or to <code>summary</code> using <code>labelTranslations</code>.</p>
+<p>If using <code>freqlist()</code>, you can provide the labels directly to <code>freqlist()</code> or to <code>summary()</code> using <code>labelTranslations=</code>.</p>
 </div>
 </div>
 

@@ -10,7 +10,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<meta name="author" content="Beth Atkinson, Jason Sinnwell, Shannon McDonnell and Greg Dougherty" />
+<meta name="author" content="Beth Atkinson, Ethan Heinzen, Jason Sinnwell, Shannon McDonnell and Greg Dougherty" />
 
 
 <title>The tableby function</title>
@@ -68,8 +68,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 
 <h1 class="title toc-ignore">The tableby function</h1>
-<h4 class="author"><em>Beth Atkinson, Jason Sinnwell, Shannon McDonnell and Greg Dougherty</em></h4>
-<h4 class="date"><em>08 December, 2017</em></h4>
+<h4 class="author"><em>Beth Atkinson, Ethan Heinzen, Jason Sinnwell, Shannon McDonnell and Greg Dougherty</em></h4>
+<h4 class="date"><em>02 February, 2018</em></h4>
 
 
 <div id="TOC">
@@ -123,8 +123,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div id="introduction" class="section level1">
 <h1>Introduction</h1>
 <p>One of the most common tables in medical literature includes summary statistics for a set of variables, often stratified by some group (e.g. treatment arm). Locally at Mayo, the SAS macros <code>%table</code> and <code>%summary</code> were written to create summary tables with a single call. With the increasing interest in R, we have developed the function <code>tableby</code> to create similar tables within the R environment.</p>
-<p>In developing the <code>tableby</code> function, the goal was to bring the best features of these macros into an R function. However, the task was not simply to duplicate all the functionality, but rather to make use of R’s strengths (modeling, method dispersion, flexibility in function definition and output format) and make a tool that fits the needs of R users. Additionally, the results needed to fit within the general reproducible research framework so the tables could be displayed within an R markdown report.</p>
-<p>This report provides step-by-step directions for using the functions associated with <code>tableby</code>. All functions presented here are available within the <code>arsenal</code> package. An assumption is made that users are somewhat familiar with R markdown documents. For those who are new to the topic, a good initial resource is available at <a href="http://rmarkdown.rstudio.com">rmarkdown.rstudio.com</a>.</p>
+<p>In developing the <code>tableby()</code> function, the goal was to bring the best features of these macros into an R function. However, the task was not simply to duplicate all the functionality, but rather to make use of R’s strengths (modeling, method dispersion, flexibility in function definition and output format) and make a tool that fits the needs of R users. Additionally, the results needed to fit within the general reproducible research framework so the tables could be displayed within an R markdown report.</p>
+<p>This report provides step-by-step directions for using the functions associated with <code>tableby()</code>. All functions presented here are available within the <code>arsenal</code> package. An assumption is made that users are somewhat familiar with R Markdown documents. For those who are new to the topic, a good initial resource is available at <a href="http://rmarkdown.rstudio.com">rmarkdown.rstudio.com</a>.</p>
 </div>
 <div id="simple-example" class="section level1">
 <h1>Simple Example</h1>
@@ -158,103 +158,85 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 ##  $ age.ord    : Ord.factor w/ 8 levels &quot;10-19&quot;&lt;&quot;20-29&quot;&lt;..: 6 7 4 7 6 5 4 5 5 6 ...</code></pre>
 <p>To create a simple table stratified by treament arm, use a formula statement to specify the variables that you want summarized. The example below uses age (a continuous variable) and sex (a factor).</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tab1 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span class="op">~</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span>age, <span class="dt">data=</span>mockstudy)</code></pre></div>
-<p>If you want to take a quick look at the table, you can use <code>summary</code> on your tableby object and the table will print out as text in your R console window. If you use <code>summary</code> without any options you will see a number of <span class="math inline">\(\&amp;nbsp;\)</span> statements which translates to “space” in HTML.</p>
+<p>If you want to take a quick look at the table, you can use <code>summary()</code> on your tableby object and the table will print out as text in your R console window. If you use <code>summary()</code> without any options you will see a number of <span class="math inline">\(\&amp;nbsp;\)</span> statements which translates to “space” in HTML.</p>
 <div id="pretty-text-version-of-table" class="section level2">
 <h2>Pretty text version of table</h2>
 <p>If you want a nicer version in your console window then add the <code>text=TRUE</code> option.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(tab1, <span class="dt">text=</span><span class="ot">TRUE</span>)</code></pre></div>
 <pre><code>## 
-## ---------------------------------------------------------------------------------------------------------------------------
-##                          A: IFL (N=428)      F: FOLFOX (N=691)   G: IROX (N=380)     Total (N=1499)      p value           
-## ----------------------- ------------------- ------------------- ------------------- ------------------- -------------------
-## sex                                                                                                                   0.190
-##    Male                 277 (64.7%)         411 (59.5%)         228 (60%)           916 (61.1%)        
-##    Female               151 (35.3%)         280 (40.5%)         152 (40%)           583 (38.9%)        
-## Age in Years                                                                                                          0.614
-##    Mean (SD)            59.7 (11.4)         60.3 (11.6)         59.8 (11.5)         60 (11.5)          
-##    Q1, Q3               53, 68              52, 69              52, 68              52, 68             
-##    Range                27 - 88             19 - 88             26 - 85             19 - 88            
-## ---------------------------------------------------------------------------------------------------------------------------</code></pre>
+## 
+##                A: IFL (N=428)    F: FOLFOX (N=691)   G: IROX (N=380)   Total (N=1499)     p value
+## -------------  ----------------  ------------------  ----------------  ----------------  --------
+## sex                                                                                         0.190
+## -  Male        277 (64.7%)       411 (59.5%)         228 (60.0%)       916 (61.1%)               
+## -  Female      151 (35.3%)       280 (40.5%)         152 (40.0%)       583 (38.9%)               
+## Age in Years                                                                                0.614
+## -  Mean (SD)   59.673 (11.365)   60.301 (11.632)     59.763 (11.499)   59.985 (11.519)           
+## -  Range       27.000 - 88.000   19.000 - 88.000     26.000 - 85.000   19.000 - 88.000</code></pre>
 </div>
 <div id="pretty-rmarkdown-version-of-table" class="section level2">
 <h2>Pretty Rmarkdown version of table</h2>
 <p>In order for the report to look nice within an R markdown (knitr) report, you just need to specify <code>results=&quot;asis&quot;</code> when creating the r chunk. This changes the layout slightly (compresses it) and bolds the variable names.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(tab1)</code></pre></div>
-<table style="width:100%;">
-<colgroup>
-<col width="19%"></col>
-<col width="16%"></col>
-<col width="16%"></col>
-<col width="16%"></col>
-<col width="16%"></col>
-<col width="16%"></col>
-</colgroup>
+<table>
 <thead>
 <tr class="header">
 <th></th>
-<th align="center">A: IFL (N=428)</th>
-<th align="center">F: FOLFOX (N=691)</th>
-<th align="center">G: IROX (N=380)</th>
-<th align="center">Total (N=1499)</th>
-<th align="center">p value</th>
+<th align="left">A: IFL (N=428)</th>
+<th align="left">F: FOLFOX (N=691)</th>
+<th align="left">G: IROX (N=380)</th>
+<th align="left">Total (N=1499)</th>
+<th align="right">p value</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td><strong>sex</strong></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center">0.190</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right">0.190</td>
 </tr>
 <tr class="even">
-<td>    Male</td>
-<td align="center">277 (64.7%)</td>
-<td align="center">411 (59.5%)</td>
-<td align="center">228 (60%)</td>
-<td align="center">916 (61.1%)</td>
-<td align="center"></td>
+<td>   Male</td>
+<td align="left">277 (64.7%)</td>
+<td align="left">411 (59.5%)</td>
+<td align="left">228 (60.0%)</td>
+<td align="left">916 (61.1%)</td>
+<td align="right"></td>
 </tr>
 <tr class="odd">
-<td>    Female</td>
-<td align="center">151 (35.3%)</td>
-<td align="center">280 (40.5%)</td>
-<td align="center">152 (40%)</td>
-<td align="center">583 (38.9%)</td>
-<td align="center"></td>
+<td>   Female</td>
+<td align="left">151 (35.3%)</td>
+<td align="left">280 (40.5%)</td>
+<td align="left">152 (40.0%)</td>
+<td align="left">583 (38.9%)</td>
+<td align="right"></td>
 </tr>
 <tr class="even">
 <td><strong>Age in Years</strong></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center">0.614</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right">0.614</td>
 </tr>
 <tr class="odd">
-<td>    Mean (SD)</td>
-<td align="center">59.7 (11.4)</td>
-<td align="center">60.3 (11.6)</td>
-<td align="center">59.8 (11.5)</td>
-<td align="center">60 (11.5)</td>
-<td align="center"></td>
+<td>   Mean (SD)</td>
+<td align="left">59.673 (11.365)</td>
+<td align="left">60.301 (11.632)</td>
+<td align="left">59.763 (11.499)</td>
+<td align="left">59.985 (11.519)</td>
+<td align="right"></td>
 </tr>
 <tr class="even">
-<td>    Q1, Q3</td>
-<td align="center">53, 68</td>
-<td align="center">52, 69</td>
-<td align="center">52, 68</td>
-<td align="center">52, 68</td>
-<td align="center"></td>
-</tr>
-<tr class="odd">
-<td>    Range</td>
-<td align="center">27 - 88</td>
-<td align="center">19 - 88</td>
-<td align="center">26 - 85</td>
-<td align="center">19 - 88</td>
-<td align="center"></td>
+<td>   Range</td>
+<td align="left">27.000 - 88.000</td>
+<td align="left">19.000 - 88.000</td>
+<td align="left">26.000 - 85.000</td>
+<td align="left">19.000 - 88.000</td>
+<td align="right"></td>
 </tr>
 </tbody>
 </table>
@@ -263,14 +245,20 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <h2>Data frame version of table</h2>
 <p>If you want a data.frame version, simply use <code>as.data.frame</code>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">as.data.frame</span>(tab1)</code></pre></div>
-<pre><code>##           term variable A: IFL (N=428) F: FOLFOX (N=691) G: IROX (N=380) Total (N=1499) p value
-## 1          sex      sex                                                                   0.190
-## 2         Male      sex    277 (64.7%)       411 (59.5%)       228 (60%)    916 (61.1%)        
-## 3       Female      sex    151 (35.3%)       280 (40.5%)       152 (40%)    583 (38.9%)        
-## 4 Age in Years      age                                                                   0.614
-## 5    Mean (SD)      age    59.7 (11.4)       60.3 (11.6)     59.8 (11.5)      60 (11.5)        
-## 6       Q1, Q3      age         53, 68            52, 69          52, 68         52, 68        
-## 7        Range      age        27 - 88           19 - 88         26 - 85        19 - 88</code></pre>
+<pre><code>##   variable   term        label variable.type              A: IFL           F: FOLFOX
+## 1      sex    sex          sex   categorical                                        
+## 2      sex   Male         Male   categorical 277.00000, 64.71963 411.00000, 59.47902
+## 3      sex Female       Female   categorical 151.00000, 35.28037 280.00000, 40.52098
+## 4      age    age Age in Years       numeric                                        
+## 5      age meansd    Mean (SD)       numeric  59.67290, 11.36454  60.30101, 11.63225
+## 6      age  range        Range       numeric              27, 88              19, 88
+##              G: IROX              Total                       test   p.value
+## 1                                       Pearson's Chi-squared test 0.1904388
+## 2            228, 60  916.0000, 61.1074 Pearson's Chi-squared test 0.1904388
+## 3            152, 40  583.0000, 38.8926 Pearson's Chi-squared test 0.1904388
+## 4                                               Linear Model ANOVA 0.6143859
+## 5 59.76316, 11.49930 59.98532, 11.51877         Linear Model ANOVA 0.6143859
+## 6             26, 85             19, 88         Linear Model ANOVA 0.6143859</code></pre>
 </div>
 <div id="summaries-using-standard-r-code" class="section level2">
 <h2>Summaries using standard R code</h2>
@@ -282,18 +270,13 @@ tmp</code></pre></div>
 ##   Male      277       411     228
 ##   Female    151       280     152</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Note: The continuity correction is applied by default in R (not used in %table)</span>
-<span class="kw">chisq.test</span>(tmp) </code></pre></div>
+<span class="kw">chisq.test</span>(tmp)</code></pre></div>
 <pre><code>## 
 ##  Pearson's Chi-squared test
 ## 
 ## data:  tmp
 ## X-squared = 3.3168, df = 2, p-value = 0.1904</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## gmodels frequency example
-<span class="co">#require(gmodels)</span>
-<span class="co">#CrossTable(mockstudy$sex, mockstudy$arm, prop.r=F, prop.t=F, </span>
-<span class="co">#           prop.chisq=F, chisq=T, dnn=c('Gender','Study Arm'))</span>
-
-## base R numeric summary example
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## base R numeric summary example
 <span class="kw">tapply</span>(mockstudy<span class="op">$</span>age, mockstudy<span class="op">$</span>arm, summary)</code></pre></div>
 <pre><code>## $`A: IFL`
 ##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
@@ -326,86 +309,71 @@ tmp</code></pre></div>
 ##             &quot;Age in Years&quot;            &quot;Treatment Arm&quot;                     &quot;Race&quot; 
 ##                        bmi 
 ## &quot;Body Mass Index (kg/m^2)&quot;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Can also use labels(mockstudy)</span></code></pre></div>
 <p>If you want to add labels to other variables, there are a couple of options. First, you could add labels to the variables in your dataset.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">attr</span>(mockstudy<span class="op">$</span>sex,<span class="st">'label'</span>)  &lt;-<span class="st"> 'Gender'</span>
 
 tab1 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span class="op">~</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span>age, <span class="dt">data=</span>mockstudy)
 <span class="kw">summary</span>(tab1)</code></pre></div>
-<table style="width:100%;">
-<colgroup>
-<col width="19%"></col>
-<col width="16%"></col>
-<col width="16%"></col>
-<col width="16%"></col>
-<col width="16%"></col>
-<col width="16%"></col>
-</colgroup>
+<table>
 <thead>
 <tr class="header">
 <th></th>
-<th align="center">A: IFL (N=428)</th>
-<th align="center">F: FOLFOX (N=691)</th>
-<th align="center">G: IROX (N=380)</th>
-<th align="center">Total (N=1499)</th>
-<th align="center">p value</th>
+<th align="left">A: IFL (N=428)</th>
+<th align="left">F: FOLFOX (N=691)</th>
+<th align="left">G: IROX (N=380)</th>
+<th align="left">Total (N=1499)</th>
+<th align="right">p value</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td><strong>Gender</strong></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center">0.190</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right">0.190</td>
 </tr>
 <tr class="even">
-<td>    Male</td>
-<td align="center">277 (64.7%)</td>
-<td align="center">411 (59.5%)</td>
-<td align="center">228 (60%)</td>
-<td align="center">916 (61.1%)</td>
-<td align="center"></td>
+<td>   Male</td>
+<td align="left">277 (64.7%)</td>
+<td align="left">411 (59.5%)</td>
+<td align="left">228 (60.0%)</td>
+<td align="left">916 (61.1%)</td>
+<td align="right"></td>
 </tr>
 <tr class="odd">
-<td>    Female</td>
-<td align="center">151 (35.3%)</td>
-<td align="center">280 (40.5%)</td>
-<td align="center">152 (40%)</td>
-<td align="center">583 (38.9%)</td>
-<td align="center"></td>
+<td>   Female</td>
+<td align="left">151 (35.3%)</td>
+<td align="left">280 (40.5%)</td>
+<td align="left">152 (40.0%)</td>
+<td align="left">583 (38.9%)</td>
+<td align="right"></td>
 </tr>
 <tr class="even">
 <td><strong>Age in Years</strong></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center">0.614</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right">0.614</td>
 </tr>
 <tr class="odd">
-<td>    Mean (SD)</td>
-<td align="center">59.7 (11.4)</td>
-<td align="center">60.3 (11.6)</td>
-<td align="center">59.8 (11.5)</td>
-<td align="center">60 (11.5)</td>
-<td align="center"></td>
+<td>   Mean (SD)</td>
+<td align="left">59.673 (11.365)</td>
+<td align="left">60.301 (11.632)</td>
+<td align="left">59.763 (11.499)</td>
+<td align="left">59.985 (11.519)</td>
+<td align="right"></td>
 </tr>
 <tr class="even">
-<td>    Q1, Q3</td>
-<td align="center">53, 68</td>
-<td align="center">52, 69</td>
-<td align="center">52, 68</td>
-<td align="center">52, 68</td>
-<td align="center"></td>
-</tr>
-<tr class="odd">
-<td>    Range</td>
-<td align="center">27 - 88</td>
-<td align="center">19 - 88</td>
-<td align="center">26 - 85</td>
-<td align="center">19 - 88</td>
-<td align="center"></td>
+<td>   Range</td>
+<td align="left">27.000 - 88.000</td>
+<td align="left">19.000 - 88.000</td>
+<td align="left">26.000 - 85.000</td>
+<td align="left">19.000 - 88.000</td>
+<td align="right"></td>
 </tr>
 </tbody>
 </table>
@@ -414,162 +382,130 @@ tab1 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 
 tab1 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span class="op">~</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span>age, <span class="dt">data=</span>mockstudy)
 <span class="kw">summary</span>(tab1)</code></pre></div>
-<table style="width:100%;">
-<colgroup>
-<col width="19%"></col>
-<col width="16%"></col>
-<col width="16%"></col>
-<col width="16%"></col>
-<col width="16%"></col>
-<col width="16%"></col>
-</colgroup>
+<table>
 <thead>
 <tr class="header">
 <th></th>
-<th align="center">A: IFL (N=428)</th>
-<th align="center">F: FOLFOX (N=691)</th>
-<th align="center">G: IROX (N=380)</th>
-<th align="center">Total (N=1499)</th>
-<th align="center">p value</th>
+<th align="left">A: IFL (N=428)</th>
+<th align="left">F: FOLFOX (N=691)</th>
+<th align="left">G: IROX (N=380)</th>
+<th align="left">Total (N=1499)</th>
+<th align="right">p value</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td><strong>Gender</strong></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center">0.190</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right">0.190</td>
 </tr>
 <tr class="even">
-<td>    Male</td>
-<td align="center">277 (64.7%)</td>
-<td align="center">411 (59.5%)</td>
-<td align="center">228 (60%)</td>
-<td align="center">916 (61.1%)</td>
-<td align="center"></td>
+<td>   Male</td>
+<td align="left">277 (64.7%)</td>
+<td align="left">411 (59.5%)</td>
+<td align="left">228 (60.0%)</td>
+<td align="left">916 (61.1%)</td>
+<td align="right"></td>
 </tr>
 <tr class="odd">
-<td>    Female</td>
-<td align="center">151 (35.3%)</td>
-<td align="center">280 (40.5%)</td>
-<td align="center">152 (40%)</td>
-<td align="center">583 (38.9%)</td>
-<td align="center"></td>
+<td>   Female</td>
+<td align="left">151 (35.3%)</td>
+<td align="left">280 (40.5%)</td>
+<td align="left">152 (40.0%)</td>
+<td align="left">583 (38.9%)</td>
+<td align="right"></td>
 </tr>
 <tr class="even">
 <td><strong>Age, yrs</strong></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center">0.614</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right">0.614</td>
 </tr>
 <tr class="odd">
-<td>    Mean (SD)</td>
-<td align="center">59.7 (11.4)</td>
-<td align="center">60.3 (11.6)</td>
-<td align="center">59.8 (11.5)</td>
-<td align="center">60 (11.5)</td>
-<td align="center"></td>
+<td>   Mean (SD)</td>
+<td align="left">59.673 (11.365)</td>
+<td align="left">60.301 (11.632)</td>
+<td align="left">59.763 (11.499)</td>
+<td align="left">59.985 (11.519)</td>
+<td align="right"></td>
 </tr>
 <tr class="even">
-<td>    Q1, Q3</td>
-<td align="center">53, 68</td>
-<td align="center">52, 69</td>
-<td align="center">52, 68</td>
-<td align="center">52, 68</td>
-<td align="center"></td>
-</tr>
-<tr class="odd">
-<td>    Range</td>
-<td align="center">27 - 88</td>
-<td align="center">19 - 88</td>
-<td align="center">26 - 85</td>
-<td align="center">19 - 88</td>
-<td align="center"></td>
+<td>   Range</td>
+<td align="left">27.000 - 88.000</td>
+<td align="left">19.000 - 88.000</td>
+<td align="left">26.000 - 85.000</td>
+<td align="left">19.000 - 88.000</td>
+<td align="right"></td>
 </tr>
 </tbody>
 </table>
 <p>Another option is to add labels after you have created the table</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mylabels &lt;-<span class="st"> </span><span class="kw">list</span>( <span class="dt">sex =</span> <span class="st">&quot;SEX&quot;</span>, <span class="dt">age =</span><span class="st">&quot;Age, yrs&quot;</span>)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mylabels &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">sex =</span> <span class="st">&quot;SEX&quot;</span>, <span class="dt">age =</span> <span class="st">&quot;Age, yrs&quot;</span>)
 <span class="kw">summary</span>(tab1, <span class="dt">labelTranslations =</span> mylabels)</code></pre></div>
-<table style="width:100%;">
-<colgroup>
-<col width="19%"></col>
-<col width="16%"></col>
-<col width="16%"></col>
-<col width="16%"></col>
-<col width="16%"></col>
-<col width="16%"></col>
-</colgroup>
+<table>
 <thead>
 <tr class="header">
 <th></th>
-<th align="center">A: IFL (N=428)</th>
-<th align="center">F: FOLFOX (N=691)</th>
-<th align="center">G: IROX (N=380)</th>
-<th align="center">Total (N=1499)</th>
-<th align="center">p value</th>
+<th align="left">A: IFL (N=428)</th>
+<th align="left">F: FOLFOX (N=691)</th>
+<th align="left">G: IROX (N=380)</th>
+<th align="left">Total (N=1499)</th>
+<th align="right">p value</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td><strong>SEX</strong></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center">0.190</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right">0.190</td>
 </tr>
 <tr class="even">
-<td>    Male</td>
-<td align="center">277 (64.7%)</td>
-<td align="center">411 (59.5%)</td>
-<td align="center">228 (60%)</td>
-<td align="center">916 (61.1%)</td>
-<td align="center"></td>
+<td>   Male</td>
+<td align="left">277 (64.7%)</td>
+<td align="left">411 (59.5%)</td>
+<td align="left">228 (60.0%)</td>
+<td align="left">916 (61.1%)</td>
+<td align="right"></td>
 </tr>
 <tr class="odd">
-<td>    Female</td>
-<td align="center">151 (35.3%)</td>
-<td align="center">280 (40.5%)</td>
-<td align="center">152 (40%)</td>
-<td align="center">583 (38.9%)</td>
-<td align="center"></td>
+<td>   Female</td>
+<td align="left">151 (35.3%)</td>
+<td align="left">280 (40.5%)</td>
+<td align="left">152 (40.0%)</td>
+<td align="left">583 (38.9%)</td>
+<td align="right"></td>
 </tr>
 <tr class="even">
 <td><strong>Age, yrs</strong></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center">0.614</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right">0.614</td>
 </tr>
 <tr class="odd">
-<td>    Mean (SD)</td>
-<td align="center">59.7 (11.4)</td>
-<td align="center">60.3 (11.6)</td>
-<td align="center">59.8 (11.5)</td>
-<td align="center">60 (11.5)</td>
-<td align="center"></td>
+<td>   Mean (SD)</td>
+<td align="left">59.673 (11.365)</td>
+<td align="left">60.301 (11.632)</td>
+<td align="left">59.763 (11.499)</td>
+<td align="left">59.985 (11.519)</td>
+<td align="right"></td>
 </tr>
 <tr class="even">
-<td>    Q1, Q3</td>
-<td align="center">53, 68</td>
-<td align="center">52, 69</td>
-<td align="center">52, 68</td>
-<td align="center">52, 68</td>
-<td align="center"></td>
-</tr>
-<tr class="odd">
-<td>    Range</td>
-<td align="center">27 - 88</td>
-<td align="center">19 - 88</td>
-<td align="center">26 - 85</td>
-<td align="center">19 - 88</td>
-<td align="center"></td>
+<td>   Range</td>
+<td align="left">27.000 - 88.000</td>
+<td align="left">19.000 - 88.000</td>
+<td align="left">26.000 - 85.000</td>
+<td align="left">19.000 - 88.000</td>
+<td align="right"></td>
 </tr>
 </tbody>
 </table>
@@ -582,81 +518,65 @@ tab1 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 <pre><code>##                    arm                    sex                    age 
 ## &quot;Treatment Assignment&quot;               &quot;Gender&quot;   &quot;Baseline Age (yrs)&quot;</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(tab1)</code></pre></div>
-<table style="width:100%;">
-<colgroup>
-<col width="19%"></col>
-<col width="16%"></col>
-<col width="16%"></col>
-<col width="16%"></col>
-<col width="16%"></col>
-<col width="16%"></col>
-</colgroup>
+<table>
 <thead>
 <tr class="header">
 <th></th>
-<th align="center">A: IFL (N=428)</th>
-<th align="center">F: FOLFOX (N=691)</th>
-<th align="center">G: IROX (N=380)</th>
-<th align="center">Total (N=1499)</th>
-<th align="center">p value</th>
+<th align="left">A: IFL (N=428)</th>
+<th align="left">F: FOLFOX (N=691)</th>
+<th align="left">G: IROX (N=380)</th>
+<th align="left">Total (N=1499)</th>
+<th align="right">p value</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td><strong>Gender</strong></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center">0.190</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right">0.190</td>
 </tr>
 <tr class="even">
-<td>    Male</td>
-<td align="center">277 (64.7%)</td>
-<td align="center">411 (59.5%)</td>
-<td align="center">228 (60%)</td>
-<td align="center">916 (61.1%)</td>
-<td align="center"></td>
+<td>   Male</td>
+<td align="left">277 (64.7%)</td>
+<td align="left">411 (59.5%)</td>
+<td align="left">228 (60.0%)</td>
+<td align="left">916 (61.1%)</td>
+<td align="right"></td>
 </tr>
 <tr class="odd">
-<td>    Female</td>
-<td align="center">151 (35.3%)</td>
-<td align="center">280 (40.5%)</td>
-<td align="center">152 (40%)</td>
-<td align="center">583 (38.9%)</td>
-<td align="center"></td>
+<td>   Female</td>
+<td align="left">151 (35.3%)</td>
+<td align="left">280 (40.5%)</td>
+<td align="left">152 (40.0%)</td>
+<td align="left">583 (38.9%)</td>
+<td align="right"></td>
 </tr>
 <tr class="even">
 <td><strong>Baseline Age (yrs)</strong></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center">0.614</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right">0.614</td>
 </tr>
 <tr class="odd">
-<td>    Mean (SD)</td>
-<td align="center">59.7 (11.4)</td>
-<td align="center">60.3 (11.6)</td>
-<td align="center">59.8 (11.5)</td>
-<td align="center">60 (11.5)</td>
-<td align="center"></td>
+<td>   Mean (SD)</td>
+<td align="left">59.673 (11.365)</td>
+<td align="left">60.301 (11.632)</td>
+<td align="left">59.763 (11.499)</td>
+<td align="left">59.985 (11.519)</td>
+<td align="right"></td>
 </tr>
 <tr class="even">
-<td>    Q1, Q3</td>
-<td align="center">53, 68</td>
-<td align="center">52, 69</td>
-<td align="center">52, 68</td>
-<td align="center">52, 68</td>
-<td align="center"></td>
-</tr>
-<tr class="odd">
-<td>    Range</td>
-<td align="center">27 - 88</td>
-<td align="center">19 - 88</td>
-<td align="center">26 - 85</td>
-<td align="center">19 - 88</td>
-<td align="center"></td>
+<td>   Range</td>
+<td align="left">27.000 - 88.000</td>
+<td align="left">19.000 - 88.000</td>
+<td align="left">26.000 - 85.000</td>
+<td align="left">19.000 - 88.000</td>
+<td align="right"></td>
 </tr>
 </tbody>
 </table>
@@ -672,62 +592,56 @@ tab1 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 tab2 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span class="op">~</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span>age, <span class="dt">data=</span>mockstudy, <span class="dt">control=</span>mycontrols)
 <span class="kw">summary</span>(tab2)</code></pre></div>
 <table>
-<colgroup>
-<col width="28%"></col>
-<col width="23%"></col>
-<col width="23%"></col>
-<col width="23%"></col>
-</colgroup>
 <thead>
 <tr class="header">
 <th></th>
-<th align="center">A: IFL (N=428)</th>
-<th align="center">F: FOLFOX (N=691)</th>
-<th align="center">G: IROX (N=380)</th>
+<th align="left">A: IFL (N=428)</th>
+<th align="left">F: FOLFOX (N=691)</th>
+<th align="left">G: IROX (N=380)</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td><strong>Gender</strong></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
 </tr>
 <tr class="even">
-<td>    Male</td>
-<td align="center">277 (64.7%)</td>
-<td align="center">411 (59.5%)</td>
-<td align="center">228 (60%)</td>
+<td>   Male</td>
+<td align="left">277 (64.7%)</td>
+<td align="left">411 (59.5%)</td>
+<td align="left">228 (60.0%)</td>
 </tr>
 <tr class="odd">
-<td>    Female</td>
-<td align="center">151 (35.3%)</td>
-<td align="center">280 (40.5%)</td>
-<td align="center">152 (40%)</td>
+<td>   Female</td>
+<td align="left">151 (35.3%)</td>
+<td align="left">280 (40.5%)</td>
+<td align="left">152 (40.0%)</td>
 </tr>
 <tr class="even">
 <td><strong>Age, yrs</strong></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
 </tr>
 <tr class="odd">
-<td>    Count</td>
-<td align="center">428</td>
-<td align="center">691</td>
-<td align="center">380</td>
+<td>   Count</td>
+<td align="left">428</td>
+<td align="left">691</td>
+<td align="left">380</td>
 </tr>
 <tr class="even">
-<td>    Median</td>
-<td align="center">61</td>
-<td align="center">61</td>
-<td align="center">61</td>
+<td>   Median</td>
+<td align="left">61.000</td>
+<td align="left">61.000</td>
+<td align="left">61.000</td>
 </tr>
 <tr class="odd">
-<td>    Q1,Q3</td>
-<td align="center">53, 68</td>
-<td align="center">52, 69</td>
-<td align="center">52, 68</td>
+<td>   Q1,Q3</td>
+<td align="left">53.000, 68.000</td>
+<td align="left">52.000, 69.000</td>
+<td align="left">52.000, 68.000</td>
 </tr>
 </tbody>
 </table>
@@ -736,56 +650,50 @@ tab2 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
                 <span class="dt">numeric.stats=</span><span class="kw">c</span>(<span class="st">&quot;median&quot;</span>,<span class="st">&quot;q1q3&quot;</span>), <span class="dt">numeric.test=</span><span class="st">&quot;kwt&quot;</span>)
 <span class="kw">summary</span>(tab3)</code></pre></div>
 <table>
-<colgroup>
-<col width="28%"></col>
-<col width="23%"></col>
-<col width="23%"></col>
-<col width="23%"></col>
-</colgroup>
 <thead>
 <tr class="header">
 <th></th>
-<th align="center">A: IFL (N=428)</th>
-<th align="center">F: FOLFOX (N=691)</th>
-<th align="center">G: IROX (N=380)</th>
+<th align="left">A: IFL (N=428)</th>
+<th align="left">F: FOLFOX (N=691)</th>
+<th align="left">G: IROX (N=380)</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td><strong>Gender</strong></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
 </tr>
 <tr class="even">
-<td>    Male</td>
-<td align="center">277 (64.7%)</td>
-<td align="center">411 (59.5%)</td>
-<td align="center">228 (60%)</td>
+<td>   Male</td>
+<td align="left">277 (64.7%)</td>
+<td align="left">411 (59.5%)</td>
+<td align="left">228 (60.0%)</td>
 </tr>
 <tr class="odd">
-<td>    Female</td>
-<td align="center">151 (35.3%)</td>
-<td align="center">280 (40.5%)</td>
-<td align="center">152 (40%)</td>
+<td>   Female</td>
+<td align="left">151 (35.3%)</td>
+<td align="left">280 (40.5%)</td>
+<td align="left">152 (40.0%)</td>
 </tr>
 <tr class="even">
 <td><strong>Age, yrs</strong></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
 </tr>
 <tr class="odd">
-<td>    median</td>
-<td align="center">61</td>
-<td align="center">61</td>
-<td align="center">61</td>
+<td>   median</td>
+<td align="left">61.000</td>
+<td align="left">61.000</td>
+<td align="left">61.000</td>
 </tr>
 <tr class="even">
-<td>    Q1, Q3</td>
-<td align="center">53, 68</td>
-<td align="center">52, 69</td>
-<td align="center">52, 68</td>
+<td>   Q1, Q3</td>
+<td align="left">53.000, 68.000</td>
+<td align="left">52.000, 69.000</td>
+<td align="left">52.000, 68.000</td>
 </tr>
 </tbody>
 </table>
@@ -801,137 +709,105 @@ tab2 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 ## bmi Body Mass Index (kg/m^2) 0.89165522           Linear Model ANOVA
 ## ast                      ast 0.03902803 Kruskal-Wallis rank sum test</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(tab.test)</code></pre></div>
-<table style="width:100%;">
-<colgroup>
-<col width="19%"></col>
-<col width="16%"></col>
-<col width="16%"></col>
-<col width="16%"></col>
-<col width="16%"></col>
-<col width="16%"></col>
-</colgroup>
+<table>
 <thead>
 <tr class="header">
 <th></th>
-<th align="center">A: IFL (N=428)</th>
-<th align="center">F: FOLFOX (N=691)</th>
-<th align="center">G: IROX (N=380)</th>
-<th align="center">Total (N=1499)</th>
-<th align="center">p value</th>
+<th align="left">A: IFL (N=428)</th>
+<th align="left">F: FOLFOX (N=691)</th>
+<th align="left">G: IROX (N=380)</th>
+<th align="left">Total (N=1499)</th>
+<th align="right">p value</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td><strong>Age, yrs</strong></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center">0.639</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right">0.639</td>
 </tr>
 <tr class="even">
-<td>    Mean (SD)</td>
-<td align="center">59.7 (11.4)</td>
-<td align="center">60.3 (11.6)</td>
-<td align="center">59.8 (11.5)</td>
-<td align="center">60 (11.5)</td>
-<td align="center"></td>
+<td>   Mean (SD)</td>
+<td align="left">59.673 (11.365)</td>
+<td align="left">60.301 (11.632)</td>
+<td align="left">59.763 (11.499)</td>
+<td align="left">59.985 (11.519)</td>
+<td align="right"></td>
 </tr>
 <tr class="odd">
-<td>    Q1, Q3</td>
-<td align="center">53, 68</td>
-<td align="center">52, 69</td>
-<td align="center">52, 68</td>
-<td align="center">52, 68</td>
-<td align="center"></td>
+<td>   Range</td>
+<td align="left">27.000 - 88.000</td>
+<td align="left">19.000 - 88.000</td>
+<td align="left">26.000 - 85.000</td>
+<td align="left">19.000 - 88.000</td>
+<td align="right"></td>
 </tr>
 <tr class="even">
-<td>    Range</td>
-<td align="center">27 - 88</td>
-<td align="center">19 - 88</td>
-<td align="center">26 - 85</td>
-<td align="center">19 - 88</td>
-<td align="center"></td>
-</tr>
-<tr class="odd">
 <td><strong>Body Mass Index (kg/m^2)</strong></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center">0.892</td>
-</tr>
-<tr class="even">
-<td>    N-Miss</td>
-<td align="center">9</td>
-<td align="center">20</td>
-<td align="center">4</td>
-<td align="center">33</td>
-<td align="center"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right">0.892</td>
 </tr>
 <tr class="odd">
-<td>    Mean (SD)</td>
-<td align="center">27.3 (5.55)</td>
-<td align="center">27.2 (5.17)</td>
-<td align="center">27.1 (5.75)</td>
-<td align="center">27.2 (5.43)</td>
-<td align="center"></td>
+<td>   N-Miss</td>
+<td align="left">9</td>
+<td align="left">20</td>
+<td align="left">4</td>
+<td align="left">33</td>
+<td align="right"></td>
 </tr>
 <tr class="even">
-<td>    Q1, Q3</td>
-<td align="center">23.6, 30.6</td>
-<td align="center">23.7, 30.1</td>
-<td align="center">23.2, 29.6</td>
-<td align="center">23.5, 30.1</td>
-<td align="center"></td>
+<td>   Mean (SD)</td>
+<td align="left">27.290 (5.552)</td>
+<td align="left">27.210 (5.173)</td>
+<td align="left">27.106 (5.751)</td>
+<td align="left">27.206 (5.432)</td>
+<td align="right"></td>
 </tr>
 <tr class="odd">
-<td>    Range</td>
-<td align="center">14.1 - 53</td>
-<td align="center">16.6 - 49.1</td>
-<td align="center">15.4 - 60.2</td>
-<td align="center">14.1 - 60.2</td>
-<td align="center"></td>
+<td>   Range</td>
+<td align="left">14.053 - 53.008</td>
+<td align="left">16.649 - 49.130</td>
+<td align="left">15.430 - 60.243</td>
+<td align="left">14.053 - 60.243</td>
+<td align="right"></td>
 </tr>
 <tr class="even">
 <td><strong>ast</strong></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center">0.039</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right">0.039</td>
 </tr>
 <tr class="odd">
-<td>    N-Miss</td>
-<td align="center">69</td>
-<td align="center">141</td>
-<td align="center">56</td>
-<td align="center">266</td>
-<td align="center"></td>
+<td>   N-Miss</td>
+<td align="left">69</td>
+<td align="left">141</td>
+<td align="left">56</td>
+<td align="left">266</td>
+<td align="right"></td>
 </tr>
 <tr class="even">
-<td>    Mean (SD)</td>
-<td align="center">37.3 (28)</td>
-<td align="center">35.2 (26.7)</td>
-<td align="center">35.7 (25.8)</td>
-<td align="center">35.9 (26.8)</td>
-<td align="center"></td>
+<td>   Mean (SD)</td>
+<td align="left">37.292 (28.036)</td>
+<td align="left">35.202 (26.659)</td>
+<td align="left">35.670 (25.807)</td>
+<td align="left">35.933 (26.843)</td>
+<td align="right"></td>
 </tr>
 <tr class="odd">
-<td>    Q1, Q3</td>
-<td align="center">21, 42</td>
-<td align="center">19, 40</td>
-<td align="center">20, 41</td>
-<td align="center">20, 41</td>
-<td align="center"></td>
-</tr>
-<tr class="even">
-<td>    Range</td>
-<td align="center">10 - 205</td>
-<td align="center">7 - 174</td>
-<td align="center">5 - 176</td>
-<td align="center">5 - 205</td>
-<td align="center"></td>
+<td>   Range</td>
+<td align="left">10.000 - 205.000</td>
+<td align="left">7.000 - 174.000</td>
+<td align="left">5.000 - 176.000</td>
+<td align="left">5.000 - 205.000</td>
+<td align="right"></td>
 </tr>
 </tbody>
 </table>
@@ -939,97 +815,89 @@ tab2 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tab.test &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span class="op">~</span><span class="st"> </span><span class="kw">kwt</span>(ast, <span class="st">&quot;Nmiss2&quot;</span>,<span class="st">&quot;median&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">anova</span>(age, <span class="st">&quot;N&quot;</span>,<span class="st">&quot;mean&quot;</span>) <span class="op">+</span>
 <span class="st">                    </span><span class="kw">kwt</span>(bmi, <span class="st">&quot;Nmiss&quot;</span>,<span class="st">&quot;median&quot;</span>), <span class="dt">data=</span>mockstudy)
 <span class="kw">summary</span>(tab.test)</code></pre></div>
-<table style="width:100%;">
-<colgroup>
-<col width="19%"></col>
-<col width="16%"></col>
-<col width="16%"></col>
-<col width="16%"></col>
-<col width="16%"></col>
-<col width="16%"></col>
-</colgroup>
+<table>
 <thead>
 <tr class="header">
 <th></th>
-<th align="center">A: IFL (N=428)</th>
-<th align="center">F: FOLFOX (N=691)</th>
-<th align="center">G: IROX (N=380)</th>
-<th align="center">Total (N=1499)</th>
-<th align="center">p value</th>
+<th align="left">A: IFL (N=428)</th>
+<th align="left">F: FOLFOX (N=691)</th>
+<th align="left">G: IROX (N=380)</th>
+<th align="left">Total (N=1499)</th>
+<th align="right">p value</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td><strong>ast</strong></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center">0.039</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right">0.039</td>
 </tr>
 <tr class="even">
-<td>    N-Miss</td>
-<td align="center">69</td>
-<td align="center">141</td>
-<td align="center">56</td>
-<td align="center">266</td>
-<td align="center"></td>
+<td>   N-Miss</td>
+<td align="left">69</td>
+<td align="left">141</td>
+<td align="left">56</td>
+<td align="left">266</td>
+<td align="right"></td>
 </tr>
 <tr class="odd">
-<td>    median</td>
-<td align="center">29</td>
-<td align="center">25.5</td>
-<td align="center">27</td>
-<td align="center">27</td>
-<td align="center"></td>
+<td>   median</td>
+<td align="left">29.000</td>
+<td align="left">25.500</td>
+<td align="left">27.000</td>
+<td align="left">27.000</td>
+<td align="right"></td>
 </tr>
 <tr class="even">
 <td><strong>Age, yrs</strong></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center">0.614</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right">0.614</td>
 </tr>
 <tr class="odd">
-<td>    N</td>
-<td align="center">428</td>
-<td align="center">691</td>
-<td align="center">380</td>
-<td align="center">1499</td>
-<td align="center"></td>
+<td>   N</td>
+<td align="left">428</td>
+<td align="left">691</td>
+<td align="left">380</td>
+<td align="left">1499</td>
+<td align="right"></td>
 </tr>
 <tr class="even">
-<td>    mean</td>
-<td align="center">59.7</td>
-<td align="center">60.3</td>
-<td align="center">59.8</td>
-<td align="center">60</td>
-<td align="center"></td>
+<td>   mean</td>
+<td align="left">59.7</td>
+<td align="left">60.3</td>
+<td align="left">59.8</td>
+<td align="left">60</td>
+<td align="right"></td>
 </tr>
 <tr class="odd">
 <td><strong>Body Mass Index (kg/m^2)</strong></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center">0.641</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right">0.641</td>
 </tr>
 <tr class="even">
-<td>    N-Miss</td>
-<td align="center">9</td>
-<td align="center">20</td>
-<td align="center">4</td>
-<td align="center">33</td>
-<td align="center"></td>
+<td>   N-Miss</td>
+<td align="left">9</td>
+<td align="left">20</td>
+<td align="left">4</td>
+<td align="left">33</td>
+<td align="right"></td>
 </tr>
 <tr class="odd">
-<td>    median</td>
-<td align="center">26.2</td>
-<td align="center">26.5</td>
-<td align="center">26</td>
-<td align="center">26.3</td>
-<td align="center"></td>
+<td>   median</td>
+<td align="left">26.234</td>
+<td align="left">26.525</td>
+<td align="left">25.978</td>
+<td align="left">26.325</td>
+<td align="right"></td>
 </tr>
 </tbody>
 </table>
@@ -1069,65 +937,53 @@ tab.catsim &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <sp
 <h2>1. Summarize without a group/by variable</h2>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tab.noby &lt;-<span class="st"> </span><span class="kw">tableby</span>(<span class="op">~</span><span class="st"> </span>bmi <span class="op">+</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span>age, <span class="dt">data=</span>mockstudy)
 <span class="kw">summary</span>(tab.noby)</code></pre></div>
-<table style="width:72%;">
-<colgroup>
-<col width="40%"></col>
-<col width="31%"></col>
-</colgroup>
+<table>
 <thead>
 <tr class="header">
 <th></th>
-<th align="center">Overall (N=1499)</th>
+<th align="left">Overall (N=1499)</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td><strong>Body Mass Index (kg/m^2)</strong></td>
-<td align="center"></td>
+<td align="left"></td>
 </tr>
 <tr class="even">
-<td>    N-Miss</td>
-<td align="center">33</td>
+<td>   N-Miss</td>
+<td align="left">33</td>
 </tr>
 <tr class="odd">
-<td>    Mean (SD)</td>
-<td align="center">27.2 (5.43)</td>
+<td>   Mean (SD)</td>
+<td align="left">27.206 (5.432)</td>
 </tr>
 <tr class="even">
-<td>    Q1, Q3</td>
-<td align="center">23.5, 30.1</td>
+<td>   Range</td>
+<td align="left">14.053 - 60.243</td>
 </tr>
 <tr class="odd">
-<td>    Range</td>
-<td align="center">14.1 - 60.2</td>
-</tr>
-<tr class="even">
 <td><strong>Gender</strong></td>
-<td align="center"></td>
-</tr>
-<tr class="odd">
-<td>    Male</td>
-<td align="center">916 (61.1%)</td>
+<td align="left"></td>
 </tr>
 <tr class="even">
-<td>    Female</td>
-<td align="center">583 (38.9%)</td>
+<td>   Male</td>
+<td align="left">916 (61.1%)</td>
 </tr>
 <tr class="odd">
+<td>   Female</td>
+<td align="left">583 (38.9%)</td>
+</tr>
+<tr class="even">
 <td><strong>Age, yrs</strong></td>
-<td align="center"></td>
-</tr>
-<tr class="even">
-<td>    Mean (SD)</td>
-<td align="center">60 (11.5)</td>
+<td align="left"></td>
 </tr>
 <tr class="odd">
-<td>    Q1, Q3</td>
-<td align="center">52, 68</td>
+<td>   Mean (SD)</td>
+<td align="left">59.985 (11.519)</td>
 </tr>
 <tr class="even">
-<td>    Range</td>
-<td align="center">19 - 88</td>
+<td>   Range</td>
+<td align="left">19.000 - 88.000</td>
 </tr>
 </tbody>
 </table>
@@ -1135,97 +991,89 @@ tab.catsim &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <sp
 <div id="display-footnotes-indicating-which-test-was-used" class="section level2">
 <h2>2. Display footnotes indicating which “test” was used</h2>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(tab.test) <span class="co">#, pfootnote=TRUE)</span></code></pre></div>
-<table style="width:100%;">
-<colgroup>
-<col width="19%"></col>
-<col width="16%"></col>
-<col width="16%"></col>
-<col width="16%"></col>
-<col width="16%"></col>
-<col width="16%"></col>
-</colgroup>
+<table>
 <thead>
 <tr class="header">
 <th></th>
-<th align="center">A: IFL (N=428)</th>
-<th align="center">F: FOLFOX (N=691)</th>
-<th align="center">G: IROX (N=380)</th>
-<th align="center">Total (N=1499)</th>
-<th align="center">p value</th>
+<th align="left">A: IFL (N=428)</th>
+<th align="left">F: FOLFOX (N=691)</th>
+<th align="left">G: IROX (N=380)</th>
+<th align="left">Total (N=1499)</th>
+<th align="right">p value</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td><strong>ast</strong></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center">0.039</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right">0.039</td>
 </tr>
 <tr class="even">
-<td>    N-Miss</td>
-<td align="center">69</td>
-<td align="center">141</td>
-<td align="center">56</td>
-<td align="center">266</td>
-<td align="center"></td>
+<td>   N-Miss</td>
+<td align="left">69</td>
+<td align="left">141</td>
+<td align="left">56</td>
+<td align="left">266</td>
+<td align="right"></td>
 </tr>
 <tr class="odd">
-<td>    median</td>
-<td align="center">29</td>
-<td align="center">25.5</td>
-<td align="center">27</td>
-<td align="center">27</td>
-<td align="center"></td>
+<td>   median</td>
+<td align="left">29.000</td>
+<td align="left">25.500</td>
+<td align="left">27.000</td>
+<td align="left">27.000</td>
+<td align="right"></td>
 </tr>
 <tr class="even">
 <td><strong>Age, yrs</strong></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center">0.614</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right">0.614</td>
 </tr>
 <tr class="odd">
-<td>    N</td>
-<td align="center">428</td>
-<td align="center">691</td>
-<td align="center">380</td>
-<td align="center">1499</td>
-<td align="center"></td>
+<td>   N</td>
+<td align="left">428</td>
+<td align="left">691</td>
+<td align="left">380</td>
+<td align="left">1499</td>
+<td align="right"></td>
 </tr>
 <tr class="even">
-<td>    mean</td>
-<td align="center">59.7</td>
-<td align="center">60.3</td>
-<td align="center">59.8</td>
-<td align="center">60</td>
-<td align="center"></td>
+<td>   mean</td>
+<td align="left">59.7</td>
+<td align="left">60.3</td>
+<td align="left">59.8</td>
+<td align="left">60</td>
+<td align="right"></td>
 </tr>
 <tr class="odd">
 <td><strong>Body Mass Index (kg/m^2)</strong></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center">0.641</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right">0.641</td>
 </tr>
 <tr class="even">
-<td>    N-Miss</td>
-<td align="center">9</td>
-<td align="center">20</td>
-<td align="center">4</td>
-<td align="center">33</td>
-<td align="center"></td>
+<td>   N-Miss</td>
+<td align="left">9</td>
+<td align="left">20</td>
+<td align="left">4</td>
+<td align="left">33</td>
+<td align="right"></td>
 </tr>
 <tr class="odd">
-<td>    median</td>
-<td align="center">26.2</td>
-<td align="center">26.5</td>
-<td align="center">26</td>
-<td align="center">26.3</td>
-<td align="center"></td>
+<td>   median</td>
+<td align="left">26.234</td>
+<td align="left">26.525</td>
+<td align="left">25.978</td>
+<td align="left">26.325</td>
+<td align="right"></td>
 </tr>
 </tbody>
 </table>
@@ -1260,191 +1108,177 @@ tab.catsim &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <sp
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">class</span>(mockstudy<span class="op">$</span>age.ord)</code></pre></div>
 <pre><code>## [1] &quot;ordered&quot; &quot;factor&quot;</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(<span class="kw">tableby</span>(sex <span class="op">~</span><span class="st"> </span>age.ordnew, <span class="dt">data =</span> mockstudy)) <span class="co">#, pfootnote = TRUE)</span></code></pre></div>
-<table style="width:100%;">
-<colgroup>
-<col width="22%"></col>
-<col width="19%"></col>
-<col width="19%"></col>
-<col width="19%"></col>
-<col width="19%"></col>
-</colgroup>
+<table>
 <thead>
 <tr class="header">
 <th></th>
-<th align="center">Male (N=916)</th>
-<th align="center">Female (N=583)</th>
-<th align="center">Total (N=1499)</th>
-<th align="center">p value</th>
+<th align="left">Male (N=916)</th>
+<th align="left">Female (N=583)</th>
+<th align="left">Total (N=1499)</th>
+<th align="right">p value</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td><strong>age.ordnew</strong></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center">0.040</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right">0.040</td>
 </tr>
 <tr class="even">
-<td>    N-Miss</td>
-<td align="center">0</td>
-<td align="center">1</td>
-<td align="center">1</td>
-<td align="center"></td>
+<td>   N-Miss</td>
+<td align="left">0</td>
+<td align="left">1</td>
+<td align="left">1</td>
+<td align="right"></td>
 </tr>
 <tr class="odd">
-<td>    10-19</td>
-<td align="center">1 (0.109%)</td>
-<td align="center">0 (0%)</td>
-<td align="center">1 (0.067%)</td>
-<td align="center"></td>
+<td>   10-19</td>
+<td align="left">1 (0.1%)</td>
+<td align="left">0 (0.0%)</td>
+<td align="left">1 (0.1%)</td>
+<td align="right"></td>
 </tr>
 <tr class="even">
-<td>    20-29</td>
-<td align="center">8 (0.873%)</td>
-<td align="center">11 (1.89%)</td>
-<td align="center">19 (1.27%)</td>
-<td align="center"></td>
+<td>   20-29</td>
+<td align="left">8 (0.9%)</td>
+<td align="left">11 (1.9%)</td>
+<td align="left">19 (1.3%)</td>
+<td align="right"></td>
 </tr>
 <tr class="odd">
-<td>    30-39</td>
-<td align="center">37 (4.04%)</td>
-<td align="center">30 (5.15%)</td>
-<td align="center">67 (4.47%)</td>
-<td align="center"></td>
+<td>   30-39</td>
+<td align="left">37 (4.0%)</td>
+<td align="left">30 (5.2%)</td>
+<td align="left">67 (4.5%)</td>
+<td align="right"></td>
 </tr>
 <tr class="even">
-<td>    40-49</td>
-<td align="center">127 (13.9%)</td>
-<td align="center">83 (14.3%)</td>
-<td align="center">210 (14%)</td>
-<td align="center"></td>
+<td>   40-49</td>
+<td align="left">127 (13.9%)</td>
+<td align="left">83 (14.3%)</td>
+<td align="left">210 (14.0%)</td>
+<td align="right"></td>
 </tr>
 <tr class="odd">
-<td>    50-59</td>
-<td align="center">257 (28.1%)</td>
-<td align="center">179 (30.8%)</td>
-<td align="center">436 (29.1%)</td>
-<td align="center"></td>
+<td>   50-59</td>
+<td align="left">257 (28.1%)</td>
+<td align="left">179 (30.8%)</td>
+<td align="left">436 (29.1%)</td>
+<td align="right"></td>
 </tr>
 <tr class="even">
-<td>    60-69</td>
-<td align="center">297 (32.4%)</td>
-<td align="center">170 (29.2%)</td>
-<td align="center">467 (31.2%)</td>
-<td align="center"></td>
+<td>   60-69</td>
+<td align="left">297 (32.4%)</td>
+<td align="left">170 (29.2%)</td>
+<td align="left">467 (31.2%)</td>
+<td align="right"></td>
 </tr>
 <tr class="odd">
-<td>    70-79</td>
-<td align="center">168 (18.3%)</td>
-<td align="center">100 (17.2%)</td>
-<td align="center">268 (17.9%)</td>
-<td align="center"></td>
+<td>   70-79</td>
+<td align="left">168 (18.3%)</td>
+<td align="left">100 (17.2%)</td>
+<td align="left">268 (17.9%)</td>
+<td align="right"></td>
 </tr>
 <tr class="even">
-<td>    80-89</td>
-<td align="center">20 (2.18%)</td>
-<td align="center">9 (1.55%)</td>
-<td align="center">29 (1.94%)</td>
-<td align="center"></td>
+<td>   80-89</td>
+<td align="left">20 (2.2%)</td>
+<td align="left">9 (1.5%)</td>
+<td align="left">29 (1.9%)</td>
+<td align="right"></td>
 </tr>
 <tr class="odd">
-<td>    a</td>
-<td align="center">1 (0.109%)</td>
-<td align="center">0 (0%)</td>
-<td align="center">1 (0.067%)</td>
-<td align="center"></td>
+<td>   a</td>
+<td align="left">1 (0.1%)</td>
+<td align="left">0 (0.0%)</td>
+<td align="left">1 (0.1%)</td>
+<td align="right"></td>
 </tr>
 </tbody>
 </table>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(<span class="kw">tableby</span>(sex <span class="op">~</span><span class="st"> </span><span class="kw">kwt</span>(age.ord), <span class="dt">data =</span> mockstudy)) <span class="co">#) #, pfootnote = TRUE)</span></code></pre></div>
-<table style="width:100%;">
-<colgroup>
-<col width="22%"></col>
-<col width="19%"></col>
-<col width="19%"></col>
-<col width="19%"></col>
-<col width="19%"></col>
-</colgroup>
+<table>
 <thead>
 <tr class="header">
 <th></th>
-<th align="center">Male (N=916)</th>
-<th align="center">Female (N=583)</th>
-<th align="center">Total (N=1499)</th>
-<th align="center">p value</th>
+<th align="left">Male (N=916)</th>
+<th align="left">Female (N=583)</th>
+<th align="left">Total (N=1499)</th>
+<th align="right">p value</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td><strong>age.ord</strong></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center">0.067</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right">0.067</td>
 </tr>
 <tr class="even">
-<td>    10-19</td>
-<td align="center">1 (0.109%)</td>
-<td align="center">0 (0%)</td>
-<td align="center">1 (0.067%)</td>
-<td align="center"></td>
+<td>   10-19</td>
+<td align="left">1 (0.1%)</td>
+<td align="left">0 (0.0%)</td>
+<td align="left">1 (0.1%)</td>
+<td align="right"></td>
 </tr>
 <tr class="odd">
-<td>    20-29</td>
-<td align="center">8 (0.873%)</td>
-<td align="center">11 (1.89%)</td>
-<td align="center">19 (1.27%)</td>
-<td align="center"></td>
+<td>   20-29</td>
+<td align="left">8 (0.9%)</td>
+<td align="left">11 (1.9%)</td>
+<td align="left">19 (1.3%)</td>
+<td align="right"></td>
 </tr>
 <tr class="even">
-<td>    30-39</td>
-<td align="center">37 (4.04%)</td>
-<td align="center">30 (5.15%)</td>
-<td align="center">67 (4.47%)</td>
-<td align="center"></td>
+<td>   30-39</td>
+<td align="left">37 (4.0%)</td>
+<td align="left">30 (5.1%)</td>
+<td align="left">67 (4.5%)</td>
+<td align="right"></td>
 </tr>
 <tr class="odd">
-<td>    40-49</td>
-<td align="center">127 (13.9%)</td>
-<td align="center">83 (14.2%)</td>
-<td align="center">210 (14%)</td>
-<td align="center"></td>
+<td>   40-49</td>
+<td align="left">127 (13.9%)</td>
+<td align="left">83 (14.2%)</td>
+<td align="left">210 (14.0%)</td>
+<td align="right"></td>
 </tr>
 <tr class="even">
-<td>    50-59</td>
-<td align="center">257 (28.1%)</td>
-<td align="center">179 (30.7%)</td>
-<td align="center">436 (29.1%)</td>
-<td align="center"></td>
+<td>   50-59</td>
+<td align="left">257 (28.1%)</td>
+<td align="left">179 (30.7%)</td>
+<td align="left">436 (29.1%)</td>
+<td align="right"></td>
 </tr>
 <tr class="odd">
-<td>    60-69</td>
-<td align="center">298 (32.5%)</td>
-<td align="center">170 (29.2%)</td>
-<td align="center">468 (31.2%)</td>
-<td align="center"></td>
+<td>   60-69</td>
+<td align="left">298 (32.5%)</td>
+<td align="left">170 (29.2%)</td>
+<td align="left">468 (31.2%)</td>
+<td align="right"></td>
 </tr>
 <tr class="even">
-<td>    70-79</td>
-<td align="center">168 (18.3%)</td>
-<td align="center">101 (17.3%)</td>
-<td align="center">269 (17.9%)</td>
-<td align="center"></td>
+<td>   70-79</td>
+<td align="left">168 (18.3%)</td>
+<td align="left">101 (17.3%)</td>
+<td align="left">269 (17.9%)</td>
+<td align="right"></td>
 </tr>
 <tr class="odd">
-<td>    80-89</td>
-<td align="center">20 (2.18%)</td>
-<td align="center">9 (1.54%)</td>
-<td align="center">29 (1.93%)</td>
-<td align="center"></td>
+<td>   80-89</td>
+<td align="left">20 (2.2%)</td>
+<td align="left">9 (1.5%)</td>
+<td align="left">29 (1.9%)</td>
+<td align="right"></td>
 </tr>
 </tbody>
 </table>
 </div>
 <div id="summarize-a-survival-variable" class="section level2">
 <h2>4. Summarize a survival variable</h2>
-<p>First look at the information that is presented by the <code>survfit</code> function, then see how the same results can be seen with tableby. The default is to show the median survival (time at which the probability of survival = 50%).</p>
+<p>First look at the information that is presented by the <code>survfit()</code> function, then see how the same results can be seen with tableby. The default is to show the median survival (time at which the probability of survival = 50%).</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">survfit</span>(<span class="kw">Surv</span>(fu.time, fu.stat)<span class="op">~</span>sex, <span class="dt">data=</span>mockstudy)</code></pre></div>
 <pre><code>## Call: survfit(formula = Surv(fu.time, fu.stat) ~ sex, data = mockstudy)
 ## 
@@ -1462,47 +1296,40 @@ tab.catsim &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <sp
 ##  Chisq= 0  on 1 degrees of freedom, p= 0.975</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(<span class="kw">tableby</span>(sex <span class="op">~</span><span class="st"> </span><span class="kw">Surv</span>(fu.time, fu.stat), <span class="dt">data=</span>mockstudy))</code></pre></div>
 <table>
-<colgroup>
-<col width="22%"></col>
-<col width="19%"></col>
-<col width="19%"></col>
-<col width="19%"></col>
-<col width="19%"></col>
-</colgroup>
 <thead>
 <tr class="header">
 <th></th>
-<th align="center">Male (N=916)</th>
-<th align="center">Female (N=583)</th>
-<th align="center">Total (N=1499)</th>
-<th align="center">p value</th>
+<th align="left">Male (N=916)</th>
+<th align="left">Female (N=583)</th>
+<th align="left">Total (N=1499)</th>
+<th align="right">p value</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td><strong>Surv(fu.time, fu.stat)</strong></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center">0.975</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right">0.975</td>
 </tr>
 <tr class="even">
-<td>    Events</td>
-<td align="center">829</td>
-<td align="center">527</td>
-<td align="center">1356</td>
-<td align="center"></td>
+<td>   Events</td>
+<td align="left">829</td>
+<td align="left">527</td>
+<td align="left">1356</td>
+<td align="right"></td>
 </tr>
 <tr class="odd">
-<td>    medSurv</td>
-<td align="center">550</td>
-<td align="center">543</td>
-<td align="center">546</td>
-<td align="center"></td>
+<td>   Median Survival</td>
+<td align="left">550.000</td>
+<td align="left">543.000</td>
+<td align="left">546.000</td>
+<td align="right"></td>
 </tr>
 </tbody>
 </table>
-<p>It is also possible to obtain summaries of the %survival at certain time points (say the probability of surviving 1-year).</p>
+<p>It is also possible to obtain summaries of the % survival at certain time points (say the probability of surviving 1-year).</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(<span class="kw">survfit</span>(<span class="kw">Surv</span>(fu.time<span class="op">/</span><span class="fl">365.25</span>, fu.stat)<span class="op">~</span>sex, <span class="dt">data=</span>mockstudy), <span class="dt">times=</span><span class="dv">1</span><span class="op">:</span><span class="dv">5</span>)</code></pre></div>
 <pre><code>## Call: survfit(formula = Surv(fu.time/365.25, fu.stat) ~ sex, data = mockstudy)
 ## 
@@ -1522,115 +1349,93 @@ tab.catsim &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <sp
 ##     4     51      32   0.1093  0.0133       0.0861        0.139
 ##     5     18      12   0.0745  0.0126       0.0534        0.104</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(<span class="kw">tableby</span>(sex <span class="op">~</span><span class="st"> </span><span class="kw">Surv</span>(fu.time<span class="op">/</span><span class="fl">365.25</span>, fu.stat), <span class="dt">data=</span>mockstudy, <span class="dt">times=</span><span class="dv">1</span><span class="op">:</span><span class="dv">5</span>, <span class="dt">surv.stats=</span><span class="kw">c</span>(<span class="st">&quot;NeventsSurv&quot;</span>,<span class="st">&quot;NriskSurv&quot;</span>)))</code></pre></div>
-<pre><code>## Warning in tableby(sex ~ Surv(fu.time/365.25, fu.stat), data = mockstudy, : unused arguments: times</code></pre>
 <table>
-<colgroup>
-<col width="22%"></col>
-<col width="19%"></col>
-<col width="19%"></col>
-<col width="19%"></col>
-<col width="19%"></col>
-</colgroup>
 <thead>
 <tr class="header">
 <th></th>
-<th align="center">Male (N=916)</th>
-<th align="center">Female (N=583)</th>
-<th align="center">Total (N=1499)</th>
-<th align="center">p value</th>
+<th align="left">Male (N=916)</th>
+<th align="left">Female (N=583)</th>
+<th align="left">Total (N=1499)</th>
+<th align="right">p value</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td><strong>Surv(fu.time/365.25, fu.stat)</strong></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center">0.975</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right">0.975</td>
 </tr>
 <tr class="even">
-<td><strong>NeventsSurv</strong></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center">0.975</td>
+<td>   time = 1</td>
+<td align="left">286 (68.7)</td>
+<td align="left">202 (65.3)</td>
+<td align="left">488 (67.4)</td>
+<td align="right"></td>
 </tr>
 <tr class="odd">
-<td>    1</td>
-<td align="center">286 (68.7)</td>
-<td align="center">202 (65.3)</td>
-<td align="center">488 (67.4)</td>
-<td align="center"></td>
+<td>   time = 2</td>
+<td align="left">597 (34.4)</td>
+<td align="left">391 (32.8)</td>
+<td align="left">988 (33.7)</td>
+<td align="right"></td>
 </tr>
 <tr class="even">
-<td>    2</td>
-<td align="center">597 (34.4)</td>
-<td align="center">391 (32.8)</td>
-<td align="center">988 (33.7)</td>
-<td align="center"></td>
+<td>   time = 3</td>
+<td align="left">748 (17.5)</td>
+<td align="left">481 (17.0)</td>
+<td align="left">1229 (17.3)</td>
+<td align="right"></td>
 </tr>
 <tr class="odd">
-<td>    3</td>
-<td align="center">748 (17.5)</td>
-<td align="center">481 (17)</td>
-<td align="center">1229 (17.3)</td>
-<td align="center"></td>
+<td>   time = 4</td>
+<td align="left">809 (9.4)</td>
+<td align="left">513 (10.9)</td>
+<td align="left">1322 (10.1)</td>
+<td align="right"></td>
 </tr>
 <tr class="even">
-<td>    4</td>
-<td align="center">809 (9.41)</td>
-<td align="center">513 (10.9)</td>
-<td align="center">1322 (10.1)</td>
-<td align="center"></td>
+<td>   time = 5</td>
+<td align="left">825 (6.3)</td>
+<td align="left">525 (7.4)</td>
+<td align="left">1350 (6.8)</td>
+<td align="right"></td>
 </tr>
 <tr class="odd">
-<td>    5</td>
-<td align="center">825 (6.28)</td>
-<td align="center">525 (7.45)</td>
-<td align="center">1350 (6.78)</td>
-<td align="center"></td>
+<td>   time = 1</td>
+<td align="left">626</td>
+<td align="left">380</td>
+<td align="left">1006</td>
+<td align="right"></td>
 </tr>
 <tr class="even">
-<td><strong>NriskSurv</strong></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center">0.975</td>
+<td>   time = 2</td>
+<td align="left">309</td>
+<td align="left">190</td>
+<td align="left">499</td>
+<td align="right"></td>
 </tr>
 <tr class="odd">
-<td>    1</td>
-<td align="center">626</td>
-<td align="center">380</td>
-<td align="center">1006</td>
-<td align="center"></td>
+<td>   time = 3</td>
+<td align="left">152</td>
+<td align="left">95</td>
+<td align="left">247</td>
+<td align="right"></td>
 </tr>
 <tr class="even">
-<td>    2</td>
-<td align="center">309</td>
-<td align="center">190</td>
-<td align="center">499</td>
-<td align="center"></td>
+<td>   time = 4</td>
+<td align="left">57</td>
+<td align="left">51</td>
+<td align="left">108</td>
+<td align="right"></td>
 </tr>
 <tr class="odd">
-<td>    3</td>
-<td align="center">152</td>
-<td align="center">95</td>
-<td align="center">247</td>
-<td align="center"></td>
-</tr>
-<tr class="even">
-<td>    4</td>
-<td align="center">57</td>
-<td align="center">51</td>
-<td align="center">108</td>
-<td align="center"></td>
-</tr>
-<tr class="odd">
-<td>    5</td>
-<td align="center">24</td>
-<td align="center">18</td>
-<td align="center">42</td>
-<td align="center"></td>
+<td>   time = 5</td>
+<td align="left">24</td>
+<td align="left">18</td>
+<td align="left">42</td>
+<td align="right"></td>
 </tr>
 </tbody>
 </table>
@@ -1643,51 +1448,44 @@ N &lt;-<span class="st"> </span><span class="kw">nrow</span>(mockstudy)
 mockstudy<span class="op">$</span>dtentry &lt;-<span class="st"> </span><span class="kw">mdy.Date</span>(<span class="dt">month=</span><span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">12</span>,N,<span class="dt">replace=</span>T), <span class="dt">day=</span><span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">29</span>,N,<span class="dt">replace=</span>T), 
                               <span class="dt">year=</span><span class="kw">sample</span>(<span class="dv">2005</span><span class="op">:</span><span class="dv">2009</span>,N,<span class="dt">replace=</span>T))
 <span class="kw">summary</span>(<span class="kw">tableby</span>(sex <span class="op">~</span><span class="st"> </span>dtentry, <span class="dt">data=</span>mockstudy))</code></pre></div>
-<table style="width:100%;">
-<colgroup>
-<col width="22%"></col>
-<col width="19%"></col>
-<col width="19%"></col>
-<col width="19%"></col>
-<col width="19%"></col>
-</colgroup>
+<table>
 <thead>
 <tr class="header">
 <th></th>
-<th align="center">Male (N=916)</th>
-<th align="center">Female (N=583)</th>
-<th align="center">Total (N=1499)</th>
-<th align="center">p value</th>
+<th align="left">Male (N=916)</th>
+<th align="left">Female (N=583)</th>
+<th align="left">Total (N=1499)</th>
+<th align="right">p value</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td><strong>dtentry</strong></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center">0.554</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right">0.554</td>
 </tr>
 <tr class="even">
-<td>    N-Miss</td>
-<td align="center">3</td>
-<td align="center">2</td>
-<td align="center">5</td>
-<td align="center"></td>
+<td>   N-Miss</td>
+<td align="left">3</td>
+<td align="left">2</td>
+<td align="left">5</td>
+<td align="right"></td>
 </tr>
 <tr class="odd">
-<td>    median</td>
-<td align="center">2007-06-16</td>
-<td align="center">2007-06-15</td>
-<td align="center">2007-06-15</td>
-<td align="center"></td>
+<td>   median</td>
+<td align="left">2007-06-16</td>
+<td align="left">2007-06-15</td>
+<td align="left">2007-06-15</td>
+<td align="right"></td>
 </tr>
 <tr class="even">
-<td>    Range</td>
-<td align="center">2005-01-03 - 2009-12-27</td>
-<td align="center">2005-01-01 - 2009-12-28</td>
-<td align="center">2005-01-01 - 2009-12-28</td>
-<td align="center"></td>
+<td>   Range</td>
+<td align="left">2005-01-03 - 2009-12-27</td>
+<td align="left">2005-01-01 - 2009-12-28</td>
+<td align="left">2005-01-01 - 2009-12-28</td>
+<td align="right"></td>
 </tr>
 </tbody>
 </table>
@@ -1709,144 +1507,112 @@ RHS</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## use the formula in the tableby function
 <span class="kw">summary</span>(<span class="kw">tableby</span>(<span class="kw">as.formula</span>(<span class="kw">paste</span>(<span class="st">'arm ~'</span>, RHS)), <span class="dt">data=</span>mockstudy))</code></pre></div>
 <table>
-<colgroup>
-<col width="19%"></col>
-<col width="16%"></col>
-<col width="16%"></col>
-<col width="16%"></col>
-<col width="16%"></col>
-<col width="16%"></col>
-</colgroup>
 <thead>
 <tr class="header">
 <th></th>
-<th align="center">A: IFL (N=428)</th>
-<th align="center">F: FOLFOX (N=691)</th>
-<th align="center">G: IROX (N=380)</th>
-<th align="center">Total (N=1499)</th>
-<th align="center">p value</th>
+<th align="left">A: IFL (N=428)</th>
+<th align="left">F: FOLFOX (N=691)</th>
+<th align="left">G: IROX (N=380)</th>
+<th align="left">Total (N=1499)</th>
+<th align="right">p value</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td><strong>ps</strong></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center">0.903</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right">0.903</td>
 </tr>
 <tr class="even">
-<td>    N-Miss</td>
-<td align="center">69</td>
-<td align="center">141</td>
-<td align="center">56</td>
-<td align="center">266</td>
-<td align="center"></td>
+<td>   N-Miss</td>
+<td align="left">69</td>
+<td align="left">141</td>
+<td align="left">56</td>
+<td align="left">266</td>
+<td align="right"></td>
 </tr>
 <tr class="odd">
-<td>    Mean (SD)</td>
-<td align="center">0.529 (0.597)</td>
-<td align="center">0.547 (0.595)</td>
-<td align="center">0.537 (0.606)</td>
-<td align="center">0.539 (0.598)</td>
-<td align="center"></td>
+<td>   Mean (SD)</td>
+<td align="left">0.529 (0.597)</td>
+<td align="left">0.547 (0.595)</td>
+<td align="left">0.537 (0.606)</td>
+<td align="left">0.539 (0.598)</td>
+<td align="right"></td>
 </tr>
 <tr class="even">
-<td>    Q1, Q3</td>
-<td align="center">0, 1</td>
-<td align="center">0, 1</td>
-<td align="center">0, 1</td>
-<td align="center">0, 1</td>
-<td align="center"></td>
+<td>   Range</td>
+<td align="left">0.000 - 2.000</td>
+<td align="left">0.000 - 2.000</td>
+<td align="left">0.000 - 2.000</td>
+<td align="left">0.000 - 2.000</td>
+<td align="right"></td>
 </tr>
 <tr class="odd">
-<td>    Range</td>
-<td align="center">0 - 2</td>
-<td align="center">0 - 2</td>
-<td align="center">0 - 2</td>
-<td align="center">0 - 2</td>
-<td align="center"></td>
-</tr>
-<tr class="even">
 <td><strong>hgb</strong></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center">0.639</td>
-</tr>
-<tr class="odd">
-<td>    N-Miss</td>
-<td align="center">69</td>
-<td align="center">141</td>
-<td align="center">56</td>
-<td align="center">266</td>
-<td align="center"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right">0.639</td>
 </tr>
 <tr class="even">
-<td>    Mean (SD)</td>
-<td align="center">12.3 (1.69)</td>
-<td align="center">12.4 (1.76)</td>
-<td align="center">12.4 (1.68)</td>
-<td align="center">12.3 (1.72)</td>
-<td align="center"></td>
+<td>   N-Miss</td>
+<td align="left">69</td>
+<td align="left">141</td>
+<td align="left">56</td>
+<td align="left">266</td>
+<td align="right"></td>
 </tr>
 <tr class="odd">
-<td>    Q1, Q3</td>
-<td align="center">11, 13.4</td>
-<td align="center">11.1, 13.6</td>
-<td align="center">11.2, 13.6</td>
-<td align="center">11.1, 13.5</td>
-<td align="center"></td>
+<td>   Mean (SD)</td>
+<td align="left">12.276 (1.686)</td>
+<td align="left">12.381 (1.763)</td>
+<td align="left">12.373 (1.680)</td>
+<td align="left">12.348 (1.719)</td>
+<td align="right"></td>
 </tr>
 <tr class="even">
-<td>    Range</td>
-<td align="center">9.06 - 17.3</td>
-<td align="center">9 - 18.2</td>
-<td align="center">9 - 17</td>
-<td align="center">9 - 18.2</td>
-<td align="center"></td>
+<td>   Range</td>
+<td align="left">9.060 - 17.300</td>
+<td align="left">9.000 - 18.200</td>
+<td align="left">9.000 - 17.000</td>
+<td align="left">9.000 - 18.200</td>
+<td align="right"></td>
 </tr>
 <tr class="odd">
 <td><strong>Body Mass Index (kg/m^2)</strong></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center">0.892</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right">0.892</td>
 </tr>
 <tr class="even">
-<td>    N-Miss</td>
-<td align="center">9</td>
-<td align="center">20</td>
-<td align="center">4</td>
-<td align="center">33</td>
-<td align="center"></td>
+<td>   N-Miss</td>
+<td align="left">9</td>
+<td align="left">20</td>
+<td align="left">4</td>
+<td align="left">33</td>
+<td align="right"></td>
 </tr>
 <tr class="odd">
-<td>    Mean (SD)</td>
-<td align="center">27.3 (5.55)</td>
-<td align="center">27.2 (5.17)</td>
-<td align="center">27.1 (5.75)</td>
-<td align="center">27.2 (5.43)</td>
-<td align="center"></td>
+<td>   Mean (SD)</td>
+<td align="left">27.290 (5.552)</td>
+<td align="left">27.210 (5.173)</td>
+<td align="left">27.106 (5.751)</td>
+<td align="left">27.206 (5.432)</td>
+<td align="right"></td>
 </tr>
 <tr class="even">
-<td>    Q1, Q3</td>
-<td align="center">23.6, 30.6</td>
-<td align="center">23.7, 30.1</td>
-<td align="center">23.2, 29.6</td>
-<td align="center">23.5, 30.1</td>
-<td align="center"></td>
-</tr>
-<tr class="odd">
-<td>    Range</td>
-<td align="center">14.1 - 53</td>
-<td align="center">16.6 - 49.1</td>
-<td align="center">15.4 - 60.2</td>
-<td align="center">14.1 - 60.2</td>
-<td align="center"></td>
+<td>   Range</td>
+<td align="left">14.053 - 53.008</td>
+<td align="left">16.649 - 49.130</td>
+<td align="left">15.430 - 60.243</td>
+<td align="left">14.053 - 60.243</td>
+<td align="right"></td>
 </tr>
 </tbody>
 </table>
@@ -1861,144 +1627,112 @@ tmp2 &lt;-<span class="st"> </span><span class="kw">formulize</span>(<span class
 ## use the formula in the tableby function
 <span class="kw">summary</span>(<span class="kw">tableby</span>(tmp, <span class="dt">data=</span>mockstudy))</code></pre></div>
 <table>
-<colgroup>
-<col width="19%"></col>
-<col width="16%"></col>
-<col width="16%"></col>
-<col width="16%"></col>
-<col width="16%"></col>
-<col width="16%"></col>
-</colgroup>
 <thead>
 <tr class="header">
 <th></th>
-<th align="center">A: IFL (N=428)</th>
-<th align="center">F: FOLFOX (N=691)</th>
-<th align="center">G: IROX (N=380)</th>
-<th align="center">Total (N=1499)</th>
-<th align="center">p value</th>
+<th align="left">A: IFL (N=428)</th>
+<th align="left">F: FOLFOX (N=691)</th>
+<th align="left">G: IROX (N=380)</th>
+<th align="left">Total (N=1499)</th>
+<th align="right">p value</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td><strong>ps</strong></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center">0.903</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right">0.903</td>
 </tr>
 <tr class="even">
-<td>    N-Miss</td>
-<td align="center">69</td>
-<td align="center">141</td>
-<td align="center">56</td>
-<td align="center">266</td>
-<td align="center"></td>
+<td>   N-Miss</td>
+<td align="left">69</td>
+<td align="left">141</td>
+<td align="left">56</td>
+<td align="left">266</td>
+<td align="right"></td>
 </tr>
 <tr class="odd">
-<td>    Mean (SD)</td>
-<td align="center">0.529 (0.597)</td>
-<td align="center">0.547 (0.595)</td>
-<td align="center">0.537 (0.606)</td>
-<td align="center">0.539 (0.598)</td>
-<td align="center"></td>
+<td>   Mean (SD)</td>
+<td align="left">0.529 (0.597)</td>
+<td align="left">0.547 (0.595)</td>
+<td align="left">0.537 (0.606)</td>
+<td align="left">0.539 (0.598)</td>
+<td align="right"></td>
 </tr>
 <tr class="even">
-<td>    Q1, Q3</td>
-<td align="center">0, 1</td>
-<td align="center">0, 1</td>
-<td align="center">0, 1</td>
-<td align="center">0, 1</td>
-<td align="center"></td>
+<td>   Range</td>
+<td align="left">0.000 - 2.000</td>
+<td align="left">0.000 - 2.000</td>
+<td align="left">0.000 - 2.000</td>
+<td align="left">0.000 - 2.000</td>
+<td align="right"></td>
 </tr>
 <tr class="odd">
-<td>    Range</td>
-<td align="center">0 - 2</td>
-<td align="center">0 - 2</td>
-<td align="center">0 - 2</td>
-<td align="center">0 - 2</td>
-<td align="center"></td>
-</tr>
-<tr class="even">
 <td><strong>hgb</strong></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center">0.639</td>
-</tr>
-<tr class="odd">
-<td>    N-Miss</td>
-<td align="center">69</td>
-<td align="center">141</td>
-<td align="center">56</td>
-<td align="center">266</td>
-<td align="center"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right">0.639</td>
 </tr>
 <tr class="even">
-<td>    Mean (SD)</td>
-<td align="center">12.3 (1.69)</td>
-<td align="center">12.4 (1.76)</td>
-<td align="center">12.4 (1.68)</td>
-<td align="center">12.3 (1.72)</td>
-<td align="center"></td>
+<td>   N-Miss</td>
+<td align="left">69</td>
+<td align="left">141</td>
+<td align="left">56</td>
+<td align="left">266</td>
+<td align="right"></td>
 </tr>
 <tr class="odd">
-<td>    Q1, Q3</td>
-<td align="center">11, 13.4</td>
-<td align="center">11.1, 13.6</td>
-<td align="center">11.2, 13.6</td>
-<td align="center">11.1, 13.5</td>
-<td align="center"></td>
+<td>   Mean (SD)</td>
+<td align="left">12.276 (1.686)</td>
+<td align="left">12.381 (1.763)</td>
+<td align="left">12.373 (1.680)</td>
+<td align="left">12.348 (1.719)</td>
+<td align="right"></td>
 </tr>
 <tr class="even">
-<td>    Range</td>
-<td align="center">9.06 - 17.3</td>
-<td align="center">9 - 18.2</td>
-<td align="center">9 - 17</td>
-<td align="center">9 - 18.2</td>
-<td align="center"></td>
+<td>   Range</td>
+<td align="left">9.060 - 17.300</td>
+<td align="left">9.000 - 18.200</td>
+<td align="left">9.000 - 17.000</td>
+<td align="left">9.000 - 18.200</td>
+<td align="right"></td>
 </tr>
 <tr class="odd">
 <td><strong>Body Mass Index (kg/m^2)</strong></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center">0.892</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right">0.892</td>
 </tr>
 <tr class="even">
-<td>    N-Miss</td>
-<td align="center">9</td>
-<td align="center">20</td>
-<td align="center">4</td>
-<td align="center">33</td>
-<td align="center"></td>
+<td>   N-Miss</td>
+<td align="left">9</td>
+<td align="left">20</td>
+<td align="left">4</td>
+<td align="left">33</td>
+<td align="right"></td>
 </tr>
 <tr class="odd">
-<td>    Mean (SD)</td>
-<td align="center">27.3 (5.55)</td>
-<td align="center">27.2 (5.17)</td>
-<td align="center">27.1 (5.75)</td>
-<td align="center">27.2 (5.43)</td>
-<td align="center"></td>
+<td>   Mean (SD)</td>
+<td align="left">27.290 (5.552)</td>
+<td align="left">27.210 (5.173)</td>
+<td align="left">27.106 (5.751)</td>
+<td align="left">27.206 (5.432)</td>
+<td align="right"></td>
 </tr>
 <tr class="even">
-<td>    Q1, Q3</td>
-<td align="center">23.6, 30.6</td>
-<td align="center">23.7, 30.1</td>
-<td align="center">23.2, 29.6</td>
-<td align="center">23.5, 30.1</td>
-<td align="center"></td>
-</tr>
-<tr class="odd">
-<td>    Range</td>
-<td align="center">14.1 - 53</td>
-<td align="center">16.6 - 49.1</td>
-<td align="center">15.4 - 60.2</td>
-<td align="center">14.1 - 60.2</td>
-<td align="center"></td>
+<td>   Range</td>
+<td align="left">14.053 - 53.008</td>
+<td align="left">16.649 - 49.130</td>
+<td align="left">15.430 - 60.243</td>
+<td align="left">14.053 - 60.243</td>
+<td align="right"></td>
 </tr>
 </tbody>
 </table>
@@ -2021,128 +1755,100 @@ tmp2 &lt;-<span class="st"> </span><span class="kw">formulize</span>(<span class
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">names</span>(newdata)</code></pre></div>
 <pre><code>## [1] &quot;sex&quot; &quot;ps&quot;  &quot;hgb&quot; &quot;bmi&quot;</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(<span class="kw">tableby</span>(sex <span class="op">~</span><span class="st"> </span>., <span class="dt">data=</span>newdata))</code></pre></div>
-<table style="width:100%;">
-<colgroup>
-<col width="22%"></col>
-<col width="19%"></col>
-<col width="19%"></col>
-<col width="19%"></col>
-<col width="19%"></col>
-</colgroup>
+<table>
 <thead>
 <tr class="header">
 <th></th>
-<th align="center">Male (N=333)</th>
-<th align="center">Female (N=224)</th>
-<th align="center">Total (N=557)</th>
-<th align="center">p value</th>
+<th align="left">Male (N=333)</th>
+<th align="left">Female (N=224)</th>
+<th align="left">Total (N=557)</th>
+<th align="right">p value</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td><strong>ps</strong></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center">0.652</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right">0.652</td>
 </tr>
 <tr class="even">
-<td>    N-Miss</td>
-<td align="center">64</td>
-<td align="center">44</td>
-<td align="center">108</td>
-<td align="center"></td>
+<td>   N-Miss</td>
+<td align="left">64</td>
+<td align="left">44</td>
+<td align="left">108</td>
+<td align="right"></td>
 </tr>
 <tr class="odd">
-<td>    Mean (SD)</td>
-<td align="center">0.554 (0.6)</td>
-<td align="center">0.528 (0.602)</td>
-<td align="center">0.543 (0.6)</td>
-<td align="center"></td>
+<td>   Mean (SD)</td>
+<td align="left">0.554 (0.600)</td>
+<td align="left">0.528 (0.602)</td>
+<td align="left">0.543 (0.600)</td>
+<td align="right"></td>
 </tr>
 <tr class="even">
-<td>    Q1, Q3</td>
-<td align="center">0, 1</td>
-<td align="center">0, 1</td>
-<td align="center">0, 1</td>
-<td align="center"></td>
+<td>   Range</td>
+<td align="left">0.000 - 2.000</td>
+<td align="left">0.000 - 2.000</td>
+<td align="left">0.000 - 2.000</td>
+<td align="right"></td>
 </tr>
 <tr class="odd">
-<td>    Range</td>
-<td align="center">0 - 2</td>
-<td align="center">0 - 2</td>
-<td align="center">0 - 2</td>
-<td align="center"></td>
-</tr>
-<tr class="even">
 <td><strong>hgb</strong></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center">&lt;0.001</td>
-</tr>
-<tr class="odd">
-<td>    N-Miss</td>
-<td align="center">64</td>
-<td align="center">44</td>
-<td align="center">108</td>
-<td align="center"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right">&lt; 0.001</td>
 </tr>
 <tr class="even">
-<td>    Mean (SD)</td>
-<td align="center">12.7 (1.92)</td>
-<td align="center">12.1 (1.4)</td>
-<td align="center">12.5 (1.76)</td>
-<td align="center"></td>
+<td>   N-Miss</td>
+<td align="left">64</td>
+<td align="left">44</td>
+<td align="left">108</td>
+<td align="right"></td>
 </tr>
 <tr class="odd">
-<td>    Q1, Q3</td>
-<td align="center">11.3, 14</td>
-<td align="center">11, 12.9</td>
-<td align="center">11.2, 13.7</td>
-<td align="center"></td>
+<td>   Mean (SD)</td>
+<td align="left">12.720 (1.925)</td>
+<td align="left">12.063 (1.395)</td>
+<td align="left">12.457 (1.760)</td>
+<td align="right"></td>
 </tr>
 <tr class="even">
-<td>    Range</td>
-<td align="center">9 - 18.2</td>
-<td align="center">9.1 - 15.9</td>
-<td align="center">9 - 18.2</td>
-<td align="center"></td>
+<td>   Range</td>
+<td align="left">9.000 - 18.200</td>
+<td align="left">9.100 - 15.900</td>
+<td align="left">9.000 - 18.200</td>
+<td align="right"></td>
 </tr>
 <tr class="odd">
 <td><strong>bmi</strong></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center">0.650</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right">0.650</td>
 </tr>
 <tr class="even">
-<td>    N-Miss</td>
-<td align="center">9</td>
-<td align="center">6</td>
-<td align="center">15</td>
-<td align="center"></td>
+<td>   N-Miss</td>
+<td align="left">9</td>
+<td align="left">6</td>
+<td align="left">15</td>
+<td align="right"></td>
 </tr>
 <tr class="odd">
-<td>    Mean (SD)</td>
-<td align="center">27.5 (4.78)</td>
-<td align="center">27.3 (5.51)</td>
-<td align="center">27.5 (5.08)</td>
-<td align="center"></td>
+<td>   Mean (SD)</td>
+<td align="left">27.539 (4.780)</td>
+<td align="left">27.337 (5.508)</td>
+<td align="left">27.458 (5.081)</td>
+<td align="right"></td>
 </tr>
 <tr class="even">
-<td>    Q1, Q3</td>
-<td align="center">24.4, 30.2</td>
-<td align="center">23.3, 30.4</td>
-<td align="center">24, 30.4</td>
-<td align="center"></td>
-</tr>
-<tr class="odd">
-<td>    Range</td>
-<td align="center">17.9 - 47.5</td>
-<td align="center">16.6 - 49.1</td>
-<td align="center">16.6 - 49.1</td>
-<td align="center"></td>
+<td>   Range</td>
+<td align="left">17.927 - 47.458</td>
+<td align="left">16.649 - 49.130</td>
+<td align="left">16.649 - 49.130</td>
+<td align="right"></td>
 </tr>
 </tbody>
 </table>
@@ -2151,127 +1857,99 @@ tmp2 &lt;-<span class="st"> </span><span class="kw">formulize</span>(<span class
 </ul>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(<span class="kw">tableby</span>(sex <span class="op">~</span><span class="st"> </span>ps <span class="op">+</span><span class="st"> </span>hgb <span class="op">+</span><span class="st"> </span>bmi, <span class="dt">subset=</span>age<span class="op">&gt;</span><span class="dv">50</span> <span class="op">&amp;</span><span class="st"> </span>arm<span class="op">==</span><span class="st">&quot;F: FOLFOX&quot;</span>, <span class="dt">data=</span>mockstudy))</code></pre></div>
 <table>
-<colgroup>
-<col width="23%"></col>
-<col width="19%"></col>
-<col width="19%"></col>
-<col width="19%"></col>
-<col width="19%"></col>
-</colgroup>
 <thead>
 <tr class="header">
 <th></th>
-<th align="center">Male (N=333)</th>
-<th align="center">Female (N=224)</th>
-<th align="center">Total (N=557)</th>
-<th align="center">p value</th>
+<th align="left">Male (N=333)</th>
+<th align="left">Female (N=224)</th>
+<th align="left">Total (N=557)</th>
+<th align="right">p value</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td><strong>ps</strong></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center">0.652</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right">0.652</td>
 </tr>
 <tr class="even">
-<td>    N-Miss</td>
-<td align="center">64</td>
-<td align="center">44</td>
-<td align="center">108</td>
-<td align="center"></td>
+<td>   N-Miss</td>
+<td align="left">64</td>
+<td align="left">44</td>
+<td align="left">108</td>
+<td align="right"></td>
 </tr>
 <tr class="odd">
-<td>    Mean (SD)</td>
-<td align="center">0.554 (0.6)</td>
-<td align="center">0.528 (0.602)</td>
-<td align="center">0.543 (0.6)</td>
-<td align="center"></td>
+<td>   Mean (SD)</td>
+<td align="left">0.554 (0.600)</td>
+<td align="left">0.528 (0.602)</td>
+<td align="left">0.543 (0.600)</td>
+<td align="right"></td>
 </tr>
 <tr class="even">
-<td>    Q1, Q3</td>
-<td align="center">0, 1</td>
-<td align="center">0, 1</td>
-<td align="center">0, 1</td>
-<td align="center"></td>
+<td>   Range</td>
+<td align="left">0.000 - 2.000</td>
+<td align="left">0.000 - 2.000</td>
+<td align="left">0.000 - 2.000</td>
+<td align="right"></td>
 </tr>
 <tr class="odd">
-<td>    Range</td>
-<td align="center">0 - 2</td>
-<td align="center">0 - 2</td>
-<td align="center">0 - 2</td>
-<td align="center"></td>
-</tr>
-<tr class="even">
 <td><strong>hgb</strong></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center">&lt;0.001</td>
-</tr>
-<tr class="odd">
-<td>    N-Miss</td>
-<td align="center">64</td>
-<td align="center">44</td>
-<td align="center">108</td>
-<td align="center"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right">&lt; 0.001</td>
 </tr>
 <tr class="even">
-<td>    Mean (SD)</td>
-<td align="center">12.7 (1.92)</td>
-<td align="center">12.1 (1.4)</td>
-<td align="center">12.5 (1.76)</td>
-<td align="center"></td>
+<td>   N-Miss</td>
+<td align="left">64</td>
+<td align="left">44</td>
+<td align="left">108</td>
+<td align="right"></td>
 </tr>
 <tr class="odd">
-<td>    Q1, Q3</td>
-<td align="center">11.3, 14</td>
-<td align="center">11, 12.9</td>
-<td align="center">11.2, 13.7</td>
-<td align="center"></td>
+<td>   Mean (SD)</td>
+<td align="left">12.720 (1.925)</td>
+<td align="left">12.063 (1.395)</td>
+<td align="left">12.457 (1.760)</td>
+<td align="right"></td>
 </tr>
 <tr class="even">
-<td>    Range</td>
-<td align="center">9 - 18.2</td>
-<td align="center">9.1 - 15.9</td>
-<td align="center">9 - 18.2</td>
-<td align="center"></td>
+<td>   Range</td>
+<td align="left">9.000 - 18.200</td>
+<td align="left">9.100 - 15.900</td>
+<td align="left">9.000 - 18.200</td>
+<td align="right"></td>
 </tr>
 <tr class="odd">
 <td><strong>Body Mass Index (kg/m^2)</strong></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center">0.650</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right">0.650</td>
 </tr>
 <tr class="even">
-<td>    N-Miss</td>
-<td align="center">9</td>
-<td align="center">6</td>
-<td align="center">15</td>
-<td align="center"></td>
+<td>   N-Miss</td>
+<td align="left">9</td>
+<td align="left">6</td>
+<td align="left">15</td>
+<td align="right"></td>
 </tr>
 <tr class="odd">
-<td>    Mean (SD)</td>
-<td align="center">27.5 (4.78)</td>
-<td align="center">27.3 (5.51)</td>
-<td align="center">27.5 (5.08)</td>
-<td align="center"></td>
+<td>   Mean (SD)</td>
+<td align="left">27.539 (4.780)</td>
+<td align="left">27.337 (5.508)</td>
+<td align="left">27.458 (5.081)</td>
+<td align="right"></td>
 </tr>
 <tr class="even">
-<td>    Q1, Q3</td>
-<td align="center">24.4, 30.2</td>
-<td align="center">23.3, 30.4</td>
-<td align="center">24, 30.4</td>
-<td align="center"></td>
-</tr>
-<tr class="odd">
-<td>    Range</td>
-<td align="center">17.9 - 47.5</td>
-<td align="center">16.6 - 49.1</td>
-<td align="center">16.6 - 49.1</td>
-<td align="center"></td>
+<td>   Range</td>
+<td align="left">17.927 - 47.458</td>
+<td align="left">16.649 - 49.130</td>
+<td align="left">16.649 - 49.130</td>
+<td align="right"></td>
 </tr>
 </tbody>
 </table>
@@ -2285,179 +1963,144 @@ tmp2 &lt;-<span class="st"> </span><span class="kw">formulize</span>(<span class
 ##       77      686       47      437</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(<span class="kw">tableby</span>(arm <span class="op">~</span><span class="st"> </span><span class="kw">interaction</span>(mdquality.s,sex), <span class="dt">data=</span>mockstudy))</code></pre></div>
 <table>
-<colgroup>
-<col width="18%"></col>
-<col width="16%"></col>
-<col width="16%"></col>
-<col width="16%"></col>
-<col width="16%"></col>
-<col width="16%"></col>
-</colgroup>
 <thead>
 <tr class="header">
 <th></th>
-<th align="center">A: IFL (N=428)</th>
-<th align="center">F: FOLFOX (N=691)</th>
-<th align="center">G: IROX (N=380)</th>
-<th align="center">Total (N=1499)</th>
-<th align="center">p value</th>
+<th align="left">A: IFL (N=428)</th>
+<th align="left">F: FOLFOX (N=691)</th>
+<th align="left">G: IROX (N=380)</th>
+<th align="left">Total (N=1499)</th>
+<th align="right">p value</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td><strong>interaction(mdquality.s, sex)</strong></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center">0.493</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right">0.493</td>
 </tr>
 <tr class="even">
-<td>    N-Miss</td>
-<td align="center">55</td>
-<td align="center">156</td>
-<td align="center">41</td>
-<td align="center">252</td>
-<td align="center"></td>
+<td>   N-Miss</td>
+<td align="left">55</td>
+<td align="left">156</td>
+<td align="left">41</td>
+<td align="left">252</td>
+<td align="right"></td>
 </tr>
 <tr class="odd">
-<td>    0.Male</td>
-<td align="center">29 (7.77%)</td>
-<td align="center">31 (5.79%)</td>
-<td align="center">17 (5.01%)</td>
-<td align="center">77 (6.17%)</td>
-<td align="center"></td>
+<td>   0.Male</td>
+<td align="left">29 (7.8%)</td>
+<td align="left">31 (5.8%)</td>
+<td align="left">17 (5.0%)</td>
+<td align="left">77 (6.2%)</td>
+<td align="right"></td>
 </tr>
 <tr class="even">
-<td>    1.Male</td>
-<td align="center">214 (57.4%)</td>
-<td align="center">285 (53.3%)</td>
-<td align="center">187 (55.2%)</td>
-<td align="center">686 (55%)</td>
-<td align="center"></td>
+<td>   1.Male</td>
+<td align="left">214 (57.4%)</td>
+<td align="left">285 (53.3%)</td>
+<td align="left">187 (55.2%)</td>
+<td align="left">686 (55.0%)</td>
+<td align="right"></td>
 </tr>
 <tr class="odd">
-<td>    0.Female</td>
-<td align="center">12 (3.22%)</td>
-<td align="center">21 (3.93%)</td>
-<td align="center">14 (4.13%)</td>
-<td align="center">47 (3.77%)</td>
-<td align="center"></td>
+<td>   0.Female</td>
+<td align="left">12 (3.2%)</td>
+<td align="left">21 (3.9%)</td>
+<td align="left">14 (4.1%)</td>
+<td align="left">47 (3.8%)</td>
+<td align="right"></td>
 </tr>
 <tr class="even">
-<td>    1.Female</td>
-<td align="center">118 (31.6%)</td>
-<td align="center">198 (37%)</td>
-<td align="center">121 (35.7%)</td>
-<td align="center">437 (35%)</td>
-<td align="center"></td>
+<td>   1.Female</td>
+<td align="left">118 (31.6%)</td>
+<td align="left">198 (37.0%)</td>
+<td align="left">121 (35.7%)</td>
+<td align="left">437 (35.0%)</td>
+<td align="right"></td>
 </tr>
 </tbody>
 </table>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## create a new grouping variable with combined levels of arm and sex
 <span class="kw">summary</span>(<span class="kw">tableby</span>(<span class="kw">interaction</span>(mdquality.s, sex) <span class="op">~</span><span class="st">  </span>age <span class="op">+</span><span class="st"> </span>bmi, <span class="dt">data=</span>mockstudy, <span class="dt">subset=</span>arm<span class="op">==</span><span class="st">&quot;F: FOLFOX&quot;</span>))</code></pre></div>
-<table style="width:100%;">
-<colgroup>
-<col width="16%"></col>
-<col width="13%"></col>
-<col width="13%"></col>
-<col width="13%"></col>
-<col width="13%"></col>
-<col width="13%"></col>
-<col width="13%"></col>
-</colgroup>
+<table>
 <thead>
 <tr class="header">
 <th></th>
-<th align="center">0.Male (N=31)</th>
-<th align="center">1.Male (N=285)</th>
-<th align="center">0.Female (N=21)</th>
-<th align="center">1.Female (N=198)</th>
-<th align="center">Total (N=535)</th>
-<th align="center">p value</th>
+<th align="left">0.Male (N=31)</th>
+<th align="left">1.Male (N=285)</th>
+<th align="left">0.Female (N=21)</th>
+<th align="left">1.Female (N=198)</th>
+<th align="left">Total (N=535)</th>
+<th align="right">p value</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td><strong>Age, yrs</strong></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center">0.190</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right">0.190</td>
 </tr>
 <tr class="even">
-<td>    Mean (SD)</td>
-<td align="center">63.1 (11.7)</td>
-<td align="center">60.7 (11.8)</td>
-<td align="center">60.8 (10.1)</td>
-<td align="center">58.9 (11.4)</td>
-<td align="center">60.2 (11.6)</td>
-<td align="center"></td>
+<td>   Mean (SD)</td>
+<td align="left">63.065 (11.702)</td>
+<td align="left">60.653 (11.833)</td>
+<td align="left">60.810 (10.103)</td>
+<td align="left">58.924 (11.366)</td>
+<td align="left">60.159 (11.612)</td>
+<td align="right"></td>
 </tr>
 <tr class="odd">
-<td>    Q1, Q3</td>
-<td align="center">56, 72</td>
-<td align="center">53, 69</td>
-<td align="center">51, 67</td>
-<td align="center">51, 68</td>
-<td align="center">52, 69</td>
-<td align="center"></td>
+<td>   Range</td>
+<td align="left">41.000 - 82.000</td>
+<td align="left">19.000 - 88.000</td>
+<td align="left">42.000 - 81.000</td>
+<td align="left">29.000 - 83.000</td>
+<td align="left">19.000 - 88.000</td>
+<td align="right"></td>
 </tr>
 <tr class="even">
-<td>    Range</td>
-<td align="center">41 - 82</td>
-<td align="center">19 - 88</td>
-<td align="center">42 - 81</td>
-<td align="center">29 - 83</td>
-<td align="center">19 - 88</td>
-<td align="center"></td>
-</tr>
-<tr class="odd">
 <td><strong>Body Mass Index (kg/m^2)</strong></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center">0.894</td>
-</tr>
-<tr class="even">
-<td>    N-Miss</td>
-<td align="center">0</td>
-<td align="center">6</td>
-<td align="center">1</td>
-<td align="center">5</td>
-<td align="center">12</td>
-<td align="center"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right">0.894</td>
 </tr>
 <tr class="odd">
-<td>    Mean (SD)</td>
-<td align="center">26.6 (5.09)</td>
-<td align="center">27.4 (4.7)</td>
-<td align="center">27.4 (4.9)</td>
-<td align="center">27.3 (5.67)</td>
-<td align="center">27.3 (5.1)</td>
-<td align="center"></td>
+<td>   N-Miss</td>
+<td align="left">0</td>
+<td align="left">6</td>
+<td align="left">1</td>
+<td align="left">5</td>
+<td align="left">12</td>
+<td align="right"></td>
 </tr>
 <tr class="even">
-<td>    Q1, Q3</td>
-<td align="center">22.8, 29.2</td>
-<td align="center">24.3, 30.2</td>
-<td align="center">23.7, 29.6</td>
-<td align="center">23.1, 30.4</td>
-<td align="center">23.9, 30.3</td>
-<td align="center"></td>
+<td>   Mean (SD)</td>
+<td align="left">26.633 (5.094)</td>
+<td align="left">27.387 (4.704)</td>
+<td align="left">27.359 (4.899)</td>
+<td align="left">27.294 (5.671)</td>
+<td align="left">27.307 (5.100)</td>
+<td align="right"></td>
 </tr>
 <tr class="odd">
-<td>    Range</td>
-<td align="center">20.2 - 41.8</td>
-<td align="center">17.9 - 47.5</td>
-<td align="center">19.8 - 39.4</td>
-<td align="center">16.8 - 44.8</td>
-<td align="center">16.8 - 47.5</td>
-<td align="center"></td>
+<td>   Range</td>
+<td align="left">20.177 - 41.766</td>
+<td align="left">17.927 - 47.458</td>
+<td align="left">19.801 - 39.369</td>
+<td align="left">16.799 - 44.841</td>
+<td align="left">16.799 - 47.458</td>
+<td align="right"></td>
 </tr>
 </tbody>
 </table>
@@ -2468,129 +2111,105 @@ tmp2 &lt;-<span class="st"> </span><span class="kw">formulize</span>(<span class
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">trans &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span class="op">~</span><span class="st"> </span><span class="kw">I</span>(age<span class="op">/</span><span class="dv">10</span>) <span class="op">+</span><span class="st"> </span><span class="kw">log</span>(bmi) <span class="op">+</span><span class="st"> </span><span class="kw">factor</span>(mdquality.s, <span class="dt">levels=</span><span class="dv">0</span><span class="op">:</span><span class="dv">1</span>, <span class="dt">labels=</span><span class="kw">c</span>(<span class="st">'N'</span>,<span class="st">'Y'</span>)),
                  <span class="dt">data=</span>mockstudy)
 <span class="kw">summary</span>(trans)</code></pre></div>
-<table style="width:100%;">
-<colgroup>
-<col width="19%"></col>
-<col width="16%"></col>
-<col width="16%"></col>
-<col width="16%"></col>
-<col width="16%"></col>
-<col width="16%"></col>
-</colgroup>
+<table>
 <thead>
 <tr class="header">
 <th></th>
-<th align="center">A: IFL (N=428)</th>
-<th align="center">F: FOLFOX (N=691)</th>
-<th align="center">G: IROX (N=380)</th>
-<th align="center">Total (N=1499)</th>
-<th align="center">p value</th>
+<th align="left">A: IFL (N=428)</th>
+<th align="left">F: FOLFOX (N=691)</th>
+<th align="left">G: IROX (N=380)</th>
+<th align="left">Total (N=1499)</th>
+<th align="right">p value</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td><strong>Age, yrs</strong></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center">0.614</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right">0.614</td>
 </tr>
 <tr class="even">
-<td>    Mean (SD)</td>
-<td align="center">5.97 (1.14)</td>
-<td align="center">6.03 (1.16)</td>
-<td align="center">5.98 (1.15)</td>
-<td align="center">6 (1.15)</td>
-<td align="center"></td>
+<td>   Mean (SD)</td>
+<td align="left">5.967 (1.136)</td>
+<td align="left">6.030 (1.163)</td>
+<td align="left">5.976 (1.150)</td>
+<td align="left">5.999 (1.152)</td>
+<td align="right"></td>
 </tr>
 <tr class="odd">
-<td>    Q1, Q3</td>
-<td align="center">5.3, 6.8</td>
-<td align="center">5.2, 6.9</td>
-<td align="center">5.2, 6.8</td>
-<td align="center">5.2, 6.8</td>
-<td align="center"></td>
+<td>   Range</td>
+<td align="left">2.700 - 8.800</td>
+<td align="left">1.900 - 8.800</td>
+<td align="left">2.600 - 8.500</td>
+<td align="left">1.900 - 8.800</td>
+<td align="right"></td>
 </tr>
 <tr class="even">
-<td>    Range</td>
-<td align="center">2.7 - 8.8</td>
-<td align="center">1.9 - 8.8</td>
-<td align="center">2.6 - 8.5</td>
-<td align="center">1.9 - 8.8</td>
-<td align="center"></td>
-</tr>
-<tr class="odd">
 <td><strong>Body Mass Index (kg/m^2)</strong></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center">0.811</td>
-</tr>
-<tr class="even">
-<td>    N-Miss</td>
-<td align="center">9</td>
-<td align="center">20</td>
-<td align="center">4</td>
-<td align="center">33</td>
-<td align="center"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right">0.811</td>
 </tr>
 <tr class="odd">
-<td>    Mean (SD)</td>
-<td align="center">3.29 (0.197)</td>
-<td align="center">3.29 (0.183)</td>
-<td align="center">3.28 (0.2)</td>
-<td align="center">3.28 (0.192)</td>
-<td align="center"></td>
+<td>   N-Miss</td>
+<td align="left">9</td>
+<td align="left">20</td>
+<td align="left">4</td>
+<td align="left">33</td>
+<td align="right"></td>
 </tr>
 <tr class="even">
-<td>    Q1, Q3</td>
-<td align="center">3.16, 3.42</td>
-<td align="center">3.17, 3.41</td>
-<td align="center">3.14, 3.39</td>
-<td align="center">3.16, 3.41</td>
-<td align="center"></td>
+<td>   Mean (SD)</td>
+<td align="left">3.287 (0.197)</td>
+<td align="left">3.286 (0.183)</td>
+<td align="left">3.279 (0.200)</td>
+<td align="left">3.285 (0.192)</td>
+<td align="right"></td>
 </tr>
 <tr class="odd">
-<td>    Range</td>
-<td align="center">2.64 - 3.97</td>
-<td align="center">2.81 - 3.89</td>
-<td align="center">2.74 - 4.1</td>
-<td align="center">2.64 - 4.1</td>
-<td align="center"></td>
+<td>   Range</td>
+<td align="left">2.643 - 3.970</td>
+<td align="left">2.812 - 3.894</td>
+<td align="left">2.736 - 4.098</td>
+<td align="left">2.643 - 4.098</td>
+<td align="right"></td>
 </tr>
 <tr class="even">
 <td><strong>factor(mdquality.s, levels = 0:1, labels = c(“N”, “Y”))</strong></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center">0.694</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right">0.694</td>
 </tr>
 <tr class="odd">
-<td>    N-Miss</td>
-<td align="center">55</td>
-<td align="center">156</td>
-<td align="center">41</td>
-<td align="center">252</td>
-<td align="center"></td>
+<td>   N-Miss</td>
+<td align="left">55</td>
+<td align="left">156</td>
+<td align="left">41</td>
+<td align="left">252</td>
+<td align="right"></td>
 </tr>
 <tr class="even">
-<td>    N</td>
-<td align="center">41 (11%)</td>
-<td align="center">52 (9.72%)</td>
-<td align="center">31 (9.14%)</td>
-<td align="center">124 (9.94%)</td>
-<td align="center"></td>
+<td>   N</td>
+<td align="left">41 (11.0%)</td>
+<td align="left">52 (9.7%)</td>
+<td align="left">31 (9.1%)</td>
+<td align="left">124 (9.9%)</td>
+<td align="right"></td>
 </tr>
 <tr class="odd">
-<td>    Y</td>
-<td align="center">332 (89%)</td>
-<td align="center">483 (90.3%)</td>
-<td align="center">308 (90.9%)</td>
-<td align="center">1123 (90.1%)</td>
-<td align="center"></td>
+<td>   Y</td>
+<td align="left">332 (89.0%)</td>
+<td align="left">483 (90.3%)</td>
+<td align="left">308 (90.9%)</td>
+<td align="left">1123 (90.1%)</td>
+<td align="right"></td>
 </tr>
 </tbody>
 </table>
@@ -2615,129 +2234,105 @@ tmp2 &lt;-<span class="st"> </span><span class="kw">formulize</span>(<span class
 ## factor(mdquality.s, levels = 0:1, labels = c(&quot;N&quot;, &quot;Y&quot;)) 
 ##                                            &quot;MD Quality&quot;</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(trans)</code></pre></div>
-<table style="width:100%;">
-<colgroup>
-<col width="19%"></col>
-<col width="16%"></col>
-<col width="16%"></col>
-<col width="16%"></col>
-<col width="16%"></col>
-<col width="16%"></col>
-</colgroup>
+<table>
 <thead>
 <tr class="header">
 <th></th>
-<th align="center">A: IFL (N=428)</th>
-<th align="center">F: FOLFOX (N=691)</th>
-<th align="center">G: IROX (N=380)</th>
-<th align="center">Total (N=1499)</th>
-<th align="center">p value</th>
+<th align="left">A: IFL (N=428)</th>
+<th align="left">F: FOLFOX (N=691)</th>
+<th align="left">G: IROX (N=380)</th>
+<th align="left">Total (N=1499)</th>
+<th align="right">p value</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td><strong>Age per 10 yrs</strong></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center">0.614</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right">0.614</td>
 </tr>
 <tr class="even">
-<td>    Mean (SD)</td>
-<td align="center">5.97 (1.14)</td>
-<td align="center">6.03 (1.16)</td>
-<td align="center">5.98 (1.15)</td>
-<td align="center">6 (1.15)</td>
-<td align="center"></td>
+<td>   Mean (SD)</td>
+<td align="left">5.967 (1.136)</td>
+<td align="left">6.030 (1.163)</td>
+<td align="left">5.976 (1.150)</td>
+<td align="left">5.999 (1.152)</td>
+<td align="right"></td>
 </tr>
 <tr class="odd">
-<td>    Q1, Q3</td>
-<td align="center">5.3, 6.8</td>
-<td align="center">5.2, 6.9</td>
-<td align="center">5.2, 6.8</td>
-<td align="center">5.2, 6.8</td>
-<td align="center"></td>
+<td>   Range</td>
+<td align="left">2.700 - 8.800</td>
+<td align="left">1.900 - 8.800</td>
+<td align="left">2.600 - 8.500</td>
+<td align="left">1.900 - 8.800</td>
+<td align="right"></td>
 </tr>
 <tr class="even">
-<td>    Range</td>
-<td align="center">2.7 - 8.8</td>
-<td align="center">1.9 - 8.8</td>
-<td align="center">2.6 - 8.5</td>
-<td align="center">1.9 - 8.8</td>
-<td align="center"></td>
-</tr>
-<tr class="odd">
 <td><strong>log(BMI)</strong></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center">0.811</td>
-</tr>
-<tr class="even">
-<td>    N-Miss</td>
-<td align="center">9</td>
-<td align="center">20</td>
-<td align="center">4</td>
-<td align="center">33</td>
-<td align="center"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right">0.811</td>
 </tr>
 <tr class="odd">
-<td>    Mean (SD)</td>
-<td align="center">3.29 (0.197)</td>
-<td align="center">3.29 (0.183)</td>
-<td align="center">3.28 (0.2)</td>
-<td align="center">3.28 (0.192)</td>
-<td align="center"></td>
+<td>   N-Miss</td>
+<td align="left">9</td>
+<td align="left">20</td>
+<td align="left">4</td>
+<td align="left">33</td>
+<td align="right"></td>
 </tr>
 <tr class="even">
-<td>    Q1, Q3</td>
-<td align="center">3.16, 3.42</td>
-<td align="center">3.17, 3.41</td>
-<td align="center">3.14, 3.39</td>
-<td align="center">3.16, 3.41</td>
-<td align="center"></td>
+<td>   Mean (SD)</td>
+<td align="left">3.287 (0.197)</td>
+<td align="left">3.286 (0.183)</td>
+<td align="left">3.279 (0.200)</td>
+<td align="left">3.285 (0.192)</td>
+<td align="right"></td>
 </tr>
 <tr class="odd">
-<td>    Range</td>
-<td align="center">2.64 - 3.97</td>
-<td align="center">2.81 - 3.89</td>
-<td align="center">2.74 - 4.1</td>
-<td align="center">2.64 - 4.1</td>
-<td align="center"></td>
+<td>   Range</td>
+<td align="left">2.643 - 3.970</td>
+<td align="left">2.812 - 3.894</td>
+<td align="left">2.736 - 4.098</td>
+<td align="left">2.643 - 4.098</td>
+<td align="right"></td>
 </tr>
 <tr class="even">
 <td><strong>MD Quality</strong></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center">0.694</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right">0.694</td>
 </tr>
 <tr class="odd">
-<td>    N-Miss</td>
-<td align="center">55</td>
-<td align="center">156</td>
-<td align="center">41</td>
-<td align="center">252</td>
-<td align="center"></td>
+<td>   N-Miss</td>
+<td align="left">55</td>
+<td align="left">156</td>
+<td align="left">41</td>
+<td align="left">252</td>
+<td align="right"></td>
 </tr>
 <tr class="even">
-<td>    N</td>
-<td align="center">41 (11%)</td>
-<td align="center">52 (9.72%)</td>
-<td align="center">31 (9.14%)</td>
-<td align="center">124 (9.94%)</td>
-<td align="center"></td>
+<td>   N</td>
+<td align="left">41 (11.0%)</td>
+<td align="left">52 (9.7%)</td>
+<td align="left">31 (9.1%)</td>
+<td align="left">124 (9.9%)</td>
+<td align="right"></td>
 </tr>
 <tr class="odd">
-<td>    Y</td>
-<td align="center">332 (89%)</td>
-<td align="center">483 (90.3%)</td>
-<td align="center">308 (90.9%)</td>
-<td align="center">1123 (90.1%)</td>
-<td align="center"></td>
+<td>   Y</td>
+<td align="left">332 (89.0%)</td>
+<td align="left">483 (90.3%)</td>
+<td align="left">308 (90.9%)</td>
+<td align="left">1123 (90.1%)</td>
+<td align="right"></td>
 </tr>
 </tbody>
 </table>
@@ -2745,121 +2340,97 @@ tmp2 &lt;-<span class="st"> </span><span class="kw">formulize</span>(<span class
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">class</span>(mockstudy<span class="op">$</span>mdquality.s)</code></pre></div>
 <p>[1] “integer”</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(<span class="kw">tableby</span>(arm<span class="op">~</span>mdquality.s, <span class="dt">data=</span>mockstudy))</code></pre></div>
-<table style="width:100%;">
-<colgroup>
-<col width="19%"></col>
-<col width="16%"></col>
-<col width="16%"></col>
-<col width="16%"></col>
-<col width="16%"></col>
-<col width="16%"></col>
-</colgroup>
+<table>
 <thead>
 <tr class="header">
 <th></th>
-<th align="center">A: IFL (N=428)</th>
-<th align="center">F: FOLFOX (N=691)</th>
-<th align="center">G: IROX (N=380)</th>
-<th align="center">Total (N=1499)</th>
-<th align="center">p value</th>
+<th align="left">A: IFL (N=428)</th>
+<th align="left">F: FOLFOX (N=691)</th>
+<th align="left">G: IROX (N=380)</th>
+<th align="left">Total (N=1499)</th>
+<th align="right">p value</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td><strong>mdquality.s</strong></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center">0.695</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right">0.695</td>
 </tr>
 <tr class="even">
-<td>    N-Miss</td>
-<td align="center">55</td>
-<td align="center">156</td>
-<td align="center">41</td>
-<td align="center">252</td>
-<td align="center"></td>
+<td>   N-Miss</td>
+<td align="left">55</td>
+<td align="left">156</td>
+<td align="left">41</td>
+<td align="left">252</td>
+<td align="right"></td>
 </tr>
 <tr class="odd">
-<td>    Mean (SD)</td>
-<td align="center">0.89 (0.313)</td>
-<td align="center">0.903 (0.297)</td>
-<td align="center">0.909 (0.289)</td>
-<td align="center">0.901 (0.299)</td>
-<td align="center"></td>
+<td>   Mean (SD)</td>
+<td align="left">0.890 (0.313)</td>
+<td align="left">0.903 (0.297)</td>
+<td align="left">0.909 (0.289)</td>
+<td align="left">0.901 (0.299)</td>
+<td align="right"></td>
 </tr>
 <tr class="even">
-<td>    Q1, Q3</td>
-<td align="center">1, 1</td>
-<td align="center">1, 1</td>
-<td align="center">1, 1</td>
-<td align="center">1, 1</td>
-<td align="center"></td>
-</tr>
-<tr class="odd">
-<td>    Range</td>
-<td align="center">0 - 1</td>
-<td align="center">0 - 1</td>
-<td align="center">0 - 1</td>
-<td align="center">0 - 1</td>
-<td align="center"></td>
+<td>   Range</td>
+<td align="left">0.000 - 1.000</td>
+<td align="left">0.000 - 1.000</td>
+<td align="left">0.000 - 1.000</td>
+<td align="left">0.000 - 1.000</td>
+<td align="right"></td>
 </tr>
 </tbody>
 </table>
 <p>Another option would be to specify the test and summary statistics. In fact, if I had a set of variables coded 0/1 and that was all I was summarizing, then I could change the global option for continuous variables to use the chi-square test and show countpct.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(<span class="kw">tableby</span>(arm <span class="op">~</span><span class="st"> </span><span class="kw">chisq</span>(mdquality.s, <span class="st">&quot;Nmiss&quot;</span>,<span class="st">&quot;countpct&quot;</span>), <span class="dt">data=</span>mockstudy))</code></pre></div>
-<table style="width:100%;">
-<colgroup>
-<col width="19%"></col>
-<col width="16%"></col>
-<col width="16%"></col>
-<col width="16%"></col>
-<col width="16%"></col>
-<col width="16%"></col>
-</colgroup>
+<table>
 <thead>
 <tr class="header">
 <th></th>
-<th align="center">A: IFL (N=428)</th>
-<th align="center">F: FOLFOX (N=691)</th>
-<th align="center">G: IROX (N=380)</th>
-<th align="center">Total (N=1499)</th>
-<th align="center">p value</th>
+<th align="left">A: IFL (N=428)</th>
+<th align="left">F: FOLFOX (N=691)</th>
+<th align="left">G: IROX (N=380)</th>
+<th align="left">Total (N=1499)</th>
+<th align="right">p value</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td><strong>mdquality.s</strong></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center">0.694</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right">0.694</td>
 </tr>
 <tr class="even">
-<td>    N-Miss</td>
-<td align="center">55</td>
-<td align="center">156</td>
-<td align="center">41</td>
-<td align="center">252</td>
-<td align="center"></td>
+<td>   N-Miss</td>
+<td align="left">55</td>
+<td align="left">156</td>
+<td align="left">41</td>
+<td align="left">252</td>
+<td align="right"></td>
 </tr>
 <tr class="odd">
-<td>    0</td>
-<td align="center">41 (11)</td>
-<td align="center">52 (9.72)</td>
-<td align="center">31 (9.14)</td>
-<td align="center">124 (9.94)</td>
-<td align="center"></td>
+<td>   0</td>
+<td align="left">41 (11.0%)</td>
+<td align="left">52 (9.7%)</td>
+<td align="left">31 (9.1%)</td>
+<td align="left">124 (9.9%)</td>
+<td align="right"></td>
 </tr>
 <tr class="even">
-<td>    1</td>
-<td align="center">332 (89)</td>
-<td align="center">483 (90.3)</td>
-<td align="center">308 (90.9)</td>
-<td align="center">1123 (90.1)</td>
-<td align="center"></td>
+<td>   1</td>
+<td align="left">332 (89.0%)</td>
+<td align="left">483 (90.3%)</td>
+<td align="left">308 (90.9%)</td>
+<td align="left">1123 (90.1%)</td>
+<td align="right"></td>
 </tr>
 </tbody>
 </table>
@@ -2869,279 +2440,223 @@ tmp2 &lt;-<span class="st"> </span><span class="kw">formulize</span>(<span class
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mytab &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span class="op">~</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span>alk.phos <span class="op">+</span><span class="st"> </span>age, <span class="dt">data=</span>mockstudy)
 mytab2 &lt;-<span class="st"> </span>mytab[<span class="kw">c</span>(<span class="st">'age'</span>,<span class="st">'sex'</span>,<span class="st">'alk.phos'</span>)]
 <span class="kw">summary</span>(mytab2)</code></pre></div>
-<table style="width:100%;">
-<colgroup>
-<col width="19%"></col>
-<col width="16%"></col>
-<col width="16%"></col>
-<col width="16%"></col>
-<col width="16%"></col>
-<col width="16%"></col>
-</colgroup>
+<table>
 <thead>
 <tr class="header">
 <th></th>
-<th align="center">A: IFL (N=428)</th>
-<th align="center">F: FOLFOX (N=691)</th>
-<th align="center">G: IROX (N=380)</th>
-<th align="center">Total (N=1499)</th>
-<th align="center">p value</th>
+<th align="left">A: IFL (N=428)</th>
+<th align="left">F: FOLFOX (N=691)</th>
+<th align="left">G: IROX (N=380)</th>
+<th align="left">Total (N=1499)</th>
+<th align="right">p value</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td><strong>Age, yrs</strong></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center">0.614</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right">0.614</td>
 </tr>
 <tr class="even">
-<td>    Mean (SD)</td>
-<td align="center">59.7 (11.4)</td>
-<td align="center">60.3 (11.6)</td>
-<td align="center">59.8 (11.5)</td>
-<td align="center">60 (11.5)</td>
-<td align="center"></td>
+<td>   Mean (SD)</td>
+<td align="left">59.673 (11.365)</td>
+<td align="left">60.301 (11.632)</td>
+<td align="left">59.763 (11.499)</td>
+<td align="left">59.985 (11.519)</td>
+<td align="right"></td>
 </tr>
 <tr class="odd">
-<td>    Q1, Q3</td>
-<td align="center">53, 68</td>
-<td align="center">52, 69</td>
-<td align="center">52, 68</td>
-<td align="center">52, 68</td>
-<td align="center"></td>
+<td>   Range</td>
+<td align="left">27.000 - 88.000</td>
+<td align="left">19.000 - 88.000</td>
+<td align="left">26.000 - 85.000</td>
+<td align="left">19.000 - 88.000</td>
+<td align="right"></td>
 </tr>
 <tr class="even">
-<td>    Range</td>
-<td align="center">27 - 88</td>
-<td align="center">19 - 88</td>
-<td align="center">26 - 85</td>
-<td align="center">19 - 88</td>
-<td align="center"></td>
-</tr>
-<tr class="odd">
 <td><strong>Gender</strong></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center">0.190</td>
-</tr>
-<tr class="even">
-<td>    Male</td>
-<td align="center">277 (64.7%)</td>
-<td align="center">411 (59.5%)</td>
-<td align="center">228 (60%)</td>
-<td align="center">916 (61.1%)</td>
-<td align="center"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right">0.190</td>
 </tr>
 <tr class="odd">
-<td>    Female</td>
-<td align="center">151 (35.3%)</td>
-<td align="center">280 (40.5%)</td>
-<td align="center">152 (40%)</td>
-<td align="center">583 (38.9%)</td>
-<td align="center"></td>
+<td>   Male</td>
+<td align="left">277 (64.7%)</td>
+<td align="left">411 (59.5%)</td>
+<td align="left">228 (60.0%)</td>
+<td align="left">916 (61.1%)</td>
+<td align="right"></td>
 </tr>
 <tr class="even">
+<td>   Female</td>
+<td align="left">151 (35.3%)</td>
+<td align="left">280 (40.5%)</td>
+<td align="left">152 (40.0%)</td>
+<td align="left">583 (38.9%)</td>
+<td align="right"></td>
+</tr>
+<tr class="odd">
 <td><strong>alk.phos</strong></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center">0.226</td>
-</tr>
-<tr class="odd">
-<td>    N-Miss</td>
-<td align="center">69</td>
-<td align="center">141</td>
-<td align="center">56</td>
-<td align="center">266</td>
-<td align="center"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right">0.226</td>
 </tr>
 <tr class="even">
-<td>    Mean (SD)</td>
-<td align="center">176 (129)</td>
-<td align="center">162 (122)</td>
-<td align="center">174 (139)</td>
-<td align="center">169 (128)</td>
-<td align="center"></td>
+<td>   N-Miss</td>
+<td align="left">69</td>
+<td align="left">141</td>
+<td align="left">56</td>
+<td align="left">266</td>
+<td align="right"></td>
 </tr>
 <tr class="odd">
-<td>    Q1, Q3</td>
-<td align="center">89, 217</td>
-<td align="center">85, 195</td>
-<td align="center">87.8, 210</td>
-<td align="center">86, 207</td>
-<td align="center"></td>
+<td>   Mean (SD)</td>
+<td align="left">175.577 (128.608)</td>
+<td align="left">161.984 (121.978)</td>
+<td align="left">173.506 (138.564)</td>
+<td align="left">168.969 (128.492)</td>
+<td align="right"></td>
 </tr>
 <tr class="even">
-<td>    Range</td>
-<td align="center">11 - 858</td>
-<td align="center">10 - 1014</td>
-<td align="center">7 - 982</td>
-<td align="center">7 - 1014</td>
-<td align="center"></td>
+<td>   Range</td>
+<td align="left">11.000 - 858.000</td>
+<td align="left">10.000 - 1014.000</td>
+<td align="left">7.000 - 982.000</td>
+<td align="left">7.000 - 1014.000</td>
+<td align="right"></td>
 </tr>
 </tbody>
 </table>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(mytab[<span class="kw">c</span>(<span class="st">'age'</span>,<span class="st">'sex'</span>)], <span class="dt">nsmall =</span> <span class="dv">2</span>)</code></pre></div>
-<table style="width:100%;">
-<colgroup>
-<col width="19%"></col>
-<col width="16%"></col>
-<col width="16%"></col>
-<col width="16%"></col>
-<col width="16%"></col>
-<col width="16%"></col>
-</colgroup>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(mytab[<span class="kw">c</span>(<span class="st">'age'</span>,<span class="st">'sex'</span>)], <span class="dt">digits =</span> <span class="dv">2</span>)</code></pre></div>
+<table>
 <thead>
 <tr class="header">
 <th></th>
-<th align="center">A: IFL (N=428)</th>
-<th align="center">F: FOLFOX (N=691)</th>
-<th align="center">G: IROX (N=380)</th>
-<th align="center">Total (N=1499)</th>
-<th align="center">p value</th>
+<th align="left">A: IFL (N=428)</th>
+<th align="left">F: FOLFOX (N=691)</th>
+<th align="left">G: IROX (N=380)</th>
+<th align="left">Total (N=1499)</th>
+<th align="right">p value</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td><strong>Age, yrs</strong></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center">0.614</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right">0.614</td>
 </tr>
 <tr class="even">
-<td>    Mean (SD)</td>
-<td align="center">59.67 (11.36)</td>
-<td align="center">60.3 (11.63)</td>
-<td align="center">59.76 (11.5)</td>
-<td align="center">59.99 (11.52)</td>
-<td align="center"></td>
+<td>   Mean (SD)</td>
+<td align="left">59.67 (11.36)</td>
+<td align="left">60.30 (11.63)</td>
+<td align="left">59.76 (11.50)</td>
+<td align="left">59.99 (11.52)</td>
+<td align="right"></td>
 </tr>
 <tr class="odd">
-<td>    Q1, Q3</td>
-<td align="center">53, 68</td>
-<td align="center">52, 69</td>
-<td align="center">52, 68</td>
-<td align="center">52, 68</td>
-<td align="center"></td>
+<td>   Range</td>
+<td align="left">27.00 - 88.00</td>
+<td align="left">19.00 - 88.00</td>
+<td align="left">26.00 - 85.00</td>
+<td align="left">19.00 - 88.00</td>
+<td align="right"></td>
 </tr>
 <tr class="even">
-<td>    Range</td>
-<td align="center">27 - 88</td>
-<td align="center">19 - 88</td>
-<td align="center">26 - 85</td>
-<td align="center">19 - 88</td>
-<td align="center"></td>
-</tr>
-<tr class="odd">
 <td><strong>Gender</strong></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center">0.190</td>
-</tr>
-<tr class="even">
-<td>    Male</td>
-<td align="center">277 (64.72%)</td>
-<td align="center">411 (59.48%)</td>
-<td align="center">228 (60%)</td>
-<td align="center">916 (61.11%)</td>
-<td align="center"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right">0.190</td>
 </tr>
 <tr class="odd">
-<td>    Female</td>
-<td align="center">151 (35.28%)</td>
-<td align="center">280 (40.52%)</td>
-<td align="center">152 (40%)</td>
-<td align="center">583 (38.89%)</td>
-<td align="center"></td>
+<td>   Male</td>
+<td align="left">277 (64.7%)</td>
+<td align="left">411 (59.5%)</td>
+<td align="left">228 (60.0%)</td>
+<td align="left">916 (61.1%)</td>
+<td align="right"></td>
+</tr>
+<tr class="even">
+<td>   Female</td>
+<td align="left">151 (35.3%)</td>
+<td align="left">280 (40.5%)</td>
+<td align="left">152 (40.0%)</td>
+<td align="left">583 (38.9%)</td>
+<td align="right"></td>
 </tr>
 </tbody>
 </table>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(mytab[<span class="kw">c</span>(<span class="dv">3</span>,<span class="dv">1</span>)], <span class="dt">nsmall =</span> <span class="dv">3</span>)</code></pre></div>
-<table style="width:100%;">
-<colgroup>
-<col width="19%"></col>
-<col width="16%"></col>
-<col width="16%"></col>
-<col width="16%"></col>
-<col width="16%"></col>
-<col width="16%"></col>
-</colgroup>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(mytab[<span class="kw">c</span>(<span class="dv">3</span>,<span class="dv">1</span>)], <span class="dt">digits =</span> <span class="dv">3</span>)</code></pre></div>
+<table>
 <thead>
 <tr class="header">
 <th></th>
-<th align="center">A: IFL (N=428)</th>
-<th align="center">F: FOLFOX (N=691)</th>
-<th align="center">G: IROX (N=380)</th>
-<th align="center">Total (N=1499)</th>
-<th align="center">p value</th>
+<th align="left">A: IFL (N=428)</th>
+<th align="left">F: FOLFOX (N=691)</th>
+<th align="left">G: IROX (N=380)</th>
+<th align="left">Total (N=1499)</th>
+<th align="right">p value</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td><strong>Age, yrs</strong></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center">0.614</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right">0.614</td>
 </tr>
 <tr class="even">
-<td>    Mean (SD)</td>
-<td align="center">59.673 (11.365)</td>
-<td align="center">60.301 (11.632)</td>
-<td align="center">59.763 (11.499)</td>
-<td align="center">59.985 (11.519)</td>
-<td align="center"></td>
+<td>   Mean (SD)</td>
+<td align="left">59.673 (11.365)</td>
+<td align="left">60.301 (11.632)</td>
+<td align="left">59.763 (11.499)</td>
+<td align="left">59.985 (11.519)</td>
+<td align="right"></td>
 </tr>
 <tr class="odd">
-<td>    Q1, Q3</td>
-<td align="center">53, 68</td>
-<td align="center">52, 69</td>
-<td align="center">52, 68</td>
-<td align="center">52, 68</td>
-<td align="center"></td>
+<td>   Range</td>
+<td align="left">27.000 - 88.000</td>
+<td align="left">19.000 - 88.000</td>
+<td align="left">26.000 - 85.000</td>
+<td align="left">19.000 - 88.000</td>
+<td align="right"></td>
 </tr>
 <tr class="even">
-<td>    Range</td>
-<td align="center">27 - 88</td>
-<td align="center">19 - 88</td>
-<td align="center">26 - 85</td>
-<td align="center">19 - 88</td>
-<td align="center"></td>
-</tr>
-<tr class="odd">
 <td><strong>Gender</strong></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center">0.190</td>
-</tr>
-<tr class="even">
-<td>    Male</td>
-<td align="center">277 (64.72%)</td>
-<td align="center">411 (59.479%)</td>
-<td align="center">228 (60%)</td>
-<td align="center">916 (61.107%)</td>
-<td align="center"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right">0.190</td>
 </tr>
 <tr class="odd">
-<td>    Female</td>
-<td align="center">151 (35.28%)</td>
-<td align="center">280 (40.521%)</td>
-<td align="center">152 (40%)</td>
-<td align="center">583 (38.893%)</td>
-<td align="center"></td>
+<td>   Male</td>
+<td align="left">277 (64.7%)</td>
+<td align="left">411 (59.5%)</td>
+<td align="left">228 (60.0%)</td>
+<td align="left">916 (61.1%)</td>
+<td align="right"></td>
+</tr>
+<tr class="even">
+<td>   Female</td>
+<td align="left">151 (35.3%)</td>
+<td align="left">280 (40.5%)</td>
+<td align="left">152 (40.0%)</td>
+<td align="left">583 (38.9%)</td>
+<td align="right"></td>
 </tr>
 </tbody>
 </table>
@@ -3167,113 +2682,106 @@ tab2 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 <p>[1] “sex” “age” “hgb” “alk.phos”</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(tab12) <span class="co">#, pfootnote=TRUE)</span></code></pre></div>
 <table>
-<colgroup>
-<col width="23%"></col>
-<col width="19%"></col>
-<col width="19%"></col>
-<col width="19%"></col>
-<col width="19%"></col>
-</colgroup>
 <thead>
 <tr class="header">
 <th></th>
-<th align="center">A: IFL (N=428)</th>
-<th align="center">F: FOLFOX (N=691)</th>
-<th align="center">G: IROX (N=380)</th>
-<th align="center">p value</th>
+<th align="left">A: IFL (N=428)</th>
+<th align="left">F: FOLFOX (N=691)</th>
+<th align="left">G: IROX (N=380)</th>
+<th align="right">p value</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td><strong>Gender</strong></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center">0.190</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right">0.190</td>
 </tr>
 <tr class="even">
-<td>    Male</td>
-<td align="center">277 (64.7%)</td>
-<td align="center">411 (59.5%)</td>
-<td align="center">228 (60%)</td>
-<td align="center"></td>
+<td>   Male</td>
+<td align="left">277 (64.7%)</td>
+<td align="left">411 (59.5%)</td>
+<td align="left">228 (60.0%)</td>
+<td align="right"></td>
 </tr>
 <tr class="odd">
-<td>    Female</td>
-<td align="center">151 (35.3%)</td>
-<td align="center">280 (40.5%)</td>
-<td align="center">152 (40%)</td>
-<td align="center"></td>
+<td>   Female</td>
+<td align="left">151 (35.3%)</td>
+<td align="left">280 (40.5%)</td>
+<td align="left">152 (40.0%)</td>
+<td align="right"></td>
 </tr>
 <tr class="even">
 <td><strong>Age, yrs</strong></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center">0.614</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right">0.614</td>
 </tr>
 <tr class="odd">
-<td>    Mean (SD)</td>
-<td align="center">59.7 (11.4)</td>
-<td align="center">60.3 (11.6)</td>
-<td align="center">59.8 (11.5)</td>
-<td align="center"></td>
+<td>   Mean (SD)</td>
+<td align="left">59.673 (11.365)</td>
+<td align="left">60.301 (11.632)</td>
+<td align="left">59.763 (11.499)</td>
+<td align="right"></td>
 </tr>
 <tr class="even">
 <td><strong>hgb</strong></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center">0.570</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right">0.570</td>
 </tr>
 <tr class="odd">
-<td>    N-Miss</td>
-<td align="center">69</td>
-<td align="center">141</td>
-<td align="center">56</td>
-<td align="center"></td>
+<td>   N-Miss</td>
+<td align="left">69</td>
+<td align="left">141</td>
+<td align="left">56</td>
+<td align="right"></td>
 </tr>
 <tr class="even">
-<td>    median</td>
-<td align="center">12.1</td>
-<td align="center">12.2</td>
-<td align="center">12.4</td>
-<td align="center"></td>
+<td>   median</td>
+<td align="left">12.100</td>
+<td align="left">12.200</td>
+<td align="left">12.400</td>
+<td align="right"></td>
 </tr>
 <tr class="odd">
-<td>    Q1, Q3</td>
-<td align="center">11, 13.4</td>
-<td align="center">11.1, 13.6</td>
-<td align="center">11.2, 13.6</td>
-<td align="center"></td>
+<td>   Q1, Q3</td>
+<td align="left">11.000, 13.450</td>
+<td align="left">11.100, 13.600</td>
+<td align="left">11.175, 13.625</td>
+<td align="right"></td>
 </tr>
 <tr class="even">
 <td><strong>alk.phos</strong></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center">0.104</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right">0.104</td>
 </tr>
 <tr class="odd">
-<td>    N-Miss</td>
-<td align="center">69</td>
-<td align="center">141</td>
-<td align="center">56</td>
-<td align="center"></td>
+<td>   N-Miss</td>
+<td align="left">69</td>
+<td align="left">141</td>
+<td align="left">56</td>
+<td align="right"></td>
 </tr>
 <tr class="even">
-<td>    median</td>
-<td align="center">133</td>
-<td align="center">116</td>
-<td align="center">122</td>
-<td align="center"></td>
+<td>   median</td>
+<td align="left">133.000</td>
+<td align="left">116.000</td>
+<td align="left">122.000</td>
+<td align="right"></td>
 </tr>
 <tr class="odd">
-<td>    Q1, Q3</td>
-<td align="center">89, 217</td>
-<td align="center">85, 195</td>
-<td align="center">87.8, 210</td>
-<td align="center"></td>
+<td>   Q1, Q3</td>
+<td align="left">89.000, 217.000</td>
+<td align="left">85.000, 194.750</td>
+<td align="left">87.750, 210.250</td>
+<td align="right"></td>
 </tr>
 </tbody>
 </table>
@@ -3283,82 +2791,66 @@ tab2 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 <p>When creating a pdf the tables are automatically numbered and the title appears below the table. In Word and HTML, the titles appear un-numbered and above the table.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">t1 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span class="op">~</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span>age, <span class="dt">data=</span>mockstudy)
 <span class="kw">summary</span>(t1, <span class="dt">title=</span><span class="st">'Demographics'</span>)</code></pre></div>
-<table style="width:100%;">
-<caption><strong>Demographics</strong></caption>
-<colgroup>
-<col width="19%"></col>
-<col width="16%"></col>
-<col width="16%"></col>
-<col width="16%"></col>
-<col width="16%"></col>
-<col width="16%"></col>
-</colgroup>
+<table>
+<caption>Demographics</caption>
 <thead>
 <tr class="header">
 <th></th>
-<th align="center">A: IFL (N=428)</th>
-<th align="center">F: FOLFOX (N=691)</th>
-<th align="center">G: IROX (N=380)</th>
-<th align="center">Total (N=1499)</th>
-<th align="center">p value</th>
+<th align="left">A: IFL (N=428)</th>
+<th align="left">F: FOLFOX (N=691)</th>
+<th align="left">G: IROX (N=380)</th>
+<th align="left">Total (N=1499)</th>
+<th align="right">p value</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td><strong>Gender</strong></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center">0.190</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right">0.190</td>
 </tr>
 <tr class="even">
-<td>    Male</td>
-<td align="center">277 (64.7%)</td>
-<td align="center">411 (59.5%)</td>
-<td align="center">228 (60%)</td>
-<td align="center">916 (61.1%)</td>
-<td align="center"></td>
+<td>   Male</td>
+<td align="left">277 (64.7%)</td>
+<td align="left">411 (59.5%)</td>
+<td align="left">228 (60.0%)</td>
+<td align="left">916 (61.1%)</td>
+<td align="right"></td>
 </tr>
 <tr class="odd">
-<td>    Female</td>
-<td align="center">151 (35.3%)</td>
-<td align="center">280 (40.5%)</td>
-<td align="center">152 (40%)</td>
-<td align="center">583 (38.9%)</td>
-<td align="center"></td>
+<td>   Female</td>
+<td align="left">151 (35.3%)</td>
+<td align="left">280 (40.5%)</td>
+<td align="left">152 (40.0%)</td>
+<td align="left">583 (38.9%)</td>
+<td align="right"></td>
 </tr>
 <tr class="even">
 <td><strong>Age, yrs</strong></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center">0.614</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right">0.614</td>
 </tr>
 <tr class="odd">
-<td>    Mean (SD)</td>
-<td align="center">59.7 (11.4)</td>
-<td align="center">60.3 (11.6)</td>
-<td align="center">59.8 (11.5)</td>
-<td align="center">60 (11.5)</td>
-<td align="center"></td>
+<td>   Mean (SD)</td>
+<td align="left">59.673 (11.365)</td>
+<td align="left">60.301 (11.632)</td>
+<td align="left">59.763 (11.499)</td>
+<td align="left">59.985 (11.519)</td>
+<td align="right"></td>
 </tr>
 <tr class="even">
-<td>    Q1, Q3</td>
-<td align="center">53, 68</td>
-<td align="center">52, 69</td>
-<td align="center">52, 68</td>
-<td align="center">52, 68</td>
-<td align="center"></td>
-</tr>
-<tr class="odd">
-<td>    Range</td>
-<td align="center">27 - 88</td>
-<td align="center">19 - 88</td>
-<td align="center">26 - 85</td>
-<td align="center">19 - 88</td>
-<td align="center"></td>
+<td>   Range</td>
+<td align="left">27.000 - 88.000</td>
+<td align="left">19.000 - 88.000</td>
+<td align="left">26.000 - 85.000</td>
+<td align="left">19.000 - 88.000</td>
+<td align="right"></td>
 </tr>
 </tbody>
 </table>
@@ -3381,210 +2873,238 @@ tab2 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## Show how many subjects have each variable (non-missing)
 <span class="kw">summary</span>(<span class="kw">tableby</span>(sex <span class="op">~</span><span class="st"> </span>ast <span class="op">+</span><span class="st"> </span>age, <span class="dt">data=</span>mockstudy,
                 <span class="dt">control=</span><span class="kw">tableby.control</span>(<span class="dt">numeric.stats=</span><span class="kw">c</span>(<span class="st">&quot;N&quot;</span>,<span class="st">&quot;median&quot;</span>), <span class="dt">total=</span><span class="ot">FALSE</span>)))</code></pre></div>
-<table style="width:99%;">
-<colgroup>
-<col width="27%"></col>
-<col width="23%"></col>
-<col width="23%"></col>
-<col width="23%"></col>
-</colgroup>
+<table>
 <thead>
 <tr class="header">
 <th></th>
-<th align="center">Male (N=916)</th>
-<th align="center">Female (N=583)</th>
-<th align="center">p value</th>
+<th align="left">Male (N=916)</th>
+<th align="left">Female (N=583)</th>
+<th align="right">p value</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td><strong>ast</strong></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center">0.921</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right">0.921</td>
 </tr>
 <tr class="even">
-<td>    N</td>
-<td align="center">754</td>
-<td align="center">479</td>
-<td align="center"></td>
+<td>   N</td>
+<td align="left">754</td>
+<td align="left">479</td>
+<td align="right"></td>
 </tr>
 <tr class="odd">
-<td>    median</td>
-<td align="center">27</td>
-<td align="center">27</td>
-<td align="center"></td>
+<td>   median</td>
+<td align="left">27.000</td>
+<td align="left">27.000</td>
+<td align="right"></td>
 </tr>
 <tr class="even">
 <td><strong>Age, yrs</strong></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center">0.048</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right">0.048</td>
 </tr>
 <tr class="odd">
-<td>    N</td>
-<td align="center">916</td>
-<td align="center">583</td>
-<td align="center"></td>
+<td>   N</td>
+<td align="left">916</td>
+<td align="left">583</td>
+<td align="right"></td>
 </tr>
 <tr class="even">
-<td>    median</td>
-<td align="center">61</td>
-<td align="center">60</td>
-<td align="center"></td>
+<td>   median</td>
+<td align="left">61.000</td>
+<td align="left">60.000</td>
+<td align="right"></td>
 </tr>
 </tbody>
 </table>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## Always list the number of missing values
 <span class="kw">summary</span>(<span class="kw">tableby</span>(sex <span class="op">~</span><span class="st"> </span>ast <span class="op">+</span><span class="st"> </span>age, <span class="dt">data=</span>mockstudy,
                 <span class="dt">control=</span><span class="kw">tableby.control</span>(<span class="dt">numeric.stats=</span><span class="kw">c</span>(<span class="st">&quot;Nmiss2&quot;</span>,<span class="st">&quot;median&quot;</span>), <span class="dt">total=</span><span class="ot">FALSE</span>)))</code></pre></div>
-<table style="width:99%;">
-<colgroup>
-<col width="27%"></col>
-<col width="23%"></col>
-<col width="23%"></col>
-<col width="23%"></col>
-</colgroup>
+<table>
 <thead>
 <tr class="header">
 <th></th>
-<th align="center">Male (N=916)</th>
-<th align="center">Female (N=583)</th>
-<th align="center">p value</th>
+<th align="left">Male (N=916)</th>
+<th align="left">Female (N=583)</th>
+<th align="right">p value</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td><strong>ast</strong></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center">0.921</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right">0.921</td>
 </tr>
 <tr class="even">
-<td>    N-Miss</td>
-<td align="center">162</td>
-<td align="center">104</td>
-<td align="center"></td>
+<td>   N-Miss</td>
+<td align="left">162</td>
+<td align="left">104</td>
+<td align="right"></td>
 </tr>
 <tr class="odd">
-<td>    median</td>
-<td align="center">27</td>
-<td align="center">27</td>
-<td align="center"></td>
+<td>   median</td>
+<td align="left">27.000</td>
+<td align="left">27.000</td>
+<td align="right"></td>
 </tr>
 <tr class="even">
 <td><strong>Age, yrs</strong></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center">0.048</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right">0.048</td>
 </tr>
 <tr class="odd">
-<td>    N-Miss</td>
-<td align="center">0</td>
-<td align="center">0</td>
-<td align="center"></td>
+<td>   N-Miss</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="right"></td>
 </tr>
 <tr class="even">
-<td>    median</td>
-<td align="center">61</td>
-<td align="center">60</td>
-<td align="center"></td>
+<td>   median</td>
+<td align="left">61.000</td>
+<td align="left">60.000</td>
+<td align="right"></td>
 </tr>
 </tbody>
 </table>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## Only show the missing values if there are some (default)
 <span class="kw">summary</span>(<span class="kw">tableby</span>(sex <span class="op">~</span><span class="st"> </span>ast <span class="op">+</span><span class="st"> </span>age, <span class="dt">data=</span>mockstudy, 
                 <span class="dt">control=</span><span class="kw">tableby.control</span>(<span class="dt">numeric.stats=</span><span class="kw">c</span>(<span class="st">&quot;Nmiss&quot;</span>,<span class="st">&quot;mean&quot;</span>),<span class="dt">total=</span><span class="ot">FALSE</span>)))</code></pre></div>
-<table style="width:99%;">
-<colgroup>
-<col width="27%"></col>
-<col width="23%"></col>
-<col width="23%"></col>
-<col width="23%"></col>
-</colgroup>
+<table>
 <thead>
 <tr class="header">
 <th></th>
-<th align="center">Male (N=916)</th>
-<th align="center">Female (N=583)</th>
-<th align="center">p value</th>
+<th align="left">Male (N=916)</th>
+<th align="left">Female (N=583)</th>
+<th align="right">p value</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td><strong>ast</strong></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center">0.921</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right">0.921</td>
 </tr>
 <tr class="even">
-<td>    N-Miss</td>
-<td align="center">162</td>
-<td align="center">104</td>
-<td align="center"></td>
+<td>   N-Miss</td>
+<td align="left">162</td>
+<td align="left">104</td>
+<td align="right"></td>
 </tr>
 <tr class="odd">
-<td>    mean</td>
-<td align="center">35.9</td>
-<td align="center">36</td>
-<td align="center"></td>
+<td>   mean</td>
+<td align="left">35.9</td>
+<td align="left">36</td>
+<td align="right"></td>
 </tr>
 <tr class="even">
 <td><strong>Age, yrs</strong></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center">0.048</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right">0.048</td>
 </tr>
 <tr class="odd">
-<td>    mean</td>
-<td align="center">60.5</td>
-<td align="center">59.2</td>
-<td align="center"></td>
+<td>   mean</td>
+<td align="left">60.5</td>
+<td align="left">59.2</td>
+<td align="right"></td>
 </tr>
 </tbody>
 </table>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## Don't show N at all
 <span class="kw">summary</span>(<span class="kw">tableby</span>(sex <span class="op">~</span><span class="st"> </span>ast <span class="op">+</span><span class="st"> </span>age, <span class="dt">data=</span>mockstudy, 
                 <span class="dt">control=</span><span class="kw">tableby.control</span>(<span class="dt">numeric.stats=</span><span class="kw">c</span>(<span class="st">&quot;mean&quot;</span>),<span class="dt">total=</span><span class="ot">FALSE</span>)))</code></pre></div>
-<table style="width:99%;">
-<colgroup>
-<col width="27%"></col>
-<col width="23%"></col>
-<col width="23%"></col>
-<col width="23%"></col>
-</colgroup>
+<table>
 <thead>
 <tr class="header">
 <th></th>
-<th align="center">Male (N=916)</th>
-<th align="center">Female (N=583)</th>
-<th align="center">p value</th>
+<th align="left">Male (N=916)</th>
+<th align="left">Female (N=583)</th>
+<th align="right">p value</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td><strong>ast</strong></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center">0.921</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right">0.921</td>
 </tr>
 <tr class="even">
-<td>    mean</td>
-<td align="center">35.9</td>
-<td align="center">36</td>
-<td align="center"></td>
+<td>   mean</td>
+<td align="left">35.9</td>
+<td align="left">36</td>
+<td align="right"></td>
 </tr>
 <tr class="odd">
 <td><strong>Age, yrs</strong></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center">0.048</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right">0.048</td>
 </tr>
 <tr class="even">
-<td>    mean</td>
-<td align="center">60.5</td>
-<td align="center">59.2</td>
-<td align="center"></td>
+<td>   mean</td>
+<td align="left">60.5</td>
+<td align="left">59.2</td>
+<td align="right"></td>
+</tr>
+</tbody>
+</table>
+<p>One might also consider the use of <code>includeNA()</code> to include NAs in the counts and percents for categorical variables.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mockstudy<span class="op">$</span>ps.cat &lt;-<span class="st"> </span><span class="kw">factor</span>(mockstudy<span class="op">$</span>ps)
+<span class="kw">attr</span>(mockstudy<span class="op">$</span>ps.cat, <span class="st">&quot;label&quot;</span>) &lt;-<span class="st"> &quot;ps&quot;</span>
+<span class="kw">summary</span>(<span class="kw">tableby</span>(sex <span class="op">~</span><span class="st"> </span><span class="kw">includeNA</span>(ps.cat), <span class="dt">data =</span> mockstudy, <span class="dt">cat.stats =</span> <span class="st">&quot;countpct&quot;</span>))</code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th align="left">Male (N=916)</th>
+<th align="left">Female (N=583)</th>
+<th align="left">Total (N=1499)</th>
+<th align="right">p value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>ps</strong></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right">0.354</td>
+</tr>
+<tr class="even">
+<td>   0</td>
+<td align="left">391 (42.7%)</td>
+<td align="left">244 (41.9%)</td>
+<td align="left">635 (42.4%)</td>
+<td align="right"></td>
+</tr>
+<tr class="odd">
+<td>   1</td>
+<td align="left">329 (35.9%)</td>
+<td align="left">202 (34.6%)</td>
+<td align="left">531 (35.4%)</td>
+<td align="right"></td>
+</tr>
+<tr class="even">
+<td>   2</td>
+<td align="left">34 (3.7%)</td>
+<td align="left">33 (5.7%)</td>
+<td align="left">67 (4.5%)</td>
+<td align="right"></td>
+</tr>
+<tr class="odd">
+<td>   (Missing)</td>
+<td align="left">162 (17.7%)</td>
+<td align="left">104 (17.8%)</td>
+<td align="left">266 (17.7%)</td>
+<td align="right"></td>
 </tr>
 </tbody>
 </table>
@@ -3593,137 +3113,98 @@ tab2 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 <h2>14. Modify the number of digits used</h2>
 <p>Within tableby.control function there are 4 options for controlling the number of significant digits shown.</p>
 <ul>
-<li><p>digits: controls the number of significant digits (counting both before and after the decimal point) for continuous variables</p></li>
-<li><p>nsmall: controls the number of digits after the decimal point for continous variables</p></li>
-<li><p>nsmall.pct: controls the number of digits after the decimal point for percentages</p></li>
-<li><p>digits.test: controls the number of digits after the decimal point for p-values (default=3)</p></li>
+<li><p>digits: controls the number of digits after the decimal place for continuous values</p></li>
+<li><p>digits.count: controls the number of digits after the decimal point for counts</p></li>
+<li><p>digits.pct: controls the number of digits after the decimal point for percents</p></li>
+<li><p>digits.p: controls the number of digits after the decimal point for p-values</p></li>
 </ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(<span class="kw">tableby</span>(arm <span class="op">~</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span>age <span class="op">+</span><span class="st"> </span>fu.time, <span class="dt">data=</span>mockstudy), <span class="dt">digits=</span><span class="dv">4</span>, <span class="dt">digits.test=</span><span class="dv">2</span>, <span class="dt">nsmall.pct=</span><span class="dv">1</span>)</code></pre></div>
-<table style="width:100%;">
-<colgroup>
-<col width="19%"></col>
-<col width="16%"></col>
-<col width="16%"></col>
-<col width="16%"></col>
-<col width="16%"></col>
-<col width="16%"></col>
-</colgroup>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(<span class="kw">tableby</span>(arm <span class="op">~</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span>age <span class="op">+</span><span class="st"> </span>fu.time, <span class="dt">data=</span>mockstudy), <span class="dt">digits=</span><span class="dv">4</span>, <span class="dt">digits.p=</span><span class="dv">2</span>, <span class="dt">digits.pct=</span><span class="dv">1</span>)</code></pre></div>
+<table>
 <thead>
 <tr class="header">
 <th></th>
-<th align="center">A: IFL (N=428)</th>
-<th align="center">F: FOLFOX (N=691)</th>
-<th align="center">G: IROX (N=380)</th>
-<th align="center">Total (N=1499)</th>
-<th align="center">p value</th>
+<th align="left">A: IFL (N=428)</th>
+<th align="left">F: FOLFOX (N=691)</th>
+<th align="left">G: IROX (N=380)</th>
+<th align="left">Total (N=1499)</th>
+<th align="right">p value</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td><strong>Gender</strong></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center">0.19</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right">0.19</td>
 </tr>
 <tr class="even">
-<td>    Male</td>
-<td align="center">277 (64.7%)</td>
-<td align="center">411 (59.5%)</td>
-<td align="center">228 (60.0%)</td>
-<td align="center">916 (61.1%)</td>
-<td align="center"></td>
+<td>   Male</td>
+<td align="left">277 (64.7%)</td>
+<td align="left">411 (59.5%)</td>
+<td align="left">228 (60.0%)</td>
+<td align="left">916 (61.1%)</td>
+<td align="right"></td>
 </tr>
 <tr class="odd">
-<td>    Female</td>
-<td align="center">151 (35.3%)</td>
-<td align="center">280 (40.5%)</td>
-<td align="center">152 (40.0%)</td>
-<td align="center">583 (38.9%)</td>
-<td align="center"></td>
+<td>   Female</td>
+<td align="left">151 (35.3%)</td>
+<td align="left">280 (40.5%)</td>
+<td align="left">152 (40.0%)</td>
+<td align="left">583 (38.9%)</td>
+<td align="right"></td>
 </tr>
 <tr class="even">
 <td><strong>Age, yrs</strong></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center">0.61</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right">0.61</td>
 </tr>
 <tr class="odd">
-<td>    Mean (SD)</td>
-<td align="center">59.67 (11.36)</td>
-<td align="center">60.3 (11.63)</td>
-<td align="center">59.76 (11.5)</td>
-<td align="center">59.99 (11.52)</td>
-<td align="center"></td>
+<td>   Mean (SD)</td>
+<td align="left">59.6729 (11.3645)</td>
+<td align="left">60.3010 (11.6323)</td>
+<td align="left">59.7632 (11.4993)</td>
+<td align="left">59.9853 (11.5188)</td>
+<td align="right"></td>
 </tr>
 <tr class="even">
-<td>    Q1, Q3</td>
-<td align="center">53, 68</td>
-<td align="center">52, 69</td>
-<td align="center">52, 68</td>
-<td align="center">52, 68</td>
-<td align="center"></td>
+<td>   Range</td>
+<td align="left">27.0000 - 88.0000</td>
+<td align="left">19.0000 - 88.0000</td>
+<td align="left">26.0000 - 85.0000</td>
+<td align="left">19.0000 - 88.0000</td>
+<td align="right"></td>
 </tr>
 <tr class="odd">
-<td>    Range</td>
-<td align="center">27 - 88</td>
-<td align="center">19 - 88</td>
-<td align="center">26 - 85</td>
-<td align="center">19 - 88</td>
-<td align="center"></td>
-</tr>
-<tr class="even">
 <td><strong>fu.time</strong></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center">&lt;0.01</td>
-</tr>
-<tr class="odd">
-<td>    Mean (SD)</td>
-<td align="center">553.6 (419.6)</td>
-<td align="center">731.2 (487.7)</td>
-<td align="center">607.2 (435.5)</td>
-<td align="center">649.1 (462.5)</td>
-<td align="center"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right">&lt; 0.01</td>
 </tr>
 <tr class="even">
-<td>    Q1, Q3</td>
-<td align="center">255.5, 724.2</td>
-<td align="center">345, 1046</td>
-<td align="center">306.5, 807</td>
-<td align="center">309.5, 878.5</td>
-<td align="center"></td>
+<td>   Mean (SD)</td>
+<td align="left">553.5841 (419.6065)</td>
+<td align="left">731.2460 (487.7443)</td>
+<td align="left">607.2421 (435.5092)</td>
+<td align="left">649.0841 (462.5109)</td>
+<td align="right"></td>
 </tr>
 <tr class="odd">
-<td>    Range</td>
-<td align="center">9 - 2170</td>
-<td align="center">0 - 2472</td>
-<td align="center">17 - 2118</td>
-<td align="center">0 - 2472</td>
-<td align="center"></td>
+<td>   Range</td>
+<td align="left">9.0000 - 2170.0000</td>
+<td align="left">0.0000 - 2472.0000</td>
+<td align="left">17.0000 - 2118.0000</td>
+<td align="left">0.0000 - 2472.0000</td>
+<td align="right"></td>
 </tr>
 </tbody>
 </table>
-<p>It is important to understand how R treats the <code>digits</code> argument. Here are some summaries for the variable <code>pi</code>. Note that with 4 digits, the number after the decimal point changes after multiplying pi by 10 or 100. However, the <code>nsmall</code> option specifies the number of values after the decimal point. The two can be used together (see the help file for <code>format</code> for more details on how that works).</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">format</span>(pi, <span class="dt">digits=</span><span class="dv">1</span>)</code></pre></div>
-<pre><code>## [1] &quot;3&quot;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">format</span>(pi, <span class="dt">digits=</span><span class="dv">3</span>)</code></pre></div>
-<pre><code>## [1] &quot;3.14&quot;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">format</span>(pi, <span class="dt">digits=</span><span class="dv">4</span>)</code></pre></div>
-<pre><code>## [1] &quot;3.142&quot;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">format</span>(pi<span class="op">*</span><span class="dv">10</span>, <span class="dt">digits=</span><span class="dv">4</span>)</code></pre></div>
-<pre><code>## [1] &quot;31.42&quot;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">format</span>(pi<span class="op">*</span><span class="dv">100</span>, <span class="dt">digits=</span><span class="dv">4</span>)</code></pre></div>
-<pre><code>## [1] &quot;314.2&quot;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">format</span>(pi<span class="op">*</span><span class="dv">100</span>, <span class="dt">nsmall=</span><span class="dv">4</span>)</code></pre></div>
-<pre><code>## [1] &quot;314.1593&quot;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">format</span>(pi<span class="op">*</span><span class="dv">100</span>, <span class="dt">nsmall=</span><span class="dv">2</span>, <span class="dt">digits=</span><span class="dv">4</span>)</code></pre></div>
-<pre><code>## [1] &quot;314.16&quot;</code></pre>
 </div>
 <div id="create-a-user-defined-summary-statistic" class="section level2">
 <h2>15. Create a user-defined summary statistic</h2>
@@ -3735,44 +3216,37 @@ tab2 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 <span class="kw">summary</span>(<span class="kw">tableby</span>(sex <span class="op">~</span><span class="st"> </span>hgb, <span class="dt">data=</span>mockstudy, 
                 <span class="dt">control=</span><span class="kw">tableby.control</span>(<span class="dt">numeric.stats=</span><span class="kw">c</span>(<span class="st">&quot;Nmiss&quot;</span>,<span class="st">&quot;myfunc&quot;</span>), <span class="dt">numeric.test=</span><span class="st">&quot;kwt&quot;</span>,
                     <span class="dt">stats.labels=</span><span class="kw">list</span>(<span class="dt">Nmiss=</span><span class="st">'Missing values'</span>, <span class="dt">myfunc=</span><span class="st">&quot;Trimmed Mean, 10%&quot;</span>))))</code></pre></div>
-<table style="width:100%;">
-<colgroup>
-<col width="22%"></col>
-<col width="19%"></col>
-<col width="19%"></col>
-<col width="19%"></col>
-<col width="19%"></col>
-</colgroup>
+<table>
 <thead>
 <tr class="header">
 <th></th>
-<th align="center">Male (N=916)</th>
-<th align="center">Female (N=583)</th>
-<th align="center">Total (N=1499)</th>
-<th align="center">p value</th>
+<th align="left">Male (N=916)</th>
+<th align="left">Female (N=583)</th>
+<th align="left">Total (N=1499)</th>
+<th align="right">p value</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td><strong>hgb</strong></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center">&lt;0.001</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right">&lt; 0.001</td>
 </tr>
 <tr class="even">
-<td>    Missing values</td>
-<td align="center">162</td>
-<td align="center">104</td>
-<td align="center">266</td>
-<td align="center"></td>
+<td>   Missing values</td>
+<td align="left">162</td>
+<td align="left">104</td>
+<td align="left">266</td>
+<td align="right"></td>
 </tr>
 <tr class="odd">
-<td>    Trimmed Mean, 10%</td>
-<td align="center">12.6</td>
-<td align="center">11.9</td>
-<td align="center">12.3</td>
-<td align="center"></td>
+<td>   Trimmed Mean, 10%</td>
+<td align="left">12.6</td>
+<td align="left">11.9</td>
+<td align="left">12.3</td>
+<td align="right"></td>
 </tr>
 </tbody>
 </table>
@@ -3827,162 +3301,138 @@ mockstudy<span class="op">$</span>wts &lt;-<span class="st"> </span>gpwts[index]
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">orig &lt;-<span class="st"> </span><span class="kw">tableby</span>(fake_arm <span class="op">~</span><span class="st"> </span>age <span class="op">+</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span><span class="kw">Surv</span>(fu.time<span class="op">/</span><span class="dv">365</span>, fu.stat), <span class="dt">data=</span>mockstudy, <span class="dt">test=</span><span class="ot">FALSE</span>)
 <span class="kw">summary</span>(orig, <span class="dt">title=</span><span class="st">'No Case Weights used'</span>)</code></pre></div>
 <table>
-<caption><strong>No Case Weights used</strong></caption>
-<colgroup>
-<col width="28%"></col>
-<col width="23%"></col>
-<col width="23%"></col>
-<col width="23%"></col>
-</colgroup>
+<caption>No Case Weights used</caption>
 <thead>
 <tr class="header">
 <th></th>
-<th align="center">A (N=605)</th>
-<th align="center">B (N=894)</th>
-<th align="center">Total (N=1499)</th>
+<th align="left">A (N=605)</th>
+<th align="left">B (N=894)</th>
+<th align="left">Total (N=1499)</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td><strong>Age, yrs</strong></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
 </tr>
 <tr class="even">
-<td>    Mean (SD)</td>
-<td align="center">57.4 (11.6)</td>
-<td align="center">61.7 (11.1)</td>
-<td align="center">60 (11.5)</td>
+<td>   Mean (SD)</td>
+<td align="left">57.413 (11.618)</td>
+<td align="left">61.726 (11.125)</td>
+<td align="left">59.985 (11.519)</td>
 </tr>
 <tr class="odd">
-<td>    Q1, Q3</td>
-<td align="center">50, 66</td>
-<td align="center">55, 70</td>
-<td align="center">52, 68</td>
+<td>   Range</td>
+<td align="left">22.000 - 85.000</td>
+<td align="left">19.000 - 88.000</td>
+<td align="left">19.000 - 88.000</td>
 </tr>
 <tr class="even">
-<td>    Range</td>
-<td align="center">22 - 85</td>
-<td align="center">19 - 88</td>
-<td align="center">19 - 88</td>
-</tr>
-<tr class="odd">
 <td><strong>Gender</strong></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-</tr>
-<tr class="even">
-<td>    Male</td>
-<td align="center">442 (73.1%)</td>
-<td align="center">474 (53%)</td>
-<td align="center">916 (61.1%)</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
 </tr>
 <tr class="odd">
-<td>    Female</td>
-<td align="center">163 (26.9%)</td>
-<td align="center">420 (47%)</td>
-<td align="center">583 (38.9%)</td>
+<td>   Male</td>
+<td align="left">442 (73.1%)</td>
+<td align="left">474 (53.0%)</td>
+<td align="left">916 (61.1%)</td>
 </tr>
 <tr class="even">
+<td>   Female</td>
+<td align="left">163 (26.9%)</td>
+<td align="left">420 (47.0%)</td>
+<td align="left">583 (38.9%)</td>
+</tr>
+<tr class="odd">
 <td><strong>Surv(fu.time/365, fu.stat)</strong></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-</tr>
-<tr class="odd">
-<td>    Events</td>
-<td align="center">554</td>
-<td align="center">802</td>
-<td align="center">1356</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
 </tr>
 <tr class="even">
-<td>    medSurv</td>
-<td align="center">1.5</td>
-<td align="center">1.49</td>
-<td align="center">1.5</td>
+<td>   Events</td>
+<td align="left">554</td>
+<td align="left">802</td>
+<td align="left">1356</td>
+</tr>
+<tr class="odd">
+<td>   Median Survival</td>
+<td align="left">1.504</td>
+<td align="left">1.493</td>
+<td align="left">1.496</td>
 </tr>
 </tbody>
 </table>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tab1 &lt;-<span class="st"> </span><span class="kw">tableby</span>(fake_arm <span class="op">~</span><span class="st"> </span>age <span class="op">+</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span><span class="kw">Surv</span>(fu.time<span class="op">/</span><span class="dv">365</span>, fu.stat), <span class="dt">data=</span>mockstudy, <span class="dt">weights=</span>wts)
 <span class="kw">summary</span>(tab1, <span class="dt">title=</span><span class="st">'Case Weights used'</span>)</code></pre></div>
 <table>
-<caption><strong>Case Weights used</strong></caption>
-<colgroup>
-<col width="28%"></col>
-<col width="23%"></col>
-<col width="23%"></col>
-<col width="23%"></col>
-</colgroup>
+<caption>Case Weights used</caption>
 <thead>
 <tr class="header">
 <th></th>
-<th align="center">A (N=605)</th>
-<th align="center">B (N=894)</th>
-<th align="center">Total (N=1499)</th>
+<th align="left">A (N=605)</th>
+<th align="left">B (N=894)</th>
+<th align="left">Total (N=1499)</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td><strong>Age, yrs</strong></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
 </tr>
 <tr class="even">
-<td>    Mean (SD)</td>
-<td align="center">58 (10.9)</td>
-<td align="center">60.2 (11.4)</td>
-<td align="center">59.1 (11.2)</td>
+<td>   Mean (SD)</td>
+<td align="left">58.009 (10.925)</td>
+<td align="left">60.151 (11.428)</td>
+<td align="left">59.126 (11.235)</td>
 </tr>
 <tr class="odd">
-<td>    Q1, Q3</td>
-<td align="center">51, 65</td>
-<td align="center">53, 68</td>
-<td align="center">52, 67</td>
+<td>   Range</td>
+<td align="left">22.000 - 85.000</td>
+<td align="left">19.000 - 88.000</td>
+<td align="left">19.000 - 88.000</td>
 </tr>
 <tr class="even">
-<td>    Range</td>
-<td align="center">22 - 85</td>
-<td align="center">19 - 88</td>
-<td align="center">19 - 88</td>
-</tr>
-<tr class="odd">
 <td><strong>Gender</strong></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-</tr>
-<tr class="even">
-<td>    Male</td>
-<td align="center">916 (66.5%)</td>
-<td align="center">916 (61.1%)</td>
-<td align="center">1832 (63.7%)</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
 </tr>
 <tr class="odd">
-<td>    Female</td>
-<td align="center">461 (33.5%)</td>
-<td align="center">583 (38.9%)</td>
-<td align="center">1044 (36.3%)</td>
+<td>   Male</td>
+<td align="left">916 (66.5%)</td>
+<td align="left">916 (61.1%)</td>
+<td align="left">1832 (63.7%)</td>
 </tr>
 <tr class="even">
+<td>   Female</td>
+<td align="left">461 (33.5%)</td>
+<td align="left">583 (38.9%)</td>
+<td align="left">1044 (36.3%)</td>
+</tr>
+<tr class="odd">
 <td><strong>Surv(fu.time/365, fu.stat)</strong></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-</tr>
-<tr class="odd">
-<td>    Events</td>
-<td align="center">1252</td>
-<td align="center">1348</td>
-<td align="center">2599</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
 </tr>
 <tr class="even">
-<td>    medSurv</td>
-<td align="center">1.53</td>
-<td align="center">1.5</td>
-<td align="center">1.53</td>
+<td>   Events</td>
+<td align="left">1252</td>
+<td align="left">1348</td>
+<td align="left">2599</td>
+</tr>
+<tr class="odd">
+<td>   Median Survival</td>
+<td align="left">1.534</td>
+<td align="left">1.496</td>
+<td align="left">1.532</td>
 </tr>
 </tbody>
 </table>
@@ -3997,93 +3447,79 @@ mockstudy<span class="op">$</span>wts &lt;-<span class="st"> </span>gpwts[index]
 tab2 &lt;-<span class="st"> </span><span class="kw">modpval.tableby</span>(tab1, mypval, <span class="dt">use.pname=</span><span class="ot">TRUE</span>)
 <span class="kw">summary</span>(tab2, <span class="dt">title=</span><span class="st">'Case Weights used, p-values added'</span>) <span class="co">#, pfootnote=TRUE)</span></code></pre></div>
 <table>
-<caption><strong>Case Weights used, p-values added</strong></caption>
-<colgroup>
-<col width="22%"></col>
-<col width="19%"></col>
-<col width="19%"></col>
-<col width="19%"></col>
-<col width="19%"></col>
-</colgroup>
+<caption>Case Weights used, p-values added</caption>
 <thead>
 <tr class="header">
 <th></th>
-<th align="center">A (N=605)</th>
-<th align="center">B (N=894)</th>
-<th align="center">Total (N=1499)</th>
-<th align="center">adj.pvalue</th>
+<th align="left">A (N=605)</th>
+<th align="left">B (N=894)</th>
+<th align="left">Total (N=1499)</th>
+<th align="right">adj.pvalue</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td><strong>Age, yrs</strong></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center">0.953</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right">0.953</td>
 </tr>
 <tr class="even">
-<td>    Mean (SD)</td>
-<td align="center">58 (10.9)</td>
-<td align="center">60.2 (11.4)</td>
-<td align="center">59.1 (11.2)</td>
-<td align="center"></td>
+<td>   Mean (SD)</td>
+<td align="left">58.009 (10.925)</td>
+<td align="left">60.151 (11.428)</td>
+<td align="left">59.126 (11.235)</td>
+<td align="right"></td>
 </tr>
 <tr class="odd">
-<td>    Q1, Q3</td>
-<td align="center">51, 65</td>
-<td align="center">53, 68</td>
-<td align="center">52, 67</td>
-<td align="center"></td>
+<td>   Range</td>
+<td align="left">22.000 - 85.000</td>
+<td align="left">19.000 - 88.000</td>
+<td align="left">19.000 - 88.000</td>
+<td align="right"></td>
 </tr>
 <tr class="even">
-<td>    Range</td>
-<td align="center">22 - 85</td>
-<td align="center">19 - 88</td>
-<td align="center">19 - 88</td>
-<td align="center"></td>
-</tr>
-<tr class="odd">
 <td><strong>Gender</strong></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center">0.811</td>
-</tr>
-<tr class="even">
-<td>    Male</td>
-<td align="center">916 (66.5%)</td>
-<td align="center">916 (61.1%)</td>
-<td align="center">1832 (63.7%)</td>
-<td align="center"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right">0.811</td>
 </tr>
 <tr class="odd">
-<td>    Female</td>
-<td align="center">461 (33.5%)</td>
-<td align="center">583 (38.9%)</td>
-<td align="center">1044 (36.3%)</td>
-<td align="center"></td>
+<td>   Male</td>
+<td align="left">916 (66.5%)</td>
+<td align="left">916 (61.1%)</td>
+<td align="left">1832 (63.7%)</td>
+<td align="right"></td>
 </tr>
 <tr class="even">
+<td>   Female</td>
+<td align="left">461 (33.5%)</td>
+<td align="left">583 (38.9%)</td>
+<td align="left">1044 (36.3%)</td>
+<td align="right"></td>
+</tr>
+<tr class="odd">
 <td><strong>Surv(fu.time/365, fu.stat)</strong></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center">0.010</td>
-</tr>
-<tr class="odd">
-<td>    Events</td>
-<td align="center">1252</td>
-<td align="center">1348</td>
-<td align="center">2599</td>
-<td align="center"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right">0.010</td>
 </tr>
 <tr class="even">
-<td>    medSurv</td>
-<td align="center">1.53</td>
-<td align="center">1.5</td>
-<td align="center">1.53</td>
-<td align="center"></td>
+<td>   Events</td>
+<td align="left">1252</td>
+<td align="left">1348</td>
+<td align="left">2599</td>
+<td align="right"></td>
+</tr>
+<tr class="odd">
+<td>   Median Survival</td>
+<td align="left">1.534</td>
+<td align="left">1.496</td>
+<td align="left">1.532</td>
+<td align="right"></td>
 </tr>
 </tbody>
 </table>
@@ -4095,57 +3531,57 @@ tab2 &lt;-<span class="st"> </span><span class="kw">modpval.tableby</span>(tab1,
 <p>[1] “Male” “Female”</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">table2 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm<span class="op">~</span>sex <span class="op">+</span><span class="st"> </span><span class="kw">factor</span>(mdquality.s), <span class="dt">data=</span>mockstudy, <span class="dt">cat.simplify=</span><span class="ot">TRUE</span>)
 <span class="kw">summary</span>(table2, <span class="dt">labelTranslations=</span><span class="kw">c</span>(<span class="dt">sex=</span><span class="st">&quot;Female&quot;</span>, <span class="st">&quot;factor(mdquality.s)&quot;</span>=<span class="st">&quot;MD Quality&quot;</span>))</code></pre></div>
-<table style="width:100%;">
-<colgroup>
-<col width="19%"></col>
-<col width="16%"></col>
-<col width="16%"></col>
-<col width="16%"></col>
-<col width="16%"></col>
-<col width="16%"></col>
-</colgroup>
+<table>
 <thead>
 <tr class="header">
 <th></th>
-<th align="center">A: IFL (N=428)</th>
-<th align="center">F: FOLFOX (N=691)</th>
-<th align="center">G: IROX (N=380)</th>
-<th align="center">Total (N=1499)</th>
-<th align="center">p value</th>
+<th align="left">A: IFL (N=428)</th>
+<th align="left">F: FOLFOX (N=691)</th>
+<th align="left">G: IROX (N=380)</th>
+<th align="left">Total (N=1499)</th>
+<th align="right">p value</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td><strong>Female</strong></td>
-<td align="center">151 (35.3%)</td>
-<td align="center">280 (40.5%)</td>
-<td align="center">152 (40%)</td>
-<td align="center">583 (38.9%)</td>
-<td align="center">0.190</td>
+<td align="left">151 (35.3%)</td>
+<td align="left">280 (40.5%)</td>
+<td align="left">152 (40.0%)</td>
+<td align="left">583 (38.9%)</td>
+<td align="right">0.190</td>
 </tr>
 <tr class="even">
 <td><strong>MD Quality</strong></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center">0.694</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right">0.694</td>
 </tr>
 <tr class="odd">
-<td>    N-Miss</td>
-<td align="center">55</td>
-<td align="center">156</td>
-<td align="center">41</td>
-<td align="center">252</td>
-<td align="center"></td>
+<td>   N-Miss</td>
+<td align="left">55</td>
+<td align="left">156</td>
+<td align="left">41</td>
+<td align="left">252</td>
+<td align="right"></td>
 </tr>
 <tr class="even">
-<td>    1</td>
-<td align="center">332 (89%)</td>
-<td align="center">483 (90.3%)</td>
-<td align="center">308 (90.9%)</td>
-<td align="center">1123 (90.1%)</td>
-<td align="center"></td>
+<td>   0</td>
+<td align="left">41 (11.0%)</td>
+<td align="left">52 (9.7%)</td>
+<td align="left">31 (9.1%)</td>
+<td align="left">124 (9.9%)</td>
+<td align="right"></td>
+</tr>
+<tr class="odd">
+<td>   1</td>
+<td align="left">332 (89.0%)</td>
+<td align="left">483 (90.3%)</td>
+<td align="left">308 (90.9%)</td>
+<td align="left">1123 (90.1%)</td>
+<td align="right"></td>
 </tr>
 </tbody>
 </table>
@@ -4186,29 +3622,21 @@ render(&quot;Test.md&quot;, pdf_document(keep_tex=TRUE))
 <h2>20. Export <code>tableby</code> object to a .CSV file</h2>
 <p>When looking at multiple variables it is sometimes useful to export the results to a csv file. The <code>as.data.frame</code> function creates a data frame object that can be exported or further manipulated within R.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tab1 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm<span class="op">~</span>sex<span class="op">+</span>age, <span class="dt">data=</span>mockstudy)
-<span class="kw">summary</span>(tab1, <span class="dt">text=</span>T)</code></pre></div>
-<pre><code>## 
-## ---------------------------------------------------------------------------------------------------------------------------
-##                          A: IFL (N=428)      F: FOLFOX (N=691)   G: IROX (N=380)     Total (N=1499)      p value           
-## ----------------------- ------------------- ------------------- ------------------- ------------------- -------------------
-## Gender                                                                                                                0.190
-##    Male                 277 (64.7%)         411 (59.5%)         228 (60%)           916 (61.1%)        
-##    Female               151 (35.3%)         280 (40.5%)         152 (40%)           583 (38.9%)        
-## Age, yrs                                                                                                              0.614
-##    Mean (SD)            59.7 (11.4)         60.3 (11.6)         59.8 (11.5)         60 (11.5)          
-##    Q1, Q3               53, 68              52, 69              52, 68              52, 68             
-##    Range                27 - 88             19 - 88             26 - 85             19 - 88            
-## ---------------------------------------------------------------------------------------------------------------------------</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tmp &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(tab1)
-tmp</code></pre></div>
-<pre><code>##        term variable A: IFL (N=428) F: FOLFOX (N=691) G: IROX (N=380) Total (N=1499) p value
-## 1    Gender      sex                                                                   0.190
-## 2      Male      sex    277 (64.7%)       411 (59.5%)       228 (60%)    916 (61.1%)        
-## 3    Female      sex    151 (35.3%)       280 (40.5%)       152 (40%)    583 (38.9%)        
-## 4  Age, yrs      age                                                                   0.614
-## 5 Mean (SD)      age    59.7 (11.4)       60.3 (11.6)     59.8 (11.5)      60 (11.5)        
-## 6    Q1, Q3      age         53, 68            52, 69          52, 68         52, 68        
-## 7     Range      age        27 - 88           19 - 88         26 - 85        19 - 88</code></pre>
+<span class="kw">as.data.frame</span>(tab1)</code></pre></div>
+<pre><code>##   variable   term     label variable.type              A: IFL           F: FOLFOX
+## 1      sex    sex    Gender   categorical                                        
+## 2      sex   Male      Male   categorical 277.00000, 64.71963 411.00000, 59.47902
+## 3      sex Female    Female   categorical 151.00000, 35.28037 280.00000, 40.52098
+## 4      age    age  Age, yrs       numeric                                        
+## 5      age meansd Mean (SD)       numeric  59.67290, 11.36454  60.30101, 11.63225
+## 6      age  range     Range       numeric              27, 88              19, 88
+##              G: IROX              Total                       test   p.value
+## 1                                       Pearson's Chi-squared test 0.1904388
+## 2            228, 60  916.0000, 61.1074 Pearson's Chi-squared test 0.1904388
+## 3            152, 40  583.0000, 38.8926 Pearson's Chi-squared test 0.1904388
+## 4                                               Linear Model ANOVA 0.6143859
+## 5 59.76316, 11.49930 59.98532, 11.51877         Linear Model ANOVA 0.6143859
+## 6             26, 85             19, 88         Linear Model ANOVA 0.6143859</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># write.csv(tmp, '/my/path/here/mymodel.csv')</span></code></pre></div>
 </div>
 <div id="write-tableby-object-to-a-separate-word-or-html-file" class="section level2">
@@ -4227,25 +3655,29 @@ tab1 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 <h2>Summary statistics</h2>
 <p>The <strong>default</strong> summary statistics, by varible type, are:</p>
 <ul>
-<li><code>cont</code>: Continuous variables will show by default <code>Nmiss, meansd, q1q3, range</code></li>
-<li><code>cat</code>: Categorical and factor variables will show by default <code>Nmiss, countpct</code></li>
-<li><code>ordered</code>: Ordered factors will show by default <code>Nmiss, countpct</code></li>
-<li><code>surv</code>: Survival variables will show by default <code>Nmiss, Nevents, medsurv</code></li>
-<li><code>date</code>: Date variables will show by default <code>Nmiss, median, range</code></li>
-<li><code>group</code>: The grouping variable will show by default <code>countpct</code></li>
+<li><code>numeric.stats</code>: Continuous variables will show by default <code>Nmiss, meansd, range</code></li>
+<li><code>cat.stats</code>: Categorical and factor variables will show by default <code>Nmiss, countpct</code></li>
+<li><code>ordered.stats</code>: Ordered factors will show by default <code>Nmiss, countpct</code></li>
+<li><code>surv.stats</code>: Survival variables will show by default <code>Nmiss, Nevents, medsurv</code></li>
+<li><code>date.stats</code>: Date variables will show by default <code>Nmiss, median, range</code></li>
 </ul>
 <p>Any summary statistics standardly defined in R (e.g. mean, median, sd, med, range) can be specified, however there are a number of extra functions defined specifically for the tableby function.</p>
 <ul>
 <li><code>N</code>: a count of the number of observations for a particular group</li>
-<li><code>Nmiss</code>: always show a count of the number of missing values for a variable within each group</li>
-<li><code>Nmiss2</code>: only show the count of the number of missing values if there are some missing values(not developed yet)</li>
+<li><code>Nmiss</code>: only show the count of the number of missing values if there are some missing values</li>
+<li><code>Nmiss2</code>: always show a count of the number of missing values for a variable within each group</li>
 <li><code>meansd</code>: print the mean and standard deviation in the format <code>mean(sd)</code></li>
-<li><code>countpct</code>: print the number of values in a category plus the percentage in the format <code>N (%)</code></li>
+<li><code>countpct</code>: print the number of values in a category plus the column-percentage in the format <code>N (%)</code></li>
+<li><code>countrowpct</code>: print the number of values in a category plus the row-percentage in the format <code>N (%)</code></li>
 <li><code>medianq1q3</code>: print the median, 25th, and 75th quantiles <code>median (Q1, Q3)</code></li>
 <li><code>q1q3</code>: print the 25th and 75th quantiles <code>Q1, Q3</code></li>
 <li><code>medianrange</code>: print the median, minimum and maximum values <code>median (minimum, maximum)</code></li>
 <li><code>Nevents</code>: print number of events for a survival object within each grouping level</li>
 <li><code>medsurv</code>: print the median survival</li>
+<li><code>NeventsSurv</code>: print number of events and survival at given times</li>
+<li><code>NriskSurv</code>: print the number still at risk at given times</li>
+<li><code>medTime</code>: print the median follow-up time</li>
+<li><code>rangeTime</code>: print the range of follow-up times</li>
 </ul>
 </div>
 <div id="testing-options" class="section level2">
@@ -4268,56 +3700,25 @@ tab1 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 <pre><code>## function (test = TRUE, total = TRUE, test.pname = NULL, cat.simplify = FALSE, 
 ##     numeric.test = &quot;anova&quot;, cat.test = &quot;chisq&quot;, ordered.test = &quot;trend&quot;, 
 ##     surv.test = &quot;logrank&quot;, date.test = &quot;kwt&quot;, numeric.stats = c(&quot;Nmiss&quot;, 
-##         &quot;meansd&quot;, &quot;q1q3&quot;, &quot;range&quot;), cat.stats = c(&quot;Nmiss&quot;, &quot;countpct&quot;), 
+##         &quot;meansd&quot;, &quot;range&quot;), cat.stats = c(&quot;Nmiss&quot;, &quot;countpct&quot;), 
 ##     ordered.stats = c(&quot;Nmiss&quot;, &quot;countpct&quot;), surv.stats = c(&quot;Nevents&quot;, 
 ##         &quot;medSurv&quot;), date.stats = c(&quot;Nmiss&quot;, &quot;median&quot;, &quot;range&quot;), 
 ##     stats.labels = list(Nmiss = &quot;N-Miss&quot;, Nmiss2 = &quot;N-Miss&quot;, 
 ##         meansd = &quot;Mean (SD)&quot;, medianq1q3 = &quot;Median (Q1, Q3)&quot;, 
 ##         q1q3 = &quot;Q1, Q3&quot;, range = &quot;Range&quot;, countpct = &quot;Count (Pct)&quot;, 
-##         Nevents = &quot;Events&quot;, medsurv = &quot;Median Survival&quot;), digits = 3, 
-##     digits.test = NULL, nsmall = NULL, nsmall.pct = NULL, chisq.correct = TRUE, 
+##         Nevents = &quot;Events&quot;, medSurv = &quot;Median Survival&quot;, medTime = &quot;Median Follow-Up&quot;, 
+##         rangeTime = &quot;Range of Follow-Up&quot;), digits = 3L, digits.count = 0L, 
+##     digits.pct = 1L, digits.p = 3L, format.p = TRUE, chisq.correct = TRUE, 
 ##     simulate.p.value = FALSE, B = 2000, ...) 
 ## NULL</code></pre>
-<p>Settings:</p>
-<ul>
-<li>test=TRUE (show p-values in table)</li>
-<li>total=TRUE (show summaries for entire dataset in addition to doing it by the group)</li>
-<li>test.pname=NULL (column name used when supplying own “p-value” or other summary value to the report)</li>
-<li>cat.simplify (for dichotomous variables, only show statistics for 2nd level)</li>
-<li>digits=3 (number of significant digits for continuous variables)</li>
-<li>digits.test=3 (number of significant digits for p-values)</li>
-<li>nsmall=NULL (number of digits after the decimal point for continous variables)</li>
-<li>nsmall.pct=2 (number of digits after the decimal for percentages)</li>
-<li>test.pname=NULL (use column name other than “P-Value” )</li>
-<li>numeric.test, numeric.stats</li>
-<li>cat.test, cat.stats</li>
-<li>ordered.test, ordered.stats</li>
-<li>surv.test, surv.stats</li>
-</ul>
 </div>
 <div id="summary.tableby-settings" class="section level2">
 <h2><code>summary.tableby</code> settings</h2>
 <p>The <code>summary.tableby</code> function has options that modify how the table appears (such as adding a title or modifying labels).</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">args</span>(arsenal<span class="op">:::</span>summary.tableby)</code></pre></div>
-<pre><code>## function (object, title = NULL, labelTranslations = NULL, digits = NA, 
-##     nsmall = NA, nsmall.pct = NA, digits.test = NA, text = FALSE, 
-##     removeBlanks = text, labelSize = 1.2, test = NA, test.pname = NA, 
-##     pfootnote = NA, total = NA, ...) 
+<pre><code>## function (object, ..., labelTranslations = NULL, text = FALSE, 
+##     title = NULL, pfootnote = FALSE) 
 ## NULL</code></pre>
-<p>Settings:</p>
-<ul>
-<li>digits</li>
-<li>digits.test</li>
-<li>nsmall</li>
-<li>nsmall.pct</li>
-<li>test.pname</li>
-<li>title=NULL</li>
-<li>labelTranslations (allows user to modify variable labels)</li>
-<li>text=FALSE</li>
-<li>removeBlanks=FALSE (used on conjunction with text=TRUE to clean up output)</li>
-<li>labelSize=1.2</li>
-<li>pfootnote</li>
-</ul>
 </div>
 </div>
 

@@ -1,3 +1,139 @@
+# arsenal 1.0.0
+
+**This is a non-backwards-compatible update.**
+
+Major changes:
+
+* `freqlist()`:
+
+    - `freqlist()` is now an S3 generic. (#35)
+      
+    - The first argument to `freqlist()` has changed from `tab=` to `object=`, for S3 consistency. (#35)
+
+    - `freqlist.formula()` was implemented, piggybacking off of `stats::xtabs()`. (#35)
+    
+    - The `title=` argument was added to `summary.freqlist()`. Passing `caption=` through the dots to `knitr::kable()`
+      will now throw an error. (#34)
+      
+* `tableby()`:
+
+    - `as.data.frame.tableby()` has been totally overhauled. It now uses list-columns to give exact values.
+    
+    - `summary.tableby()` has been totally overhauled.
+
+        * Most arguments are no longer named, but passed through the dots.
+    
+        * It now returns an object, abusing in the process `as.data.frame.tableby()`.
+          `print.summary.tableby()` prints the resulting object. (#8)
+        
+        * `print.summary.tableby()` now uses `knitr::kable()` to print results, instead of internal functions.
+          As such, non-exported helper functions have all been removed.
+
+    - The arguments to `tableby.control()` have changed. Warnings will be issued for using old arguments.
+    
+        * `nsmall=` has been removed. `digits=` takes its place.
+        
+        * `nsmall.pct=` and `digits.test=` have been renamed to `digits.pct=` and `digits.p=`, respectively.
+        
+        * There's now an option for count digits (`digits.count=`).
+        
+        * `format.p=` has been added, to turn on formatting of p-values.
+        
+        * `q1q3` is no longer a default continuous statistic.
+        
+    - NAs can be included in percents using `includeNA()`.
+    
+    - Some additional survival summary functions are now available. (#32)
+    
+    - It is now possible to report row-percents using `countrowpct()`. (#9)
+
+* `modelsum()`:
+
+    - `modelsum()` has been totally overhauled:
+    
+        * It now uses `stats::model.frame()` and unevaluated calls instead of custom-creating
+          data.frames.
+          
+        * It now allows for non-syntactic names (#44, #45).
+
+    - `as.data.frame.modelsum()` has been totally overhauled. It now gives exact
+      values instead of formatted values.
+
+    - `summary.modelsum()` has been totally overhauled.
+
+        * Most arguments are no longer named, but passed through the dots.
+    
+        * It now returns an object, abusing in the process `as.data.frame.modelsum()`.
+          `print.summary.modelsum()` prints the resulting object. (#37)
+        
+        * `print.summary.modelsum()` now uses `knitr::kable()` to print results, instead of internal functions.
+          As such, non-exported helper functions have all been removed.
+          
+        * `print.summary.modelsum()` now strips leading and trailing whitespace from labels to fix formatting with `text=FALSE`. (#48)
+    
+        * `labelTranslations=` no longer accepts labels for the statistics columns.
+          Use `modelsum.control(stat.labels=)` for this instead.
+
+    - The arguments to `modelsum.control()` have changed. Warnings will be issued for using old arguments.
+    
+        * `nsmall=` has been removed. `digits=` takes its place.
+        
+        * `nsmall.ratio=` and `digits.test=` have been renamed to `digits.ratio=` and `digits.p=`, respectively.
+        
+        * `format.p=` has been added, to turn off formatting of p-values.
+        
+        * `stat.labels=` has been added, to label the statistics columns.
+    
+    - `"[.modelsum"()` now has a named argument, and accepts character, numeric, and logical subscripts.
+
+Smaller changes:
+
+* `freqlist()`:
+
+    - `freqlist()` will no longer issue a warning about using the deprecated `varnames=` argument.
+
+    - `print.freqlist()` has been made slightly more concise. The only change to the printed output
+      is making "variables" singular ("variable") when only one variable is present.
+    
+* `tableby()`:
+
+    - `tableby()` has also been made slightly more concise and easier to read.
+
+    - A bug was fixed when trying to specify "stats" attributes for categorical variables. (#39)
+    
+    - A bug was fixed relating to unnamed passing of arguments for `medianrange()`. (#49)
+    
+    - `as.data.frame.tableby()` no longer breaks with date ranges. (#10)
+
+    - `as.data.frame.tableby()` no longer breaks with both `count()` and `countpct()`. (#51)
+
+    - `labels<-.tableby()` no longer breaks for unmatched variables. (#53)
+    
+    - `labels<-.tableby()` now accepts `NULL` to set all labels to NULL. (#52)
+
+    - The function `Nmiss2()` is now exported for `tableby()`. Note that it is exactly the same as `Nmiss()`, but
+      is interpreted differently in `tableby()`.
+      
+* `modelsum()`:
+
+    - `modelsum()` has been made slightly more concise.
+    
+    - "Nmiss2" has been added to the `modelsum()` object and no longer replaces "Nmiss".
+    
+    - `as.data.frame.modelsum()` no longer turns "<0.001" into `NA`. (#31)
+    
+    - `as.data.frame.modelsum()` no longer breaks if there are too many adjustment variables. (#12)
+    
+    - `summary.modelsum()` now has working labels for factors. (#13)
+    
+    - `"labels<-.modelsum"()` has been tweaked slightly. The results shouldn't change.
+    
+    - `print.modelsum()` has been fixed to show its y-variable. (#33)
+    
+* Documentation and vignettes have been re-reviewed and updated where appropriate.
+
+* Tests have been updated to reflect major changes.
+
 # arsenal 0.6.1
 
 This is a patch to fix an error appearing with R-devel. We anticipate releasing v1.0.0 soon, which
@@ -7,9 +143,9 @@ will not be backwards-compatible.
 
 # arsenal 0.6.0
 
-* Update `freqlist()` to be more efficient. (#20)
+* Updated `freqlist()` to be more efficient. (#20)
 
-* Allow named labels for `freqlist()`.
+* `freqlist()` now allows named labels.
 
 * Fixed one-sided formula detection in `tableby()` when used with `formulize()`. (#21)
 
@@ -21,7 +157,7 @@ will not be backwards-compatible.
 
 * Fixed a bug in `tableby()` and `modelsum()` when calling them without loading the package. (#25)
 
-* Allow `nsmall = ` and `digits = ` to be 0, for rounding to integers. (#23)
+* Allowed `nsmall = ` and `digits = ` to be 0, for rounding to integers. (#23)
 
 * Added `yaml()` function to use with `write2()`. (#28)
 
