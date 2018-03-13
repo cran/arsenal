@@ -1,3 +1,65 @@
+# arsenal 1.1.0
+
+**This is a mostly backwards-compatible update.**
+
+Major changes:
+
+* `summary.freqlist()` now returns an object. `print.summary.freqlist()` prints the resulting object. (#76)
+
+Smaller changes:
+
+* `tableby()`:
+
+    - Fixed a bug in `print.summary.tableby()` involving the lack of wrapping for long labels. (#59)
+    
+    - `as.data.frame.summary.tableby()` has been implemented, and `print.summary.tableby()` updated accordingly. (#60)
+    
+    - Fixed a bug with assigning labels for tableby objects when some value names are unmatched. (#64)
+    
+    - Fixed a bug in `print.summary.tableby()` with regards to knitting in R Markdown with plots immediately following. (#65)
+    
+    - Fixed a bug in `print.summary.tableby()` with regards to PDF output in bookdown. (#69)
+    
+    - Changed `tests.tableby()` to return a data.frame without factors.
+    
+    - Fixed a bug in `meansd()` when all inputs are NA. (#80)
+    
+    - Fixed a bug with `kwt()`, `anova()`, and `summary.tableby()` formatting when all inputs are NA. (#81)
+    
+    - Fixed a bug with survival statistics when all inputs are NA. (#82)
+    
+    - Fixed a bug with `logrank()` when all inputs are NA. (#83)
+    
+    - Fixed how arguments get passed to stats functions in `tableby()`. In particular, this affected the `times=` option. (#84)
+    
+    - Added `iqr()` as a tableby stat option. (#86)
+    
+    - Fixed quantile functions `q1q3()` and `medianq1q3()` for dates. (#87)
+    
+* `modelsum()`:
+
+    - Fixed a bug in `print.summary.modelsum()` involving the lack of wrapping for long labels. (#59)
+
+    - Fixed a bug in `print.summary.modelsum()` with regards to knitting in R Markdown with plots immediately following. (#66)
+    
+    - Fixed a bug in `print.summary.modelsum()` with regards to PDF output in bookdown. (#70)
+
+    - `as.data.frame.summary.modelsum()` has been implemented, and `print.summary.modelsum()` updated accordingly. (#74)
+    
+* `freqlist()`:
+
+    - Fixed a bug in `summary.freqlist()` with regards to knitting in R Markdown with plots immediately following. (#67)
+    
+    - Fixed a bug in `summary.freqlist()` with regards to PDF output in bookdown. (#71)
+    
+* Other:
+
+    - `includeNA()` now has dots, and the factor method gained a `first=` argument. (#62)
+
+    - `includeNA()` also gained a numeric method, especially for use in `freqlist.formula()`. (#78)
+
+    - Fixed a bug in `print.summary.compare.data.frame()` with regards to PDF output in bookdown. (#72)
+
 # arsenal 1.0.0
 
 **This is a non-backwards-compatible update.**
@@ -41,7 +103,7 @@ Major changes:
         
         * `q1q3` is no longer a default continuous statistic.
         
-    - NAs can be included in percents using `includeNA()`.
+    - NAs can be included in percents using `includeNA()`. (#57)
     
     - Some additional survival summary functions are now available. (#32)
     

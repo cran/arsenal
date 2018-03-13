@@ -26,7 +26,10 @@ NULL
 #' @rdname tableby.stats
 #' @export
 meansd <- function(x, na.rm=TRUE, weights=rep(1, length(x)), ...) {
-  y <- c(wtd.mean(x, weights=weights, na.rm=na.rm), sqrt(wtd.var(x, weights=weights, na.rm=na.rm)))
+  y <- if(na.rm && allNA(x))
+  {
+    rep(NA_real_, times = 2)
+  } else c(wtd.mean(x, weights=weights, na.rm=na.rm), sqrt(wtd.var(x, weights=weights, na.rm=na.rm)))
   as.tbstat(y, oldClass = if(is.Date(x)) "Date" else NULL, parens = c("(", ")"))
 }
 
@@ -66,34 +69,55 @@ range <- function(x, na.rm=TRUE, ...) {
 #' @rdname tableby.stats
 #' @export
 Nevents <- function(x, na.rm = TRUE, weights = rep(1, nrow(x)), ...) {
-  mat <- summary(survival::survfit(x ~ 1, weights = weights))$table
-  if("events" %nin% names(mat)) stop("Survival endpoint may not be coded 0/1.\n")
-  as.countpct(as.numeric(mat["events"]))
+  y <- if(na.rm && allNA(x))
+  {
+    NA_real_
+  } else {
+    mat <- summary(survival::survfit(x ~ 1, weights = weights))$table
+    if("events" %nin% names(mat)) stop("Survival endpoint may not be coded 0/1.\n")
+    as.numeric(mat["events"])
+  }
+  as.countpct(y)
 }
 
 ## Median survival
 #' @rdname tableby.stats
 #' @export
 medSurv <- function(x, na.rm = TRUE, weights = rep(1, nrow(x)), ...) {
-  mat <- summary(survival::survfit(x ~ 1, weights = weights))$table
-  if("events" %nin% names(mat)) stop("Survival endpoint may not be coded 0/1.\n")
-  as.tbstat(as.numeric(mat["median"]))
+  y <- if(na.rm && allNA(x))
+  {
+    NA_real_
+  } else {
+    mat <- summary(survival::survfit(x ~ 1, weights = weights))$table
+    if("events" %nin% names(mat)) stop("Survival endpoint may not be coded 0/1.\n")
+    as.numeric(mat["median"])
+  }
+  as.tbstat(y)
 }
 
 #' @rdname tableby.stats
 #' @export
 NeventsSurv <- function(x, na.rm = TRUE, weights = rep(1, nrow(x)), times=1:5, ...) {
-  xsumm <- summary(survival::survfit(x ~ 1, weights = weights), times=times)
-  out <- t(cbind(cumsum(xsumm$n.event), 100*xsumm$surv))
-  out <- stats::setNames(as.list(as.data.frame(out)), paste0("time = ", times))
+  y <- if(na.rm && allNA(x))
+  {
+    matrix(NA_real_, nrow = 2, ncol = length(times))
+  } else
+  {
+    xsumm <- summary(survival::survfit(x ~ 1, weights = weights), times=times)
+    t(cbind(cumsum(xsumm$n.event), 100*xsumm$surv))
+  }
+  out <- stats::setNames(as.list(as.data.frame(y)), paste0("time = ", times))
   as.tbstat_multirow(lapply(out, as.countpct, parens = c("(", ")")))
 }
 
 #' @rdname tableby.stats
 #' @export
 NriskSurv <- function(x, na.rm = TRUE, weights = rep(1, nrow(x)), times=1:5, ...) {
-  xsumm <- summary(survival::survfit(x ~ 1, weights = weights), times=times)
-  out <- stats::setNames(as.list(xsumm$n.risk), paste0("time = ", times))
+  y <- if(na.rm && allNA(x))
+  {
+    rep(NA_real_, times = length(times))
+  } else summary(survival::survfit(x ~ 1, weights = weights), times=times)$n.risk
+  out <- stats::setNames(as.list(y), paste0("time = ", times))
   as.tbstat_multirow(lapply(out, as.countpct))
 }
 
@@ -101,14 +125,22 @@ NriskSurv <- function(x, na.rm = TRUE, weights = rep(1, nrow(x)), times=1:5, ...
 #' @export
 medTime <- function(x, na.rm = TRUE, weights = rep(1, nrow(x)), ...)
 {
-  as.tbstat(wtd.quantile(as.matrix(x)[,1], weights=weights, probs=0.5, na.rm=na.rm))
+  y <- if(na.rm && allNA(x))
+  {
+    NA_real_
+  } else wtd.quantile(as.matrix(x)[,1], weights=weights, probs=0.5, na.rm=na.rm)
+  as.tbstat(y)
 }
 
 #' @rdname tableby.stats
 #' @export
 rangeTime <- function(x, na.rm = TRUE, ...)
 {
-  as.tbstat(base::range(as.matrix(x)[,1], na.rm=na.rm), sep = " - ")
+  y <- if(na.rm && allNA(x))
+  {
+    c(NA_real_, NA_real_)
+  } else base::range(as.matrix(x)[,1], na.rm=na.rm)
+  as.tbstat(y, sep = " - ")
 }
 
 ## quantiles
@@ -130,8 +162,14 @@ medianq1q3 <- function(x, na.rm=TRUE, weights=rep(1, length(x)), ...) {
   as.tbstat(y, oldClass = if(is.Date(x)) "Date" else NULL, parens = c("(", ")"), sep2 = ", ")
 }
 
-## Inner-quartile range has a function IQR in R, but a wrapper
-## would need to be written with weights in mind
+#' @rdname tableby.stats
+#' @export
+iqr <- function(x, na.rm=TRUE, weights=rep(1, length(x)), ...) {
+  y <- if(na.rm && allNA(x)) {
+    c(NA_real_, NA_real_)
+  } else wtd.quantile(x, weights=weights, probs=c(0.25, .75), na.rm=na.rm)
+  as.tbstat(diff(y))
+}
 
 ## Count of missings: always show missings
 #' @rdname tableby.stats
@@ -221,7 +259,7 @@ wtd.quantile <- function(x, weights=NULL, probs=c(0,0.25,0.5,0.75,1), na.rm=TRUE
   if(any(probs < 0) || any(probs > 1)) stop("Probabilities must be between 0 and 1 inclusive")
 
   wts <- wtd.table(x, weights, na.rm = na.rm)
-  x <- as.numeric(names(wts))
+  x <- if(is.Date(x)) as.numeric(as.Date(names(wts))) else as.numeric(names(wts))
   n <- sum(wts)
   order <- 1 + (n - 1) * probs
   low <- pmax(floor(order), 1)

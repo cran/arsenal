@@ -69,7 +69,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">The modelsum function</h1>
 <h4 class="author"><em>Beth Atkinson, Ethan Heinzen, Pat Votruba, Jason Sinnwell, Shannon McDonnell and Greg Dougherty</em></h4>
-<h4 class="date"><em>02 February, 2018</em></h4>
+<h4 class="date"><em>13 March, 2018</em></h4>
 
 
 <div id="TOC">
@@ -175,12 +175,13 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>If you want a nicer version in your console window then adding the <code>text=TRUE</code> option.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">summary</span>(tab1, <span class="dt">text=</span><span class="ot">TRUE</span>)
 
-               estimate   std.error   p.value   adj.r.squared 
-<span class="op">-------------</span><span class="st">  </span><span class="op">---------</span><span class="st">  </span><span class="op">----------</span><span class="st">  </span><span class="op">--------</span><span class="st">  </span><span class="op">--------------</span>
-(Intercept)    <span class="fl">27.491</span>     <span class="fl">0.181</span>       <span class="op">&lt;</span><span class="st"> </span><span class="fl">0.001</span>   <span class="fl">0.004</span>         
-sex Female     <span class="op">-</span><span class="fl">0.731</span>     <span class="fl">0.290</span>       <span class="fl">0.012</span>                   
-(Intercept)    <span class="fl">26.424</span>     <span class="fl">0.752</span>       <span class="op">&lt;</span><span class="st"> </span><span class="fl">0.001</span>   <span class="fl">0.000</span>         
-Age <span class="cf">in</span> Years   <span class="fl">0.013</span>      <span class="fl">0.012</span>       <span class="fl">0.290</span>                   </code></pre></div>
+
+<span class="op">|</span><span class="st">             </span><span class="er">|</span>estimate <span class="op">|</span>std.error <span class="op">|</span>p.value <span class="op">|</span>adj.r.squared <span class="op">|</span>
+<span class="er">|:</span><span class="op">------------</span><span class="er">|:</span><span class="op">--------</span><span class="er">|:</span><span class="op">---------</span><span class="er">|:</span><span class="op">-------</span><span class="er">|:</span><span class="op">-------------</span><span class="er">|</span>
+<span class="er">|</span>(Intercept)  <span class="op">|</span><span class="fl">27.491</span>   <span class="op">|</span><span class="fl">0.181</span>     <span class="op">|</span><span class="er">&lt;</span><span class="st"> </span><span class="fl">0.001</span> <span class="op">|</span><span class="fl">0.004</span>         <span class="op">|</span>
+<span class="er">|</span>sex Female   <span class="op">|-</span><span class="fl">0.731</span>   <span class="op">|</span><span class="fl">0.290</span>     <span class="op">|</span><span class="fl">0.012</span>   <span class="op">|</span><span class="st">              </span><span class="er">|</span>
+<span class="er">|</span>(Intercept)  <span class="op">|</span><span class="fl">26.424</span>   <span class="op">|</span><span class="fl">0.752</span>     <span class="op">|</span><span class="er">&lt;</span><span class="st"> </span><span class="fl">0.001</span> <span class="op">|</span><span class="fl">0.000</span>         <span class="op">|</span>
+<span class="er">|</span>Age <span class="cf">in</span> Years <span class="op">|</span><span class="fl">0.013</span>    <span class="op">|</span><span class="fl">0.012</span>     <span class="op">|</span><span class="fl">0.290</span>   <span class="op">|</span><span class="st">              </span><span class="er">|</span></code></pre></div>
 </div>
 <div id="pretty-rmarkdown-version-of-table" class="section level2">
 <h2>Pretty Rmarkdown version of table</h2>
@@ -189,7 +190,7 @@ Age <span class="cf">in</span> Years   <span class="fl">0.013</span>      <span 
 <table>
 <thead>
 <tr class="header">
-<th></th>
+<th align="left"></th>
 <th align="left">estimate</th>
 <th align="left">std.error</th>
 <th align="left">p.value</th>
@@ -198,28 +199,28 @@ Age <span class="cf">in</span> Years   <span class="fl">0.013</span>      <span 
 </thead>
 <tbody>
 <tr class="odd">
-<td>(Intercept)</td>
+<td align="left">(Intercept)</td>
 <td align="left">27.491</td>
 <td align="left">0.181</td>
 <td align="left">&lt; 0.001</td>
 <td align="left">0.004</td>
 </tr>
 <tr class="even">
-<td><strong>sex Female</strong></td>
+<td align="left"><strong>sex Female</strong></td>
 <td align="left">-0.731</td>
 <td align="left">0.290</td>
 <td align="left">0.012</td>
 <td align="left"></td>
 </tr>
 <tr class="odd">
-<td>(Intercept)</td>
+<td align="left">(Intercept)</td>
 <td align="left">26.424</td>
 <td align="left">0.752</td>
 <td align="left">&lt; 0.001</td>
 <td align="left">0.000</td>
 </tr>
 <tr class="even">
-<td><strong>Age in Years</strong></td>
+<td align="left"><strong>Age in Years</strong></td>
 <td align="left">0.013</td>
 <td align="left">0.012</td>
 <td align="left">0.290</td>
@@ -251,7 +252,7 @@ Age <span class="cf">in</span> Years   <span class="fl">0.013</span>      <span 
 <table>
 <thead>
 <tr class="header">
-<th></th>
+<th align="left"></th>
 <th align="left">estimate</th>
 <th align="left">std.error</th>
 <th align="left">p.value</th>
@@ -261,7 +262,7 @@ Age <span class="cf">in</span> Years   <span class="fl">0.013</span>      <span 
 </thead>
 <tbody>
 <tr class="odd">
-<td>(Intercept)</td>
+<td align="left">(Intercept)</td>
 <td align="left">175.548</td>
 <td align="left">20.587</td>
 <td align="left">&lt; 0.001</td>
@@ -269,7 +270,7 @@ Age <span class="cf">in</span> Years   <span class="fl">0.013</span>      <span 
 <td align="left">0</td>
 </tr>
 <tr class="even">
-<td><strong>Treatment Arm F: FOLFOX</strong></td>
+<td align="left"><strong>Treatment Arm F: FOLFOX</strong></td>
 <td align="left">-13.701</td>
 <td align="left">8.730</td>
 <td align="left">0.117</td>
@@ -277,7 +278,7 @@ Age <span class="cf">in</span> Years   <span class="fl">0.013</span>      <span 
 <td align="left"></td>
 </tr>
 <tr class="odd">
-<td><strong>Treatment Arm G: IROX</strong></td>
+<td align="left"><strong>Treatment Arm G: IROX</strong></td>
 <td align="left">-2.245</td>
 <td align="left">9.860</td>
 <td align="left">0.820</td>
@@ -285,7 +286,7 @@ Age <span class="cf">in</span> Years   <span class="fl">0.013</span>      <span 
 <td align="left"></td>
 </tr>
 <tr class="even">
-<td><strong>Age in Years</strong></td>
+<td align="left"><strong>Age in Years</strong></td>
 <td align="left">-0.017</td>
 <td align="left">0.319</td>
 <td align="left">0.956</td>
@@ -293,7 +294,7 @@ Age <span class="cf">in</span> Years   <span class="fl">0.013</span>      <span 
 <td align="left"></td>
 </tr>
 <tr class="odd">
-<td><strong>sex Female</strong></td>
+<td align="left"><strong>sex Female</strong></td>
 <td align="left">3.016</td>
 <td align="left">7.521</td>
 <td align="left">0.688</td>
@@ -301,7 +302,7 @@ Age <span class="cf">in</span> Years   <span class="fl">0.013</span>      <span 
 <td align="left"></td>
 </tr>
 <tr class="even">
-<td>(Intercept)</td>
+<td align="left">(Intercept)</td>
 <td align="left">148.391</td>
 <td align="left">19.585</td>
 <td align="left">&lt; 0.001</td>
@@ -309,7 +310,7 @@ Age <span class="cf">in</span> Years   <span class="fl">0.013</span>      <span 
 <td align="left">266</td>
 </tr>
 <tr class="odd">
-<td><strong>ps</strong></td>
+<td align="left"><strong>ps</strong></td>
 <td align="left">46.721</td>
 <td align="left">5.987</td>
 <td align="left">&lt; 0.001</td>
@@ -317,7 +318,7 @@ Age <span class="cf">in</span> Years   <span class="fl">0.013</span>      <span 
 <td align="left"></td>
 </tr>
 <tr class="even">
-<td><strong>Age in Years</strong></td>
+<td align="left"><strong>Age in Years</strong></td>
 <td align="left">-0.084</td>
 <td align="left">0.311</td>
 <td align="left">0.787</td>
@@ -325,7 +326,7 @@ Age <span class="cf">in</span> Years   <span class="fl">0.013</span>      <span 
 <td align="left"></td>
 </tr>
 <tr class="odd">
-<td><strong>sex Female</strong></td>
+<td align="left"><strong>sex Female</strong></td>
 <td align="left">1.169</td>
 <td align="left">7.343</td>
 <td align="left">0.874</td>
@@ -333,7 +334,7 @@ Age <span class="cf">in</span> Years   <span class="fl">0.013</span>      <span 
 <td align="left"></td>
 </tr>
 <tr class="even">
-<td>(Intercept)</td>
+<td align="left">(Intercept)</td>
 <td align="left">336.554</td>
 <td align="left">32.239</td>
 <td align="left">&lt; 0.001</td>
@@ -341,7 +342,7 @@ Age <span class="cf">in</span> Years   <span class="fl">0.013</span>      <span 
 <td align="left">266</td>
 </tr>
 <tr class="odd">
-<td><strong>hgb</strong></td>
+<td align="left"><strong>hgb</strong></td>
 <td align="left">-13.845</td>
 <td align="left">2.137</td>
 <td align="left">&lt; 0.001</td>
@@ -349,7 +350,7 @@ Age <span class="cf">in</span> Years   <span class="fl">0.013</span>      <span 
 <td align="left"></td>
 </tr>
 <tr class="even">
-<td><strong>Age in Years</strong></td>
+<td align="left"><strong>Age in Years</strong></td>
 <td align="left">0.095</td>
 <td align="left">0.314</td>
 <td align="left">0.763</td>
@@ -357,7 +358,7 @@ Age <span class="cf">in</span> Years   <span class="fl">0.013</span>      <span 
 <td align="left"></td>
 </tr>
 <tr class="odd">
-<td><strong>sex Female</strong></td>
+<td align="left"><strong>sex Female</strong></td>
 <td align="left">-5.980</td>
 <td align="left">7.516</td>
 <td align="left">0.426</td>
@@ -450,7 +451,7 @@ Signif. codes<span class="op">:</span><span class="st">  </span><span class="dv"
 <span class="op">&gt;</span><span class="st"> </span>
 <span class="er">&gt;</span><span class="st"> </span><span class="co"># look at functional form of age</span>
 <span class="er">&gt;</span><span class="st"> </span><span class="kw">termplot</span>(fit3, <span class="dt">term=</span><span class="dv">2</span>, <span class="dt">se=</span>T, <span class="dt">rug=</span>T)</code></pre></div>
-<p><img src="data:image/png;base64,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" /><!-- --></p>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
 <p>In this instance it looks like there isn’t enough evidence to say that the relationship is non-linear.</p>
 </div>
 <div id="extract-data-using-the-broom-package" class="section level3">
@@ -483,7 +484,7 @@ Signif. codes<span class="op">:</span><span class="st">  </span><span class="dv"
 <table>
 <thead>
 <tr class="header">
-<th></th>
+<th align="left"></th>
 <th align="left">estimate</th>
 <th align="left">CI.lower.estimate</th>
 <th align="left">CI.upper.estimate</th>
@@ -492,91 +493,91 @@ Signif. codes<span class="op">:</span><span class="st">  </span><span class="dv"
 </thead>
 <tbody>
 <tr class="odd">
-<td>(Intercept)</td>
+<td align="left">(Intercept)</td>
 <td align="left">4.969</td>
 <td align="left">4.768</td>
 <td align="left">5.170</td>
 <td align="left">&lt; 0.001</td>
 </tr>
 <tr class="even">
-<td><strong>Treatment Arm F: FOLFOX</strong></td>
+<td align="left"><strong>Treatment Arm F: FOLFOX</strong></td>
 <td align="left">-0.077</td>
 <td align="left">-0.162</td>
 <td align="left">0.009</td>
 <td align="left">0.078</td>
 </tr>
 <tr class="odd">
-<td><strong>Treatment Arm G: IROX</strong></td>
+<td align="left"><strong>Treatment Arm G: IROX</strong></td>
 <td align="left">-0.019</td>
 <td align="left">-0.116</td>
 <td align="left">0.077</td>
 <td align="left">0.695</td>
 </tr>
 <tr class="even">
-<td><strong>Age in Years</strong></td>
+<td align="left"><strong>Age in Years</strong></td>
 <td align="left">-0.000</td>
 <td align="left">-0.004</td>
 <td align="left">0.003</td>
 <td align="left">0.798</td>
 </tr>
 <tr class="odd">
-<td><strong>sex Female</strong></td>
+<td align="left"><strong>sex Female</strong></td>
 <td align="left">0.018</td>
 <td align="left">-0.056</td>
 <td align="left">0.091</td>
 <td align="left">0.632</td>
 </tr>
 <tr class="even">
-<td>(Intercept)</td>
+<td align="left">(Intercept)</td>
 <td align="left">4.832</td>
 <td align="left">4.640</td>
 <td align="left">5.023</td>
 <td align="left">&lt; 0.001</td>
 </tr>
 <tr class="odd">
-<td><strong>ps</strong></td>
+<td align="left"><strong>ps</strong></td>
 <td align="left">0.226</td>
 <td align="left">0.167</td>
 <td align="left">0.284</td>
 <td align="left">&lt; 0.001</td>
 </tr>
 <tr class="even">
-<td><strong>Age in Years</strong></td>
+<td align="left"><strong>Age in Years</strong></td>
 <td align="left">-0.001</td>
 <td align="left">-0.004</td>
 <td align="left">0.002</td>
 <td align="left">0.636</td>
 </tr>
 <tr class="odd">
-<td><strong>sex Female</strong></td>
+<td align="left"><strong>sex Female</strong></td>
 <td align="left">0.009</td>
 <td align="left">-0.063</td>
 <td align="left">0.081</td>
 <td align="left">0.814</td>
 </tr>
 <tr class="even">
-<td>(Intercept)</td>
+<td align="left">(Intercept)</td>
 <td align="left">5.765</td>
 <td align="left">5.450</td>
 <td align="left">6.080</td>
 <td align="left">&lt; 0.001</td>
 </tr>
 <tr class="odd">
-<td><strong>hgb</strong></td>
+<td align="left"><strong>hgb</strong></td>
 <td align="left">-0.069</td>
 <td align="left">-0.090</td>
 <td align="left">-0.048</td>
 <td align="left">&lt; 0.001</td>
 </tr>
 <tr class="even">
-<td><strong>Age in Years</strong></td>
+<td align="left"><strong>Age in Years</strong></td>
 <td align="left">0.000</td>
 <td align="left">-0.003</td>
 <td align="left">0.003</td>
 <td align="left">0.925</td>
 </tr>
 <tr class="odd">
-<td><strong>sex Female</strong></td>
+<td align="left"><strong>sex Female</strong></td>
 <td align="left">-0.027</td>
 <td align="left">-0.101</td>
 <td align="left">0.046</td>
@@ -702,7 +703,7 @@ Area under the curve<span class="op">:</span><span class="st"> </span><span clas
 <table>
 <thead>
 <tr class="header">
-<th></th>
+<th align="left"></th>
 <th align="left">OR</th>
 <th align="left">CI.lower.OR</th>
 <th align="left">CI.upper.OR</th>
@@ -713,7 +714,7 @@ Area under the curve<span class="op">:</span><span class="st"> </span><span clas
 </thead>
 <tbody>
 <tr class="odd">
-<td>(Intercept)</td>
+<td align="left">(Intercept)</td>
 <td align="left">NA</td>
 <td align="left">NA</td>
 <td align="left">NA</td>
@@ -722,7 +723,7 @@ Area under the curve<span class="op">:</span><span class="st"> </span><span clas
 <td align="left">0</td>
 </tr>
 <tr class="even">
-<td><strong>Age in Years</strong></td>
+<td align="left"><strong>Age in Years</strong></td>
 <td align="left">0.998</td>
 <td align="left">0.981</td>
 <td align="left">1.014</td>
@@ -731,7 +732,7 @@ Area under the curve<span class="op">:</span><span class="st"> </span><span clas
 <td align="left"></td>
 </tr>
 <tr class="odd">
-<td><strong>sex Female</strong></td>
+<td align="left"><strong>sex Female</strong></td>
 <td align="left">1.040</td>
 <td align="left">0.712</td>
 <td align="left">1.534</td>
@@ -740,7 +741,7 @@ Area under the curve<span class="op">:</span><span class="st"> </span><span clas
 <td align="left"></td>
 </tr>
 <tr class="even">
-<td>(Intercept)</td>
+<td align="left">(Intercept)</td>
 <td align="left">NA</td>
 <td align="left">NA</td>
 <td align="left">NA</td>
@@ -749,7 +750,7 @@ Area under the curve<span class="op">:</span><span class="st"> </span><span clas
 <td align="left">33</td>
 </tr>
 <tr class="odd">
-<td><strong>Body Mass Index (kg/m^2)</strong></td>
+<td align="left"><strong>Body Mass Index (kg/m^2)</strong></td>
 <td align="left">1.023</td>
 <td align="left">0.987</td>
 <td align="left">1.063</td>
@@ -758,7 +759,7 @@ Area under the curve<span class="op">:</span><span class="st"> </span><span clas
 <td align="left"></td>
 </tr>
 <tr class="even">
-<td><strong>sex Female</strong></td>
+<td align="left"><strong>sex Female</strong></td>
 <td align="left">1.053</td>
 <td align="left">0.717</td>
 <td align="left">1.561</td>
@@ -775,7 +776,7 @@ Area under the curve<span class="op">:</span><span class="st"> </span><span clas
 <table>
 <thead>
 <tr class="header">
-<th></th>
+<th align="left"></th>
 <th align="left">OR</th>
 <th align="left">p.value</th>
 <th align="left">Nmiss2</th>
@@ -783,13 +784,13 @@ Area under the curve<span class="op">:</span><span class="st"> </span><span clas
 </thead>
 <tbody>
 <tr class="odd">
-<td>(Intercept)</td>
+<td align="left">(Intercept)</td>
 <td align="left">NA</td>
 <td align="left">&lt; 0.001</td>
 <td align="left">0</td>
 </tr>
 <tr class="even">
-<td><strong>Age in Years</strong></td>
+<td align="left"><strong>Age in Years</strong></td>
 <td align="left">0.998</td>
 <td align="left">0.766</td>
 <td align="left"></td>
@@ -919,7 +920,7 @@ concordant discordant  tied.risk  tied.time   <span class="kw">std</span>(c<span
 <table>
 <thead>
 <tr class="header">
-<th></th>
+<th align="left"></th>
 <th align="left">HR</th>
 <th align="left">CI.lower.HR</th>
 <th align="left">CI.upper.HR</th>
@@ -929,7 +930,7 @@ concordant discordant  tied.risk  tied.time   <span class="kw">std</span>(c<span
 </thead>
 <tbody>
 <tr class="odd">
-<td><strong>Treatment Arm F: FOLFOX</strong></td>
+<td align="left"><strong>Treatment Arm F: FOLFOX</strong></td>
 <td align="left">0.635</td>
 <td align="left">0.559</td>
 <td align="left">0.721</td>
@@ -937,7 +938,7 @@ concordant discordant  tied.risk  tied.time   <span class="kw">std</span>(c<span
 <td align="left">0.563</td>
 </tr>
 <tr class="even">
-<td><strong>Treatment Arm G: IROX</strong></td>
+<td align="left"><strong>Treatment Arm G: IROX</strong></td>
 <td align="left">0.869</td>
 <td align="left">0.753</td>
 <td align="left">1.002</td>
@@ -945,7 +946,7 @@ concordant discordant  tied.risk  tied.time   <span class="kw">std</span>(c<span
 <td align="left"></td>
 </tr>
 <tr class="odd">
-<td><strong>Age in Years</strong></td>
+<td align="left"><strong>Age in Years</strong></td>
 <td align="left">1.005</td>
 <td align="left">1.000</td>
 <td align="left">1.010</td>
@@ -953,7 +954,7 @@ concordant discordant  tied.risk  tied.time   <span class="kw">std</span>(c<span
 <td align="left"></td>
 </tr>
 <tr class="even">
-<td><strong>sex Female</strong></td>
+<td align="left"><strong>sex Female</strong></td>
 <td align="left">1.041</td>
 <td align="left">0.932</td>
 <td align="left">1.162</td>
@@ -1083,7 +1084,7 @@ Number of Fisher Scoring iterations<span class="op">:</span><span class="st"> </
 <table>
 <thead>
 <tr class="header">
-<th></th>
+<th align="left"></th>
 <th align="left">RR</th>
 <th align="left">CI.lower.RR</th>
 <th align="left">CI.upper.RR</th>
@@ -1092,63 +1093,63 @@ Number of Fisher Scoring iterations<span class="op">:</span><span class="st"> </
 </thead>
 <tbody>
 <tr class="odd">
-<td>(Intercept)</td>
+<td align="left">(Intercept)</td>
 <td align="left">NA</td>
 <td align="left">NA</td>
 <td align="left">NA</td>
 <td align="left">&lt; 0.001</td>
 </tr>
 <tr class="even">
-<td><strong>Opening M</strong></td>
+<td align="left"><strong>Opening M</strong></td>
 <td align="left">1.295</td>
 <td align="left">0.915</td>
 <td align="left">1.843</td>
 <td align="left">0.147</td>
 </tr>
 <tr class="odd">
-<td><strong>Opening S</strong></td>
+<td align="left"><strong>Opening S</strong></td>
 <td align="left">6.642</td>
 <td align="left">5.059</td>
 <td align="left">8.893</td>
 <td align="left">&lt; 0.001</td>
 </tr>
 <tr class="even">
-<td>(Intercept)</td>
+<td align="left">(Intercept)</td>
 <td align="left">NA</td>
 <td align="left">NA</td>
 <td align="left">NA</td>
 <td align="left">&lt; 0.001</td>
 </tr>
 <tr class="odd">
-<td><strong>Solder Thin</strong></td>
+<td align="left"><strong>Solder Thin</strong></td>
 <td align="left">3.003</td>
 <td align="left">2.344</td>
 <td align="left">3.889</td>
 <td align="left">&lt; 0.001</td>
 </tr>
 <tr class="even">
-<td>(Intercept)</td>
+<td align="left">(Intercept)</td>
 <td align="left">NA</td>
 <td align="left">NA</td>
 <td align="left">NA</td>
 <td align="left">0.007</td>
 </tr>
 <tr class="odd">
-<td><strong>Mask A3</strong></td>
+<td align="left"><strong>Mask A3</strong></td>
 <td align="left">1.534</td>
 <td align="left">0.990</td>
 <td align="left">2.411</td>
 <td align="left">0.059</td>
 </tr>
 <tr class="even">
-<td><strong>Mask B3</strong></td>
+<td align="left"><strong>Mask B3</strong></td>
 <td align="left">3.328</td>
 <td align="left">2.275</td>
 <td align="left">5.006</td>
 <td align="left">&lt; 0.001</td>
 </tr>
 <tr class="odd">
-<td><strong>Mask B6</strong></td>
+<td align="left"><strong>Mask B6</strong></td>
 <td align="left">6.466</td>
 <td align="left">4.535</td>
 <td align="left">9.534</td>
@@ -1160,7 +1161,7 @@ Number of Fisher Scoring iterations<span class="op">:</span><span class="st"> </
 <table>
 <thead>
 <tr class="header">
-<th></th>
+<th align="left"></th>
 <th align="left">RR</th>
 <th align="left">CI.lower.RR</th>
 <th align="left">CI.upper.RR</th>
@@ -1169,63 +1170,63 @@ Number of Fisher Scoring iterations<span class="op">:</span><span class="st"> </
 </thead>
 <tbody>
 <tr class="odd">
-<td>(Intercept)</td>
+<td align="left">(Intercept)</td>
 <td align="left">NA</td>
 <td align="left">NA</td>
 <td align="left">NA</td>
 <td align="left">&lt; 0.001</td>
 </tr>
 <tr class="even">
-<td><strong>Opening M</strong></td>
+<td align="left"><strong>Opening M</strong></td>
 <td align="left">1.295</td>
 <td align="left">1.137</td>
 <td align="left">1.476</td>
 <td align="left">&lt; 0.001</td>
 </tr>
 <tr class="odd">
-<td><strong>Opening S</strong></td>
+<td align="left"><strong>Opening S</strong></td>
 <td align="left">6.642</td>
 <td align="left">5.988</td>
 <td align="left">7.389</td>
 <td align="left">&lt; 0.001</td>
 </tr>
 <tr class="even">
-<td>(Intercept)</td>
+<td align="left">(Intercept)</td>
 <td align="left">NA</td>
 <td align="left">NA</td>
 <td align="left">NA</td>
 <td align="left">&lt; 0.001</td>
 </tr>
 <tr class="odd">
-<td><strong>Solder Thin</strong></td>
+<td align="left"><strong>Solder Thin</strong></td>
 <td align="left">3.003</td>
 <td align="left">2.786</td>
 <td align="left">3.241</td>
 <td align="left">&lt; 0.001</td>
 </tr>
 <tr class="even">
-<td>(Intercept)</td>
+<td align="left">(Intercept)</td>
 <td align="left">NA</td>
 <td align="left">NA</td>
 <td align="left">NA</td>
 <td align="left">&lt; 0.001</td>
 </tr>
 <tr class="odd">
-<td><strong>Mask A3</strong></td>
+<td align="left"><strong>Mask A3</strong></td>
 <td align="left">1.534</td>
 <td align="left">1.324</td>
 <td align="left">1.781</td>
 <td align="left">&lt; 0.001</td>
 </tr>
 <tr class="even">
-<td><strong>Mask B3</strong></td>
+<td align="left"><strong>Mask B3</strong></td>
 <td align="left">3.328</td>
 <td align="left">2.923</td>
 <td align="left">3.800</td>
 <td align="left">&lt; 0.001</td>
 </tr>
 <tr class="odd">
-<td><strong>Mask B6</strong></td>
+<td align="left"><strong>Mask B6</strong></td>
 <td align="left">6.466</td>
 <td align="left">5.724</td>
 <td align="left">7.331</td>
@@ -1335,7 +1336,7 @@ Number of Fisher Scoring iterations<span class="op">:</span><span class="st"> </
 <table>
 <thead>
 <tr class="header">
-<th></th>
+<th align="left"></th>
 <th align="left">RR</th>
 <th align="left">CI.lower.RR</th>
 <th align="left">CI.upper.RR</th>
@@ -1344,35 +1345,35 @@ Number of Fisher Scoring iterations<span class="op">:</span><span class="st"> </
 </thead>
 <tbody>
 <tr class="odd">
-<td>(Intercept)</td>
+<td align="left">(Intercept)</td>
 <td align="left">NA</td>
 <td align="left">NA</td>
 <td align="left">NA</td>
 <td align="left">&lt; 0.001</td>
 </tr>
 <tr class="even">
-<td><strong>Age in Years</strong></td>
+<td align="left"><strong>Age in Years</strong></td>
 <td align="left">1.004</td>
 <td align="left">1.000</td>
 <td align="left">1.007</td>
 <td align="left">0.029</td>
 </tr>
 <tr class="odd">
-<td><strong>sex Female</strong></td>
+<td align="left"><strong>sex Female</strong></td>
 <td align="left">1.028</td>
 <td align="left">0.953</td>
 <td align="left">1.108</td>
 <td align="left">0.479</td>
 </tr>
 <tr class="even">
-<td><strong>Treatment Arm F: FOLFOX</strong></td>
+<td align="left"><strong>Treatment Arm F: FOLFOX</strong></td>
 <td align="left">0.715</td>
 <td align="left">0.656</td>
 <td align="left">0.781</td>
 <td align="left">&lt; 0.001</td>
 </tr>
 <tr class="odd">
-<td><strong>Treatment Arm G: IROX</strong></td>
+<td align="left"><strong>Treatment Arm G: IROX</strong></td>
 <td align="left">0.898</td>
 <td align="left">0.813</td>
 <td align="left">0.991</td>
@@ -1396,7 +1397,7 @@ Number of Fisher Scoring iterations<span class="op">:</span><span class="st"> </
 <table>
 <thead>
 <tr class="header">
-<th></th>
+<th align="left"></th>
 <th align="left">estimate</th>
 <th align="left">std.error</th>
 <th align="left">adj.r.squared</th>
@@ -1404,7 +1405,7 @@ Number of Fisher Scoring iterations<span class="op">:</span><span class="st"> </
 </thead>
 <tbody>
 <tr class="odd">
-<td><strong>Age in Years</strong></td>
+<td align="left"><strong>Age in Years</strong></td>
 <td align="left">0.012</td>
 <td align="left">0.012</td>
 <td align="left">0.004</td>
@@ -1419,7 +1420,7 @@ Number of Fisher Scoring iterations<span class="op">:</span><span class="st"> </
 <table>
 <thead>
 <tr class="header">
-<th></th>
+<th align="left"></th>
 <th align="left">estimate</th>
 <th align="left">std.error</th>
 <th align="left">adj.r.squared</th>
@@ -1427,7 +1428,7 @@ Number of Fisher Scoring iterations<span class="op">:</span><span class="st"> </
 </thead>
 <tbody>
 <tr class="odd">
-<td><strong>Age in Years</strong></td>
+<td align="left"><strong>Age in Years</strong></td>
 <td align="left">0.012</td>
 <td align="left">0.012</td>
 <td align="left">0.004</td>
@@ -1474,7 +1475,7 @@ age.ord     <span class="ot">NULL</span>                      </code></pre></div
 <table>
 <thead>
 <tr class="header">
-<th></th>
+<th align="left"></th>
 <th align="left">estimate</th>
 <th align="left">std.error</th>
 <th align="left">p.value</th>
@@ -1483,21 +1484,21 @@ age.ord     <span class="ot">NULL</span>                      </code></pre></div
 </thead>
 <tbody>
 <tr class="odd">
-<td>(Intercept)</td>
+<td align="left">(Intercept)</td>
 <td align="left">26.793</td>
 <td align="left">0.766</td>
 <td align="left">&lt; 0.001</td>
 <td align="left">0.004</td>
 </tr>
 <tr class="even">
-<td><strong>Age, yrs</strong></td>
+<td align="left"><strong>Age, yrs</strong></td>
 <td align="left">0.012</td>
 <td align="left">0.012</td>
 <td align="left">0.348</td>
 <td align="left"></td>
 </tr>
 <tr class="odd">
-<td><strong>sex Female</strong></td>
+<td align="left"><strong>sex Female</strong></td>
 <td align="left">-0.718</td>
 <td align="left">0.291</td>
 <td align="left">0.014</td>
@@ -1513,7 +1514,7 @@ age.ord     <span class="ot">NULL</span>                      </code></pre></div
 <table>
 <thead>
 <tr class="header">
-<th></th>
+<th align="left"></th>
 <th align="left">estimate</th>
 <th align="left">std.error</th>
 <th align="left">p.value</th>
@@ -1522,21 +1523,21 @@ age.ord     <span class="ot">NULL</span>                      </code></pre></div
 </thead>
 <tbody>
 <tr class="odd">
-<td>(Intercept)</td>
+<td align="left">(Intercept)</td>
 <td align="left">26.793</td>
 <td align="left">0.766</td>
 <td align="left">&lt; 0.001</td>
 <td align="left">0.004</td>
 </tr>
 <tr class="even">
-<td><strong>Age, yrs</strong></td>
+<td align="left"><strong>Age, yrs</strong></td>
 <td align="left">0.012</td>
 <td align="left">0.012</td>
 <td align="left">0.348</td>
 <td align="left"></td>
 </tr>
 <tr class="odd">
-<td><strong>sex Female</strong></td>
+<td align="left"><strong>sex Female</strong></td>
 <td align="left">-0.718</td>
 <td align="left">0.291</td>
 <td align="left">0.014</td>
@@ -1550,7 +1551,7 @@ age.ord     <span class="ot">NULL</span>                      </code></pre></div
 <table>
 <thead>
 <tr class="header">
-<th></th>
+<th align="left"></th>
 <th align="left">estimate</th>
 <th align="left">std.error</th>
 <th align="left">p.value</th>
@@ -1559,21 +1560,21 @@ age.ord     <span class="ot">NULL</span>                      </code></pre></div
 </thead>
 <tbody>
 <tr class="odd">
-<td>(Intercept)</td>
+<td align="left">(Intercept)</td>
 <td align="left">26.793</td>
 <td align="left">0.766</td>
 <td align="left">&lt; 0.001</td>
 <td align="left">0.004</td>
 </tr>
 <tr class="even">
-<td><strong>Age, yrs</strong></td>
+<td align="left"><strong>Age, yrs</strong></td>
 <td align="left">0.012</td>
 <td align="left">0.012</td>
 <td align="left">0.348</td>
 <td align="left"></td>
 </tr>
 <tr class="odd">
-<td><strong>Female</strong></td>
+<td align="left"><strong>Female</strong></td>
 <td align="left">-0.718</td>
 <td align="left">0.291</td>
 <td align="left">0.014</td>
@@ -1597,7 +1598,7 @@ age.ord     <span class="ot">NULL</span>                      </code></pre></div
 <table>
 <thead>
 <tr class="header">
-<th></th>
+<th align="left"></th>
 <th align="left">estimate</th>
 <th align="left">std.error</th>
 <th align="left">p.value</th>
@@ -1606,21 +1607,21 @@ age.ord     <span class="ot">NULL</span>                      </code></pre></div
 </thead>
 <tbody>
 <tr class="odd">
-<td>(Intercept)</td>
+<td align="left">(Intercept)</td>
 <td align="left">26.793</td>
 <td align="left">0.766</td>
 <td align="left">&lt; 0.001</td>
 <td align="left">0.004</td>
 </tr>
 <tr class="even">
-<td><strong>Baseline Age (yrs)</strong></td>
+<td align="left"><strong>Baseline Age (yrs)</strong></td>
 <td align="left">0.012</td>
 <td align="left">0.012</td>
 <td align="left">0.348</td>
 <td align="left"></td>
 </tr>
 <tr class="odd">
-<td><strong>Female</strong></td>
+<td align="left"><strong>Female</strong></td>
 <td align="left">-0.718</td>
 <td align="left">0.291</td>
 <td align="left">0.014</td>
@@ -1635,7 +1636,7 @@ age.ord     <span class="ot">NULL</span>                      </code></pre></div
 <table>
 <thead>
 <tr class="header">
-<th></th>
+<th align="left"></th>
 <th align="left">estimate</th>
 <th align="left">std.error</th>
 <th align="left">p.value</th>
@@ -1645,7 +1646,7 @@ age.ord     <span class="ot">NULL</span>                      </code></pre></div
 </thead>
 <tbody>
 <tr class="odd">
-<td><strong>mdquality.s</strong></td>
+<td align="left"><strong>mdquality.s</strong></td>
 <td align="left">-0.326</td>
 <td align="left">1.093</td>
 <td align="left">0.766</td>
@@ -1653,7 +1654,7 @@ age.ord     <span class="ot">NULL</span>                      </code></pre></div
 <td align="left">252</td>
 </tr>
 <tr class="even">
-<td><strong>sex Female</strong></td>
+<td align="left"><strong>sex Female</strong></td>
 <td align="left">-1.208</td>
 <td align="left">0.610</td>
 <td align="left">0.048</td>
@@ -1670,7 +1671,7 @@ age.ord     <span class="ot">NULL</span>                      </code></pre></div
 <table>
 <thead>
 <tr class="header">
-<th></th>
+<th align="left"></th>
 <th align="left">OR</th>
 <th align="left">CI.lower.OR</th>
 <th align="left">CI.upper.OR</th>
@@ -1681,7 +1682,7 @@ age.ord     <span class="ot">NULL</span>                      </code></pre></div
 </thead>
 <tbody>
 <tr class="odd">
-<td>(Intercept)</td>
+<td align="left">(Intercept)</td>
 <td align="left">NA</td>
 <td align="left">NA</td>
 <td align="left">NA</td>
@@ -1690,7 +1691,7 @@ age.ord     <span class="ot">NULL</span>                      </code></pre></div
 <td align="left">0</td>
 </tr>
 <tr class="even">
-<td><strong>Age, yrs</strong></td>
+<td align="left"><strong>Age, yrs</strong></td>
 <td align="left">0.998</td>
 <td align="left">0.981</td>
 <td align="left">1.014</td>
@@ -1699,7 +1700,7 @@ age.ord     <span class="ot">NULL</span>                      </code></pre></div
 <td align="left"></td>
 </tr>
 <tr class="odd">
-<td>(Intercept)</td>
+<td align="left">(Intercept)</td>
 <td align="left">NA</td>
 <td align="left">NA</td>
 <td align="left">NA</td>
@@ -1708,7 +1709,7 @@ age.ord     <span class="ot">NULL</span>                      </code></pre></div
 <td align="left">33</td>
 </tr>
 <tr class="even">
-<td><strong>Body Mass Index (kg/m^2)</strong></td>
+<td align="left"><strong>Body Mass Index (kg/m^2)</strong></td>
 <td align="left">1.023</td>
 <td align="left">0.987</td>
 <td align="left">1.063</td>
@@ -1740,7 +1741,7 @@ age.ord     <span class="ot">NULL</span>                      </code></pre></div
 <table>
 <thead>
 <tr class="header">
-<th></th>
+<th align="left"></th>
 <th align="left">OR</th>
 <th align="left">CI.lower.OR</th>
 <th align="left">CI.upper.OR</th>
@@ -1751,7 +1752,7 @@ age.ord     <span class="ot">NULL</span>                      </code></pre></div
 </thead>
 <tbody>
 <tr class="odd">
-<td>(Intercept)</td>
+<td align="left">(Intercept)</td>
 <td align="left">NA</td>
 <td align="left">NA</td>
 <td align="left">NA</td>
@@ -1760,7 +1761,7 @@ age.ord     <span class="ot">NULL</span>                      </code></pre></div
 <td align="left">266</td>
 </tr>
 <tr class="even">
-<td><strong>ps</strong></td>
+<td align="left"><strong>ps</strong></td>
 <td align="left">0.461</td>
 <td align="left">0.332</td>
 <td align="left">0.639</td>
@@ -1769,7 +1770,7 @@ age.ord     <span class="ot">NULL</span>                      </code></pre></div
 <td align="left"></td>
 </tr>
 <tr class="odd">
-<td>(Intercept)</td>
+<td align="left">(Intercept)</td>
 <td align="left">NA</td>
 <td align="left">NA</td>
 <td align="left">NA</td>
@@ -1778,7 +1779,7 @@ age.ord     <span class="ot">NULL</span>                      </code></pre></div
 <td align="left">266</td>
 </tr>
 <tr class="even">
-<td><strong>hgb</strong></td>
+<td align="left"><strong>hgb</strong></td>
 <td align="left">1.176</td>
 <td align="left">1.040</td>
 <td align="left">1.334</td>
@@ -1787,7 +1788,7 @@ age.ord     <span class="ot">NULL</span>                      </code></pre></div
 <td align="left"></td>
 </tr>
 <tr class="odd">
-<td>(Intercept)</td>
+<td align="left">(Intercept)</td>
 <td align="left">NA</td>
 <td align="left">NA</td>
 <td align="left">NA</td>
@@ -1796,7 +1797,7 @@ age.ord     <span class="ot">NULL</span>                      </code></pre></div
 <td align="left">33</td>
 </tr>
 <tr class="even">
-<td><strong>Body Mass Index (kg/m^2)</strong></td>
+<td align="left"><strong>Body Mass Index (kg/m^2)</strong></td>
 <td align="left">1.023</td>
 <td align="left">0.987</td>
 <td align="left">1.062</td>
@@ -1805,7 +1806,7 @@ age.ord     <span class="ot">NULL</span>                      </code></pre></div
 <td align="left"></td>
 </tr>
 <tr class="odd">
-<td>(Intercept)</td>
+<td align="left">(Intercept)</td>
 <td align="left">NA</td>
 <td align="left">NA</td>
 <td align="left">NA</td>
@@ -1814,7 +1815,7 @@ age.ord     <span class="ot">NULL</span>                      </code></pre></div
 <td align="left">266</td>
 </tr>
 <tr class="even">
-<td><strong>alk.phos</strong></td>
+<td align="left"><strong>alk.phos</strong></td>
 <td align="left">0.999</td>
 <td align="left">0.998</td>
 <td align="left">1.000</td>
@@ -1823,7 +1824,7 @@ age.ord     <span class="ot">NULL</span>                      </code></pre></div
 <td align="left"></td>
 </tr>
 <tr class="odd">
-<td>(Intercept)</td>
+<td align="left">(Intercept)</td>
 <td align="left">NA</td>
 <td align="left">NA</td>
 <td align="left">NA</td>
@@ -1832,7 +1833,7 @@ age.ord     <span class="ot">NULL</span>                      </code></pre></div
 <td align="left">266</td>
 </tr>
 <tr class="even">
-<td><strong>ast</strong></td>
+<td align="left"><strong>ast</strong></td>
 <td align="left">0.995</td>
 <td align="left">0.988</td>
 <td align="left">1.001</td>
@@ -1856,7 +1857,7 @@ age.ord     <span class="ot">NULL</span>                      </code></pre></div
 <table>
 <thead>
 <tr class="header">
-<th></th>
+<th align="left"></th>
 <th align="left">OR</th>
 <th align="left">CI.lower.OR</th>
 <th align="left">CI.upper.OR</th>
@@ -1867,7 +1868,7 @@ age.ord     <span class="ot">NULL</span>                      </code></pre></div
 </thead>
 <tbody>
 <tr class="odd">
-<td>(Intercept)</td>
+<td align="left">(Intercept)</td>
 <td align="left">NA</td>
 <td align="left">NA</td>
 <td align="left">NA</td>
@@ -1876,7 +1877,7 @@ age.ord     <span class="ot">NULL</span>                      </code></pre></div
 <td align="left">266</td>
 </tr>
 <tr class="even">
-<td><strong>ps</strong></td>
+<td align="left"><strong>ps</strong></td>
 <td align="left">0.461</td>
 <td align="left">0.332</td>
 <td align="left">0.639</td>
@@ -1885,7 +1886,7 @@ age.ord     <span class="ot">NULL</span>                      </code></pre></div
 <td align="left"></td>
 </tr>
 <tr class="odd">
-<td>(Intercept)</td>
+<td align="left">(Intercept)</td>
 <td align="left">NA</td>
 <td align="left">NA</td>
 <td align="left">NA</td>
@@ -1894,7 +1895,7 @@ age.ord     <span class="ot">NULL</span>                      </code></pre></div
 <td align="left">266</td>
 </tr>
 <tr class="even">
-<td><strong>hgb</strong></td>
+<td align="left"><strong>hgb</strong></td>
 <td align="left">1.176</td>
 <td align="left">1.040</td>
 <td align="left">1.334</td>
@@ -1903,7 +1904,7 @@ age.ord     <span class="ot">NULL</span>                      </code></pre></div
 <td align="left"></td>
 </tr>
 <tr class="odd">
-<td>(Intercept)</td>
+<td align="left">(Intercept)</td>
 <td align="left">NA</td>
 <td align="left">NA</td>
 <td align="left">NA</td>
@@ -1912,7 +1913,7 @@ age.ord     <span class="ot">NULL</span>                      </code></pre></div
 <td align="left">33</td>
 </tr>
 <tr class="even">
-<td><strong>Body Mass Index (kg/m^2)</strong></td>
+<td align="left"><strong>Body Mass Index (kg/m^2)</strong></td>
 <td align="left">1.023</td>
 <td align="left">0.987</td>
 <td align="left">1.062</td>
@@ -1944,7 +1945,7 @@ age.ord     <span class="ot">NULL</span>                      </code></pre></div
 <table>
 <thead>
 <tr class="header">
-<th></th>
+<th align="left"></th>
 <th align="left">estimate</th>
 <th align="left">std.error</th>
 <th align="left">p.value</th>
@@ -1954,7 +1955,7 @@ age.ord     <span class="ot">NULL</span>                      </code></pre></div
 </thead>
 <tbody>
 <tr class="odd">
-<td>(Intercept)</td>
+<td align="left">(Intercept)</td>
 <td align="left">122.577</td>
 <td align="left">46.924</td>
 <td align="left">0.009</td>
@@ -1962,7 +1963,7 @@ age.ord     <span class="ot">NULL</span>                      </code></pre></div
 <td align="left">0</td>
 </tr>
 <tr class="even">
-<td><strong>age</strong></td>
+<td align="left"><strong>age</strong></td>
 <td align="left">0.619</td>
 <td align="left">0.719</td>
 <td align="left">0.390</td>
@@ -1970,7 +1971,7 @@ age.ord     <span class="ot">NULL</span>                      </code></pre></div
 <td align="left"></td>
 </tr>
 <tr class="odd">
-<td>(Intercept)</td>
+<td align="left">(Intercept)</td>
 <td align="left">164.814</td>
 <td align="left">7.673</td>
 <td align="left">&lt; 0.001</td>
@@ -1978,7 +1979,7 @@ age.ord     <span class="ot">NULL</span>                      </code></pre></div
 <td align="left">0</td>
 </tr>
 <tr class="even">
-<td><strong>sex Female</strong></td>
+<td align="left"><strong>sex Female</strong></td>
 <td align="left">-5.497</td>
 <td align="left">12.118</td>
 <td align="left">0.650</td>
@@ -1986,7 +1987,7 @@ age.ord     <span class="ot">NULL</span>                      </code></pre></div
 <td align="left"></td>
 </tr>
 <tr class="odd">
-<td>(Intercept)</td>
+<td align="left">(Intercept)</td>
 <td align="left">238.658</td>
 <td align="left">33.705</td>
 <td align="left">&lt; 0.001</td>
@@ -1994,7 +1995,7 @@ age.ord     <span class="ot">NULL</span>                      </code></pre></div
 <td align="left">15</td>
 </tr>
 <tr class="even">
-<td><strong>bmi</strong></td>
+<td align="left"><strong>bmi</strong></td>
 <td align="left">-2.776</td>
 <td align="left">1.207</td>
 <td align="left">0.022</td>
@@ -2010,7 +2011,7 @@ age.ord     <span class="ot">NULL</span>                      </code></pre></div
 <table>
 <thead>
 <tr class="header">
-<th></th>
+<th align="left"></th>
 <th align="left">estimate</th>
 <th align="left">std.error</th>
 <th align="left">p.value</th>
@@ -2020,7 +2021,7 @@ age.ord     <span class="ot">NULL</span>                      </code></pre></div
 </thead>
 <tbody>
 <tr class="odd">
-<td>(Intercept)</td>
+<td align="left">(Intercept)</td>
 <td align="left">4.872</td>
 <td align="left">0.039</td>
 <td align="left">&lt; 0.001</td>
@@ -2028,7 +2029,7 @@ age.ord     <span class="ot">NULL</span>                      </code></pre></div
 <td align="left">0</td>
 </tr>
 <tr class="even">
-<td><strong>sex Female</strong></td>
+<td align="left"><strong>sex Female</strong></td>
 <td align="left">-0.005</td>
 <td align="left">0.062</td>
 <td align="left">0.931</td>
@@ -2036,7 +2037,7 @@ age.ord     <span class="ot">NULL</span>                      </code></pre></div
 <td align="left"></td>
 </tr>
 <tr class="odd">
-<td>(Intercept)</td>
+<td align="left">(Intercept)</td>
 <td align="left">4.770</td>
 <td align="left">0.040</td>
 <td align="left">&lt; 0.001</td>
@@ -2044,7 +2045,7 @@ age.ord     <span class="ot">NULL</span>                      </code></pre></div
 <td align="left">108</td>
 </tr>
 <tr class="even">
-<td><strong>ps</strong></td>
+<td align="left"><strong>ps</strong></td>
 <td align="left">0.183</td>
 <td align="left">0.050</td>
 <td align="left">&lt; 0.001</td>
@@ -2052,7 +2053,7 @@ age.ord     <span class="ot">NULL</span>                      </code></pre></div
 <td align="left"></td>
 </tr>
 <tr class="odd">
-<td>(Intercept)</td>
+<td align="left">(Intercept)</td>
 <td align="left">5.207</td>
 <td align="left">0.172</td>
 <td align="left">&lt; 0.001</td>
@@ -2060,7 +2061,7 @@ age.ord     <span class="ot">NULL</span>                      </code></pre></div
 <td align="left">15</td>
 </tr>
 <tr class="even">
-<td><strong>Body Mass Index (kg/m^2)</strong></td>
+<td align="left"><strong>Body Mass Index (kg/m^2)</strong></td>
 <td align="left">-0.012</td>
 <td align="left">0.006</td>
 <td align="left">0.044</td>
@@ -2073,7 +2074,7 @@ age.ord     <span class="ot">NULL</span>                      </code></pre></div
 <table>
 <thead>
 <tr class="header">
-<th></th>
+<th align="left"></th>
 <th align="left">estimate</th>
 <th align="left">std.error</th>
 <th align="left">p.value</th>
@@ -2083,7 +2084,7 @@ age.ord     <span class="ot">NULL</span>                      </code></pre></div
 </thead>
 <tbody>
 <tr class="odd">
-<td>(Intercept)</td>
+<td align="left">(Intercept)</td>
 <td align="left">178.812</td>
 <td align="left">14.550</td>
 <td align="left">&lt; 0.001</td>
@@ -2091,7 +2092,7 @@ age.ord     <span class="ot">NULL</span>                      </code></pre></div
 <td align="left">77</td>
 </tr>
 <tr class="even">
-<td><strong>ps</strong></td>
+<td align="left"><strong>ps</strong></td>
 <td align="left">20.834</td>
 <td align="left">13.440</td>
 <td align="left">0.122</td>
@@ -2099,7 +2100,7 @@ age.ord     <span class="ot">NULL</span>                      </code></pre></div
 <td align="left"></td>
 </tr>
 <tr class="odd">
-<td><strong>sex Female</strong></td>
+<td align="left"><strong>sex Female</strong></td>
 <td align="left">-17.542</td>
 <td align="left">16.656</td>
 <td align="left">0.293</td>
@@ -2107,7 +2108,7 @@ age.ord     <span class="ot">NULL</span>                      </code></pre></div
 <td align="left"></td>
 </tr>
 <tr class="even">
-<td>(Intercept)</td>
+<td align="left">(Intercept)</td>
 <td align="left">373.008</td>
 <td align="left">104.272</td>
 <td align="left">&lt; 0.001</td>
@@ -2115,7 +2116,7 @@ age.ord     <span class="ot">NULL</span>                      </code></pre></div
 <td align="left">24</td>
 </tr>
 <tr class="odd">
-<td><strong>Body Mass Index (kg/m^2)</strong></td>
+<td align="left"><strong>Body Mass Index (kg/m^2)</strong></td>
 <td align="left">-8.239</td>
 <td align="left">4.727</td>
 <td align="left">0.083</td>
@@ -2123,7 +2124,7 @@ age.ord     <span class="ot">NULL</span>                      </code></pre></div
 <td align="left"></td>
 </tr>
 <tr class="even">
-<td><strong>sex Female</strong></td>
+<td align="left"><strong>sex Female</strong></td>
 <td align="left">-24.058</td>
 <td align="left">16.855</td>
 <td align="left">0.155</td>
@@ -2136,7 +2137,7 @@ age.ord     <span class="ot">NULL</span>                      </code></pre></div
 <table>
 <thead>
 <tr class="header">
-<th></th>
+<th align="left"></th>
 <th align="left">estimate</th>
 <th align="left">std.error</th>
 <th align="left">p.value</th>
@@ -2146,7 +2147,7 @@ age.ord     <span class="ot">NULL</span>                      </code></pre></div
 </thead>
 <tbody>
 <tr class="odd">
-<td>(Intercept)</td>
+<td align="left">(Intercept)</td>
 <td align="left">169.112</td>
 <td align="left">57.013</td>
 <td align="left">0.006</td>
@@ -2154,7 +2155,7 @@ age.ord     <span class="ot">NULL</span>                      </code></pre></div
 <td align="left">0</td>
 </tr>
 <tr class="even">
-<td><strong>ps</strong></td>
+<td align="left"><strong>ps</strong></td>
 <td align="left">254.901</td>
 <td align="left">68.100</td>
 <td align="left">&lt; 0.001</td>
@@ -2162,7 +2163,7 @@ age.ord     <span class="ot">NULL</span>                      </code></pre></div
 <td align="left"></td>
 </tr>
 <tr class="odd">
-<td><strong>sex Female</strong></td>
+<td align="left"><strong>sex Female</strong></td>
 <td align="left">49.566</td>
 <td align="left">67.643</td>
 <td align="left">0.470</td>
@@ -2170,7 +2171,7 @@ age.ord     <span class="ot">NULL</span>                      </code></pre></div
 <td align="left"></td>
 </tr>
 <tr class="even">
-<td>(Intercept)</td>
+<td align="left">(Intercept)</td>
 <td align="left">453.070</td>
 <td align="left">200.651</td>
 <td align="left">0.033</td>
@@ -2178,7 +2179,7 @@ age.ord     <span class="ot">NULL</span>                      </code></pre></div
 <td align="left">1</td>
 </tr>
 <tr class="odd">
-<td><strong>Body Mass Index (kg/m^2)</strong></td>
+<td align="left"><strong>Body Mass Index (kg/m^2)</strong></td>
 <td align="left">-5.993</td>
 <td align="left">7.408</td>
 <td align="left">0.426</td>
@@ -2186,7 +2187,7 @@ age.ord     <span class="ot">NULL</span>                      </code></pre></div
 <td align="left"></td>
 </tr>
 <tr class="even">
-<td><strong>sex Female</strong></td>
+<td align="left"><strong>sex Female</strong></td>
 <td align="left">-22.308</td>
 <td align="left">79.776</td>
 <td align="left">0.782</td>
@@ -2207,7 +2208,7 @@ age.ord     <span class="ot">NULL</span>                      </code></pre></div
 <table>
 <thead>
 <tr class="header">
-<th></th>
+<th align="left"></th>
 <th align="left">estimate</th>
 <th align="left">std.error</th>
 <th align="left">p.value</th>
@@ -2217,7 +2218,7 @@ age.ord     <span class="ot">NULL</span>                      </code></pre></div
 </thead>
 <tbody>
 <tr class="odd">
-<td>(Intercept)</td>
+<td align="left">(Intercept)</td>
 <td align="left">59.714</td>
 <td align="left">1.314</td>
 <td align="left">&lt; 0.001</td>
@@ -2225,7 +2226,7 @@ age.ord     <span class="ot">NULL</span>                      </code></pre></div
 <td align="left">252</td>
 </tr>
 <tr class="even">
-<td><strong>interaction(mdquality.s, sex) 1.Male</strong></td>
+<td align="left"><strong>interaction(mdquality.s, sex) 1.Male</strong></td>
 <td align="left">0.730</td>
 <td align="left">1.385</td>
 <td align="left">0.598</td>
@@ -2233,7 +2234,7 @@ age.ord     <span class="ot">NULL</span>                      </code></pre></div
 <td align="left"></td>
 </tr>
 <tr class="odd">
-<td><strong>interaction(mdquality.s, sex) 0.Female</strong></td>
+<td align="left"><strong>interaction(mdquality.s, sex) 0.Female</strong></td>
 <td align="left">0.988</td>
 <td align="left">2.134</td>
 <td align="left">0.643</td>
@@ -2241,7 +2242,7 @@ age.ord     <span class="ot">NULL</span>                      </code></pre></div
 <td align="left"></td>
 </tr>
 <tr class="even">
-<td><strong>interaction(mdquality.s, sex) 1.Female</strong></td>
+<td align="left"><strong>interaction(mdquality.s, sex) 1.Female</strong></td>
 <td align="left">-1.021</td>
 <td align="left">1.425</td>
 <td align="left">0.474</td>
@@ -2259,7 +2260,7 @@ age.ord     <span class="ot">NULL</span>                      </code></pre></div
 <table>
 <thead>
 <tr class="header">
-<th></th>
+<th align="left"></th>
 <th align="left">OR</th>
 <th align="left">CI.lower.OR</th>
 <th align="left">CI.upper.OR</th>
@@ -2270,7 +2271,7 @@ age.ord     <span class="ot">NULL</span>                      </code></pre></div
 </thead>
 <tbody>
 <tr class="odd">
-<td>(Intercept)</td>
+<td align="left">(Intercept)</td>
 <td align="left">NA</td>
 <td align="left">NA</td>
 <td align="left">NA</td>
@@ -2279,7 +2280,7 @@ age.ord     <span class="ot">NULL</span>                      </code></pre></div
 <td align="left">0</td>
 </tr>
 <tr class="even">
-<td><strong>Age, yrs</strong></td>
+<td align="left"><strong>Age, yrs</strong></td>
 <td align="left">1.045</td>
 <td align="left">0.957</td>
 <td align="left">1.142</td>
@@ -2288,7 +2289,7 @@ age.ord     <span class="ot">NULL</span>                      </code></pre></div
 <td align="left"></td>
 </tr>
 <tr class="odd">
-<td>(Intercept)</td>
+<td align="left">(Intercept)</td>
 <td align="left">NA</td>
 <td align="left">NA</td>
 <td align="left">NA</td>
@@ -2297,7 +2298,7 @@ age.ord     <span class="ot">NULL</span>                      </code></pre></div
 <td align="left">33</td>
 </tr>
 <tr class="even">
-<td><strong>Body Mass Index (kg/m^2)</strong></td>
+<td align="left"><strong>Body Mass Index (kg/m^2)</strong></td>
 <td align="left">1.092</td>
 <td align="left">0.638</td>
 <td align="left">1.867</td>
@@ -2306,7 +2307,7 @@ age.ord     <span class="ot">NULL</span>                      </code></pre></div
 <td align="left"></td>
 </tr>
 <tr class="odd">
-<td>(Intercept)</td>
+<td align="left">(Intercept)</td>
 <td align="left">NA</td>
 <td align="left">NA</td>
 <td align="left">NA</td>
@@ -2315,7 +2316,7 @@ age.ord     <span class="ot">NULL</span>                      </code></pre></div
 <td align="left">252</td>
 </tr>
 <tr class="even">
-<td><strong>mdquality.s</strong></td>
+<td align="left"><strong>mdquality.s</strong></td>
 <td align="left">1.045</td>
 <td align="left">0.719</td>
 <td align="left">1.527</td>
@@ -2334,7 +2335,7 @@ age.ord     <span class="ot">NULL</span>                      </code></pre></div
 <table>
 <thead>
 <tr class="header">
-<th></th>
+<th align="left"></th>
 <th align="left">estimate</th>
 <th align="left">std.error</th>
 <th align="left">p.value</th>
@@ -2344,7 +2345,7 @@ age.ord     <span class="ot">NULL</span>                      </code></pre></div
 </thead>
 <tbody>
 <tr class="odd">
-<td>(Intercept)</td>
+<td align="left">(Intercept)</td>
 <td align="left">26.424</td>
 <td align="left">0.752</td>
 <td align="left">&lt; 0.001</td>
@@ -2352,7 +2353,7 @@ age.ord     <span class="ot">NULL</span>                      </code></pre></div
 <td align="left">0</td>
 </tr>
 <tr class="even">
-<td><strong>Age, yrs</strong></td>
+<td align="left"><strong>Age, yrs</strong></td>
 <td align="left">0.013</td>
 <td align="left">0.012</td>
 <td align="left">0.290</td>
@@ -2360,7 +2361,7 @@ age.ord     <span class="ot">NULL</span>                      </code></pre></div
 <td align="left"></td>
 </tr>
 <tr class="odd">
-<td>(Intercept)</td>
+<td align="left">(Intercept)</td>
 <td align="left">27.491</td>
 <td align="left">0.181</td>
 <td align="left">&lt; 0.001</td>
@@ -2368,7 +2369,7 @@ age.ord     <span class="ot">NULL</span>                      </code></pre></div
 <td align="left">0</td>
 </tr>
 <tr class="even">
-<td><strong>sex Female</strong></td>
+<td align="left"><strong>sex Female</strong></td>
 <td align="left">-0.731</td>
 <td align="left">0.290</td>
 <td align="left">0.012</td>
@@ -2376,7 +2377,7 @@ age.ord     <span class="ot">NULL</span>                      </code></pre></div
 <td align="left"></td>
 </tr>
 <tr class="odd">
-<td>(Intercept)</td>
+<td align="left">(Intercept)</td>
 <td align="left">27.944</td>
 <td align="left">0.253</td>
 <td align="left">&lt; 0.001</td>
@@ -2384,7 +2385,7 @@ age.ord     <span class="ot">NULL</span>                      </code></pre></div
 <td align="left">266</td>
 </tr>
 <tr class="even">
-<td><strong>alk.phos</strong></td>
+<td align="left"><strong>alk.phos</strong></td>
 <td align="left">-0.005</td>
 <td align="left">0.001</td>
 <td align="left">&lt; 0.001</td>
@@ -2397,7 +2398,7 @@ age.ord     <span class="ot">NULL</span>                      </code></pre></div
 <table>
 <thead>
 <tr class="header">
-<th></th>
+<th align="left"></th>
 <th align="left">estimate</th>
 <th align="left">std.error</th>
 <th align="left">p.value</th>
@@ -2406,28 +2407,28 @@ age.ord     <span class="ot">NULL</span>                      </code></pre></div
 </thead>
 <tbody>
 <tr class="odd">
-<td>(Intercept)</td>
+<td align="left">(Intercept)</td>
 <td align="left">26.424</td>
 <td align="left">0.752</td>
 <td align="left">&lt; 0.001</td>
 <td align="left">0.000</td>
 </tr>
 <tr class="even">
-<td><strong>Age, yrs</strong></td>
+<td align="left"><strong>Age, yrs</strong></td>
 <td align="left">0.013</td>
 <td align="left">0.012</td>
 <td align="left">0.290</td>
 <td align="left"></td>
 </tr>
 <tr class="odd">
-<td>(Intercept)</td>
+<td align="left">(Intercept)</td>
 <td align="left">27.491</td>
 <td align="left">0.181</td>
 <td align="left">&lt; 0.001</td>
 <td align="left">0.004</td>
 </tr>
 <tr class="even">
-<td><strong>sex Female</strong></td>
+<td align="left"><strong>sex Female</strong></td>
 <td align="left">-0.731</td>
 <td align="left">0.290</td>
 <td align="left">0.012</td>
@@ -2439,7 +2440,7 @@ age.ord     <span class="ot">NULL</span>                      </code></pre></div
 <table>
 <thead>
 <tr class="header">
-<th></th>
+<th align="left"></th>
 <th align="left">estimate</th>
 <th align="left">std.error</th>
 <th align="left">p.value</th>
@@ -2448,28 +2449,28 @@ age.ord     <span class="ot">NULL</span>                      </code></pre></div
 </thead>
 <tbody>
 <tr class="odd">
-<td>(Intercept)</td>
+<td align="left">(Intercept)</td>
 <td align="left">26.424</td>
 <td align="left">0.752</td>
 <td align="left">&lt; 0.001</td>
 <td align="left">0.000</td>
 </tr>
 <tr class="even">
-<td><strong>Age, yrs</strong></td>
+<td align="left"><strong>Age, yrs</strong></td>
 <td align="left">0.013</td>
 <td align="left">0.012</td>
 <td align="left">0.290</td>
 <td align="left"></td>
 </tr>
 <tr class="odd">
-<td>(Intercept)</td>
+<td align="left">(Intercept)</td>
 <td align="left">27.491</td>
 <td align="left">0.181</td>
 <td align="left">&lt; 0.001</td>
 <td align="left">0.004</td>
 </tr>
 <tr class="even">
-<td><strong>sex Female</strong></td>
+<td align="left"><strong>sex Female</strong></td>
 <td align="left">-0.731</td>
 <td align="left">0.290</td>
 <td align="left">0.012</td>
@@ -2502,7 +2503,7 @@ age.ord     <span class="ot">NULL</span>                      </code></pre></div
 <caption>Demographics</caption>
 <thead>
 <tr class="header">
-<th></th>
+<th align="left"></th>
 <th align="left">estimate</th>
 <th align="left">std.error</th>
 <th align="left">p.value</th>
@@ -2511,28 +2512,28 @@ age.ord     <span class="ot">NULL</span>                      </code></pre></div
 </thead>
 <tbody>
 <tr class="odd">
-<td>(Intercept)</td>
+<td align="left">(Intercept)</td>
 <td align="left">27.491</td>
 <td align="left">0.181</td>
 <td align="left">&lt; 0.001</td>
 <td align="left">0.004</td>
 </tr>
 <tr class="even">
-<td><strong>sex Female</strong></td>
+<td align="left"><strong>sex Female</strong></td>
 <td align="left">-0.731</td>
 <td align="left">0.290</td>
 <td align="left">0.012</td>
 <td align="left"></td>
 </tr>
 <tr class="odd">
-<td>(Intercept)</td>
+<td align="left">(Intercept)</td>
 <td align="left">26.424</td>
 <td align="left">0.752</td>
 <td align="left">&lt; 0.001</td>
 <td align="left">0.000</td>
 </tr>
 <tr class="even">
-<td><strong>Age, yrs</strong></td>
+<td align="left"><strong>Age, yrs</strong></td>
 <td align="left">0.013</td>
 <td align="left">0.012</td>
 <td align="left">0.290</td>
@@ -2562,29 +2563,29 @@ mdquality.s     age.ord
 <table>
 <thead>
 <tr class="header">
-<th></th>
+<th align="left"></th>
 <th align="left">estimate</th>
 <th align="left">N</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>(Intercept)</td>
+<td align="left">(Intercept)</td>
 <td align="left">27.331</td>
 <td align="left">1233</td>
 </tr>
 <tr class="even">
-<td><strong>ast</strong></td>
+<td align="left"><strong>ast</strong></td>
 <td align="left">-0.005</td>
 <td align="left"></td>
 </tr>
 <tr class="odd">
-<td>(Intercept)</td>
+<td align="left">(Intercept)</td>
 <td align="left">26.424</td>
 <td align="left">1499</td>
 </tr>
 <tr class="even">
-<td><strong>Age, yrs</strong></td>
+<td align="left"><strong>Age, yrs</strong></td>
 <td align="left">0.013</td>
 <td align="left"></td>
 </tr>
@@ -2597,29 +2598,29 @@ mdquality.s     age.ord
 <table>
 <thead>
 <tr class="header">
-<th></th>
+<th align="left"></th>
 <th align="left">estimate</th>
 <th align="left">Nmiss2</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>(Intercept)</td>
+<td align="left">(Intercept)</td>
 <td align="left">27.331</td>
 <td align="left">266</td>
 </tr>
 <tr class="even">
-<td><strong>ast</strong></td>
+<td align="left"><strong>ast</strong></td>
 <td align="left">-0.005</td>
 <td align="left"></td>
 </tr>
 <tr class="odd">
-<td>(Intercept)</td>
+<td align="left">(Intercept)</td>
 <td align="left">26.424</td>
 <td align="left">0</td>
 </tr>
 <tr class="even">
-<td><strong>Age, yrs</strong></td>
+<td align="left"><strong>Age, yrs</strong></td>
 <td align="left">0.013</td>
 <td align="left"></td>
 </tr>
@@ -2632,29 +2633,29 @@ mdquality.s     age.ord
 <table>
 <thead>
 <tr class="header">
-<th></th>
+<th align="left"></th>
 <th align="left">estimate</th>
 <th align="left">Nmiss</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>(Intercept)</td>
+<td align="left">(Intercept)</td>
 <td align="left">27.331</td>
 <td align="left">266</td>
 </tr>
 <tr class="even">
-<td><strong>ast</strong></td>
+<td align="left"><strong>ast</strong></td>
 <td align="left">-0.005</td>
 <td align="left"></td>
 </tr>
 <tr class="odd">
-<td>(Intercept)</td>
+<td align="left">(Intercept)</td>
 <td align="left">26.424</td>
 <td align="left">0</td>
 </tr>
 <tr class="even">
-<td><strong>Age, yrs</strong></td>
+<td align="left"><strong>Age, yrs</strong></td>
 <td align="left">0.013</td>
 <td align="left"></td>
 </tr>
@@ -2667,25 +2668,25 @@ mdquality.s     age.ord
 <table>
 <thead>
 <tr class="header">
-<th></th>
+<th align="left"></th>
 <th align="left">estimate</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>(Intercept)</td>
+<td align="left">(Intercept)</td>
 <td align="left">27.331</td>
 </tr>
 <tr class="even">
-<td><strong>ast</strong></td>
+<td align="left"><strong>ast</strong></td>
 <td align="left">-0.005</td>
 </tr>
 <tr class="odd">
-<td>(Intercept)</td>
+<td align="left">(Intercept)</td>
 <td align="left">26.424</td>
 </tr>
 <tr class="even">
-<td><strong>Age, yrs</strong></td>
+<td align="left"><strong>Age, yrs</strong></td>
 <td align="left">0.013</td>
 </tr>
 </tbody>
@@ -2704,7 +2705,7 @@ Warning<span class="op">:</span><span class="st"> </span>Using <span class="st">
 <table>
 <thead>
 <tr class="header">
-<th></th>
+<th align="left"></th>
 <th align="left">estimate</th>
 <th align="left">std.error</th>
 <th align="left">p.value</th>
@@ -2713,42 +2714,42 @@ Warning<span class="op">:</span><span class="st"> </span>Using <span class="st">
 </thead>
 <tbody>
 <tr class="odd">
-<td>(Intercept)</td>
+<td align="left">(Intercept)</td>
 <td align="left">27.4915</td>
 <td align="left">0.1813</td>
 <td align="left">&lt; 0.001</td>
 <td align="left">0.0036</td>
 </tr>
 <tr class="even">
-<td><strong>sex Female</strong></td>
+<td align="left"><strong>sex Female</strong></td>
 <td align="left">-0.7311</td>
 <td align="left">0.2903</td>
 <td align="left">0.012</td>
 <td align="left"></td>
 </tr>
 <tr class="odd">
-<td>(Intercept)</td>
+<td align="left">(Intercept)</td>
 <td align="left">26.4237</td>
 <td align="left">0.7521</td>
 <td align="left">&lt; 0.001</td>
 <td align="left">0.0001</td>
 </tr>
 <tr class="even">
-<td><strong>Age, yrs</strong></td>
+<td align="left"><strong>Age, yrs</strong></td>
 <td align="left">0.0130</td>
 <td align="left">0.0123</td>
 <td align="left">0.290</td>
 <td align="left"></td>
 </tr>
 <tr class="odd">
-<td>(Intercept)</td>
+<td align="left">(Intercept)</td>
 <td align="left">26.4937</td>
 <td align="left">0.2447</td>
 <td align="left">&lt; 0.001</td>
 <td align="left">0.0079</td>
 </tr>
 <tr class="even">
-<td><strong>fu.time</strong></td>
+<td align="left"><strong>fu.time</strong></td>
 <td align="left">0.0011</td>
 <td align="left">0.0003</td>
 <td align="left">&lt; 0.001</td>
@@ -2799,7 +2800,7 @@ agegp     Male Female
 <caption>No Case Weights used</caption>
 <thead>
 <tr class="header">
-<th></th>
+<th align="left"></th>
 <th align="left">OR</th>
 <th align="left">CI.lower.OR</th>
 <th align="left">CI.upper.OR</th>
@@ -2810,7 +2811,7 @@ agegp     Male Female
 </thead>
 <tbody>
 <tr class="odd">
-<td>(Intercept)</td>
+<td align="left">(Intercept)</td>
 <td align="left">NA</td>
 <td align="left">NA</td>
 <td align="left">NA</td>
@@ -2819,7 +2820,7 @@ agegp     Male Female
 <td align="left">210</td>
 </tr>
 <tr class="even">
-<td><strong>ast</strong></td>
+<td align="left"><strong>ast</strong></td>
 <td align="left">1.003</td>
 <td align="left">0.998</td>
 <td align="left">1.008</td>
@@ -2828,7 +2829,7 @@ agegp     Male Female
 <td align="left"></td>
 </tr>
 <tr class="odd">
-<td>(Intercept)</td>
+<td align="left">(Intercept)</td>
 <td align="left">NA</td>
 <td align="left">NA</td>
 <td align="left">NA</td>
@@ -2837,7 +2838,7 @@ agegp     Male Female
 <td align="left">29</td>
 </tr>
 <tr class="even">
-<td><strong>Body Mass Index (kg/m^2)</strong></td>
+<td align="left"><strong>Body Mass Index (kg/m^2)</strong></td>
 <td align="left">1.003</td>
 <td align="left">0.980</td>
 <td align="left">1.026</td>
@@ -2846,7 +2847,7 @@ agegp     Male Female
 <td align="left"></td>
 </tr>
 <tr class="odd">
-<td>(Intercept)</td>
+<td align="left">(Intercept)</td>
 <td align="left">NA</td>
 <td align="left">NA</td>
 <td align="left">NA</td>
@@ -2855,7 +2856,7 @@ agegp     Male Female
 <td align="left">210</td>
 </tr>
 <tr class="even">
-<td><strong>hgb</strong></td>
+<td align="left"><strong>hgb</strong></td>
 <td align="left">0.965</td>
 <td align="left">0.894</td>
 <td align="left">1.043</td>
@@ -2875,7 +2876,7 @@ agegp     Male Female
 <caption>Case Weights used</caption>
 <thead>
 <tr class="header">
-<th></th>
+<th align="left"></th>
 <th align="left">OR</th>
 <th align="left">CI.lower.OR</th>
 <th align="left">CI.upper.OR</th>
@@ -2886,7 +2887,7 @@ agegp     Male Female
 </thead>
 <tbody>
 <tr class="odd">
-<td>(Intercept)</td>
+<td align="left">(Intercept)</td>
 <td align="left">NA</td>
 <td align="left">NA</td>
 <td align="left">NA</td>
@@ -2895,7 +2896,7 @@ agegp     Male Female
 <td align="left">210</td>
 </tr>
 <tr class="even">
-<td><strong>ast</strong></td>
+<td align="left"><strong>ast</strong></td>
 <td align="left">1.003</td>
 <td align="left">0.998</td>
 <td align="left">1.008</td>
@@ -2904,7 +2905,7 @@ agegp     Male Female
 <td align="left"></td>
 </tr>
 <tr class="odd">
-<td>(Intercept)</td>
+<td align="left">(Intercept)</td>
 <td align="left">NA</td>
 <td align="left">NA</td>
 <td align="left">NA</td>
@@ -2913,7 +2914,7 @@ agegp     Male Female
 <td align="left">29</td>
 </tr>
 <tr class="even">
-<td><strong>Body Mass Index (kg/m^2)</strong></td>
+<td align="left"><strong>Body Mass Index (kg/m^2)</strong></td>
 <td align="left">1.003</td>
 <td align="left">0.980</td>
 <td align="left">1.026</td>
@@ -2922,7 +2923,7 @@ agegp     Male Female
 <td align="left"></td>
 </tr>
 <tr class="odd">
-<td>(Intercept)</td>
+<td align="left">(Intercept)</td>
 <td align="left">NA</td>
 <td align="left">NA</td>
 <td align="left">NA</td>
@@ -2931,7 +2932,7 @@ agegp     Male Female
 <td align="left">210</td>
 </tr>
 <tr class="even">
-<td><strong>hgb</strong></td>
+<td align="left"><strong>hgb</strong></td>
 <td align="left">0.965</td>
 <td align="left">0.894</td>
 <td align="left">1.043</td>
@@ -2979,15 +2980,16 @@ render(&quot;Test.md&quot;, pdf_document(keep_tex=TRUE))
 <p>When looking at multiple variables it is sometimes useful to export the results to a csv file. The <code>as.data.frame</code> function creates a data frame object that can be exported or further manipulated within R.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">summary</span>(tab2, <span class="dt">text=</span>T)
 
-                           OR      CI.lower.OR   CI.upper.OR   p.value   concordance   Nmiss 
-<span class="op">-------------------------</span><span class="st">  </span><span class="op">------</span><span class="st">  </span><span class="op">------------</span><span class="st">  </span><span class="op">------------</span><span class="st">  </span><span class="op">--------</span><span class="st">  </span><span class="op">------------</span><span class="st">  </span><span class="op">------</span>
-(Intercept)                <span class="ot">NA</span>      <span class="ot">NA</span>            <span class="ot">NA</span>            <span class="op">&lt;</span><span class="st"> </span><span class="fl">0.001</span>   <span class="fl">0.550</span>         <span class="dv">210</span>   
-ast                        <span class="fl">1.003</span>   <span class="fl">0.998</span>         <span class="fl">1.008</span>         <span class="fl">0.258</span>                         
-(Intercept)                <span class="ot">NA</span>      <span class="ot">NA</span>            <span class="ot">NA</span>            <span class="fl">0.091</span>     <span class="fl">0.500</span>         <span class="dv">29</span>    
-Body Mass <span class="kw">Index</span> (kg<span class="op">/</span>m<span class="op">^</span><span class="dv">2</span>)   <span class="fl">1.003</span>   <span class="fl">0.980</span>         <span class="fl">1.026</span>         <span class="fl">0.808</span>                         
-(Intercept)                <span class="ot">NA</span>      <span class="ot">NA</span>            <span class="ot">NA</span>            <span class="fl">0.990</span>     <span class="fl">0.514</span>         <span class="dv">210</span>   
-hgb                        <span class="fl">0.965</span>   <span class="fl">0.894</span>         <span class="fl">1.043</span>         <span class="fl">0.372</span>                         
-<span class="op">&gt;</span><span class="st"> </span>tmp &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(tab2)
+
+<span class="op">|</span><span class="st">                         </span><span class="er">|</span>OR    <span class="op">|</span>CI.lower.OR <span class="op">|</span>CI.upper.OR <span class="op">|</span>p.value <span class="op">|</span>concordance <span class="op">|</span>Nmiss <span class="op">|</span>
+<span class="er">|:</span><span class="op">------------------------</span><span class="er">|:</span><span class="op">-----</span><span class="er">|:</span><span class="op">-----------</span><span class="er">|:</span><span class="op">-----------</span><span class="er">|:</span><span class="op">-------</span><span class="er">|:</span><span class="op">-----------</span><span class="er">|:</span><span class="op">-----</span><span class="er">|</span>
+<span class="er">|</span>(Intercept)              <span class="op">|</span><span class="ot">NA</span>    <span class="op">|</span><span class="ot">NA</span>          <span class="op">|</span><span class="ot">NA</span>          <span class="op">|</span><span class="er">&lt;</span><span class="st"> </span><span class="fl">0.001</span> <span class="op">|</span><span class="fl">0.550</span>       <span class="op">|</span><span class="dv">210</span>   <span class="op">|</span>
+<span class="er">|</span>ast                      <span class="op">|</span><span class="fl">1.003</span> <span class="op">|</span><span class="fl">0.998</span>       <span class="op">|</span><span class="fl">1.008</span>       <span class="op">|</span><span class="fl">0.258</span>   <span class="op">|</span><span class="st">            </span><span class="er">|</span><span class="st">      </span><span class="er">|</span>
+<span class="er">|</span>(Intercept)              <span class="op">|</span><span class="ot">NA</span>    <span class="op">|</span><span class="ot">NA</span>          <span class="op">|</span><span class="ot">NA</span>          <span class="op">|</span><span class="fl">0.091</span>   <span class="op">|</span><span class="fl">0.500</span>       <span class="op">|</span><span class="dv">29</span>    <span class="op">|</span>
+<span class="er">|</span>Body Mass <span class="kw">Index</span> (kg<span class="op">/</span>m<span class="op">^</span><span class="dv">2</span>) <span class="op">|</span><span class="fl">1.003</span> <span class="op">|</span><span class="fl">0.980</span>       <span class="op">|</span><span class="fl">1.026</span>       <span class="op">|</span><span class="fl">0.808</span>   <span class="op">|</span><span class="st">            </span><span class="er">|</span><span class="st">      </span><span class="er">|</span>
+<span class="er">|</span>(Intercept)              <span class="op">|</span><span class="ot">NA</span>    <span class="op">|</span><span class="ot">NA</span>          <span class="op">|</span><span class="ot">NA</span>          <span class="op">|</span><span class="fl">0.990</span>   <span class="op">|</span><span class="fl">0.514</span>       <span class="op">|</span><span class="dv">210</span>   <span class="op">|</span>
+<span class="er">|</span>hgb                      <span class="op">|</span><span class="fl">0.965</span> <span class="op">|</span><span class="fl">0.894</span>       <span class="op">|</span><span class="fl">1.043</span>       <span class="op">|</span><span class="fl">0.372</span>   <span class="op">|</span><span class="st">            </span><span class="er">|</span><span class="st">      </span><span class="er">|</span>
+<span class="er">&gt;</span><span class="st"> </span>tmp &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(tab2)
 <span class="op">&gt;</span><span class="st"> </span>tmp
   model        term                    label term.type        OR
 <span class="dv">1</span>     <span class="dv">1</span> (Intercept)              (Intercept) Intercept        <span class="ot">NA</span>

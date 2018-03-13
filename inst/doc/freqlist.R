@@ -32,7 +32,12 @@ head(as.data.frame(noby))
 ## -----------------------------------------------------------------------------
 ### this works in R >= 3.4.0
 # summary(freqlist(~ arm + sex + mdquality.s, data = mockstudy, addNA = TRUE))
+
+### This one is backwards-compatible
 summary(freqlist(~ arm + sex + addNA(mdquality.s), data = mockstudy))
+
+## -----------------------------------------------------------------------------
+summary(freqlist(~ arm + sex + includeNA(mdquality.s, "Missing"), data = mockstudy))
 
 ## ----labelTranslations, results = 'asis'--------------------------------------
 withnames <- freqlist(tab.ex, labelTranslations = c("Treatment Arm","Gender","LASA QOL"), digits = 0)

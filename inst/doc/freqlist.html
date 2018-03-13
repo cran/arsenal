@@ -69,7 +69,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">The freqlist function</h1>
 <h4 class="author"><em>Tina Gunderson and Ethan Heinzen</em></h4>
-<h4 class="date"><em>02 February, 2018</em></h4>
+<h4 class="date"><em>13 March, 2018</em></h4>
 
 
 <div id="TOC">
@@ -520,29 +520,55 @@ tab.ex &lt;-<span class="st"> </span><span class="kw">table</span>(mockstudy[, <
 <p>Note that the <code>addNA=</code> argument was added to <code>xtabs()</code> in R 3.4.0. In previous versions, NAs have to be added to relevant columns using <code>addNA()</code>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">### this works in R &gt;= 3.4.0 summary(freqlist(~ arm + sex + mdquality.s, data =
 ### mockstudy, addNA = TRUE))
+
+### This one is backwards-compatible
 <span class="kw">summary</span>(<span class="kw">freqlist</span>(<span class="op">~</span>arm <span class="op">+</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span><span class="kw">addNA</span>(mdquality.s), <span class="dt">data =</span> mockstudy))</code></pre></div>
 <pre><code>
 
-arm         sex      addNA.mdquality.s.    Freq   cumFreq   freqPercent   cumPercent
-----------  -------  -------------------  -----  --------  ------------  -----------
-A: IFL      Male     0                       29        29          1.93         1.93
-                     1                      214       243         14.28        16.21
-                     NA                      34       277          2.27        18.48
-            Female   0                       12       289          0.80        19.28
-                     1                      118       407          7.87        27.15
-                     NA                      21       428          1.40        28.55
-F: FOLFOX   Male     0                       31       459          2.07        30.62
-                     1                      285       744         19.01        49.63
-                     NA                      95       839          6.34        55.97
-            Female   0                       21       860          1.40        57.37
-                     1                      198      1058         13.21        70.58
-                     NA                      61      1119          4.07        74.65
-G: IROX     Male     0                       17      1136          1.13        75.78
-                     1                      187      1323         12.47        88.26
-                     NA                      24      1347          1.60        89.86
-            Female   0                       14      1361          0.93        90.79
-                     1                      121      1482          8.07        98.87
-                     NA                      17      1499          1.13       100.00</code></pre>
+|arm       |sex    |addNA.mdquality.s. | Freq| cumFreq| freqPercent| cumPercent|
+|:---------|:------|:------------------|----:|-------:|-----------:|----------:|
+|A: IFL    |Male   |0                  |   29|      29|        1.93|       1.93|
+|          |       |1                  |  214|     243|       14.28|      16.21|
+|          |       |NA                 |   34|     277|        2.27|      18.48|
+|          |Female |0                  |   12|     289|        0.80|      19.28|
+|          |       |1                  |  118|     407|        7.87|      27.15|
+|          |       |NA                 |   21|     428|        1.40|      28.55|
+|F: FOLFOX |Male   |0                  |   31|     459|        2.07|      30.62|
+|          |       |1                  |  285|     744|       19.01|      49.63|
+|          |       |NA                 |   95|     839|        6.34|      55.97|
+|          |Female |0                  |   21|     860|        1.40|      57.37|
+|          |       |1                  |  198|    1058|       13.21|      70.58|
+|          |       |NA                 |   61|    1119|        4.07|      74.65|
+|G: IROX   |Male   |0                  |   17|    1136|        1.13|      75.78|
+|          |       |1                  |  187|    1323|       12.47|      88.26|
+|          |       |NA                 |   24|    1347|        1.60|      89.86|
+|          |Female |0                  |   14|    1361|        0.93|      90.79|
+|          |       |1                  |  121|    1482|        8.07|      98.87|
+|          |       |NA                 |   17|    1499|        1.13|     100.00|</code></pre>
+<p>One can also set NAs to an explicit value using <code>includeNA()</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(<span class="kw">freqlist</span>(<span class="op">~</span>arm <span class="op">+</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span><span class="kw">includeNA</span>(mdquality.s, <span class="st">&quot;Missing&quot;</span>), <span class="dt">data =</span> mockstudy))</code></pre></div>
+<pre><code>
+
+|arm       |sex    |includeNA.mdquality.s...Missing.. | Freq| cumFreq| freqPercent| cumPercent|
+|:---------|:------|:---------------------------------|----:|-------:|-----------:|----------:|
+|A: IFL    |Male   |0                                 |   29|      29|        1.93|       1.93|
+|          |       |1                                 |  214|     243|       14.28|      16.21|
+|          |       |Missing                           |   34|     277|        2.27|      18.48|
+|          |Female |0                                 |   12|     289|        0.80|      19.28|
+|          |       |1                                 |  118|     407|        7.87|      27.15|
+|          |       |Missing                           |   21|     428|        1.40|      28.55|
+|F: FOLFOX |Male   |0                                 |   31|     459|        2.07|      30.62|
+|          |       |1                                 |  285|     744|       19.01|      49.63|
+|          |       |Missing                           |   95|     839|        6.34|      55.97|
+|          |Female |0                                 |   21|     860|        1.40|      57.37|
+|          |       |1                                 |  198|    1058|       13.21|      70.58|
+|          |       |Missing                           |   61|    1119|        4.07|      74.65|
+|G: IROX   |Male   |0                                 |   17|    1136|        1.13|      75.78|
+|          |       |1                                 |  187|    1323|       12.47|      88.26|
+|          |       |Missing                           |   24|    1347|        1.60|      89.86|
+|          |Female |0                                 |   14|    1361|        0.93|      90.79|
+|          |       |1                                 |  121|    1482|        8.07|      98.87|
+|          |       |Missing                           |   17|    1499|        1.13|     100.00|</code></pre>
 </div>
 <div id="rounding-percentage-digits-or-changing-variable-names-for-printing" class="section level1">
 <h1>Rounding percentage digits or changing variable names for printing</h1>
@@ -2943,7 +2969,7 @@ arm         Male Female
   A: IFL      34     21
   F: FOLFOX   95     61
   G: IROX     24     17</code></pre>
-<p>Since the formula method of <code>freqlist()</code> uses <code>xtabs()</code>, NAs should be treated in the same way.</p>
+<p>Since the formula method of <code>freqlist()</code> uses <code>xtabs()</code>, NAs should be treated in the same way. <code>includeNA()</code> can also be helpful here for setting explicit NA values.</p>
 </div>
 <div id="table-dimname-names-dnn" class="section level2">
 <h2>Table dimname names (dnn)</h2>

@@ -69,7 +69,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">The tableby function</h1>
 <h4 class="author"><em>Beth Atkinson, Ethan Heinzen, Jason Sinnwell, Shannon McDonnell and Greg Dougherty</em></h4>
-<h4 class="date"><em>02 February, 2018</em></h4>
+<h4 class="date"><em>13 March, 2018</em></h4>
 
 
 <div id="TOC">
@@ -165,14 +165,14 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(tab1, <span class="dt">text=</span><span class="ot">TRUE</span>)</code></pre></div>
 <pre><code>## 
 ## 
-##                A: IFL (N=428)    F: FOLFOX (N=691)   G: IROX (N=380)   Total (N=1499)     p value
-## -------------  ----------------  ------------------  ----------------  ----------------  --------
-## sex                                                                                         0.190
-## -  Male        277 (64.7%)       411 (59.5%)         228 (60.0%)       916 (61.1%)               
-## -  Female      151 (35.3%)       280 (40.5%)         152 (40.0%)       583 (38.9%)               
-## Age in Years                                                                                0.614
-## -  Mean (SD)   59.673 (11.365)   60.301 (11.632)     59.763 (11.499)   59.985 (11.519)           
-## -  Range       27.000 - 88.000   19.000 - 88.000     26.000 - 85.000   19.000 - 88.000</code></pre>
+## |             |A: IFL (N=428)  |F: FOLFOX (N=691) |G: IROX (N=380) |Total (N=1499)  | p value|
+## |:------------|:---------------|:-----------------|:---------------|:---------------|-------:|
+## |sex          |                |                  |                |                |   0.190|
+## |-  Male      |277 (64.7%)     |411 (59.5%)       |228 (60.0%)     |916 (61.1%)     |        |
+## |-  Female    |151 (35.3%)     |280 (40.5%)       |152 (40.0%)     |583 (38.9%)     |        |
+## |Age in Years |                |                  |                |                |   0.614|
+## |-  Mean (SD) |59.673 (11.365) |60.301 (11.632)   |59.763 (11.499) |59.985 (11.519) |        |
+## |-  Range     |27.000 - 88.000 |19.000 - 88.000   |26.000 - 85.000 |19.000 - 88.000 |        |</code></pre>
 </div>
 <div id="pretty-rmarkdown-version-of-table" class="section level2">
 <h2>Pretty Rmarkdown version of table</h2>
@@ -181,7 +181,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <table>
 <thead>
 <tr class="header">
-<th></th>
+<th align="left"></th>
 <th align="left">A: IFL (N=428)</th>
 <th align="left">F: FOLFOX (N=691)</th>
 <th align="left">G: IROX (N=380)</th>
@@ -191,7 +191,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </thead>
 <tbody>
 <tr class="odd">
-<td><strong>sex</strong></td>
+<td align="left"><strong>sex</strong></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
@@ -199,7 +199,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <td align="right">0.190</td>
 </tr>
 <tr class="even">
-<td>   Male</td>
+<td align="left">   Male</td>
 <td align="left">277 (64.7%)</td>
 <td align="left">411 (59.5%)</td>
 <td align="left">228 (60.0%)</td>
@@ -207,7 +207,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <td align="right"></td>
 </tr>
 <tr class="odd">
-<td>   Female</td>
+<td align="left">   Female</td>
 <td align="left">151 (35.3%)</td>
 <td align="left">280 (40.5%)</td>
 <td align="left">152 (40.0%)</td>
@@ -215,7 +215,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <td align="right"></td>
 </tr>
 <tr class="even">
-<td><strong>Age in Years</strong></td>
+<td align="left"><strong>Age in Years</strong></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
@@ -223,7 +223,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <td align="right">0.614</td>
 </tr>
 <tr class="odd">
-<td>   Mean (SD)</td>
+<td align="left">   Mean (SD)</td>
 <td align="left">59.673 (11.365)</td>
 <td align="left">60.301 (11.632)</td>
 <td align="left">59.763 (11.499)</td>
@@ -231,7 +231,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <td align="right"></td>
 </tr>
 <tr class="even">
-<td>   Range</td>
+<td align="left">   Range</td>
 <td align="left">27.000 - 88.000</td>
 <td align="left">19.000 - 88.000</td>
 <td align="left">26.000 - 85.000</td>
@@ -318,7 +318,7 @@ tab1 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 <table>
 <thead>
 <tr class="header">
-<th></th>
+<th align="left"></th>
 <th align="left">A: IFL (N=428)</th>
 <th align="left">F: FOLFOX (N=691)</th>
 <th align="left">G: IROX (N=380)</th>
@@ -328,7 +328,7 @@ tab1 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 </thead>
 <tbody>
 <tr class="odd">
-<td><strong>Gender</strong></td>
+<td align="left"><strong>Gender</strong></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
@@ -336,7 +336,7 @@ tab1 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 <td align="right">0.190</td>
 </tr>
 <tr class="even">
-<td>   Male</td>
+<td align="left">   Male</td>
 <td align="left">277 (64.7%)</td>
 <td align="left">411 (59.5%)</td>
 <td align="left">228 (60.0%)</td>
@@ -344,7 +344,7 @@ tab1 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 <td align="right"></td>
 </tr>
 <tr class="odd">
-<td>   Female</td>
+<td align="left">   Female</td>
 <td align="left">151 (35.3%)</td>
 <td align="left">280 (40.5%)</td>
 <td align="left">152 (40.0%)</td>
@@ -352,7 +352,7 @@ tab1 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 <td align="right"></td>
 </tr>
 <tr class="even">
-<td><strong>Age in Years</strong></td>
+<td align="left"><strong>Age in Years</strong></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
@@ -360,7 +360,7 @@ tab1 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 <td align="right">0.614</td>
 </tr>
 <tr class="odd">
-<td>   Mean (SD)</td>
+<td align="left">   Mean (SD)</td>
 <td align="left">59.673 (11.365)</td>
 <td align="left">60.301 (11.632)</td>
 <td align="left">59.763 (11.499)</td>
@@ -368,7 +368,7 @@ tab1 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 <td align="right"></td>
 </tr>
 <tr class="even">
-<td>   Range</td>
+<td align="left">   Range</td>
 <td align="left">27.000 - 88.000</td>
 <td align="left">19.000 - 88.000</td>
 <td align="left">26.000 - 85.000</td>
@@ -385,7 +385,7 @@ tab1 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 <table>
 <thead>
 <tr class="header">
-<th></th>
+<th align="left"></th>
 <th align="left">A: IFL (N=428)</th>
 <th align="left">F: FOLFOX (N=691)</th>
 <th align="left">G: IROX (N=380)</th>
@@ -395,7 +395,7 @@ tab1 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 </thead>
 <tbody>
 <tr class="odd">
-<td><strong>Gender</strong></td>
+<td align="left"><strong>Gender</strong></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
@@ -403,7 +403,7 @@ tab1 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 <td align="right">0.190</td>
 </tr>
 <tr class="even">
-<td>   Male</td>
+<td align="left">   Male</td>
 <td align="left">277 (64.7%)</td>
 <td align="left">411 (59.5%)</td>
 <td align="left">228 (60.0%)</td>
@@ -411,7 +411,7 @@ tab1 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 <td align="right"></td>
 </tr>
 <tr class="odd">
-<td>   Female</td>
+<td align="left">   Female</td>
 <td align="left">151 (35.3%)</td>
 <td align="left">280 (40.5%)</td>
 <td align="left">152 (40.0%)</td>
@@ -419,7 +419,7 @@ tab1 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 <td align="right"></td>
 </tr>
 <tr class="even">
-<td><strong>Age, yrs</strong></td>
+<td align="left"><strong>Age, yrs</strong></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
@@ -427,7 +427,7 @@ tab1 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 <td align="right">0.614</td>
 </tr>
 <tr class="odd">
-<td>   Mean (SD)</td>
+<td align="left">   Mean (SD)</td>
 <td align="left">59.673 (11.365)</td>
 <td align="left">60.301 (11.632)</td>
 <td align="left">59.763 (11.499)</td>
@@ -435,7 +435,7 @@ tab1 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 <td align="right"></td>
 </tr>
 <tr class="even">
-<td>   Range</td>
+<td align="left">   Range</td>
 <td align="left">27.000 - 88.000</td>
 <td align="left">19.000 - 88.000</td>
 <td align="left">26.000 - 85.000</td>
@@ -450,7 +450,7 @@ tab1 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 <table>
 <thead>
 <tr class="header">
-<th></th>
+<th align="left"></th>
 <th align="left">A: IFL (N=428)</th>
 <th align="left">F: FOLFOX (N=691)</th>
 <th align="left">G: IROX (N=380)</th>
@@ -460,7 +460,7 @@ tab1 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 </thead>
 <tbody>
 <tr class="odd">
-<td><strong>SEX</strong></td>
+<td align="left"><strong>SEX</strong></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
@@ -468,7 +468,7 @@ tab1 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 <td align="right">0.190</td>
 </tr>
 <tr class="even">
-<td>   Male</td>
+<td align="left">   Male</td>
 <td align="left">277 (64.7%)</td>
 <td align="left">411 (59.5%)</td>
 <td align="left">228 (60.0%)</td>
@@ -476,7 +476,7 @@ tab1 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 <td align="right"></td>
 </tr>
 <tr class="odd">
-<td>   Female</td>
+<td align="left">   Female</td>
 <td align="left">151 (35.3%)</td>
 <td align="left">280 (40.5%)</td>
 <td align="left">152 (40.0%)</td>
@@ -484,7 +484,7 @@ tab1 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 <td align="right"></td>
 </tr>
 <tr class="even">
-<td><strong>Age, yrs</strong></td>
+<td align="left"><strong>Age, yrs</strong></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
@@ -492,7 +492,7 @@ tab1 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 <td align="right">0.614</td>
 </tr>
 <tr class="odd">
-<td>   Mean (SD)</td>
+<td align="left">   Mean (SD)</td>
 <td align="left">59.673 (11.365)</td>
 <td align="left">60.301 (11.632)</td>
 <td align="left">59.763 (11.499)</td>
@@ -500,7 +500,7 @@ tab1 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 <td align="right"></td>
 </tr>
 <tr class="even">
-<td>   Range</td>
+<td align="left">   Range</td>
 <td align="left">27.000 - 88.000</td>
 <td align="left">19.000 - 88.000</td>
 <td align="left">26.000 - 85.000</td>
@@ -521,7 +521,7 @@ tab1 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 <table>
 <thead>
 <tr class="header">
-<th></th>
+<th align="left"></th>
 <th align="left">A: IFL (N=428)</th>
 <th align="left">F: FOLFOX (N=691)</th>
 <th align="left">G: IROX (N=380)</th>
@@ -531,7 +531,7 @@ tab1 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 </thead>
 <tbody>
 <tr class="odd">
-<td><strong>Gender</strong></td>
+<td align="left"><strong>Gender</strong></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
@@ -539,7 +539,7 @@ tab1 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 <td align="right">0.190</td>
 </tr>
 <tr class="even">
-<td>   Male</td>
+<td align="left">   Male</td>
 <td align="left">277 (64.7%)</td>
 <td align="left">411 (59.5%)</td>
 <td align="left">228 (60.0%)</td>
@@ -547,7 +547,7 @@ tab1 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 <td align="right"></td>
 </tr>
 <tr class="odd">
-<td>   Female</td>
+<td align="left">   Female</td>
 <td align="left">151 (35.3%)</td>
 <td align="left">280 (40.5%)</td>
 <td align="left">152 (40.0%)</td>
@@ -555,7 +555,7 @@ tab1 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 <td align="right"></td>
 </tr>
 <tr class="even">
-<td><strong>Baseline Age (yrs)</strong></td>
+<td align="left"><strong>Baseline Age (yrs)</strong></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
@@ -563,7 +563,7 @@ tab1 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 <td align="right">0.614</td>
 </tr>
 <tr class="odd">
-<td>   Mean (SD)</td>
+<td align="left">   Mean (SD)</td>
 <td align="left">59.673 (11.365)</td>
 <td align="left">60.301 (11.632)</td>
 <td align="left">59.763 (11.499)</td>
@@ -571,7 +571,7 @@ tab1 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 <td align="right"></td>
 </tr>
 <tr class="even">
-<td>   Range</td>
+<td align="left">   Range</td>
 <td align="left">27.000 - 88.000</td>
 <td align="left">19.000 - 88.000</td>
 <td align="left">26.000 - 85.000</td>
@@ -594,7 +594,7 @@ tab2 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 <table>
 <thead>
 <tr class="header">
-<th></th>
+<th align="left"></th>
 <th align="left">A: IFL (N=428)</th>
 <th align="left">F: FOLFOX (N=691)</th>
 <th align="left">G: IROX (N=380)</th>
@@ -602,43 +602,43 @@ tab2 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 </thead>
 <tbody>
 <tr class="odd">
-<td><strong>Gender</strong></td>
+<td align="left"><strong>Gender</strong></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
 <tr class="even">
-<td>   Male</td>
+<td align="left">   Male</td>
 <td align="left">277 (64.7%)</td>
 <td align="left">411 (59.5%)</td>
 <td align="left">228 (60.0%)</td>
 </tr>
 <tr class="odd">
-<td>   Female</td>
+<td align="left">   Female</td>
 <td align="left">151 (35.3%)</td>
 <td align="left">280 (40.5%)</td>
 <td align="left">152 (40.0%)</td>
 </tr>
 <tr class="even">
-<td><strong>Age, yrs</strong></td>
+<td align="left"><strong>Age, yrs</strong></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
 <tr class="odd">
-<td>   Count</td>
+<td align="left">   Count</td>
 <td align="left">428</td>
 <td align="left">691</td>
 <td align="left">380</td>
 </tr>
 <tr class="even">
-<td>   Median</td>
+<td align="left">   Median</td>
 <td align="left">61.000</td>
 <td align="left">61.000</td>
 <td align="left">61.000</td>
 </tr>
 <tr class="odd">
-<td>   Q1,Q3</td>
+<td align="left">   Q1,Q3</td>
 <td align="left">53.000, 68.000</td>
 <td align="left">52.000, 69.000</td>
 <td align="left">52.000, 68.000</td>
@@ -652,7 +652,7 @@ tab2 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 <table>
 <thead>
 <tr class="header">
-<th></th>
+<th align="left"></th>
 <th align="left">A: IFL (N=428)</th>
 <th align="left">F: FOLFOX (N=691)</th>
 <th align="left">G: IROX (N=380)</th>
@@ -660,37 +660,37 @@ tab2 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 </thead>
 <tbody>
 <tr class="odd">
-<td><strong>Gender</strong></td>
+<td align="left"><strong>Gender</strong></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
 <tr class="even">
-<td>   Male</td>
+<td align="left">   Male</td>
 <td align="left">277 (64.7%)</td>
 <td align="left">411 (59.5%)</td>
 <td align="left">228 (60.0%)</td>
 </tr>
 <tr class="odd">
-<td>   Female</td>
+<td align="left">   Female</td>
 <td align="left">151 (35.3%)</td>
 <td align="left">280 (40.5%)</td>
 <td align="left">152 (40.0%)</td>
 </tr>
 <tr class="even">
-<td><strong>Age, yrs</strong></td>
+<td align="left"><strong>Age, yrs</strong></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
 <tr class="odd">
-<td>   median</td>
+<td align="left">   median</td>
 <td align="left">61.000</td>
 <td align="left">61.000</td>
 <td align="left">61.000</td>
 </tr>
 <tr class="even">
-<td>   Q1, Q3</td>
+<td align="left">   Q1, Q3</td>
 <td align="left">53.000, 68.000</td>
 <td align="left">52.000, 69.000</td>
 <td align="left">52.000, 68.000</td>
@@ -712,7 +712,7 @@ tab2 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 <table>
 <thead>
 <tr class="header">
-<th></th>
+<th align="left"></th>
 <th align="left">A: IFL (N=428)</th>
 <th align="left">F: FOLFOX (N=691)</th>
 <th align="left">G: IROX (N=380)</th>
@@ -722,7 +722,7 @@ tab2 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 </thead>
 <tbody>
 <tr class="odd">
-<td><strong>Age, yrs</strong></td>
+<td align="left"><strong>Age, yrs</strong></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
@@ -730,7 +730,7 @@ tab2 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 <td align="right">0.639</td>
 </tr>
 <tr class="even">
-<td>   Mean (SD)</td>
+<td align="left">   Mean (SD)</td>
 <td align="left">59.673 (11.365)</td>
 <td align="left">60.301 (11.632)</td>
 <td align="left">59.763 (11.499)</td>
@@ -738,7 +738,7 @@ tab2 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 <td align="right"></td>
 </tr>
 <tr class="odd">
-<td>   Range</td>
+<td align="left">   Range</td>
 <td align="left">27.000 - 88.000</td>
 <td align="left">19.000 - 88.000</td>
 <td align="left">26.000 - 85.000</td>
@@ -746,7 +746,7 @@ tab2 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 <td align="right"></td>
 </tr>
 <tr class="even">
-<td><strong>Body Mass Index (kg/m^2)</strong></td>
+<td align="left"><strong>Body Mass Index (kg/m^2)</strong></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
@@ -754,7 +754,7 @@ tab2 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 <td align="right">0.892</td>
 </tr>
 <tr class="odd">
-<td>   N-Miss</td>
+<td align="left">   N-Miss</td>
 <td align="left">9</td>
 <td align="left">20</td>
 <td align="left">4</td>
@@ -762,7 +762,7 @@ tab2 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 <td align="right"></td>
 </tr>
 <tr class="even">
-<td>   Mean (SD)</td>
+<td align="left">   Mean (SD)</td>
 <td align="left">27.290 (5.552)</td>
 <td align="left">27.210 (5.173)</td>
 <td align="left">27.106 (5.751)</td>
@@ -770,7 +770,7 @@ tab2 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 <td align="right"></td>
 </tr>
 <tr class="odd">
-<td>   Range</td>
+<td align="left">   Range</td>
 <td align="left">14.053 - 53.008</td>
 <td align="left">16.649 - 49.130</td>
 <td align="left">15.430 - 60.243</td>
@@ -778,7 +778,7 @@ tab2 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 <td align="right"></td>
 </tr>
 <tr class="even">
-<td><strong>ast</strong></td>
+<td align="left"><strong>ast</strong></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
@@ -786,7 +786,7 @@ tab2 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 <td align="right">0.039</td>
 </tr>
 <tr class="odd">
-<td>   N-Miss</td>
+<td align="left">   N-Miss</td>
 <td align="left">69</td>
 <td align="left">141</td>
 <td align="left">56</td>
@@ -794,7 +794,7 @@ tab2 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 <td align="right"></td>
 </tr>
 <tr class="even">
-<td>   Mean (SD)</td>
+<td align="left">   Mean (SD)</td>
 <td align="left">37.292 (28.036)</td>
 <td align="left">35.202 (26.659)</td>
 <td align="left">35.670 (25.807)</td>
@@ -802,7 +802,7 @@ tab2 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 <td align="right"></td>
 </tr>
 <tr class="odd">
-<td>   Range</td>
+<td align="left">   Range</td>
 <td align="left">10.000 - 205.000</td>
 <td align="left">7.000 - 174.000</td>
 <td align="left">5.000 - 176.000</td>
@@ -818,7 +818,7 @@ tab2 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 <table>
 <thead>
 <tr class="header">
-<th></th>
+<th align="left"></th>
 <th align="left">A: IFL (N=428)</th>
 <th align="left">F: FOLFOX (N=691)</th>
 <th align="left">G: IROX (N=380)</th>
@@ -828,7 +828,7 @@ tab2 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 </thead>
 <tbody>
 <tr class="odd">
-<td><strong>ast</strong></td>
+<td align="left"><strong>ast</strong></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
@@ -836,7 +836,7 @@ tab2 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 <td align="right">0.039</td>
 </tr>
 <tr class="even">
-<td>   N-Miss</td>
+<td align="left">   N-Miss</td>
 <td align="left">69</td>
 <td align="left">141</td>
 <td align="left">56</td>
@@ -844,7 +844,7 @@ tab2 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 <td align="right"></td>
 </tr>
 <tr class="odd">
-<td>   median</td>
+<td align="left">   median</td>
 <td align="left">29.000</td>
 <td align="left">25.500</td>
 <td align="left">27.000</td>
@@ -852,7 +852,7 @@ tab2 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 <td align="right"></td>
 </tr>
 <tr class="even">
-<td><strong>Age, yrs</strong></td>
+<td align="left"><strong>Age, yrs</strong></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
@@ -860,7 +860,7 @@ tab2 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 <td align="right">0.614</td>
 </tr>
 <tr class="odd">
-<td>   N</td>
+<td align="left">   N</td>
 <td align="left">428</td>
 <td align="left">691</td>
 <td align="left">380</td>
@@ -868,7 +868,7 @@ tab2 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 <td align="right"></td>
 </tr>
 <tr class="even">
-<td>   mean</td>
+<td align="left">   mean</td>
 <td align="left">59.7</td>
 <td align="left">60.3</td>
 <td align="left">59.8</td>
@@ -876,7 +876,7 @@ tab2 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 <td align="right"></td>
 </tr>
 <tr class="odd">
-<td><strong>Body Mass Index (kg/m^2)</strong></td>
+<td align="left"><strong>Body Mass Index (kg/m^2)</strong></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
@@ -884,7 +884,7 @@ tab2 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 <td align="right">0.641</td>
 </tr>
 <tr class="even">
-<td>   N-Miss</td>
+<td align="left">   N-Miss</td>
 <td align="left">9</td>
 <td align="left">20</td>
 <td align="left">4</td>
@@ -892,7 +892,7 @@ tab2 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 <td align="right"></td>
 </tr>
 <tr class="odd">
-<td>   median</td>
+<td align="left">   median</td>
 <td align="left">26.234</td>
 <td align="left">26.525</td>
 <td align="left">25.978</td>
@@ -940,49 +940,49 @@ tab.catsim &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <sp
 <table>
 <thead>
 <tr class="header">
-<th></th>
+<th align="left"></th>
 <th align="left">Overall (N=1499)</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td><strong>Body Mass Index (kg/m^2)</strong></td>
+<td align="left"><strong>Body Mass Index (kg/m^2)</strong></td>
 <td align="left"></td>
 </tr>
 <tr class="even">
-<td>   N-Miss</td>
+<td align="left">   N-Miss</td>
 <td align="left">33</td>
 </tr>
 <tr class="odd">
-<td>   Mean (SD)</td>
+<td align="left">   Mean (SD)</td>
 <td align="left">27.206 (5.432)</td>
 </tr>
 <tr class="even">
-<td>   Range</td>
+<td align="left">   Range</td>
 <td align="left">14.053 - 60.243</td>
 </tr>
 <tr class="odd">
-<td><strong>Gender</strong></td>
+<td align="left"><strong>Gender</strong></td>
 <td align="left"></td>
 </tr>
 <tr class="even">
-<td>   Male</td>
+<td align="left">   Male</td>
 <td align="left">916 (61.1%)</td>
 </tr>
 <tr class="odd">
-<td>   Female</td>
+<td align="left">   Female</td>
 <td align="left">583 (38.9%)</td>
 </tr>
 <tr class="even">
-<td><strong>Age, yrs</strong></td>
+<td align="left"><strong>Age, yrs</strong></td>
 <td align="left"></td>
 </tr>
 <tr class="odd">
-<td>   Mean (SD)</td>
+<td align="left">   Mean (SD)</td>
 <td align="left">59.985 (11.519)</td>
 </tr>
 <tr class="even">
-<td>   Range</td>
+<td align="left">   Range</td>
 <td align="left">19.000 - 88.000</td>
 </tr>
 </tbody>
@@ -994,7 +994,7 @@ tab.catsim &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <sp
 <table>
 <thead>
 <tr class="header">
-<th></th>
+<th align="left"></th>
 <th align="left">A: IFL (N=428)</th>
 <th align="left">F: FOLFOX (N=691)</th>
 <th align="left">G: IROX (N=380)</th>
@@ -1004,7 +1004,7 @@ tab.catsim &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <sp
 </thead>
 <tbody>
 <tr class="odd">
-<td><strong>ast</strong></td>
+<td align="left"><strong>ast</strong></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
@@ -1012,7 +1012,7 @@ tab.catsim &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <sp
 <td align="right">0.039</td>
 </tr>
 <tr class="even">
-<td>   N-Miss</td>
+<td align="left">   N-Miss</td>
 <td align="left">69</td>
 <td align="left">141</td>
 <td align="left">56</td>
@@ -1020,7 +1020,7 @@ tab.catsim &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <sp
 <td align="right"></td>
 </tr>
 <tr class="odd">
-<td>   median</td>
+<td align="left">   median</td>
 <td align="left">29.000</td>
 <td align="left">25.500</td>
 <td align="left">27.000</td>
@@ -1028,7 +1028,7 @@ tab.catsim &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <sp
 <td align="right"></td>
 </tr>
 <tr class="even">
-<td><strong>Age, yrs</strong></td>
+<td align="left"><strong>Age, yrs</strong></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
@@ -1036,7 +1036,7 @@ tab.catsim &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <sp
 <td align="right">0.614</td>
 </tr>
 <tr class="odd">
-<td>   N</td>
+<td align="left">   N</td>
 <td align="left">428</td>
 <td align="left">691</td>
 <td align="left">380</td>
@@ -1044,7 +1044,7 @@ tab.catsim &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <sp
 <td align="right"></td>
 </tr>
 <tr class="even">
-<td>   mean</td>
+<td align="left">   mean</td>
 <td align="left">59.7</td>
 <td align="left">60.3</td>
 <td align="left">59.8</td>
@@ -1052,7 +1052,7 @@ tab.catsim &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <sp
 <td align="right"></td>
 </tr>
 <tr class="odd">
-<td><strong>Body Mass Index (kg/m^2)</strong></td>
+<td align="left"><strong>Body Mass Index (kg/m^2)</strong></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
@@ -1060,7 +1060,7 @@ tab.catsim &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <sp
 <td align="right">0.641</td>
 </tr>
 <tr class="even">
-<td>   N-Miss</td>
+<td align="left">   N-Miss</td>
 <td align="left">9</td>
 <td align="left">20</td>
 <td align="left">4</td>
@@ -1068,7 +1068,7 @@ tab.catsim &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <sp
 <td align="right"></td>
 </tr>
 <tr class="odd">
-<td>   median</td>
+<td align="left">   median</td>
 <td align="left">26.234</td>
 <td align="left">26.525</td>
 <td align="left">25.978</td>
@@ -1111,7 +1111,7 @@ tab.catsim &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <sp
 <table>
 <thead>
 <tr class="header">
-<th></th>
+<th align="left"></th>
 <th align="left">Male (N=916)</th>
 <th align="left">Female (N=583)</th>
 <th align="left">Total (N=1499)</th>
@@ -1120,77 +1120,77 @@ tab.catsim &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <sp
 </thead>
 <tbody>
 <tr class="odd">
-<td><strong>age.ordnew</strong></td>
+<td align="left"><strong>age.ordnew</strong></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="right">0.040</td>
 </tr>
 <tr class="even">
-<td>   N-Miss</td>
+<td align="left">   N-Miss</td>
 <td align="left">0</td>
 <td align="left">1</td>
 <td align="left">1</td>
 <td align="right"></td>
 </tr>
 <tr class="odd">
-<td>   10-19</td>
+<td align="left">   10-19</td>
 <td align="left">1 (0.1%)</td>
 <td align="left">0 (0.0%)</td>
 <td align="left">1 (0.1%)</td>
 <td align="right"></td>
 </tr>
 <tr class="even">
-<td>   20-29</td>
+<td align="left">   20-29</td>
 <td align="left">8 (0.9%)</td>
 <td align="left">11 (1.9%)</td>
 <td align="left">19 (1.3%)</td>
 <td align="right"></td>
 </tr>
 <tr class="odd">
-<td>   30-39</td>
+<td align="left">   30-39</td>
 <td align="left">37 (4.0%)</td>
 <td align="left">30 (5.2%)</td>
 <td align="left">67 (4.5%)</td>
 <td align="right"></td>
 </tr>
 <tr class="even">
-<td>   40-49</td>
+<td align="left">   40-49</td>
 <td align="left">127 (13.9%)</td>
 <td align="left">83 (14.3%)</td>
 <td align="left">210 (14.0%)</td>
 <td align="right"></td>
 </tr>
 <tr class="odd">
-<td>   50-59</td>
+<td align="left">   50-59</td>
 <td align="left">257 (28.1%)</td>
 <td align="left">179 (30.8%)</td>
 <td align="left">436 (29.1%)</td>
 <td align="right"></td>
 </tr>
 <tr class="even">
-<td>   60-69</td>
+<td align="left">   60-69</td>
 <td align="left">297 (32.4%)</td>
 <td align="left">170 (29.2%)</td>
 <td align="left">467 (31.2%)</td>
 <td align="right"></td>
 </tr>
 <tr class="odd">
-<td>   70-79</td>
+<td align="left">   70-79</td>
 <td align="left">168 (18.3%)</td>
 <td align="left">100 (17.2%)</td>
 <td align="left">268 (17.9%)</td>
 <td align="right"></td>
 </tr>
 <tr class="even">
-<td>   80-89</td>
+<td align="left">   80-89</td>
 <td align="left">20 (2.2%)</td>
 <td align="left">9 (1.5%)</td>
 <td align="left">29 (1.9%)</td>
 <td align="right"></td>
 </tr>
 <tr class="odd">
-<td>   a</td>
+<td align="left">   a</td>
 <td align="left">1 (0.1%)</td>
 <td align="left">0 (0.0%)</td>
 <td align="left">1 (0.1%)</td>
@@ -1202,7 +1202,7 @@ tab.catsim &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <sp
 <table>
 <thead>
 <tr class="header">
-<th></th>
+<th align="left"></th>
 <th align="left">Male (N=916)</th>
 <th align="left">Female (N=583)</th>
 <th align="left">Total (N=1499)</th>
@@ -1211,63 +1211,63 @@ tab.catsim &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <sp
 </thead>
 <tbody>
 <tr class="odd">
-<td><strong>age.ord</strong></td>
+<td align="left"><strong>age.ord</strong></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="right">0.067</td>
 </tr>
 <tr class="even">
-<td>   10-19</td>
+<td align="left">   10-19</td>
 <td align="left">1 (0.1%)</td>
 <td align="left">0 (0.0%)</td>
 <td align="left">1 (0.1%)</td>
 <td align="right"></td>
 </tr>
 <tr class="odd">
-<td>   20-29</td>
+<td align="left">   20-29</td>
 <td align="left">8 (0.9%)</td>
 <td align="left">11 (1.9%)</td>
 <td align="left">19 (1.3%)</td>
 <td align="right"></td>
 </tr>
 <tr class="even">
-<td>   30-39</td>
+<td align="left">   30-39</td>
 <td align="left">37 (4.0%)</td>
 <td align="left">30 (5.1%)</td>
 <td align="left">67 (4.5%)</td>
 <td align="right"></td>
 </tr>
 <tr class="odd">
-<td>   40-49</td>
+<td align="left">   40-49</td>
 <td align="left">127 (13.9%)</td>
 <td align="left">83 (14.2%)</td>
 <td align="left">210 (14.0%)</td>
 <td align="right"></td>
 </tr>
 <tr class="even">
-<td>   50-59</td>
+<td align="left">   50-59</td>
 <td align="left">257 (28.1%)</td>
 <td align="left">179 (30.7%)</td>
 <td align="left">436 (29.1%)</td>
 <td align="right"></td>
 </tr>
 <tr class="odd">
-<td>   60-69</td>
+<td align="left">   60-69</td>
 <td align="left">298 (32.5%)</td>
 <td align="left">170 (29.2%)</td>
 <td align="left">468 (31.2%)</td>
 <td align="right"></td>
 </tr>
 <tr class="even">
-<td>   70-79</td>
+<td align="left">   70-79</td>
 <td align="left">168 (18.3%)</td>
 <td align="left">101 (17.3%)</td>
 <td align="left">269 (17.9%)</td>
 <td align="right"></td>
 </tr>
 <tr class="odd">
-<td>   80-89</td>
+<td align="left">   80-89</td>
 <td align="left">20 (2.2%)</td>
 <td align="left">9 (1.5%)</td>
 <td align="left">29 (1.9%)</td>
@@ -1298,7 +1298,7 @@ tab.catsim &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <sp
 <table>
 <thead>
 <tr class="header">
-<th></th>
+<th align="left"></th>
 <th align="left">Male (N=916)</th>
 <th align="left">Female (N=583)</th>
 <th align="left">Total (N=1499)</th>
@@ -1307,21 +1307,21 @@ tab.catsim &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <sp
 </thead>
 <tbody>
 <tr class="odd">
-<td><strong>Surv(fu.time, fu.stat)</strong></td>
+<td align="left"><strong>Surv(fu.time, fu.stat)</strong></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="right">0.975</td>
 </tr>
 <tr class="even">
-<td>   Events</td>
+<td align="left">   Events</td>
 <td align="left">829</td>
 <td align="left">527</td>
 <td align="left">1356</td>
 <td align="right"></td>
 </tr>
 <tr class="odd">
-<td>   Median Survival</td>
+<td align="left">   Median Survival</td>
 <td align="left">550.000</td>
 <td align="left">543.000</td>
 <td align="left">546.000</td>
@@ -1352,7 +1352,7 @@ tab.catsim &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <sp
 <table>
 <thead>
 <tr class="header">
-<th></th>
+<th align="left"></th>
 <th align="left">Male (N=916)</th>
 <th align="left">Female (N=583)</th>
 <th align="left">Total (N=1499)</th>
@@ -1361,77 +1361,77 @@ tab.catsim &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <sp
 </thead>
 <tbody>
 <tr class="odd">
-<td><strong>Surv(fu.time/365.25, fu.stat)</strong></td>
+<td align="left"><strong>Surv(fu.time/365.25, fu.stat)</strong></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="right">0.975</td>
 </tr>
 <tr class="even">
-<td>   time = 1</td>
+<td align="left">   time = 1</td>
 <td align="left">286 (68.7)</td>
 <td align="left">202 (65.3)</td>
 <td align="left">488 (67.4)</td>
 <td align="right"></td>
 </tr>
 <tr class="odd">
-<td>   time = 2</td>
+<td align="left">   time = 2</td>
 <td align="left">597 (34.4)</td>
 <td align="left">391 (32.8)</td>
 <td align="left">988 (33.7)</td>
 <td align="right"></td>
 </tr>
 <tr class="even">
-<td>   time = 3</td>
+<td align="left">   time = 3</td>
 <td align="left">748 (17.5)</td>
 <td align="left">481 (17.0)</td>
 <td align="left">1229 (17.3)</td>
 <td align="right"></td>
 </tr>
 <tr class="odd">
-<td>   time = 4</td>
+<td align="left">   time = 4</td>
 <td align="left">809 (9.4)</td>
 <td align="left">513 (10.9)</td>
 <td align="left">1322 (10.1)</td>
 <td align="right"></td>
 </tr>
 <tr class="even">
-<td>   time = 5</td>
+<td align="left">   time = 5</td>
 <td align="left">825 (6.3)</td>
 <td align="left">525 (7.4)</td>
 <td align="left">1350 (6.8)</td>
 <td align="right"></td>
 </tr>
 <tr class="odd">
-<td>   time = 1</td>
+<td align="left">   time = 1</td>
 <td align="left">626</td>
 <td align="left">380</td>
 <td align="left">1006</td>
 <td align="right"></td>
 </tr>
 <tr class="even">
-<td>   time = 2</td>
+<td align="left">   time = 2</td>
 <td align="left">309</td>
 <td align="left">190</td>
 <td align="left">499</td>
 <td align="right"></td>
 </tr>
 <tr class="odd">
-<td>   time = 3</td>
+<td align="left">   time = 3</td>
 <td align="left">152</td>
 <td align="left">95</td>
 <td align="left">247</td>
 <td align="right"></td>
 </tr>
 <tr class="even">
-<td>   time = 4</td>
+<td align="left">   time = 4</td>
 <td align="left">57</td>
 <td align="left">51</td>
 <td align="left">108</td>
 <td align="right"></td>
 </tr>
 <tr class="odd">
-<td>   time = 5</td>
+<td align="left">   time = 5</td>
 <td align="left">24</td>
 <td align="left">18</td>
 <td align="left">42</td>
@@ -1449,9 +1449,16 @@ mockstudy<span class="op">$</span>dtentry &lt;-<span class="st"> </span><span cl
                               <span class="dt">year=</span><span class="kw">sample</span>(<span class="dv">2005</span><span class="op">:</span><span class="dv">2009</span>,N,<span class="dt">replace=</span>T))
 <span class="kw">summary</span>(<span class="kw">tableby</span>(sex <span class="op">~</span><span class="st"> </span>dtentry, <span class="dt">data=</span>mockstudy))</code></pre></div>
 <table>
+<colgroup>
+<col width="23%"></col>
+<col width="22%"></col>
+<col width="22%"></col>
+<col width="22%"></col>
+<col width="8%"></col>
+</colgroup>
 <thead>
 <tr class="header">
-<th></th>
+<th align="left"></th>
 <th align="left">Male (N=916)</th>
 <th align="left">Female (N=583)</th>
 <th align="left">Total (N=1499)</th>
@@ -1460,28 +1467,28 @@ mockstudy<span class="op">$</span>dtentry &lt;-<span class="st"> </span><span cl
 </thead>
 <tbody>
 <tr class="odd">
-<td><strong>dtentry</strong></td>
+<td align="left"><strong>dtentry</strong></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="right">0.554</td>
 </tr>
 <tr class="even">
-<td>   N-Miss</td>
+<td align="left">   N-Miss</td>
 <td align="left">3</td>
 <td align="left">2</td>
 <td align="left">5</td>
 <td align="right"></td>
 </tr>
 <tr class="odd">
-<td>   median</td>
+<td align="left">   median</td>
 <td align="left">2007-06-16</td>
 <td align="left">2007-06-15</td>
 <td align="left">2007-06-15</td>
 <td align="right"></td>
 </tr>
 <tr class="even">
-<td>   Range</td>
+<td align="left">   Range</td>
 <td align="left">2005-01-03 - 2009-12-27</td>
 <td align="left">2005-01-01 - 2009-12-28</td>
 <td align="left">2005-01-01 - 2009-12-28</td>
@@ -1509,7 +1516,7 @@ RHS</code></pre></div>
 <table>
 <thead>
 <tr class="header">
-<th></th>
+<th align="left"></th>
 <th align="left">A: IFL (N=428)</th>
 <th align="left">F: FOLFOX (N=691)</th>
 <th align="left">G: IROX (N=380)</th>
@@ -1519,7 +1526,7 @@ RHS</code></pre></div>
 </thead>
 <tbody>
 <tr class="odd">
-<td><strong>ps</strong></td>
+<td align="left"><strong>ps</strong></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
@@ -1527,7 +1534,7 @@ RHS</code></pre></div>
 <td align="right">0.903</td>
 </tr>
 <tr class="even">
-<td>   N-Miss</td>
+<td align="left">   N-Miss</td>
 <td align="left">69</td>
 <td align="left">141</td>
 <td align="left">56</td>
@@ -1535,7 +1542,7 @@ RHS</code></pre></div>
 <td align="right"></td>
 </tr>
 <tr class="odd">
-<td>   Mean (SD)</td>
+<td align="left">   Mean (SD)</td>
 <td align="left">0.529 (0.597)</td>
 <td align="left">0.547 (0.595)</td>
 <td align="left">0.537 (0.606)</td>
@@ -1543,7 +1550,7 @@ RHS</code></pre></div>
 <td align="right"></td>
 </tr>
 <tr class="even">
-<td>   Range</td>
+<td align="left">   Range</td>
 <td align="left">0.000 - 2.000</td>
 <td align="left">0.000 - 2.000</td>
 <td align="left">0.000 - 2.000</td>
@@ -1551,7 +1558,7 @@ RHS</code></pre></div>
 <td align="right"></td>
 </tr>
 <tr class="odd">
-<td><strong>hgb</strong></td>
+<td align="left"><strong>hgb</strong></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
@@ -1559,7 +1566,7 @@ RHS</code></pre></div>
 <td align="right">0.639</td>
 </tr>
 <tr class="even">
-<td>   N-Miss</td>
+<td align="left">   N-Miss</td>
 <td align="left">69</td>
 <td align="left">141</td>
 <td align="left">56</td>
@@ -1567,7 +1574,7 @@ RHS</code></pre></div>
 <td align="right"></td>
 </tr>
 <tr class="odd">
-<td>   Mean (SD)</td>
+<td align="left">   Mean (SD)</td>
 <td align="left">12.276 (1.686)</td>
 <td align="left">12.381 (1.763)</td>
 <td align="left">12.373 (1.680)</td>
@@ -1575,7 +1582,7 @@ RHS</code></pre></div>
 <td align="right"></td>
 </tr>
 <tr class="even">
-<td>   Range</td>
+<td align="left">   Range</td>
 <td align="left">9.060 - 17.300</td>
 <td align="left">9.000 - 18.200</td>
 <td align="left">9.000 - 17.000</td>
@@ -1583,7 +1590,7 @@ RHS</code></pre></div>
 <td align="right"></td>
 </tr>
 <tr class="odd">
-<td><strong>Body Mass Index (kg/m^2)</strong></td>
+<td align="left"><strong>Body Mass Index (kg/m^2)</strong></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
@@ -1591,7 +1598,7 @@ RHS</code></pre></div>
 <td align="right">0.892</td>
 </tr>
 <tr class="even">
-<td>   N-Miss</td>
+<td align="left">   N-Miss</td>
 <td align="left">9</td>
 <td align="left">20</td>
 <td align="left">4</td>
@@ -1599,7 +1606,7 @@ RHS</code></pre></div>
 <td align="right"></td>
 </tr>
 <tr class="odd">
-<td>   Mean (SD)</td>
+<td align="left">   Mean (SD)</td>
 <td align="left">27.290 (5.552)</td>
 <td align="left">27.210 (5.173)</td>
 <td align="left">27.106 (5.751)</td>
@@ -1607,7 +1614,7 @@ RHS</code></pre></div>
 <td align="right"></td>
 </tr>
 <tr class="even">
-<td>   Range</td>
+<td align="left">   Range</td>
 <td align="left">14.053 - 53.008</td>
 <td align="left">16.649 - 49.130</td>
 <td align="left">15.430 - 60.243</td>
@@ -1629,7 +1636,7 @@ tmp2 &lt;-<span class="st"> </span><span class="kw">formulize</span>(<span class
 <table>
 <thead>
 <tr class="header">
-<th></th>
+<th align="left"></th>
 <th align="left">A: IFL (N=428)</th>
 <th align="left">F: FOLFOX (N=691)</th>
 <th align="left">G: IROX (N=380)</th>
@@ -1639,7 +1646,7 @@ tmp2 &lt;-<span class="st"> </span><span class="kw">formulize</span>(<span class
 </thead>
 <tbody>
 <tr class="odd">
-<td><strong>ps</strong></td>
+<td align="left"><strong>ps</strong></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
@@ -1647,7 +1654,7 @@ tmp2 &lt;-<span class="st"> </span><span class="kw">formulize</span>(<span class
 <td align="right">0.903</td>
 </tr>
 <tr class="even">
-<td>   N-Miss</td>
+<td align="left">   N-Miss</td>
 <td align="left">69</td>
 <td align="left">141</td>
 <td align="left">56</td>
@@ -1655,7 +1662,7 @@ tmp2 &lt;-<span class="st"> </span><span class="kw">formulize</span>(<span class
 <td align="right"></td>
 </tr>
 <tr class="odd">
-<td>   Mean (SD)</td>
+<td align="left">   Mean (SD)</td>
 <td align="left">0.529 (0.597)</td>
 <td align="left">0.547 (0.595)</td>
 <td align="left">0.537 (0.606)</td>
@@ -1663,7 +1670,7 @@ tmp2 &lt;-<span class="st"> </span><span class="kw">formulize</span>(<span class
 <td align="right"></td>
 </tr>
 <tr class="even">
-<td>   Range</td>
+<td align="left">   Range</td>
 <td align="left">0.000 - 2.000</td>
 <td align="left">0.000 - 2.000</td>
 <td align="left">0.000 - 2.000</td>
@@ -1671,7 +1678,7 @@ tmp2 &lt;-<span class="st"> </span><span class="kw">formulize</span>(<span class
 <td align="right"></td>
 </tr>
 <tr class="odd">
-<td><strong>hgb</strong></td>
+<td align="left"><strong>hgb</strong></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
@@ -1679,7 +1686,7 @@ tmp2 &lt;-<span class="st"> </span><span class="kw">formulize</span>(<span class
 <td align="right">0.639</td>
 </tr>
 <tr class="even">
-<td>   N-Miss</td>
+<td align="left">   N-Miss</td>
 <td align="left">69</td>
 <td align="left">141</td>
 <td align="left">56</td>
@@ -1687,7 +1694,7 @@ tmp2 &lt;-<span class="st"> </span><span class="kw">formulize</span>(<span class
 <td align="right"></td>
 </tr>
 <tr class="odd">
-<td>   Mean (SD)</td>
+<td align="left">   Mean (SD)</td>
 <td align="left">12.276 (1.686)</td>
 <td align="left">12.381 (1.763)</td>
 <td align="left">12.373 (1.680)</td>
@@ -1695,7 +1702,7 @@ tmp2 &lt;-<span class="st"> </span><span class="kw">formulize</span>(<span class
 <td align="right"></td>
 </tr>
 <tr class="even">
-<td>   Range</td>
+<td align="left">   Range</td>
 <td align="left">9.060 - 17.300</td>
 <td align="left">9.000 - 18.200</td>
 <td align="left">9.000 - 17.000</td>
@@ -1703,7 +1710,7 @@ tmp2 &lt;-<span class="st"> </span><span class="kw">formulize</span>(<span class
 <td align="right"></td>
 </tr>
 <tr class="odd">
-<td><strong>Body Mass Index (kg/m^2)</strong></td>
+<td align="left"><strong>Body Mass Index (kg/m^2)</strong></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
@@ -1711,7 +1718,7 @@ tmp2 &lt;-<span class="st"> </span><span class="kw">formulize</span>(<span class
 <td align="right">0.892</td>
 </tr>
 <tr class="even">
-<td>   N-Miss</td>
+<td align="left">   N-Miss</td>
 <td align="left">9</td>
 <td align="left">20</td>
 <td align="left">4</td>
@@ -1719,7 +1726,7 @@ tmp2 &lt;-<span class="st"> </span><span class="kw">formulize</span>(<span class
 <td align="right"></td>
 </tr>
 <tr class="odd">
-<td>   Mean (SD)</td>
+<td align="left">   Mean (SD)</td>
 <td align="left">27.290 (5.552)</td>
 <td align="left">27.210 (5.173)</td>
 <td align="left">27.106 (5.751)</td>
@@ -1727,7 +1734,7 @@ tmp2 &lt;-<span class="st"> </span><span class="kw">formulize</span>(<span class
 <td align="right"></td>
 </tr>
 <tr class="even">
-<td>   Range</td>
+<td align="left">   Range</td>
 <td align="left">14.053 - 53.008</td>
 <td align="left">16.649 - 49.130</td>
 <td align="left">15.430 - 60.243</td>
@@ -1758,7 +1765,7 @@ tmp2 &lt;-<span class="st"> </span><span class="kw">formulize</span>(<span class
 <table>
 <thead>
 <tr class="header">
-<th></th>
+<th align="left"></th>
 <th align="left">Male (N=333)</th>
 <th align="left">Female (N=224)</th>
 <th align="left">Total (N=557)</th>
@@ -1767,84 +1774,84 @@ tmp2 &lt;-<span class="st"> </span><span class="kw">formulize</span>(<span class
 </thead>
 <tbody>
 <tr class="odd">
-<td><strong>ps</strong></td>
+<td align="left"><strong>ps</strong></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="right">0.652</td>
 </tr>
 <tr class="even">
-<td>   N-Miss</td>
+<td align="left">   N-Miss</td>
 <td align="left">64</td>
 <td align="left">44</td>
 <td align="left">108</td>
 <td align="right"></td>
 </tr>
 <tr class="odd">
-<td>   Mean (SD)</td>
+<td align="left">   Mean (SD)</td>
 <td align="left">0.554 (0.600)</td>
 <td align="left">0.528 (0.602)</td>
 <td align="left">0.543 (0.600)</td>
 <td align="right"></td>
 </tr>
 <tr class="even">
-<td>   Range</td>
+<td align="left">   Range</td>
 <td align="left">0.000 - 2.000</td>
 <td align="left">0.000 - 2.000</td>
 <td align="left">0.000 - 2.000</td>
 <td align="right"></td>
 </tr>
 <tr class="odd">
-<td><strong>hgb</strong></td>
+<td align="left"><strong>hgb</strong></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="right">&lt; 0.001</td>
 </tr>
 <tr class="even">
-<td>   N-Miss</td>
+<td align="left">   N-Miss</td>
 <td align="left">64</td>
 <td align="left">44</td>
 <td align="left">108</td>
 <td align="right"></td>
 </tr>
 <tr class="odd">
-<td>   Mean (SD)</td>
+<td align="left">   Mean (SD)</td>
 <td align="left">12.720 (1.925)</td>
 <td align="left">12.063 (1.395)</td>
 <td align="left">12.457 (1.760)</td>
 <td align="right"></td>
 </tr>
 <tr class="even">
-<td>   Range</td>
+<td align="left">   Range</td>
 <td align="left">9.000 - 18.200</td>
 <td align="left">9.100 - 15.900</td>
 <td align="left">9.000 - 18.200</td>
 <td align="right"></td>
 </tr>
 <tr class="odd">
-<td><strong>bmi</strong></td>
+<td align="left"><strong>bmi</strong></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="right">0.650</td>
 </tr>
 <tr class="even">
-<td>   N-Miss</td>
+<td align="left">   N-Miss</td>
 <td align="left">9</td>
 <td align="left">6</td>
 <td align="left">15</td>
 <td align="right"></td>
 </tr>
 <tr class="odd">
-<td>   Mean (SD)</td>
+<td align="left">   Mean (SD)</td>
 <td align="left">27.539 (4.780)</td>
 <td align="left">27.337 (5.508)</td>
 <td align="left">27.458 (5.081)</td>
 <td align="right"></td>
 </tr>
 <tr class="even">
-<td>   Range</td>
+<td align="left">   Range</td>
 <td align="left">17.927 - 47.458</td>
 <td align="left">16.649 - 49.130</td>
 <td align="left">16.649 - 49.130</td>
@@ -1859,7 +1866,7 @@ tmp2 &lt;-<span class="st"> </span><span class="kw">formulize</span>(<span class
 <table>
 <thead>
 <tr class="header">
-<th></th>
+<th align="left"></th>
 <th align="left">Male (N=333)</th>
 <th align="left">Female (N=224)</th>
 <th align="left">Total (N=557)</th>
@@ -1868,84 +1875,84 @@ tmp2 &lt;-<span class="st"> </span><span class="kw">formulize</span>(<span class
 </thead>
 <tbody>
 <tr class="odd">
-<td><strong>ps</strong></td>
+<td align="left"><strong>ps</strong></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="right">0.652</td>
 </tr>
 <tr class="even">
-<td>   N-Miss</td>
+<td align="left">   N-Miss</td>
 <td align="left">64</td>
 <td align="left">44</td>
 <td align="left">108</td>
 <td align="right"></td>
 </tr>
 <tr class="odd">
-<td>   Mean (SD)</td>
+<td align="left">   Mean (SD)</td>
 <td align="left">0.554 (0.600)</td>
 <td align="left">0.528 (0.602)</td>
 <td align="left">0.543 (0.600)</td>
 <td align="right"></td>
 </tr>
 <tr class="even">
-<td>   Range</td>
+<td align="left">   Range</td>
 <td align="left">0.000 - 2.000</td>
 <td align="left">0.000 - 2.000</td>
 <td align="left">0.000 - 2.000</td>
 <td align="right"></td>
 </tr>
 <tr class="odd">
-<td><strong>hgb</strong></td>
+<td align="left"><strong>hgb</strong></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="right">&lt; 0.001</td>
 </tr>
 <tr class="even">
-<td>   N-Miss</td>
+<td align="left">   N-Miss</td>
 <td align="left">64</td>
 <td align="left">44</td>
 <td align="left">108</td>
 <td align="right"></td>
 </tr>
 <tr class="odd">
-<td>   Mean (SD)</td>
+<td align="left">   Mean (SD)</td>
 <td align="left">12.720 (1.925)</td>
 <td align="left">12.063 (1.395)</td>
 <td align="left">12.457 (1.760)</td>
 <td align="right"></td>
 </tr>
 <tr class="even">
-<td>   Range</td>
+<td align="left">   Range</td>
 <td align="left">9.000 - 18.200</td>
 <td align="left">9.100 - 15.900</td>
 <td align="left">9.000 - 18.200</td>
 <td align="right"></td>
 </tr>
 <tr class="odd">
-<td><strong>Body Mass Index (kg/m^2)</strong></td>
+<td align="left"><strong>Body Mass Index (kg/m^2)</strong></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="right">0.650</td>
 </tr>
 <tr class="even">
-<td>   N-Miss</td>
+<td align="left">   N-Miss</td>
 <td align="left">9</td>
 <td align="left">6</td>
 <td align="left">15</td>
 <td align="right"></td>
 </tr>
 <tr class="odd">
-<td>   Mean (SD)</td>
+<td align="left">   Mean (SD)</td>
 <td align="left">27.539 (4.780)</td>
 <td align="left">27.337 (5.508)</td>
 <td align="left">27.458 (5.081)</td>
 <td align="right"></td>
 </tr>
 <tr class="even">
-<td>   Range</td>
+<td align="left">   Range</td>
 <td align="left">17.927 - 47.458</td>
 <td align="left">16.649 - 49.130</td>
 <td align="left">16.649 - 49.130</td>
@@ -1965,7 +1972,7 @@ tmp2 &lt;-<span class="st"> </span><span class="kw">formulize</span>(<span class
 <table>
 <thead>
 <tr class="header">
-<th></th>
+<th align="left"></th>
 <th align="left">A: IFL (N=428)</th>
 <th align="left">F: FOLFOX (N=691)</th>
 <th align="left">G: IROX (N=380)</th>
@@ -1975,7 +1982,7 @@ tmp2 &lt;-<span class="st"> </span><span class="kw">formulize</span>(<span class
 </thead>
 <tbody>
 <tr class="odd">
-<td><strong>interaction(mdquality.s, sex)</strong></td>
+<td align="left"><strong>interaction(mdquality.s, sex)</strong></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
@@ -1983,7 +1990,7 @@ tmp2 &lt;-<span class="st"> </span><span class="kw">formulize</span>(<span class
 <td align="right">0.493</td>
 </tr>
 <tr class="even">
-<td>   N-Miss</td>
+<td align="left">   N-Miss</td>
 <td align="left">55</td>
 <td align="left">156</td>
 <td align="left">41</td>
@@ -1991,7 +1998,7 @@ tmp2 &lt;-<span class="st"> </span><span class="kw">formulize</span>(<span class
 <td align="right"></td>
 </tr>
 <tr class="odd">
-<td>   0.Male</td>
+<td align="left">   0.Male</td>
 <td align="left">29 (7.8%)</td>
 <td align="left">31 (5.8%)</td>
 <td align="left">17 (5.0%)</td>
@@ -1999,7 +2006,7 @@ tmp2 &lt;-<span class="st"> </span><span class="kw">formulize</span>(<span class
 <td align="right"></td>
 </tr>
 <tr class="even">
-<td>   1.Male</td>
+<td align="left">   1.Male</td>
 <td align="left">214 (57.4%)</td>
 <td align="left">285 (53.3%)</td>
 <td align="left">187 (55.2%)</td>
@@ -2007,7 +2014,7 @@ tmp2 &lt;-<span class="st"> </span><span class="kw">formulize</span>(<span class
 <td align="right"></td>
 </tr>
 <tr class="odd">
-<td>   0.Female</td>
+<td align="left">   0.Female</td>
 <td align="left">12 (3.2%)</td>
 <td align="left">21 (3.9%)</td>
 <td align="left">14 (4.1%)</td>
@@ -2015,7 +2022,7 @@ tmp2 &lt;-<span class="st"> </span><span class="kw">formulize</span>(<span class
 <td align="right"></td>
 </tr>
 <tr class="even">
-<td>   1.Female</td>
+<td align="left">   1.Female</td>
 <td align="left">118 (31.6%)</td>
 <td align="left">198 (37.0%)</td>
 <td align="left">121 (35.7%)</td>
@@ -2027,9 +2034,18 @@ tmp2 &lt;-<span class="st"> </span><span class="kw">formulize</span>(<span class
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## create a new grouping variable with combined levels of arm and sex
 <span class="kw">summary</span>(<span class="kw">tableby</span>(<span class="kw">interaction</span>(mdquality.s, sex) <span class="op">~</span><span class="st">  </span>age <span class="op">+</span><span class="st"> </span>bmi, <span class="dt">data=</span>mockstudy, <span class="dt">subset=</span>arm<span class="op">==</span><span class="st">&quot;F: FOLFOX&quot;</span>))</code></pre></div>
 <table>
+<colgroup>
+<col width="24%"></col>
+<col width="13%"></col>
+<col width="13%"></col>
+<col width="13%"></col>
+<col width="14%"></col>
+<col width="13%"></col>
+<col width="7%"></col>
+</colgroup>
 <thead>
 <tr class="header">
-<th></th>
+<th align="left"></th>
 <th align="left">0.Male (N=31)</th>
 <th align="left">1.Male (N=285)</th>
 <th align="left">0.Female (N=21)</th>
@@ -2040,7 +2056,7 @@ tmp2 &lt;-<span class="st"> </span><span class="kw">formulize</span>(<span class
 </thead>
 <tbody>
 <tr class="odd">
-<td><strong>Age, yrs</strong></td>
+<td align="left"><strong>Age, yrs</strong></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
@@ -2049,7 +2065,7 @@ tmp2 &lt;-<span class="st"> </span><span class="kw">formulize</span>(<span class
 <td align="right">0.190</td>
 </tr>
 <tr class="even">
-<td>   Mean (SD)</td>
+<td align="left">   Mean (SD)</td>
 <td align="left">63.065 (11.702)</td>
 <td align="left">60.653 (11.833)</td>
 <td align="left">60.810 (10.103)</td>
@@ -2058,7 +2074,7 @@ tmp2 &lt;-<span class="st"> </span><span class="kw">formulize</span>(<span class
 <td align="right"></td>
 </tr>
 <tr class="odd">
-<td>   Range</td>
+<td align="left">   Range</td>
 <td align="left">41.000 - 82.000</td>
 <td align="left">19.000 - 88.000</td>
 <td align="left">42.000 - 81.000</td>
@@ -2067,7 +2083,7 @@ tmp2 &lt;-<span class="st"> </span><span class="kw">formulize</span>(<span class
 <td align="right"></td>
 </tr>
 <tr class="even">
-<td><strong>Body Mass Index (kg/m^2)</strong></td>
+<td align="left"><strong>Body Mass Index (kg/m^2)</strong></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
@@ -2076,7 +2092,7 @@ tmp2 &lt;-<span class="st"> </span><span class="kw">formulize</span>(<span class
 <td align="right">0.894</td>
 </tr>
 <tr class="odd">
-<td>   N-Miss</td>
+<td align="left">   N-Miss</td>
 <td align="left">0</td>
 <td align="left">6</td>
 <td align="left">1</td>
@@ -2085,7 +2101,7 @@ tmp2 &lt;-<span class="st"> </span><span class="kw">formulize</span>(<span class
 <td align="right"></td>
 </tr>
 <tr class="even">
-<td>   Mean (SD)</td>
+<td align="left">   Mean (SD)</td>
 <td align="left">26.633 (5.094)</td>
 <td align="left">27.387 (4.704)</td>
 <td align="left">27.359 (4.899)</td>
@@ -2094,7 +2110,7 @@ tmp2 &lt;-<span class="st"> </span><span class="kw">formulize</span>(<span class
 <td align="right"></td>
 </tr>
 <tr class="odd">
-<td>   Range</td>
+<td align="left">   Range</td>
 <td align="left">20.177 - 41.766</td>
 <td align="left">17.927 - 47.458</td>
 <td align="left">19.801 - 39.369</td>
@@ -2114,7 +2130,7 @@ tmp2 &lt;-<span class="st"> </span><span class="kw">formulize</span>(<span class
 <table>
 <thead>
 <tr class="header">
-<th></th>
+<th align="left"></th>
 <th align="left">A: IFL (N=428)</th>
 <th align="left">F: FOLFOX (N=691)</th>
 <th align="left">G: IROX (N=380)</th>
@@ -2124,7 +2140,7 @@ tmp2 &lt;-<span class="st"> </span><span class="kw">formulize</span>(<span class
 </thead>
 <tbody>
 <tr class="odd">
-<td><strong>Age, yrs</strong></td>
+<td align="left"><strong>Age, yrs</strong></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
@@ -2132,7 +2148,7 @@ tmp2 &lt;-<span class="st"> </span><span class="kw">formulize</span>(<span class
 <td align="right">0.614</td>
 </tr>
 <tr class="even">
-<td>   Mean (SD)</td>
+<td align="left">   Mean (SD)</td>
 <td align="left">5.967 (1.136)</td>
 <td align="left">6.030 (1.163)</td>
 <td align="left">5.976 (1.150)</td>
@@ -2140,7 +2156,7 @@ tmp2 &lt;-<span class="st"> </span><span class="kw">formulize</span>(<span class
 <td align="right"></td>
 </tr>
 <tr class="odd">
-<td>   Range</td>
+<td align="left">   Range</td>
 <td align="left">2.700 - 8.800</td>
 <td align="left">1.900 - 8.800</td>
 <td align="left">2.600 - 8.500</td>
@@ -2148,7 +2164,7 @@ tmp2 &lt;-<span class="st"> </span><span class="kw">formulize</span>(<span class
 <td align="right"></td>
 </tr>
 <tr class="even">
-<td><strong>Body Mass Index (kg/m^2)</strong></td>
+<td align="left"><strong>Body Mass Index (kg/m^2)</strong></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
@@ -2156,7 +2172,7 @@ tmp2 &lt;-<span class="st"> </span><span class="kw">formulize</span>(<span class
 <td align="right">0.811</td>
 </tr>
 <tr class="odd">
-<td>   N-Miss</td>
+<td align="left">   N-Miss</td>
 <td align="left">9</td>
 <td align="left">20</td>
 <td align="left">4</td>
@@ -2164,7 +2180,7 @@ tmp2 &lt;-<span class="st"> </span><span class="kw">formulize</span>(<span class
 <td align="right"></td>
 </tr>
 <tr class="even">
-<td>   Mean (SD)</td>
+<td align="left">   Mean (SD)</td>
 <td align="left">3.287 (0.197)</td>
 <td align="left">3.286 (0.183)</td>
 <td align="left">3.279 (0.200)</td>
@@ -2172,7 +2188,7 @@ tmp2 &lt;-<span class="st"> </span><span class="kw">formulize</span>(<span class
 <td align="right"></td>
 </tr>
 <tr class="odd">
-<td>   Range</td>
+<td align="left">   Range</td>
 <td align="left">2.643 - 3.970</td>
 <td align="left">2.812 - 3.894</td>
 <td align="left">2.736 - 4.098</td>
@@ -2180,7 +2196,7 @@ tmp2 &lt;-<span class="st"> </span><span class="kw">formulize</span>(<span class
 <td align="right"></td>
 </tr>
 <tr class="even">
-<td><strong>factor(mdquality.s, levels = 0:1, labels = c(“N”, “Y”))</strong></td>
+<td align="left"><strong>factor(mdquality.s, levels = 0:1, labels = c(“N”, “Y”))</strong></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
@@ -2188,7 +2204,7 @@ tmp2 &lt;-<span class="st"> </span><span class="kw">formulize</span>(<span class
 <td align="right">0.694</td>
 </tr>
 <tr class="odd">
-<td>   N-Miss</td>
+<td align="left">   N-Miss</td>
 <td align="left">55</td>
 <td align="left">156</td>
 <td align="left">41</td>
@@ -2196,7 +2212,7 @@ tmp2 &lt;-<span class="st"> </span><span class="kw">formulize</span>(<span class
 <td align="right"></td>
 </tr>
 <tr class="even">
-<td>   N</td>
+<td align="left">   N</td>
 <td align="left">41 (11.0%)</td>
 <td align="left">52 (9.7%)</td>
 <td align="left">31 (9.1%)</td>
@@ -2204,7 +2220,7 @@ tmp2 &lt;-<span class="st"> </span><span class="kw">formulize</span>(<span class
 <td align="right"></td>
 </tr>
 <tr class="odd">
-<td>   Y</td>
+<td align="left">   Y</td>
 <td align="left">332 (89.0%)</td>
 <td align="left">483 (90.3%)</td>
 <td align="left">308 (90.9%)</td>
@@ -2237,7 +2253,7 @@ tmp2 &lt;-<span class="st"> </span><span class="kw">formulize</span>(<span class
 <table>
 <thead>
 <tr class="header">
-<th></th>
+<th align="left"></th>
 <th align="left">A: IFL (N=428)</th>
 <th align="left">F: FOLFOX (N=691)</th>
 <th align="left">G: IROX (N=380)</th>
@@ -2247,7 +2263,7 @@ tmp2 &lt;-<span class="st"> </span><span class="kw">formulize</span>(<span class
 </thead>
 <tbody>
 <tr class="odd">
-<td><strong>Age per 10 yrs</strong></td>
+<td align="left"><strong>Age per 10 yrs</strong></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
@@ -2255,7 +2271,7 @@ tmp2 &lt;-<span class="st"> </span><span class="kw">formulize</span>(<span class
 <td align="right">0.614</td>
 </tr>
 <tr class="even">
-<td>   Mean (SD)</td>
+<td align="left">   Mean (SD)</td>
 <td align="left">5.967 (1.136)</td>
 <td align="left">6.030 (1.163)</td>
 <td align="left">5.976 (1.150)</td>
@@ -2263,7 +2279,7 @@ tmp2 &lt;-<span class="st"> </span><span class="kw">formulize</span>(<span class
 <td align="right"></td>
 </tr>
 <tr class="odd">
-<td>   Range</td>
+<td align="left">   Range</td>
 <td align="left">2.700 - 8.800</td>
 <td align="left">1.900 - 8.800</td>
 <td align="left">2.600 - 8.500</td>
@@ -2271,7 +2287,7 @@ tmp2 &lt;-<span class="st"> </span><span class="kw">formulize</span>(<span class
 <td align="right"></td>
 </tr>
 <tr class="even">
-<td><strong>log(BMI)</strong></td>
+<td align="left"><strong>log(BMI)</strong></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
@@ -2279,7 +2295,7 @@ tmp2 &lt;-<span class="st"> </span><span class="kw">formulize</span>(<span class
 <td align="right">0.811</td>
 </tr>
 <tr class="odd">
-<td>   N-Miss</td>
+<td align="left">   N-Miss</td>
 <td align="left">9</td>
 <td align="left">20</td>
 <td align="left">4</td>
@@ -2287,7 +2303,7 @@ tmp2 &lt;-<span class="st"> </span><span class="kw">formulize</span>(<span class
 <td align="right"></td>
 </tr>
 <tr class="even">
-<td>   Mean (SD)</td>
+<td align="left">   Mean (SD)</td>
 <td align="left">3.287 (0.197)</td>
 <td align="left">3.286 (0.183)</td>
 <td align="left">3.279 (0.200)</td>
@@ -2295,7 +2311,7 @@ tmp2 &lt;-<span class="st"> </span><span class="kw">formulize</span>(<span class
 <td align="right"></td>
 </tr>
 <tr class="odd">
-<td>   Range</td>
+<td align="left">   Range</td>
 <td align="left">2.643 - 3.970</td>
 <td align="left">2.812 - 3.894</td>
 <td align="left">2.736 - 4.098</td>
@@ -2303,7 +2319,7 @@ tmp2 &lt;-<span class="st"> </span><span class="kw">formulize</span>(<span class
 <td align="right"></td>
 </tr>
 <tr class="even">
-<td><strong>MD Quality</strong></td>
+<td align="left"><strong>MD Quality</strong></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
@@ -2311,7 +2327,7 @@ tmp2 &lt;-<span class="st"> </span><span class="kw">formulize</span>(<span class
 <td align="right">0.694</td>
 </tr>
 <tr class="odd">
-<td>   N-Miss</td>
+<td align="left">   N-Miss</td>
 <td align="left">55</td>
 <td align="left">156</td>
 <td align="left">41</td>
@@ -2319,7 +2335,7 @@ tmp2 &lt;-<span class="st"> </span><span class="kw">formulize</span>(<span class
 <td align="right"></td>
 </tr>
 <tr class="even">
-<td>   N</td>
+<td align="left">   N</td>
 <td align="left">41 (11.0%)</td>
 <td align="left">52 (9.7%)</td>
 <td align="left">31 (9.1%)</td>
@@ -2327,7 +2343,7 @@ tmp2 &lt;-<span class="st"> </span><span class="kw">formulize</span>(<span class
 <td align="right"></td>
 </tr>
 <tr class="odd">
-<td>   Y</td>
+<td align="left">   Y</td>
 <td align="left">332 (89.0%)</td>
 <td align="left">483 (90.3%)</td>
 <td align="left">308 (90.9%)</td>
@@ -2343,7 +2359,7 @@ tmp2 &lt;-<span class="st"> </span><span class="kw">formulize</span>(<span class
 <table>
 <thead>
 <tr class="header">
-<th></th>
+<th align="left"></th>
 <th align="left">A: IFL (N=428)</th>
 <th align="left">F: FOLFOX (N=691)</th>
 <th align="left">G: IROX (N=380)</th>
@@ -2353,7 +2369,7 @@ tmp2 &lt;-<span class="st"> </span><span class="kw">formulize</span>(<span class
 </thead>
 <tbody>
 <tr class="odd">
-<td><strong>mdquality.s</strong></td>
+<td align="left"><strong>mdquality.s</strong></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
@@ -2361,7 +2377,7 @@ tmp2 &lt;-<span class="st"> </span><span class="kw">formulize</span>(<span class
 <td align="right">0.695</td>
 </tr>
 <tr class="even">
-<td>   N-Miss</td>
+<td align="left">   N-Miss</td>
 <td align="left">55</td>
 <td align="left">156</td>
 <td align="left">41</td>
@@ -2369,7 +2385,7 @@ tmp2 &lt;-<span class="st"> </span><span class="kw">formulize</span>(<span class
 <td align="right"></td>
 </tr>
 <tr class="odd">
-<td>   Mean (SD)</td>
+<td align="left">   Mean (SD)</td>
 <td align="left">0.890 (0.313)</td>
 <td align="left">0.903 (0.297)</td>
 <td align="left">0.909 (0.289)</td>
@@ -2377,7 +2393,7 @@ tmp2 &lt;-<span class="st"> </span><span class="kw">formulize</span>(<span class
 <td align="right"></td>
 </tr>
 <tr class="even">
-<td>   Range</td>
+<td align="left">   Range</td>
 <td align="left">0.000 - 1.000</td>
 <td align="left">0.000 - 1.000</td>
 <td align="left">0.000 - 1.000</td>
@@ -2391,7 +2407,7 @@ tmp2 &lt;-<span class="st"> </span><span class="kw">formulize</span>(<span class
 <table>
 <thead>
 <tr class="header">
-<th></th>
+<th align="left"></th>
 <th align="left">A: IFL (N=428)</th>
 <th align="left">F: FOLFOX (N=691)</th>
 <th align="left">G: IROX (N=380)</th>
@@ -2401,7 +2417,7 @@ tmp2 &lt;-<span class="st"> </span><span class="kw">formulize</span>(<span class
 </thead>
 <tbody>
 <tr class="odd">
-<td><strong>mdquality.s</strong></td>
+<td align="left"><strong>mdquality.s</strong></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
@@ -2409,7 +2425,7 @@ tmp2 &lt;-<span class="st"> </span><span class="kw">formulize</span>(<span class
 <td align="right">0.694</td>
 </tr>
 <tr class="even">
-<td>   N-Miss</td>
+<td align="left">   N-Miss</td>
 <td align="left">55</td>
 <td align="left">156</td>
 <td align="left">41</td>
@@ -2417,7 +2433,7 @@ tmp2 &lt;-<span class="st"> </span><span class="kw">formulize</span>(<span class
 <td align="right"></td>
 </tr>
 <tr class="odd">
-<td>   0</td>
+<td align="left">   0</td>
 <td align="left">41 (11.0%)</td>
 <td align="left">52 (9.7%)</td>
 <td align="left">31 (9.1%)</td>
@@ -2425,7 +2441,7 @@ tmp2 &lt;-<span class="st"> </span><span class="kw">formulize</span>(<span class
 <td align="right"></td>
 </tr>
 <tr class="even">
-<td>   1</td>
+<td align="left">   1</td>
 <td align="left">332 (89.0%)</td>
 <td align="left">483 (90.3%)</td>
 <td align="left">308 (90.9%)</td>
@@ -2440,10 +2456,18 @@ tmp2 &lt;-<span class="st"> </span><span class="kw">formulize</span>(<span class
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mytab &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span class="op">~</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span>alk.phos <span class="op">+</span><span class="st"> </span>age, <span class="dt">data=</span>mockstudy)
 mytab2 &lt;-<span class="st"> </span>mytab[<span class="kw">c</span>(<span class="st">'age'</span>,<span class="st">'sex'</span>,<span class="st">'alk.phos'</span>)]
 <span class="kw">summary</span>(mytab2)</code></pre></div>
-<table>
+<table style="width:100%;">
+<colgroup>
+<col width="25%"></col>
+<col width="16%"></col>
+<col width="16%"></col>
+<col width="16%"></col>
+<col width="16%"></col>
+<col width="7%"></col>
+</colgroup>
 <thead>
 <tr class="header">
-<th></th>
+<th align="left"></th>
 <th align="left">A: IFL (N=428)</th>
 <th align="left">F: FOLFOX (N=691)</th>
 <th align="left">G: IROX (N=380)</th>
@@ -2453,7 +2477,7 @@ mytab2 &lt;-<span class="st"> </span>mytab[<span class="kw">c</span>(<span class
 </thead>
 <tbody>
 <tr class="odd">
-<td><strong>Age, yrs</strong></td>
+<td align="left"><strong>Age, yrs</strong></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
@@ -2461,7 +2485,7 @@ mytab2 &lt;-<span class="st"> </span>mytab[<span class="kw">c</span>(<span class
 <td align="right">0.614</td>
 </tr>
 <tr class="even">
-<td>   Mean (SD)</td>
+<td align="left">   Mean (SD)</td>
 <td align="left">59.673 (11.365)</td>
 <td align="left">60.301 (11.632)</td>
 <td align="left">59.763 (11.499)</td>
@@ -2469,7 +2493,7 @@ mytab2 &lt;-<span class="st"> </span>mytab[<span class="kw">c</span>(<span class
 <td align="right"></td>
 </tr>
 <tr class="odd">
-<td>   Range</td>
+<td align="left">   Range</td>
 <td align="left">27.000 - 88.000</td>
 <td align="left">19.000 - 88.000</td>
 <td align="left">26.000 - 85.000</td>
@@ -2477,7 +2501,7 @@ mytab2 &lt;-<span class="st"> </span>mytab[<span class="kw">c</span>(<span class
 <td align="right"></td>
 </tr>
 <tr class="even">
-<td><strong>Gender</strong></td>
+<td align="left"><strong>Gender</strong></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
@@ -2485,7 +2509,7 @@ mytab2 &lt;-<span class="st"> </span>mytab[<span class="kw">c</span>(<span class
 <td align="right">0.190</td>
 </tr>
 <tr class="odd">
-<td>   Male</td>
+<td align="left">   Male</td>
 <td align="left">277 (64.7%)</td>
 <td align="left">411 (59.5%)</td>
 <td align="left">228 (60.0%)</td>
@@ -2493,7 +2517,7 @@ mytab2 &lt;-<span class="st"> </span>mytab[<span class="kw">c</span>(<span class
 <td align="right"></td>
 </tr>
 <tr class="even">
-<td>   Female</td>
+<td align="left">   Female</td>
 <td align="left">151 (35.3%)</td>
 <td align="left">280 (40.5%)</td>
 <td align="left">152 (40.0%)</td>
@@ -2501,7 +2525,7 @@ mytab2 &lt;-<span class="st"> </span>mytab[<span class="kw">c</span>(<span class
 <td align="right"></td>
 </tr>
 <tr class="odd">
-<td><strong>alk.phos</strong></td>
+<td align="left"><strong>alk.phos</strong></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
@@ -2509,7 +2533,7 @@ mytab2 &lt;-<span class="st"> </span>mytab[<span class="kw">c</span>(<span class
 <td align="right">0.226</td>
 </tr>
 <tr class="even">
-<td>   N-Miss</td>
+<td align="left">   N-Miss</td>
 <td align="left">69</td>
 <td align="left">141</td>
 <td align="left">56</td>
@@ -2517,7 +2541,7 @@ mytab2 &lt;-<span class="st"> </span>mytab[<span class="kw">c</span>(<span class
 <td align="right"></td>
 </tr>
 <tr class="odd">
-<td>   Mean (SD)</td>
+<td align="left">   Mean (SD)</td>
 <td align="left">175.577 (128.608)</td>
 <td align="left">161.984 (121.978)</td>
 <td align="left">173.506 (138.564)</td>
@@ -2525,7 +2549,7 @@ mytab2 &lt;-<span class="st"> </span>mytab[<span class="kw">c</span>(<span class
 <td align="right"></td>
 </tr>
 <tr class="even">
-<td>   Range</td>
+<td align="left">   Range</td>
 <td align="left">11.000 - 858.000</td>
 <td align="left">10.000 - 1014.000</td>
 <td align="left">7.000 - 982.000</td>
@@ -2538,7 +2562,7 @@ mytab2 &lt;-<span class="st"> </span>mytab[<span class="kw">c</span>(<span class
 <table>
 <thead>
 <tr class="header">
-<th></th>
+<th align="left"></th>
 <th align="left">A: IFL (N=428)</th>
 <th align="left">F: FOLFOX (N=691)</th>
 <th align="left">G: IROX (N=380)</th>
@@ -2548,7 +2572,7 @@ mytab2 &lt;-<span class="st"> </span>mytab[<span class="kw">c</span>(<span class
 </thead>
 <tbody>
 <tr class="odd">
-<td><strong>Age, yrs</strong></td>
+<td align="left"><strong>Age, yrs</strong></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
@@ -2556,7 +2580,7 @@ mytab2 &lt;-<span class="st"> </span>mytab[<span class="kw">c</span>(<span class
 <td align="right">0.614</td>
 </tr>
 <tr class="even">
-<td>   Mean (SD)</td>
+<td align="left">   Mean (SD)</td>
 <td align="left">59.67 (11.36)</td>
 <td align="left">60.30 (11.63)</td>
 <td align="left">59.76 (11.50)</td>
@@ -2564,7 +2588,7 @@ mytab2 &lt;-<span class="st"> </span>mytab[<span class="kw">c</span>(<span class
 <td align="right"></td>
 </tr>
 <tr class="odd">
-<td>   Range</td>
+<td align="left">   Range</td>
 <td align="left">27.00 - 88.00</td>
 <td align="left">19.00 - 88.00</td>
 <td align="left">26.00 - 85.00</td>
@@ -2572,7 +2596,7 @@ mytab2 &lt;-<span class="st"> </span>mytab[<span class="kw">c</span>(<span class
 <td align="right"></td>
 </tr>
 <tr class="even">
-<td><strong>Gender</strong></td>
+<td align="left"><strong>Gender</strong></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
@@ -2580,7 +2604,7 @@ mytab2 &lt;-<span class="st"> </span>mytab[<span class="kw">c</span>(<span class
 <td align="right">0.190</td>
 </tr>
 <tr class="odd">
-<td>   Male</td>
+<td align="left">   Male</td>
 <td align="left">277 (64.7%)</td>
 <td align="left">411 (59.5%)</td>
 <td align="left">228 (60.0%)</td>
@@ -2588,7 +2612,7 @@ mytab2 &lt;-<span class="st"> </span>mytab[<span class="kw">c</span>(<span class
 <td align="right"></td>
 </tr>
 <tr class="even">
-<td>   Female</td>
+<td align="left">   Female</td>
 <td align="left">151 (35.3%)</td>
 <td align="left">280 (40.5%)</td>
 <td align="left">152 (40.0%)</td>
@@ -2601,7 +2625,7 @@ mytab2 &lt;-<span class="st"> </span>mytab[<span class="kw">c</span>(<span class
 <table>
 <thead>
 <tr class="header">
-<th></th>
+<th align="left"></th>
 <th align="left">A: IFL (N=428)</th>
 <th align="left">F: FOLFOX (N=691)</th>
 <th align="left">G: IROX (N=380)</th>
@@ -2611,7 +2635,7 @@ mytab2 &lt;-<span class="st"> </span>mytab[<span class="kw">c</span>(<span class
 </thead>
 <tbody>
 <tr class="odd">
-<td><strong>Age, yrs</strong></td>
+<td align="left"><strong>Age, yrs</strong></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
@@ -2619,7 +2643,7 @@ mytab2 &lt;-<span class="st"> </span>mytab[<span class="kw">c</span>(<span class
 <td align="right">0.614</td>
 </tr>
 <tr class="even">
-<td>   Mean (SD)</td>
+<td align="left">   Mean (SD)</td>
 <td align="left">59.673 (11.365)</td>
 <td align="left">60.301 (11.632)</td>
 <td align="left">59.763 (11.499)</td>
@@ -2627,7 +2651,7 @@ mytab2 &lt;-<span class="st"> </span>mytab[<span class="kw">c</span>(<span class
 <td align="right"></td>
 </tr>
 <tr class="odd">
-<td>   Range</td>
+<td align="left">   Range</td>
 <td align="left">27.000 - 88.000</td>
 <td align="left">19.000 - 88.000</td>
 <td align="left">26.000 - 85.000</td>
@@ -2635,7 +2659,7 @@ mytab2 &lt;-<span class="st"> </span>mytab[<span class="kw">c</span>(<span class
 <td align="right"></td>
 </tr>
 <tr class="even">
-<td><strong>Gender</strong></td>
+<td align="left"><strong>Gender</strong></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
@@ -2643,7 +2667,7 @@ mytab2 &lt;-<span class="st"> </span>mytab[<span class="kw">c</span>(<span class
 <td align="right">0.190</td>
 </tr>
 <tr class="odd">
-<td>   Male</td>
+<td align="left">   Male</td>
 <td align="left">277 (64.7%)</td>
 <td align="left">411 (59.5%)</td>
 <td align="left">228 (60.0%)</td>
@@ -2651,7 +2675,7 @@ mytab2 &lt;-<span class="st"> </span>mytab[<span class="kw">c</span>(<span class
 <td align="right"></td>
 </tr>
 <tr class="even">
-<td>   Female</td>
+<td align="left">   Female</td>
 <td align="left">151 (35.3%)</td>
 <td align="left">280 (40.5%)</td>
 <td align="left">152 (40.0%)</td>
@@ -2684,7 +2708,7 @@ tab2 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 <table>
 <thead>
 <tr class="header">
-<th></th>
+<th align="left"></th>
 <th align="left">A: IFL (N=428)</th>
 <th align="left">F: FOLFOX (N=691)</th>
 <th align="left">G: IROX (N=380)</th>
@@ -2693,91 +2717,91 @@ tab2 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 </thead>
 <tbody>
 <tr class="odd">
-<td><strong>Gender</strong></td>
+<td align="left"><strong>Gender</strong></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="right">0.190</td>
 </tr>
 <tr class="even">
-<td>   Male</td>
+<td align="left">   Male</td>
 <td align="left">277 (64.7%)</td>
 <td align="left">411 (59.5%)</td>
 <td align="left">228 (60.0%)</td>
 <td align="right"></td>
 </tr>
 <tr class="odd">
-<td>   Female</td>
+<td align="left">   Female</td>
 <td align="left">151 (35.3%)</td>
 <td align="left">280 (40.5%)</td>
 <td align="left">152 (40.0%)</td>
 <td align="right"></td>
 </tr>
 <tr class="even">
-<td><strong>Age, yrs</strong></td>
+<td align="left"><strong>Age, yrs</strong></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="right">0.614</td>
 </tr>
 <tr class="odd">
-<td>   Mean (SD)</td>
+<td align="left">   Mean (SD)</td>
 <td align="left">59.673 (11.365)</td>
 <td align="left">60.301 (11.632)</td>
 <td align="left">59.763 (11.499)</td>
 <td align="right"></td>
 </tr>
 <tr class="even">
-<td><strong>hgb</strong></td>
+<td align="left"><strong>hgb</strong></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="right">0.570</td>
 </tr>
 <tr class="odd">
-<td>   N-Miss</td>
+<td align="left">   N-Miss</td>
 <td align="left">69</td>
 <td align="left">141</td>
 <td align="left">56</td>
 <td align="right"></td>
 </tr>
 <tr class="even">
-<td>   median</td>
+<td align="left">   median</td>
 <td align="left">12.100</td>
 <td align="left">12.200</td>
 <td align="left">12.400</td>
 <td align="right"></td>
 </tr>
 <tr class="odd">
-<td>   Q1, Q3</td>
+<td align="left">   Q1, Q3</td>
 <td align="left">11.000, 13.450</td>
 <td align="left">11.100, 13.600</td>
 <td align="left">11.175, 13.625</td>
 <td align="right"></td>
 </tr>
 <tr class="even">
-<td><strong>alk.phos</strong></td>
+<td align="left"><strong>alk.phos</strong></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="right">0.104</td>
 </tr>
 <tr class="odd">
-<td>   N-Miss</td>
+<td align="left">   N-Miss</td>
 <td align="left">69</td>
 <td align="left">141</td>
 <td align="left">56</td>
 <td align="right"></td>
 </tr>
 <tr class="even">
-<td>   median</td>
+<td align="left">   median</td>
 <td align="left">133.000</td>
 <td align="left">116.000</td>
 <td align="left">122.000</td>
 <td align="right"></td>
 </tr>
 <tr class="odd">
-<td>   Q1, Q3</td>
+<td align="left">   Q1, Q3</td>
 <td align="left">89.000, 217.000</td>
 <td align="left">85.000, 194.750</td>
 <td align="left">87.750, 210.250</td>
@@ -2795,7 +2819,7 @@ tab2 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 <caption>Demographics</caption>
 <thead>
 <tr class="header">
-<th></th>
+<th align="left"></th>
 <th align="left">A: IFL (N=428)</th>
 <th align="left">F: FOLFOX (N=691)</th>
 <th align="left">G: IROX (N=380)</th>
@@ -2805,7 +2829,7 @@ tab2 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 </thead>
 <tbody>
 <tr class="odd">
-<td><strong>Gender</strong></td>
+<td align="left"><strong>Gender</strong></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
@@ -2813,7 +2837,7 @@ tab2 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 <td align="right">0.190</td>
 </tr>
 <tr class="even">
-<td>   Male</td>
+<td align="left">   Male</td>
 <td align="left">277 (64.7%)</td>
 <td align="left">411 (59.5%)</td>
 <td align="left">228 (60.0%)</td>
@@ -2821,7 +2845,7 @@ tab2 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 <td align="right"></td>
 </tr>
 <tr class="odd">
-<td>   Female</td>
+<td align="left">   Female</td>
 <td align="left">151 (35.3%)</td>
 <td align="left">280 (40.5%)</td>
 <td align="left">152 (40.0%)</td>
@@ -2829,7 +2853,7 @@ tab2 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 <td align="right"></td>
 </tr>
 <tr class="even">
-<td><strong>Age, yrs</strong></td>
+<td align="left"><strong>Age, yrs</strong></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
@@ -2837,7 +2861,7 @@ tab2 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 <td align="right">0.614</td>
 </tr>
 <tr class="odd">
-<td>   Mean (SD)</td>
+<td align="left">   Mean (SD)</td>
 <td align="left">59.673 (11.365)</td>
 <td align="left">60.301 (11.632)</td>
 <td align="left">59.763 (11.499)</td>
@@ -2845,7 +2869,7 @@ tab2 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 <td align="right"></td>
 </tr>
 <tr class="even">
-<td>   Range</td>
+<td align="left">   Range</td>
 <td align="left">27.000 - 88.000</td>
 <td align="left">19.000 - 88.000</td>
 <td align="left">26.000 - 85.000</td>
@@ -2876,7 +2900,7 @@ tab2 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 <table>
 <thead>
 <tr class="header">
-<th></th>
+<th align="left"></th>
 <th align="left">Male (N=916)</th>
 <th align="left">Female (N=583)</th>
 <th align="right">p value</th>
@@ -2884,37 +2908,37 @@ tab2 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 </thead>
 <tbody>
 <tr class="odd">
-<td><strong>ast</strong></td>
+<td align="left"><strong>ast</strong></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="right">0.921</td>
 </tr>
 <tr class="even">
-<td>   N</td>
+<td align="left">   N</td>
 <td align="left">754</td>
 <td align="left">479</td>
 <td align="right"></td>
 </tr>
 <tr class="odd">
-<td>   median</td>
+<td align="left">   median</td>
 <td align="left">27.000</td>
 <td align="left">27.000</td>
 <td align="right"></td>
 </tr>
 <tr class="even">
-<td><strong>Age, yrs</strong></td>
+<td align="left"><strong>Age, yrs</strong></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="right">0.048</td>
 </tr>
 <tr class="odd">
-<td>   N</td>
+<td align="left">   N</td>
 <td align="left">916</td>
 <td align="left">583</td>
 <td align="right"></td>
 </tr>
 <tr class="even">
-<td>   median</td>
+<td align="left">   median</td>
 <td align="left">61.000</td>
 <td align="left">60.000</td>
 <td align="right"></td>
@@ -2927,7 +2951,7 @@ tab2 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 <table>
 <thead>
 <tr class="header">
-<th></th>
+<th align="left"></th>
 <th align="left">Male (N=916)</th>
 <th align="left">Female (N=583)</th>
 <th align="right">p value</th>
@@ -2935,37 +2959,37 @@ tab2 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 </thead>
 <tbody>
 <tr class="odd">
-<td><strong>ast</strong></td>
+<td align="left"><strong>ast</strong></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="right">0.921</td>
 </tr>
 <tr class="even">
-<td>   N-Miss</td>
+<td align="left">   N-Miss</td>
 <td align="left">162</td>
 <td align="left">104</td>
 <td align="right"></td>
 </tr>
 <tr class="odd">
-<td>   median</td>
+<td align="left">   median</td>
 <td align="left">27.000</td>
 <td align="left">27.000</td>
 <td align="right"></td>
 </tr>
 <tr class="even">
-<td><strong>Age, yrs</strong></td>
+<td align="left"><strong>Age, yrs</strong></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="right">0.048</td>
 </tr>
 <tr class="odd">
-<td>   N-Miss</td>
+<td align="left">   N-Miss</td>
 <td align="left">0</td>
 <td align="left">0</td>
 <td align="right"></td>
 </tr>
 <tr class="even">
-<td>   median</td>
+<td align="left">   median</td>
 <td align="left">61.000</td>
 <td align="left">60.000</td>
 <td align="right"></td>
@@ -2978,7 +3002,7 @@ tab2 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 <table>
 <thead>
 <tr class="header">
-<th></th>
+<th align="left"></th>
 <th align="left">Male (N=916)</th>
 <th align="left">Female (N=583)</th>
 <th align="right">p value</th>
@@ -2986,31 +3010,31 @@ tab2 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 </thead>
 <tbody>
 <tr class="odd">
-<td><strong>ast</strong></td>
+<td align="left"><strong>ast</strong></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="right">0.921</td>
 </tr>
 <tr class="even">
-<td>   N-Miss</td>
+<td align="left">   N-Miss</td>
 <td align="left">162</td>
 <td align="left">104</td>
 <td align="right"></td>
 </tr>
 <tr class="odd">
-<td>   mean</td>
+<td align="left">   mean</td>
 <td align="left">35.9</td>
 <td align="left">36</td>
 <td align="right"></td>
 </tr>
 <tr class="even">
-<td><strong>Age, yrs</strong></td>
+<td align="left"><strong>Age, yrs</strong></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="right">0.048</td>
 </tr>
 <tr class="odd">
-<td>   mean</td>
+<td align="left">   mean</td>
 <td align="left">60.5</td>
 <td align="left">59.2</td>
 <td align="right"></td>
@@ -3023,7 +3047,7 @@ tab2 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 <table>
 <thead>
 <tr class="header">
-<th></th>
+<th align="left"></th>
 <th align="left">Male (N=916)</th>
 <th align="left">Female (N=583)</th>
 <th align="right">p value</th>
@@ -3031,25 +3055,25 @@ tab2 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 </thead>
 <tbody>
 <tr class="odd">
-<td><strong>ast</strong></td>
+<td align="left"><strong>ast</strong></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="right">0.921</td>
 </tr>
 <tr class="even">
-<td>   mean</td>
+<td align="left">   mean</td>
 <td align="left">35.9</td>
 <td align="left">36</td>
 <td align="right"></td>
 </tr>
 <tr class="odd">
-<td><strong>Age, yrs</strong></td>
+<td align="left"><strong>Age, yrs</strong></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="right">0.048</td>
 </tr>
 <tr class="even">
-<td>   mean</td>
+<td align="left">   mean</td>
 <td align="left">60.5</td>
 <td align="left">59.2</td>
 <td align="right"></td>
@@ -3063,7 +3087,7 @@ tab2 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 <table>
 <thead>
 <tr class="header">
-<th></th>
+<th align="left"></th>
 <th align="left">Male (N=916)</th>
 <th align="left">Female (N=583)</th>
 <th align="left">Total (N=1499)</th>
@@ -3072,35 +3096,35 @@ tab2 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 </thead>
 <tbody>
 <tr class="odd">
-<td><strong>ps</strong></td>
+<td align="left"><strong>ps</strong></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="right">0.354</td>
 </tr>
 <tr class="even">
-<td>   0</td>
+<td align="left">   0</td>
 <td align="left">391 (42.7%)</td>
 <td align="left">244 (41.9%)</td>
 <td align="left">635 (42.4%)</td>
 <td align="right"></td>
 </tr>
 <tr class="odd">
-<td>   1</td>
+<td align="left">   1</td>
 <td align="left">329 (35.9%)</td>
 <td align="left">202 (34.6%)</td>
 <td align="left">531 (35.4%)</td>
 <td align="right"></td>
 </tr>
 <tr class="even">
-<td>   2</td>
+<td align="left">   2</td>
 <td align="left">34 (3.7%)</td>
 <td align="left">33 (5.7%)</td>
 <td align="left">67 (4.5%)</td>
 <td align="right"></td>
 </tr>
 <tr class="odd">
-<td>   (Missing)</td>
+<td align="left">   (Missing)</td>
 <td align="left">162 (17.7%)</td>
 <td align="left">104 (17.8%)</td>
 <td align="left">266 (17.7%)</td>
@@ -3119,10 +3143,18 @@ tab2 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 <li><p>digits.p: controls the number of digits after the decimal point for p-values</p></li>
 </ul>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(<span class="kw">tableby</span>(arm <span class="op">~</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span>age <span class="op">+</span><span class="st"> </span>fu.time, <span class="dt">data=</span>mockstudy), <span class="dt">digits=</span><span class="dv">4</span>, <span class="dt">digits.p=</span><span class="dv">2</span>, <span class="dt">digits.pct=</span><span class="dv">1</span>)</code></pre></div>
-<table>
+<table style="width:100%;">
+<colgroup>
+<col width="23%"></col>
+<col width="17%"></col>
+<col width="17%"></col>
+<col width="17%"></col>
+<col width="17%"></col>
+<col width="7%"></col>
+</colgroup>
 <thead>
 <tr class="header">
-<th></th>
+<th align="left"></th>
 <th align="left">A: IFL (N=428)</th>
 <th align="left">F: FOLFOX (N=691)</th>
 <th align="left">G: IROX (N=380)</th>
@@ -3132,7 +3164,7 @@ tab2 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 </thead>
 <tbody>
 <tr class="odd">
-<td><strong>Gender</strong></td>
+<td align="left"><strong>Gender</strong></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
@@ -3140,7 +3172,7 @@ tab2 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 <td align="right">0.19</td>
 </tr>
 <tr class="even">
-<td>   Male</td>
+<td align="left">   Male</td>
 <td align="left">277 (64.7%)</td>
 <td align="left">411 (59.5%)</td>
 <td align="left">228 (60.0%)</td>
@@ -3148,7 +3180,7 @@ tab2 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 <td align="right"></td>
 </tr>
 <tr class="odd">
-<td>   Female</td>
+<td align="left">   Female</td>
 <td align="left">151 (35.3%)</td>
 <td align="left">280 (40.5%)</td>
 <td align="left">152 (40.0%)</td>
@@ -3156,7 +3188,7 @@ tab2 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 <td align="right"></td>
 </tr>
 <tr class="even">
-<td><strong>Age, yrs</strong></td>
+<td align="left"><strong>Age, yrs</strong></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
@@ -3164,7 +3196,7 @@ tab2 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 <td align="right">0.61</td>
 </tr>
 <tr class="odd">
-<td>   Mean (SD)</td>
+<td align="left">   Mean (SD)</td>
 <td align="left">59.6729 (11.3645)</td>
 <td align="left">60.3010 (11.6323)</td>
 <td align="left">59.7632 (11.4993)</td>
@@ -3172,7 +3204,7 @@ tab2 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 <td align="right"></td>
 </tr>
 <tr class="even">
-<td>   Range</td>
+<td align="left">   Range</td>
 <td align="left">27.0000 - 88.0000</td>
 <td align="left">19.0000 - 88.0000</td>
 <td align="left">26.0000 - 85.0000</td>
@@ -3180,7 +3212,7 @@ tab2 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 <td align="right"></td>
 </tr>
 <tr class="odd">
-<td><strong>fu.time</strong></td>
+<td align="left"><strong>fu.time</strong></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
@@ -3188,7 +3220,7 @@ tab2 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 <td align="right">&lt; 0.01</td>
 </tr>
 <tr class="even">
-<td>   Mean (SD)</td>
+<td align="left">   Mean (SD)</td>
 <td align="left">553.5841 (419.6065)</td>
 <td align="left">731.2460 (487.7443)</td>
 <td align="left">607.2421 (435.5092)</td>
@@ -3196,7 +3228,7 @@ tab2 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 <td align="right"></td>
 </tr>
 <tr class="odd">
-<td>   Range</td>
+<td align="left">   Range</td>
 <td align="left">9.0000 - 2170.0000</td>
 <td align="left">0.0000 - 2472.0000</td>
 <td align="left">17.0000 - 2118.0000</td>
@@ -3219,7 +3251,7 @@ tab2 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 <table>
 <thead>
 <tr class="header">
-<th></th>
+<th align="left"></th>
 <th align="left">Male (N=916)</th>
 <th align="left">Female (N=583)</th>
 <th align="left">Total (N=1499)</th>
@@ -3228,21 +3260,21 @@ tab2 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 </thead>
 <tbody>
 <tr class="odd">
-<td><strong>hgb</strong></td>
+<td align="left"><strong>hgb</strong></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="right">&lt; 0.001</td>
 </tr>
 <tr class="even">
-<td>   Missing values</td>
+<td align="left">   Missing values</td>
 <td align="left">162</td>
 <td align="left">104</td>
 <td align="left">266</td>
 <td align="right"></td>
 </tr>
 <tr class="odd">
-<td>   Trimmed Mean, 10%</td>
+<td align="left">   Trimmed Mean, 10%</td>
 <td align="left">12.6</td>
 <td align="left">11.9</td>
 <td align="left">12.3</td>
@@ -3304,7 +3336,7 @@ mockstudy<span class="op">$</span>wts &lt;-<span class="st"> </span>gpwts[index]
 <caption>No Case Weights used</caption>
 <thead>
 <tr class="header">
-<th></th>
+<th align="left"></th>
 <th align="left">A (N=605)</th>
 <th align="left">B (N=894)</th>
 <th align="left">Total (N=1499)</th>
@@ -3312,55 +3344,55 @@ mockstudy<span class="op">$</span>wts &lt;-<span class="st"> </span>gpwts[index]
 </thead>
 <tbody>
 <tr class="odd">
-<td><strong>Age, yrs</strong></td>
+<td align="left"><strong>Age, yrs</strong></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
 <tr class="even">
-<td>   Mean (SD)</td>
+<td align="left">   Mean (SD)</td>
 <td align="left">57.413 (11.618)</td>
 <td align="left">61.726 (11.125)</td>
 <td align="left">59.985 (11.519)</td>
 </tr>
 <tr class="odd">
-<td>   Range</td>
+<td align="left">   Range</td>
 <td align="left">22.000 - 85.000</td>
 <td align="left">19.000 - 88.000</td>
 <td align="left">19.000 - 88.000</td>
 </tr>
 <tr class="even">
-<td><strong>Gender</strong></td>
+<td align="left"><strong>Gender</strong></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
 <tr class="odd">
-<td>   Male</td>
+<td align="left">   Male</td>
 <td align="left">442 (73.1%)</td>
 <td align="left">474 (53.0%)</td>
 <td align="left">916 (61.1%)</td>
 </tr>
 <tr class="even">
-<td>   Female</td>
+<td align="left">   Female</td>
 <td align="left">163 (26.9%)</td>
 <td align="left">420 (47.0%)</td>
 <td align="left">583 (38.9%)</td>
 </tr>
 <tr class="odd">
-<td><strong>Surv(fu.time/365, fu.stat)</strong></td>
+<td align="left"><strong>Surv(fu.time/365, fu.stat)</strong></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
 <tr class="even">
-<td>   Events</td>
+<td align="left">   Events</td>
 <td align="left">554</td>
 <td align="left">802</td>
 <td align="left">1356</td>
 </tr>
 <tr class="odd">
-<td>   Median Survival</td>
+<td align="left">   Median Survival</td>
 <td align="left">1.504</td>
 <td align="left">1.493</td>
 <td align="left">1.496</td>
@@ -3373,7 +3405,7 @@ mockstudy<span class="op">$</span>wts &lt;-<span class="st"> </span>gpwts[index]
 <caption>Case Weights used</caption>
 <thead>
 <tr class="header">
-<th></th>
+<th align="left"></th>
 <th align="left">A (N=605)</th>
 <th align="left">B (N=894)</th>
 <th align="left">Total (N=1499)</th>
@@ -3381,55 +3413,55 @@ mockstudy<span class="op">$</span>wts &lt;-<span class="st"> </span>gpwts[index]
 </thead>
 <tbody>
 <tr class="odd">
-<td><strong>Age, yrs</strong></td>
+<td align="left"><strong>Age, yrs</strong></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
 <tr class="even">
-<td>   Mean (SD)</td>
+<td align="left">   Mean (SD)</td>
 <td align="left">58.009 (10.925)</td>
 <td align="left">60.151 (11.428)</td>
 <td align="left">59.126 (11.235)</td>
 </tr>
 <tr class="odd">
-<td>   Range</td>
+<td align="left">   Range</td>
 <td align="left">22.000 - 85.000</td>
 <td align="left">19.000 - 88.000</td>
 <td align="left">19.000 - 88.000</td>
 </tr>
 <tr class="even">
-<td><strong>Gender</strong></td>
+<td align="left"><strong>Gender</strong></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
 <tr class="odd">
-<td>   Male</td>
+<td align="left">   Male</td>
 <td align="left">916 (66.5%)</td>
 <td align="left">916 (61.1%)</td>
 <td align="left">1832 (63.7%)</td>
 </tr>
 <tr class="even">
-<td>   Female</td>
+<td align="left">   Female</td>
 <td align="left">461 (33.5%)</td>
 <td align="left">583 (38.9%)</td>
 <td align="left">1044 (36.3%)</td>
 </tr>
 <tr class="odd">
-<td><strong>Surv(fu.time/365, fu.stat)</strong></td>
+<td align="left"><strong>Surv(fu.time/365, fu.stat)</strong></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
 <tr class="even">
-<td>   Events</td>
+<td align="left">   Events</td>
 <td align="left">1252</td>
 <td align="left">1348</td>
 <td align="left">2599</td>
 </tr>
 <tr class="odd">
-<td>   Median Survival</td>
+<td align="left">   Median Survival</td>
 <td align="left">1.534</td>
 <td align="left">1.496</td>
 <td align="left">1.532</td>
@@ -3450,7 +3482,7 @@ tab2 &lt;-<span class="st"> </span><span class="kw">modpval.tableby</span>(tab1,
 <caption>Case Weights used, p-values added</caption>
 <thead>
 <tr class="header">
-<th></th>
+<th align="left"></th>
 <th align="left">A (N=605)</th>
 <th align="left">B (N=894)</th>
 <th align="left">Total (N=1499)</th>
@@ -3459,63 +3491,63 @@ tab2 &lt;-<span class="st"> </span><span class="kw">modpval.tableby</span>(tab1,
 </thead>
 <tbody>
 <tr class="odd">
-<td><strong>Age, yrs</strong></td>
+<td align="left"><strong>Age, yrs</strong></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="right">0.953</td>
 </tr>
 <tr class="even">
-<td>   Mean (SD)</td>
+<td align="left">   Mean (SD)</td>
 <td align="left">58.009 (10.925)</td>
 <td align="left">60.151 (11.428)</td>
 <td align="left">59.126 (11.235)</td>
 <td align="right"></td>
 </tr>
 <tr class="odd">
-<td>   Range</td>
+<td align="left">   Range</td>
 <td align="left">22.000 - 85.000</td>
 <td align="left">19.000 - 88.000</td>
 <td align="left">19.000 - 88.000</td>
 <td align="right"></td>
 </tr>
 <tr class="even">
-<td><strong>Gender</strong></td>
+<td align="left"><strong>Gender</strong></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="right">0.811</td>
 </tr>
 <tr class="odd">
-<td>   Male</td>
+<td align="left">   Male</td>
 <td align="left">916 (66.5%)</td>
 <td align="left">916 (61.1%)</td>
 <td align="left">1832 (63.7%)</td>
 <td align="right"></td>
 </tr>
 <tr class="even">
-<td>   Female</td>
+<td align="left">   Female</td>
 <td align="left">461 (33.5%)</td>
 <td align="left">583 (38.9%)</td>
 <td align="left">1044 (36.3%)</td>
 <td align="right"></td>
 </tr>
 <tr class="odd">
-<td><strong>Surv(fu.time/365, fu.stat)</strong></td>
+<td align="left"><strong>Surv(fu.time/365, fu.stat)</strong></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="right">0.010</td>
 </tr>
 <tr class="even">
-<td>   Events</td>
+<td align="left">   Events</td>
 <td align="left">1252</td>
 <td align="left">1348</td>
 <td align="left">2599</td>
 <td align="right"></td>
 </tr>
 <tr class="odd">
-<td>   Median Survival</td>
+<td align="left">   Median Survival</td>
 <td align="left">1.534</td>
 <td align="left">1.496</td>
 <td align="left">1.532</td>
@@ -3534,7 +3566,7 @@ tab2 &lt;-<span class="st"> </span><span class="kw">modpval.tableby</span>(tab1,
 <table>
 <thead>
 <tr class="header">
-<th></th>
+<th align="left"></th>
 <th align="left">A: IFL (N=428)</th>
 <th align="left">F: FOLFOX (N=691)</th>
 <th align="left">G: IROX (N=380)</th>
@@ -3544,7 +3576,7 @@ tab2 &lt;-<span class="st"> </span><span class="kw">modpval.tableby</span>(tab1,
 </thead>
 <tbody>
 <tr class="odd">
-<td><strong>Female</strong></td>
+<td align="left"><strong>Female</strong></td>
 <td align="left">151 (35.3%)</td>
 <td align="left">280 (40.5%)</td>
 <td align="left">152 (40.0%)</td>
@@ -3552,7 +3584,7 @@ tab2 &lt;-<span class="st"> </span><span class="kw">modpval.tableby</span>(tab1,
 <td align="right">0.190</td>
 </tr>
 <tr class="even">
-<td><strong>MD Quality</strong></td>
+<td align="left"><strong>MD Quality</strong></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
@@ -3560,7 +3592,7 @@ tab2 &lt;-<span class="st"> </span><span class="kw">modpval.tableby</span>(tab1,
 <td align="right">0.694</td>
 </tr>
 <tr class="odd">
-<td>   N-Miss</td>
+<td align="left">   N-Miss</td>
 <td align="left">55</td>
 <td align="left">156</td>
 <td align="left">41</td>
@@ -3568,7 +3600,7 @@ tab2 &lt;-<span class="st"> </span><span class="kw">modpval.tableby</span>(tab1,
 <td align="right"></td>
 </tr>
 <tr class="even">
-<td>   0</td>
+<td align="left">   0</td>
 <td align="left">41 (11.0%)</td>
 <td align="left">52 (9.7%)</td>
 <td align="left">31 (9.1%)</td>
@@ -3576,7 +3608,7 @@ tab2 &lt;-<span class="st"> </span><span class="kw">modpval.tableby</span>(tab1,
 <td align="right"></td>
 </tr>
 <tr class="odd">
-<td>   1</td>
+<td align="left">   1</td>
 <td align="left">332 (89.0%)</td>
 <td align="left">483 (90.3%)</td>
 <td align="left">308 (90.9%)</td>
@@ -3671,6 +3703,7 @@ tab1 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 <li><code>countrowpct</code>: print the number of values in a category plus the row-percentage in the format <code>N (%)</code></li>
 <li><code>medianq1q3</code>: print the median, 25th, and 75th quantiles <code>median (Q1, Q3)</code></li>
 <li><code>q1q3</code>: print the 25th and 75th quantiles <code>Q1, Q3</code></li>
+<li><code>iqr</code>: print the inter-quartile range.</li>
 <li><code>medianrange</code>: print the median, minimum and maximum values <code>median (minimum, maximum)</code></li>
 <li><code>Nevents</code>: print number of events for a survival object within each grouping level</li>
 <li><code>medsurv</code>: print the median survival</li>
