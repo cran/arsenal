@@ -69,7 +69,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">The write2 function</h1>
 <h4 class="author"><em>Ethan Heinzen</em></h4>
-<h4 class="date"><em>13 March, 2018</em></h4>
+<h4 class="date"><em>16 April, 2018</em></h4>
 
 
 <div id="TOC">
@@ -98,6 +98,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><a href="#how-do-i-tweak-the-default-format-from-write2word-write2html-or-write2pdf">How do I tweak the default format from <code>write2word()</code>, <code>write2html()</code>, or <code>write2pdf()</code>?</a></li>
 <li><a href="#how-do-i-output-to-a-file-format-other-than-word-html-and-pdf">How do I output to a file format other than word, HTML, and PDF?</a></li>
 <li><a href="#how-do-i-avoid-prefixes-on-my-table-captions-in-pdf">How do I avoid prefixes on my table captions in PDF?</a></li>
+<li><a href="#how-do-i-output-multiple-tables-with-different-titles">How do I output multiple tables with different titles?</a></li>
 </ul></li>
 </ul>
 </div>
@@ -130,22 +131,24 @@ tmpdir &lt;-<span class="st"> </span><span class="kw">tempdir</span>()</code></p
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mylabels &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">sex =</span> <span class="st">&quot;SEX&quot;</span>, <span class="dt">age =</span><span class="st">&quot;Age, yrs&quot;</span>)
 tab1 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span class="op">~</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span>age, <span class="dt">data=</span>mockstudy)
 
-<span class="kw">write2html</span>(tab1, <span class="kw">paste0</span>(tmpdir, <span class="st">&quot;/test.tableby.html&quot;</span>), <span class="dt">quiet =</span> <span class="ot">TRUE</span>,
-           <span class="dt">title =</span> <span class="st">&quot;My test table&quot;</span>,      <span class="co"># passed to summary.tableby</span>
-           <span class="dt">labelTranslations =</span> mylabels, <span class="co"># passed to summary.tableby</span>
-           <span class="dt">total =</span> <span class="ot">FALSE</span>                 <span class="co"># passed to summary.tableby</span>
-           )</code></pre></div>
+<span class="kw">write2html</span>(
+  tab1, <span class="kw">paste0</span>(tmpdir, <span class="st">&quot;/test.tableby.html&quot;</span>), <span class="dt">quiet =</span> <span class="ot">TRUE</span>,
+  <span class="dt">title =</span> <span class="st">&quot;My test table&quot;</span>,      <span class="co"># passed to summary.tableby</span>
+  <span class="dt">labelTranslations =</span> mylabels, <span class="co"># passed to summary.tableby</span>
+  <span class="dt">total =</span> <span class="ot">FALSE</span>                 <span class="co"># passed to summary.tableby</span>
+)</code></pre></div>
 </div>
 <div id="modelsum" class="section level2">
 <h2><code>modelsum</code></h2>
 <p>For <code>modelsum</code> objects, the output function in <code>write2()</code> is <code>summary()</code>. For available arguments, see the help pages for <code>summary.modelsum()</code>. Don’t use the option <code>text = TRUE</code> with the <code>write2</code> functions.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tab2 &lt;-<span class="st"> </span><span class="kw">modelsum</span>(alk.phos <span class="op">~</span><span class="st"> </span>arm <span class="op">+</span><span class="st"> </span>ps <span class="op">+</span><span class="st"> </span>hgb, <span class="dt">adjust=</span> <span class="op">~</span><span class="st"> </span>age <span class="op">+</span><span class="st"> </span>sex, <span class="dt">family =</span> <span class="st">&quot;gaussian&quot;</span>, <span class="dt">data =</span> mockstudy)
 
-<span class="kw">write2pdf</span>(tab2, <span class="kw">paste0</span>(tmpdir, <span class="st">&quot;/test.modelsum.pdf&quot;</span>), <span class="dt">quiet =</span> <span class="ot">TRUE</span>,
-          <span class="dt">title =</span> <span class="st">&quot;My test table&quot;</span>, <span class="co"># passed to summary.modelsum</span>
-          <span class="dt">show.intercept =</span> <span class="ot">FALSE</span>,  <span class="co"># passed to summary.modelsum</span>
-          <span class="dt">digits =</span> <span class="dv">5</span>               <span class="co"># passed to summary.modelsum</span>
-          )</code></pre></div>
+<span class="kw">write2pdf</span>(
+  tab2, <span class="kw">paste0</span>(tmpdir, <span class="st">&quot;/test.modelsum.pdf&quot;</span>), <span class="dt">quiet =</span> <span class="ot">TRUE</span>,
+  <span class="dt">title =</span> <span class="st">&quot;My test table&quot;</span>, <span class="co"># passed to summary.modelsum</span>
+  <span class="dt">show.intercept =</span> <span class="ot">FALSE</span>,  <span class="co"># passed to summary.modelsum</span>
+  <span class="dt">digits =</span> <span class="dv">5</span>               <span class="co"># passed to summary.modelsum</span>
+)</code></pre></div>
 </div>
 <div id="freqlist" class="section level2">
 <h2><code>freqlist</code></h2>
@@ -153,10 +156,11 @@ tab1 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mockstudy[, <span class="kw">c</span>(<span class="st">&quot;arm&quot;</span>, <span class="st">&quot;sex&quot;</span>, <span class="st">&quot;mdquality.s&quot;</span>)] <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">table</span>(<span class="dt">useNA =</span> <span class="st">&quot;ifany&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">freqlist</span>(<span class="dt">groupBy =</span> <span class="kw">c</span>(<span class="st">&quot;arm&quot;</span>, <span class="st">&quot;sex&quot;</span>)) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">write2word</span>(<span class="kw">paste0</span>(tmpdir, <span class="st">&quot;/test.freqlist.doc&quot;</span>), <span class="dt">quiet =</span> <span class="ot">TRUE</span>,
-             <span class="dt">single =</span> <span class="ot">FALSE</span>,         <span class="co"># passed to summary.freqlist</span>
-             <span class="dt">title =</span> <span class="st">&quot;My cool title&quot;</span> <span class="co"># passed to summary.freqlist</span>
-             )</code></pre></div>
+<span class="st">  </span><span class="kw">write2word</span>(
+    <span class="kw">paste0</span>(tmpdir, <span class="st">&quot;/test.freqlist.doc&quot;</span>), <span class="dt">quiet =</span> <span class="ot">TRUE</span>,
+    <span class="dt">single =</span> <span class="ot">FALSE</span>,         <span class="co"># passed to summary.freqlist</span>
+    <span class="dt">title =</span> <span class="st">&quot;My cool title&quot;</span> <span class="co"># passed to summary.freqlist</span>
+  )</code></pre></div>
 </div>
 <div id="compare" class="section level2">
 <h2><code>compare</code></h2>
@@ -179,21 +183,23 @@ tab1 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mockstudy <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">head</span>() <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span>xtable<span class="op">::</span><span class="kw">xtable</span>(<span class="dt">caption =</span> <span class="st">&quot;My xtable&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">write2pdf</span>(<span class="kw">paste0</span>(tmpdir, <span class="st">&quot;/test.xtable.pdf&quot;</span>), <span class="dt">quiet =</span> <span class="ot">TRUE</span>,
-            <span class="dt">comment =</span> <span class="ot">FALSE</span>, <span class="co"># passed to print.xtable to turn off the default message about xtable version</span>
-            <span class="dt">include.rownames =</span> <span class="ot">FALSE</span>, <span class="co"># passed to print.xtable</span>
-            <span class="dt">caption.placement =</span> <span class="st">&quot;top&quot;</span> <span class="co"># passed to print.xtable</span>
-            )</code></pre></div>
+<span class="st">  </span><span class="kw">write2pdf</span>(
+    <span class="kw">paste0</span>(tmpdir, <span class="st">&quot;/test.xtable.pdf&quot;</span>), <span class="dt">quiet =</span> <span class="ot">TRUE</span>,
+    <span class="dt">comment =</span> <span class="ot">FALSE</span>, <span class="co"># passed to print.xtable to turn off the default message about xtable version</span>
+    <span class="dt">include.rownames =</span> <span class="ot">FALSE</span>, <span class="co"># passed to print.xtable</span>
+    <span class="dt">caption.placement =</span> <span class="st">&quot;top&quot;</span> <span class="co"># passed to print.xtable</span>
+  )</code></pre></div>
 <p>To make an HTML document, use the <code>print.xtable()</code> option <code>type = &quot;html&quot;</code>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mockstudy <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">head</span>() <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span>xtable<span class="op">::</span><span class="kw">xtable</span>(<span class="dt">caption =</span> <span class="st">&quot;My xtable&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">write2html</span>(<span class="kw">paste0</span>(tmpdir, <span class="st">&quot;/test.xtable.html&quot;</span>), <span class="dt">quiet =</span> <span class="ot">TRUE</span>,
-             <span class="dt">type =</span> <span class="st">&quot;html&quot;</span>,            <span class="co"># passed to print.xtable</span>
-             <span class="dt">comment =</span> <span class="ot">FALSE</span>, <span class="co"># passed to print.xtable to turn off the default message about xtable version</span>
-             <span class="dt">include.rownames =</span> <span class="ot">FALSE</span>, <span class="co"># passed to print.xtable</span>
-             <span class="dt">caption.placement =</span> <span class="st">&quot;top&quot;</span> <span class="co"># passed to print.xtable</span>
-             )</code></pre></div>
+<span class="st">  </span><span class="kw">write2html</span>(
+    <span class="kw">paste0</span>(tmpdir, <span class="st">&quot;/test.xtable.html&quot;</span>), <span class="dt">quiet =</span> <span class="ot">TRUE</span>,
+    <span class="dt">type =</span> <span class="st">&quot;html&quot;</span>,            <span class="co"># passed to print.xtable</span>
+    <span class="dt">comment =</span> <span class="ot">FALSE</span>, <span class="co"># passed to print.xtable to turn off the default message about xtable version</span>
+    <span class="dt">include.rownames =</span> <span class="ot">FALSE</span>, <span class="co"># passed to print.xtable</span>
+    <span class="dt">caption.placement =</span> <span class="st">&quot;top&quot;</span> <span class="co"># passed to print.xtable</span>
+  )</code></pre></div>
 <p>User beware! <code>xtable()</code> is not compatible with <code>write2word()</code>.</p>
 </div>
 <div id="panderpander_return" class="section level2">
@@ -205,18 +211,22 @@ tab1 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 <div id="output-multiple-tables-to-one-document" class="section level1">
 <h1>Output Multiple Tables to One Document</h1>
 <p>To output multiple tables into a document, simply make a list of them and call the same function as before.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mylist &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="kw">tableby</span>(sex <span class="op">~</span><span class="st"> </span>age, <span class="dt">data =</span> mockstudy),
-               <span class="kw">freqlist</span>(<span class="kw">table</span>(mockstudy[, <span class="kw">c</span>(<span class="st">&quot;sex&quot;</span>, <span class="st">&quot;arm&quot;</span>)])),
-               knitr<span class="op">::</span><span class="kw">kable</span>(<span class="kw">head</span>(mockstudy)))
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mylist &lt;-<span class="st"> </span><span class="kw">list</span>(
+  <span class="kw">tableby</span>(sex <span class="op">~</span><span class="st"> </span>age, <span class="dt">data =</span> mockstudy),
+  <span class="kw">freqlist</span>(<span class="kw">table</span>(mockstudy[, <span class="kw">c</span>(<span class="st">&quot;sex&quot;</span>, <span class="st">&quot;arm&quot;</span>)])),
+  knitr<span class="op">::</span><span class="kw">kable</span>(<span class="kw">head</span>(mockstudy))
+)
 
 <span class="kw">write2pdf</span>(mylist, <span class="kw">paste0</span>(tmpdir, <span class="st">&quot;/test.mylist.pdf&quot;</span>), <span class="dt">quiet =</span> <span class="ot">TRUE</span>)</code></pre></div>
 <p>One neat side-effect of this function is that you can output text and headers, etc. The possibilities are endless!</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mylist2 &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="st">&quot;# Header 1&quot;</span>,
-                <span class="st">&quot;This is a small paragraph introducing tableby.&quot;</span>,
-                <span class="kw">tableby</span>(sex <span class="op">~</span><span class="st"> </span>age, <span class="dt">data =</span> mockstudy),
-                <span class="st">&quot;&lt;hr&gt;&quot;</span>,
-                <span class="st">&quot;# Header 2&quot;</span>,
-                <span class="st">&quot;&lt;font color='red'&gt;I can change color of my text!&lt;/font&gt;&quot;</span>)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mylist2 &lt;-<span class="st"> </span><span class="kw">list</span>(
+  <span class="st">&quot;# Header 1&quot;</span>,
+  <span class="st">&quot;This is a small paragraph introducing tableby.&quot;</span>,
+  <span class="kw">tableby</span>(sex <span class="op">~</span><span class="st"> </span>age, <span class="dt">data =</span> mockstudy),
+  <span class="st">&quot;&lt;hr&gt;&quot;</span>,
+  <span class="st">&quot;# Header 2&quot;</span>,
+  <span class="st">&quot;&lt;font color='red'&gt;I can change color of my text!&lt;/font&gt;&quot;</span>
+)
 <span class="kw">write2html</span>(mylist2, <span class="kw">paste0</span>(tmpdir, <span class="st">&quot;/test.mylist2.html&quot;</span>), <span class="dt">quiet =</span> <span class="ot">TRUE</span>)</code></pre></div>
 <p>In fact, you can even recurse on the lists!</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">write2pdf</span>(<span class="kw">list</span>(mylist2, mylist), <span class="kw">paste0</span>(tmpdir, <span class="st">&quot;/test.mylists.pdf&quot;</span>), <span class="dt">quiet =</span> <span class="ot">TRUE</span>)</code></pre></div>
@@ -260,52 +270,59 @@ tab1 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 <div id="how-do-i-suppress-the-note-about-my-document-getting-rendered" class="section level2">
 <h2>How do I suppress the note about my document getting rendered?</h2>
 <p>This is easily accomplished by using the argument <code>quiet = TRUE</code> (passed to the <code>rmarkdown::render()</code> function).</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">write2html</span>(knitr<span class="op">::</span><span class="kw">kable</span>(<span class="kw">head</span>(mockstudy)), <span class="kw">paste0</span>(tmpdir, <span class="st">&quot;/test.kable.quiet.html&quot;</span>),
-           <span class="dt">quiet =</span> <span class="ot">TRUE</span> <span class="co"># passed to rmarkdown::render</span>
-           )</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">write2html</span>(
+  knitr<span class="op">::</span><span class="kw">kable</span>(<span class="kw">head</span>(mockstudy)), <span class="kw">paste0</span>(tmpdir, <span class="st">&quot;/test.kable.quiet.html&quot;</span>),
+  <span class="dt">quiet =</span> <span class="ot">TRUE</span> <span class="co"># passed to rmarkdown::render</span>
+)</code></pre></div>
 </div>
 <div id="how-do-i-look-at-the-temporary-.md-file" class="section level2">
 <h2>How do I look at the temporary <code>.md</code> file?</h2>
 <p>This is easily accomplished by using the option <code>keep.md = TRUE</code>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">write2html</span>(knitr<span class="op">::</span><span class="kw">kable</span>(<span class="kw">head</span>(mockstudy)), <span class="kw">paste0</span>(tmpdir, <span class="st">&quot;/test.kable.keep.md.html&quot;</span>),
-           <span class="dt">quiet =</span> <span class="ot">TRUE</span>, <span class="co"># passed to rmarkdown::render</span>
-           <span class="dt">keep.md =</span> <span class="ot">TRUE</span>
-           )</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">write2html</span>(
+  knitr<span class="op">::</span><span class="kw">kable</span>(<span class="kw">head</span>(mockstudy)), <span class="kw">paste0</span>(tmpdir, <span class="st">&quot;/test.kable.keep.md.html&quot;</span>),
+  <span class="dt">quiet =</span> <span class="ot">TRUE</span>, <span class="co"># passed to rmarkdown::render</span>
+  <span class="dt">keep.md =</span> <span class="ot">TRUE</span>
+)</code></pre></div>
 </div>
 <div id="how-do-i-prevent-my-document-from-being-rendered" class="section level2">
 <h2>How do I prevent my document from being rendered?</h2>
 <p>This is easily accomplished by using the option <code>render. = FALSE</code>. Note that this will then default to <code>keep.md = TRUE</code>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">write2html</span>(knitr<span class="op">::</span><span class="kw">kable</span>(<span class="kw">head</span>(mockstudy)), <span class="kw">paste0</span>(tmpdir, <span class="st">&quot;/test.kable.dont.render.html&quot;</span>),
-           <span class="dt">render. =</span> <span class="ot">FALSE</span>
-           )</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">write2html</span>(
+  knitr<span class="op">::</span><span class="kw">kable</span>(<span class="kw">head</span>(mockstudy)), <span class="kw">paste0</span>(tmpdir, <span class="st">&quot;/test.kable.dont.render.html&quot;</span>),
+  <span class="dt">render. =</span> <span class="ot">FALSE</span>
+)</code></pre></div>
 </div>
 <div id="how-do-i-output-headers-raw-htmllatex-paragraphs-etc." class="section level2">
 <h2>How do I output headers, raw HTML/LaTeX, paragraphs, etc.?</h2>
 <p>One can simply abuse the list S3 method for <code>write2()</code>!</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mylist2 &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="st">&quot;# Header 1&quot;</span>,
-                <span class="st">&quot;This is a small paragraph introducing tableby.&quot;</span>,
-                <span class="kw">tableby</span>(sex <span class="op">~</span><span class="st"> </span>age, <span class="dt">data =</span> mockstudy),
-                <span class="st">&quot;&lt;hr&gt;&quot;</span>,
-                <span class="st">&quot;# Header 2&quot;</span>,
-                <span class="st">&quot;&lt;font color='red'&gt;I can change color of my text!&lt;/font&gt;&quot;</span>)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mylist2 &lt;-<span class="st"> </span><span class="kw">list</span>(
+  <span class="st">&quot;# Header 1&quot;</span>,
+  <span class="st">&quot;This is a small paragraph introducing tableby.&quot;</span>,
+  <span class="kw">tableby</span>(sex <span class="op">~</span><span class="st"> </span>age, <span class="dt">data =</span> mockstudy),
+  <span class="st">&quot;&lt;hr&gt;&quot;</span>,
+  <span class="st">&quot;# Header 2&quot;</span>,
+  <span class="st">&quot;&lt;font color='red'&gt;I can change color of my text!&lt;/font&gt;&quot;</span>
+)
 <span class="kw">write2html</span>(mylist2, <span class="kw">paste0</span>(tmpdir, <span class="st">&quot;/test.mylist2.html&quot;</span>), <span class="dt">quiet =</span> <span class="ot">TRUE</span>)</code></pre></div>
 </div>
 <div id="how-do-i-tweak-the-default-format-from-write2word-write2html-or-write2pdf" class="section level2">
 <h2>How do I tweak the default format from <code>write2word()</code>, <code>write2html()</code>, or <code>write2pdf()</code>?</h2>
 <p>You can pass arguments to the format functions used behind the scenes.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">write2html</span>(knitr<span class="op">::</span><span class="kw">kable</span>(<span class="kw">head</span>(mockstudy)), <span class="kw">paste0</span>(tmpdir, <span class="st">&quot;/test.kable.theme.html&quot;</span>),
-           <span class="dt">quiet =</span> <span class="ot">TRUE</span>,  <span class="co"># passed to rmarkdown::render</span>
-           <span class="dt">theme =</span> <span class="st">&quot;yeti&quot;</span> <span class="co"># passed to rmarkdown::html_document</span>
-           )</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">write2html</span>(
+  knitr<span class="op">::</span><span class="kw">kable</span>(<span class="kw">head</span>(mockstudy)), <span class="kw">paste0</span>(tmpdir, <span class="st">&quot;/test.kable.theme.html&quot;</span>),
+  <span class="dt">quiet =</span> <span class="ot">TRUE</span>,  <span class="co"># passed to rmarkdown::render</span>
+  <span class="dt">theme =</span> <span class="st">&quot;yeti&quot;</span> <span class="co"># passed to rmarkdown::html_document</span>
+)</code></pre></div>
 <p>See the help pages for <code>rmarkdown::word_document()</code>, <code>rmarkdown::html_document()</code>, and <code>rmarkdown::pdf_document()</code>.</p>
 </div>
 <div id="how-do-i-output-to-a-file-format-other-than-word-html-and-pdf" class="section level2">
 <h2>How do I output to a file format other than word, HTML, and PDF?</h2>
 <p>This can be done using the generic <code>write2()</code> function. The last argument in the function can be another format specification. For details on the acceptable inputs, see the help page for <code>write2()</code>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">write2</span>(knitr<span class="op">::</span><span class="kw">kable</span>(<span class="kw">head</span>(mockstudy[, <span class="dv">1</span><span class="op">:</span><span class="dv">4</span>])), <span class="kw">paste0</span>(tmpdir, <span class="st">&quot;/test.kable.rtf&quot;</span>),
-       <span class="dt">quiet =</span> <span class="ot">TRUE</span>,  <span class="co"># passed to rmarkdown::render</span>
-       <span class="dt">output_format =</span> rmarkdown<span class="op">::</span>rtf_document
-       )</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">write2</span>(
+  knitr<span class="op">::</span><span class="kw">kable</span>(<span class="kw">head</span>(mockstudy[, <span class="dv">1</span><span class="op">:</span><span class="dv">4</span>])), <span class="kw">paste0</span>(tmpdir, <span class="st">&quot;/test.kable.rtf&quot;</span>),
+  <span class="dt">quiet =</span> <span class="ot">TRUE</span>,  <span class="co"># passed to rmarkdown::render</span>
+  <span class="dt">output_format =</span> rmarkdown<span class="op">::</span>rtf_document
+)</code></pre></div>
 </div>
 <div id="how-do-i-avoid-prefixes-on-my-table-captions-in-pdf" class="section level2">
 <h2>How do I avoid prefixes on my table captions in PDF?</h2>
@@ -317,6 +334,16 @@ tab1 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
   <span class="kw">tableby</span>(sex <span class="op">~</span><span class="st"> </span>age, <span class="dt">data =</span> mockstudy)
 )
 <span class="kw">write2pdf</span>(mylist5, <span class="kw">paste0</span>(tmpdir, <span class="st">&quot;/test.noprefixes.pdf&quot;</span>), <span class="dt">title =</span> <span class="st">&quot;My tableby&quot;</span>)</code></pre></div>
+</div>
+<div id="how-do-i-output-multiple-tables-with-different-titles" class="section level2">
+<h2>How do I output multiple tables with different titles?</h2>
+<p>There are now <code>write2()</code> methods for the summary objects of <code>arsenal</code> functions. This allows you to specify a title for each table:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mylist6 &lt;-<span class="st"> </span><span class="kw">list</span>(
+  <span class="kw">summary</span>(<span class="kw">tableby</span>(sex <span class="op">~</span><span class="st"> </span>age, <span class="dt">data =</span> mockstudy), <span class="dt">title =</span> <span class="st">&quot;A Title for tableby&quot;</span>),
+  <span class="kw">summary</span>(<span class="kw">modelsum</span>(age <span class="op">~</span><span class="st"> </span>sex, <span class="dt">data =</span> mockstudy), <span class="dt">title =</span> <span class="st">&quot;A Title for modelsum&quot;</span>),
+  <span class="kw">summary</span>(<span class="kw">freqlist</span>(<span class="op">~</span><span class="st"> </span>sex, <span class="dt">data =</span> mockstudy), <span class="dt">title =</span> <span class="st">&quot;A Title for freqlist&quot;</span>)
+)
+<span class="kw">write2pdf</span>(mylist6, <span class="kw">paste0</span>(tmpdir, <span class="st">&quot;/test.multiple.titles.pdf&quot;</span>))</code></pre></div>
 </div>
 </div>
 

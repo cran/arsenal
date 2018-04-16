@@ -1,3 +1,9 @@
+# arsenal 1.2.0
+
+* Implemented `write2()` methods for `"summary.tableby"`, `"summary.modelsum"`, and `"summary.freqlist"` objects. (#89, #90, #91)
+
+* Center-aligned `tableby()` grouping columns in the summary output. (#93)
+
 # arsenal 1.1.0
 
 **This is a mostly backwards-compatible update.**
