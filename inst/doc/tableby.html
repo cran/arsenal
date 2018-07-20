@@ -69,7 +69,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">The tableby function</h1>
 <h4 class="author"><em>Beth Atkinson, Ethan Heinzen, Jason Sinnwell, Shannon McDonnell and Greg Dougherty</em></h4>
-<h4 class="date"><em>16 April, 2018</em></h4>
+<h4 class="date"><em>20 July, 2018</em></h4>
 
 
 <div id="TOC">
@@ -98,7 +98,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><a href="#subset-the-dataset-used-in-the-analysis">7. Subset the dataset used in the analysis</a></li>
 <li><a href="#create-combinations-of-variables-on-the-fly">8. Create combinations of variables on the fly</a></li>
 <li><a href="#transform-variables-on-the-fly">9. Transform variables on the fly</a></li>
-<li><a href="#change-the-ordering-of-the-variables-or-delete-a-variable">10. Change the ordering of the variables or delete a variable</a></li>
+<li><a href="#subsetting-change-the-ordering-of-the-variables-delete-a-variable-sort-by-p-value-filter-by-p-value">10. Subsetting (change the ordering of the variables, delete a variable, sort by p-value, filter by p-value)</a></li>
 <li><a href="#merge-two-tableby-objects-together">11. Merge two <code>tableby</code> objects together</a></li>
 <li><a href="#add-a-title-to-the-table">12. Add a title to the table</a></li>
 <li><a href="#modify-how-missing-values-are-displayed">13. Modify how missing values are displayed</a></li>
@@ -110,6 +110,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><a href="#use-tableby-within-an-sweave-document">19. Use <code>tableby</code> within an Sweave document</a></li>
 <li><a href="#export-tableby-object-to-a-.csv-file">20. Export <code>tableby</code> object to a .CSV file</a></li>
 <li><a href="#write-tableby-object-to-a-separate-word-or-html-file">21. Write <code>tableby</code> object to a separate Word or HTML file</a></li>
+<li><a href="#use-tableby-in-r-shiny">22. Use <code>tableby</code> in R Shiny</a></li>
 </ul></li>
 <li><a href="#available-function-options">Available Function Options</a><ul>
 <li><a href="#summary-statistics">Summary statistics</a></li>
@@ -913,8 +914,8 @@ tab.catsim &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <sp
 <p>The chis-square test on 2x2 tables applies Yates’ continuity correction by default, so we provide an option to turn off the correction. We show the results with and without the correction that is applied to treatment arm by sex, if we use subset to ignore one of the three treatment arms.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">cat.correct &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span class="op">~</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span>race, <span class="dt">cat.test=</span><span class="st">&quot;chisq&quot;</span>, <span class="dt">subset =</span> <span class="op">!</span><span class="kw">grepl</span>(<span class="st">&quot;^F&quot;</span>, arm), <span class="dt">data=</span>mockstudy)
 <span class="kw">tests</span>(cat.correct)</code></pre></div>
-<pre><code> Variable   p.value                                                       Method</code></pre>
-<p>sex Gender 0.1900861 Pearson’s Chi-squared test with Yates’ continuity correction race Race 0.8108543 Pearson’s Chi-squared test</p>
+<pre><code> Variable   p.value                     Method</code></pre>
+<p>sex Gender 0.1666280 Pearson’s Chi-squared test race Race 0.8108543 Pearson’s Chi-squared test</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">cat.nocorrect &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span class="op">~</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span>race, <span class="dt">cat.test=</span><span class="st">&quot;chisq&quot;</span>, <span class="dt">subset =</span> <span class="op">!</span><span class="kw">grepl</span>(<span class="st">&quot;^F&quot;</span>, arm),
      <span class="dt">chisq.correct=</span><span class="ot">FALSE</span>, <span class="dt">data=</span>mockstudy)
 <span class="kw">tests</span>(cat.nocorrect)</code></pre></div>
@@ -1293,7 +1294,7 @@ tab.catsim &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <sp
 ## sex=Male   916      829      830  0.000370  0.000956
 ## sex=Female 583      527      526  0.000583  0.000956
 ## 
-##  Chisq= 0  on 1 degrees of freedom, p= 0.975</code></pre>
+##  Chisq= 0  on 1 degrees of freedom, p= 1</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(<span class="kw">tableby</span>(sex <span class="op">~</span><span class="st"> </span><span class="kw">Surv</span>(fu.time, fu.stat), <span class="dt">data=</span>mockstudy))</code></pre></div>
 <table>
 <thead>
@@ -2451,8 +2452,8 @@ tmp2 &lt;-<span class="st"> </span><span class="kw">formulize</span>(<span class
 </tbody>
 </table>
 </div>
-<div id="change-the-ordering-of-the-variables-or-delete-a-variable" class="section level2">
-<h2>10. Change the ordering of the variables or delete a variable</h2>
+<div id="subsetting-change-the-ordering-of-the-variables-delete-a-variable-sort-by-p-value-filter-by-p-value" class="section level2">
+<h2>10. Subsetting (change the ordering of the variables, delete a variable, sort by p-value, filter by p-value)</h2>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mytab &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span class="op">~</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span>alk.phos <span class="op">+</span><span class="st"> </span>age, <span class="dt">data=</span>mockstudy)
 mytab2 &lt;-<span class="st"> </span>mytab[<span class="kw">c</span>(<span class="st">'age'</span>,<span class="st">'sex'</span>,<span class="st">'alk.phos'</span>)]
 <span class="kw">summary</span>(mytab2)</code></pre></div>
@@ -2684,6 +2685,192 @@ mytab2 &lt;-<span class="st"> </span>mytab[<span class="kw">c</span>(<span class
 </tr>
 </tbody>
 </table>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(<span class="kw">sort</span>(mytab, <span class="dt">decreasing =</span> <span class="ot">TRUE</span>))</code></pre></div>
+<table>
+<colgroup>
+<col width="24%"></col>
+<col width="16%"></col>
+<col width="16%"></col>
+<col width="16%"></col>
+<col width="16%"></col>
+<col width="7%"></col>
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left"></th>
+<th align="center">A: IFL (N=428)</th>
+<th align="center">F: FOLFOX (N=691)</th>
+<th align="center">G: IROX (N=380)</th>
+<th align="center">Total (N=1499)</th>
+<th align="right">p value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><strong>Age, yrs</strong></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="right">0.614</td>
+</tr>
+<tr class="even">
+<td align="left">   Mean (SD)</td>
+<td align="center">59.673 (11.365)</td>
+<td align="center">60.301 (11.632)</td>
+<td align="center">59.763 (11.499)</td>
+<td align="center">59.985 (11.519)</td>
+<td align="right"></td>
+</tr>
+<tr class="odd">
+<td align="left">   Range</td>
+<td align="center">27.000 - 88.000</td>
+<td align="center">19.000 - 88.000</td>
+<td align="center">26.000 - 85.000</td>
+<td align="center">19.000 - 88.000</td>
+<td align="right"></td>
+</tr>
+<tr class="even">
+<td align="left"><strong>alk.phos</strong></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="right">0.226</td>
+</tr>
+<tr class="odd">
+<td align="left">   N-Miss</td>
+<td align="center">69</td>
+<td align="center">141</td>
+<td align="center">56</td>
+<td align="center">266</td>
+<td align="right"></td>
+</tr>
+<tr class="even">
+<td align="left">   Mean (SD)</td>
+<td align="center">175.577 (128.608)</td>
+<td align="center">161.984 (121.978)</td>
+<td align="center">173.506 (138.564)</td>
+<td align="center">168.969 (128.492)</td>
+<td align="right"></td>
+</tr>
+<tr class="odd">
+<td align="left">   Range</td>
+<td align="center">11.000 - 858.000</td>
+<td align="center">10.000 - 1014.000</td>
+<td align="center">7.000 - 982.000</td>
+<td align="center">7.000 - 1014.000</td>
+<td align="right"></td>
+</tr>
+<tr class="even">
+<td align="left"><strong>Gender</strong></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="right">0.190</td>
+</tr>
+<tr class="odd">
+<td align="left">   Male</td>
+<td align="center">277 (64.7%)</td>
+<td align="center">411 (59.5%)</td>
+<td align="center">228 (60.0%)</td>
+<td align="center">916 (61.1%)</td>
+<td align="right"></td>
+</tr>
+<tr class="even">
+<td align="left">   Female</td>
+<td align="center">151 (35.3%)</td>
+<td align="center">280 (40.5%)</td>
+<td align="center">152 (40.0%)</td>
+<td align="center">583 (38.9%)</td>
+<td align="right"></td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(mytab[mytab <span class="op">&lt;</span><span class="st"> </span><span class="fl">0.5</span>])</code></pre></div>
+<table>
+<colgroup>
+<col width="24%"></col>
+<col width="16%"></col>
+<col width="16%"></col>
+<col width="16%"></col>
+<col width="16%"></col>
+<col width="7%"></col>
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left"></th>
+<th align="center">A: IFL (N=428)</th>
+<th align="center">F: FOLFOX (N=691)</th>
+<th align="center">G: IROX (N=380)</th>
+<th align="center">Total (N=1499)</th>
+<th align="right">p value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><strong>Gender</strong></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="right">0.190</td>
+</tr>
+<tr class="even">
+<td align="left">   Male</td>
+<td align="center">277 (64.7%)</td>
+<td align="center">411 (59.5%)</td>
+<td align="center">228 (60.0%)</td>
+<td align="center">916 (61.1%)</td>
+<td align="right"></td>
+</tr>
+<tr class="odd">
+<td align="left">   Female</td>
+<td align="center">151 (35.3%)</td>
+<td align="center">280 (40.5%)</td>
+<td align="center">152 (40.0%)</td>
+<td align="center">583 (38.9%)</td>
+<td align="right"></td>
+</tr>
+<tr class="even">
+<td align="left"><strong>alk.phos</strong></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="right">0.226</td>
+</tr>
+<tr class="odd">
+<td align="left">   N-Miss</td>
+<td align="center">69</td>
+<td align="center">141</td>
+<td align="center">56</td>
+<td align="center">266</td>
+<td align="right"></td>
+</tr>
+<tr class="even">
+<td align="left">   Mean (SD)</td>
+<td align="center">175.577 (128.608)</td>
+<td align="center">161.984 (121.978)</td>
+<td align="center">173.506 (138.564)</td>
+<td align="center">168.969 (128.492)</td>
+<td align="right"></td>
+</tr>
+<tr class="odd">
+<td align="left">   Range</td>
+<td align="center">11.000 - 858.000</td>
+<td align="center">10.000 - 1014.000</td>
+<td align="center">7.000 - 982.000</td>
+<td align="center">7.000 - 1014.000</td>
+<td align="right"></td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(mytab, <span class="dv">1</span>) <span class="co"># can also use tail()</span></code></pre></div>
+<p>Tableby Object</p>
+<p>Function Call: tableby(formula = arm ~ sex + alk.phos + age, data = mockstudy)</p>
+<p>y variable: [1] “arm” x variables: [1] “sex”</p>
 </div>
 <div id="merge-two-tableby-objects-together" class="section level2">
 <h2>11. Merge two <code>tableby</code> objects together</h2>
@@ -3277,7 +3464,7 @@ tab2 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 <td align="left">   Trimmed Mean, 10%</td>
 <td align="center">12.6</td>
 <td align="center">11.9</td>
-<td align="center">12.3</td>
+<td align="center">NA</td>
 <td align="right"></td>
 </tr>
 </tbody>
@@ -3680,6 +3867,24 @@ tab1 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 ## write to a Word document
 <span class="kw">write2word</span>(tab1, <span class="st">&quot;~/trash.doc&quot;</span>, <span class="dt">title=</span><span class="st">&quot;My table in Word&quot;</span>)</code></pre></div>
 </div>
+<div id="use-tableby-in-r-shiny" class="section level2">
+<h2>22. Use <code>tableby</code> in R Shiny</h2>
+<p>The easiest way to output a <code>tableby()</code> object in an R Shiny app is to use the <code>tableOutput()</code> UI in combination with the <code>renderTable()</code> server function and <code>as.data.frame(summary(tableby()))</code>:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># A standalone shiny app</span>
+<span class="kw">library</span>(shiny)
+<span class="kw">library</span>(arsenal)
+<span class="kw">data</span>(mockstudy)
+
+<span class="kw">shinyApp</span>(
+  <span class="dt">ui =</span> <span class="kw">fluidPage</span>(<span class="kw">tableOutput</span>(<span class="st">&quot;table&quot;</span>)),
+  <span class="dt">server =</span> <span class="cf">function</span>(input, output) {
+    output<span class="op">$</span>table &lt;-<span class="st"> </span><span class="kw">renderTable</span>({
+      <span class="kw">as.data.frame</span>(<span class="kw">summary</span>(<span class="kw">tableby</span>(sex <span class="op">~</span><span class="st"> </span>age, <span class="dt">data =</span> mockstudy), <span class="dt">text =</span> <span class="st">&quot;html&quot;</span>))
+    }, <span class="dt">sanitize.text.function =</span> <span class="cf">function</span>(x) x)
+  }
+)</code></pre></div>
+<p>This can be especially powerful if you feed the selections from a <code>selectInput(multiple = TRUE)</code> into <code>formulize()</code> to make the table dynamic!</p>
+</div>
 </div>
 <div id="available-function-options" class="section level1">
 <h1>Available Function Options</h1>
@@ -3701,6 +3906,9 @@ tab1 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 <li><code>meansd</code>: print the mean and standard deviation in the format <code>mean(sd)</code></li>
 <li><code>countpct</code>: print the number of values in a category plus the column-percentage in the format <code>N (%)</code></li>
 <li><code>countrowpct</code>: print the number of values in a category plus the row-percentage in the format <code>N (%)</code></li>
+<li><code>countcellpct</code>: print the number of values in a category plus the cell-percentage in the format <code>N (%)</code></li>
+<li><code>binomCI</code>: print the proportion in a category plus a binomial confidence interval.</li>
+<li><code>rowbinomCI</code>: print the row proportion in a category plus a binomial confidence interval.</li>
 <li><code>medianq1q3</code>: print the median, 25th, and 75th quantiles <code>median (Q1, Q3)</code></li>
 <li><code>q1q3</code>: print the 25th and 75th quantiles <code>Q1, Q3</code></li>
 <li><code>iqr</code>: print the inter-quartile range.</li>
@@ -3741,8 +3949,9 @@ tab1 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 ##         q1q3 = &quot;Q1, Q3&quot;, range = &quot;Range&quot;, countpct = &quot;Count (Pct)&quot;, 
 ##         Nevents = &quot;Events&quot;, medSurv = &quot;Median Survival&quot;, medTime = &quot;Median Follow-Up&quot;, 
 ##         rangeTime = &quot;Range of Follow-Up&quot;), digits = 3L, digits.count = 0L, 
-##     digits.pct = 1L, digits.p = 3L, format.p = TRUE, chisq.correct = TRUE, 
-##     simulate.p.value = FALSE, B = 2000, ...) 
+##     digits.pct = 1L, digits.p = 3L, format.p = TRUE, conf.level = 0.95, 
+##     chisq.correct = FALSE, simulate.p.value = FALSE, B = 2000, 
+##     ...) 
 ## NULL</code></pre>
 </div>
 <div id="summary.tableby-settings" class="section level2">
@@ -3750,7 +3959,7 @@ tab1 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 <p>The <code>summary.tableby</code> function has options that modify how the table appears (such as adding a title or modifying labels).</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">args</span>(arsenal<span class="op">:::</span>summary.tableby)</code></pre></div>
 <pre><code>## function (object, ..., labelTranslations = NULL, text = FALSE, 
-##     title = NULL, pfootnote = FALSE) 
+##     title = NULL, pfootnote = FALSE, term.name = &quot;&quot;) 
 ## NULL</code></pre>
 </div>
 </div>

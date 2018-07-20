@@ -8,7 +8,7 @@
 #'
 #' A set of helper functions for \code{\link{modelsum}}.
 #'
-#' @param object A \code{data.frame} resulting form evaluating \code{modelsum} formula.
+#' @param object A \code{data.frame} resulting from evaluating a \code{modelsum} formula.
 #' @param ... Other arguments, or a vector of indices for extracting.
 #' @param x,y A \code{modelsum} object.
 #' @param i A vector to index \code{x} with: either names of variables, a numeric vector, or a logical vector of appropriate length.
@@ -35,11 +35,19 @@ join_formula <- function(x, y)
 
 #' @rdname modelsum.internal
 #' @export
+is.modelsum <- function(x) inherits(x, "modelsum")
+
+#' @rdname modelsum.internal
+#' @export
+is.summary.modelsum <- function(x) inherits(x, "summary.modelsum")
+
+#' @rdname modelsum.internal
+#' @export
 na.modelsum <- function (object, ...) {
     omit <- is.na(object[[1]])
     xx <- object[!omit, , drop = FALSE]
     if (any(omit > 0L)) {
-        temp <- stats::setNames(seq(omit)[omit], attr(object, "row.names")[omit])
+        temp <- stats::setNames(seq_along(omit)[omit], attr(object, "row.names")[omit])
         attr(xx, "na.action") <- set_attr(temp, "class", "omit")
     }
     xx

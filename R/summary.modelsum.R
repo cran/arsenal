@@ -16,9 +16,11 @@
 #'   output to be replaced in the pretty rendering of modelsum by the character
 #'   string value for the named element of the list, e.g.,
 #'   \code{list(age = "Age(years)")}.
-#' @param text Logical, denoting whether to print out the text version. Passing \code{NULL} is the same as \code{TRUE},
-#'   to print out the text version.
+#' @param text An argument denoting how to print the summary to the screen.
+#'		Default is \code{FALSE} (show markdown output). \code{TRUE} and \code{NULL} output a text-only version.
+#'		\code{"html"} is like \code{FALSE}, except that it uses the HTML tag \code{<strong>} instead of the markdown formatting.
 #' @param title	Title for the table, defaults to \code{NULL} (no title)
+#' @param term.name A character string denoting the column name for the first column.
 #' @param x An object of class \code{"summary.modelsum"}.
 #' @param format Passed to \code{\link[knitr]{kable}}: the format for the table. The default here is "markdown".
 #'   To use the default in \code{kable}, pass \code{NULL}.
@@ -31,20 +33,21 @@ NULL
 
 #' @rdname summary.modelsum
 #' @export
-summary.modelsum <- function(object, ..., labelTranslations = NULL, text = FALSE, title = NULL)
+summary.modelsum <- function(object, ..., labelTranslations = NULL, text = FALSE, title = NULL, term.name = "")
 {
   object <- as.data.frame(object, ..., labelTranslations = labelTranslations)
   structure(list(
     object = set_attr(object, "control", NULL),
     control = attr(object, "control"),
     text = text,
-    title = title
+    title = title,
+    term.name = term.name
   ), class = "summary.modelsum")
 }
 
 #' @rdname summary.modelsum
 #' @export
-as.data.frame.summary.modelsum <- function(x, ..., text = x$text)
+as.data.frame.summary.modelsum <- function(x, ..., text = x$text, term.name = "")
 {
 
   #### format the digits and nsmall things ####
@@ -104,8 +107,16 @@ as.data.frame.summary.modelsum <- function(x, ..., text = x$text)
   }
   df$label <- trimws(df$label)
 
-  if(!is.null(text) && !text)
-    df$label <- ifelse(term.type == "Intercept", df$label, paste0("**", ifelse(df$label == "", "&nbsp;", df$label), "**"))
+  if(!is.null(text))
+  {
+    if(identical(text, "html"))
+    {
+      df$label <- ifelse(term.type == "Intercept", df$label, paste0("<strong>", df$label, "</strong>"))
+    } else if(!text)
+    {
+      df$label <- ifelse(term.type == "Intercept", df$label, paste0("**", ifelse(df$label == "", "&nbsp;", df$label), "**"))
+    }
+  }
 
   #### tweak column names according to specifications ####
   cn <- stats::setNames(colnames(df), colnames(df))
@@ -114,7 +125,7 @@ as.data.frame.summary.modelsum <- function(x, ..., text = x$text)
     nm <- intersect(cn, names(x$control$stat.labels))
     if(length(nm)) cn[nm] <- unlist(x$control$stat.labels[nm])
   }
-  cn["label"] <- ""
+  cn["label"] <- term.name
   colnames(df) <- cn
 
   df
@@ -124,11 +135,11 @@ as.data.frame.summary.modelsum <- function(x, ..., text = x$text)
 #' @export
 print.summary.modelsum <- function(x, ..., format = "markdown")
 {
-  df <- as.data.frame(x, ...)
+  df <- as.data.frame(x, ..., term.name = x$term.name)
 
   #### finally print it out ####
   if(!is.null(x$title)) cat("\nTable: ", x$title, sep = "")
-  print(knitr::kable(df, caption = NULL, format = format, ...))
+  print(knitr::kable(df, caption = NULL, format = format, row.names = FALSE, ...))
   cat("\n")
 
   invisible(x)

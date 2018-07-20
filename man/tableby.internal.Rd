@@ -2,6 +2,8 @@
 % Please edit documentation in R/tableby.internal.R
 \name{tableby.internal}
 \alias{tableby.internal}
+\alias{is.tableby}
+\alias{is.summary.tableby}
 \alias{merge.tableby}
 \alias{modpval.tableby}
 \alias{labels.tableby}
@@ -10,8 +12,15 @@
 \alias{labels<-.tableby}
 \alias{[.tableby}
 \alias{na.tableby}
+\alias{xtfrm.tableby}
+\alias{Ops.tableby}
+\alias{length.tableby}
 \title{Helper functions for tableby}
 \usage{
+is.tableby(x)
+
+is.summary.tableby(x)
+
 \method{merge}{tableby}(x, y, ...)
 
 modpval.tableby(x, pdata, use.pname = FALSE)
@@ -27,6 +36,12 @@ tests(x)
 \method{[}{tableby}(x, i)
 
 na.tableby(object, ...)
+
+\method{xtfrm}{tableby}(x)
+
+\method{Ops}{tableby}(e1, e2)
+
+\method{length}{tableby}(x)
 }
 \arguments{
 \item{x, y}{A \code{tableby} object.}
@@ -39,15 +54,25 @@ p-values (or some test stat), and the third column is the method name (optional)
 \item{use.pname}{Logical, denoting whether the column name in \code{pdata} corresponding to the p-values should be used
 in the output of the object.}
 
-\item{object}{A \code{data.frame} resulting form evaluating \code{modelsum} formula.}
+\item{object}{A \code{data.frame} resulting from evaluating a \code{tableby} formula.}
 
 \item{value}{A list of new labels.}
 
 \item{i}{A vector to index \code{x} with: either names of variables, a numeric vector, or a logical vector of appropriate length.}
+
+\item{e1, e2}{\code{\link{tableby}} objects, or numbers to compare them to.}
 }
 \value{
-\code{na.tableby} returns a subsetted version of \code{object} (with attributes).
+\code{na.tableby} returns a subsetted version of \code{object} (with attributes). \code{Ops.tableby} returns
+  a logical vector. \code{xtfrm.tableby} returns the p-values (which are ordered by \code{\link{order}} to \code{\link{sort}}).
 }
 \description{
 A set of helper functions for \code{\link{tableby}}.
+}
+\details{
+Logical comparisons are implemented for \code{Ops.tableby}.
+
+\code{xtfrm.tableby} also allows the use of \code{\link{order}} and \code{\link{sort}}.
+
+\code{length.tableby} also allows for the use of \code{\link[utils]{head}} and \code{\link[utils]{tail}}.
 }

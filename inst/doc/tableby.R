@@ -218,7 +218,9 @@ mytab2 <- mytab[c('age','sex','alk.phos')]
 summary(mytab2)
 summary(mytab[c('age','sex')], digits = 2)
 summary(mytab[c(3,1)], digits = 3)
-
+summary(sort(mytab, decreasing = TRUE))
+summary(mytab[mytab < 0.5])
+head(mytab, 1) # can also use tail()
 
 ## ---- results="asis"------------------------------------------------------------------------------
 ## demographics
@@ -331,6 +333,21 @@ as.data.frame(tab1)
 #  
 #  ## write to a Word document
 #  write2word(tab1, "~/trash.doc", title="My table in Word")
+
+## ----eval=FALSE-----------------------------------------------------------------------------------
+#  # A standalone shiny app
+#  library(shiny)
+#  library(arsenal)
+#  data(mockstudy)
+#  
+#  shinyApp(
+#    ui = fluidPage(tableOutput("table")),
+#    server = function(input, output) {
+#      output$table <- renderTable({
+#        as.data.frame(summary(tableby(sex ~ age, data = mockstudy), text = "html"))
+#      }, sanitize.text.function = function(x) x)
+#    }
+#  )
 
 ## -------------------------------------------------------------------------------------------------
 args(tableby.control)

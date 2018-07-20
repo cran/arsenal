@@ -395,6 +395,21 @@ tmp
 #  ## write to a Word document
 #  write2word(tab2, "~/ibm/trash.doc", title="My table in Word")
 
+## ----eval=FALSE----------------------------------------------------------
+#  # A standalone shiny app
+#  library(shiny)
+#  library(arsenal)
+#  data(mockstudy)
+#  
+#  shinyApp(
+#    ui = fluidPage(tableOutput("table")),
+#    server = function(input, output) {
+#      output$table <- renderTable({
+#        as.data.frame(summary(modelsum(age ~ sex, data = mockstudy), text = "html"))
+#      }, sanitize.text.function = function(x) x)
+#    }
+#  )
+
 ## ------------------------------------------------------------------------
 args(modelsum.control)
 

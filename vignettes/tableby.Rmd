@@ -445,7 +445,7 @@ summary(tableby(arm ~ chisq(mdquality.s, "Nmiss","countpct"), data=mockstudy))
 ```
 
 
-## 10. Change the ordering of the variables or delete a variable
+## 10. Subsetting (change the ordering of the variables, delete a variable, sort by p-value, filter by p-value)
 
 ```{r, results='asis'}
 mytab <- tableby(arm ~ sex + alk.phos + age, data=mockstudy)
@@ -453,7 +453,9 @@ mytab2 <- mytab[c('age','sex','alk.phos')]
 summary(mytab2)
 summary(mytab[c('age','sex')], digits = 2)
 summary(mytab[c(3,1)], digits = 3)
-
+summary(sort(mytab, decreasing = TRUE))
+summary(mytab[mytab < 0.5])
+head(mytab, 1) # can also use tail()
 ```
 
 ## 11. Merge two `tableby` objects together 
@@ -687,6 +689,29 @@ write2html(tab1, "~/trash.html")
 write2word(tab1, "~/trash.doc", title="My table in Word")
 ```
 
+## 22. Use `tableby` in R Shiny
+
+The easiest way to output a `tableby()` object in an R Shiny app is to use the `tableOutput()` UI in combination with
+the `renderTable()` server function and `as.data.frame(summary(tableby()))`:
+
+```{r eval=FALSE}
+# A standalone shiny app
+library(shiny)
+library(arsenal)
+data(mockstudy)
+
+shinyApp(
+  ui = fluidPage(tableOutput("table")),
+  server = function(input, output) {
+    output$table <- renderTable({
+      as.data.frame(summary(tableby(sex ~ age, data = mockstudy), text = "html"))
+    }, sanitize.text.function = function(x) x)
+  }
+)
+```
+
+This can be especially powerful if you feed the selections from a `selectInput(multiple = TRUE)` into `formulize()` to make
+the table dynamic!
 
 # Available Function Options
 
@@ -709,6 +734,9 @@ however there are a number of extra functions defined specifically for the table
 * `meansd`: print the mean and standard deviation in the format `mean(sd)`
 * `countpct`: print the number of values in a category plus the column-percentage in the format `N (%)`
 * `countrowpct`: print the number of values in a category plus the row-percentage in the format `N (%)`
+* `countcellpct`: print the number of values in a category plus the cell-percentage in the format `N (%)`
+* `binomCI`: print the proportion in a category plus a binomial confidence interval.
+* `rowbinomCI`: print the row proportion in a category plus a binomial confidence interval.
 * `medianq1q3`: print the median, 25th, and 75th quantiles `median (Q1, Q3)`
 * `q1q3`: print the 25th and 75th quantiles `Q1, Q3`
 * `iqr`: print the inter-quartile range.

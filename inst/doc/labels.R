@@ -39,7 +39,7 @@ mockstudy.lab <- keep.labels(mockstudy)
 
 ## ------------------------------------------------------------------------
 attr(mockstudy.lab$sex, "label") <- "Sex"
-attr(mockstudy.lab$age, "label") <- "Age, yrs"
+labels(mockstudy.lab$age) <- "Age, yrs"
 
 ## ------------------------------------------------------------------------
 labels(mockstudy.lab) <- list(sex = "Sex", age = "Age, yrs")

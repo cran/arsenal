@@ -126,6 +126,31 @@ test_that("offset() works", {
                                 data=mockstudy, family=poisson)), NA)
 })
 
+test_that("strata() works", {
+  if(require(survival) && packageVersion("survival") >= "2.41-3")
+  {
+    expect_identical(
+      capture.kable(summary(modelsum(Surv(time, status) ~ ethan, adjust = ~strata(Sex), data = mdat, family="survival"), text = TRUE)),
+      c("|              |HR    |CI.lower.HR |CI.upper.HR |p.value |concordance |Nmiss |",
+        "|:-------------|:-----|:-----------|:-----------|:-------|:-----------|:-----|",
+        "|ethan Heinzen |1.051 |0.549       |2.014       |0.880   |0.499       |3     |"
+      )
+    )
+  } else skip("survival package not available or not the right version.")
+})
+
+test_that("'weights=' works", {
+  expect_identical(
+    capture.kable(summary(modelsum(Age ~ Sex, data = mdat, weights = weights))),
+    c("|             |estimate |std.error |p.value |adj.r.squared |",
+      "|:------------|:--------|:---------|:-------|:-------------|",
+      "|(Intercept)  |39.826   |0.889     |< 0.001 |0.020         |",
+      "|**Sex Male** |1.953    |1.167     |0.098   |              |"
+    )
+  )
+})
+
+
 ###########################################################################################################
 #### Reported bugs for modelsum
 ###########################################################################################################
@@ -303,6 +328,8 @@ test_that("01/05/2018: leading/trailing whitespace (#48)", {
   )
 })
 
+#################################################################################################################################
+
 test_that("02/23/2018: wrapping long labels (#59)", {
   labs <- list(
     Group = "This is a really long label for the Group variable",
@@ -328,3 +355,61 @@ test_that("02/23/2018: wrapping long labels (#59)", {
     )
   )
 })
+
+#################################################################################################################################
+
+test_that("05/31/2018: similar column names (#98)", {
+  dat <- data.frame(
+    y = c(1:9, 11),
+    a = c(2, 2, 1:8),
+    aa = c(1, 1:9),
+    b = factor(rep(c("a", "b"), each = 5))
+  )
+  expect_identical(
+    capture.kable(summary(modelsum(y ~ b, adjust = ~a + aa, data = dat))),
+    c("|            |estimate |std.error |p.value |adj.r.squared |",
+      "|:-----------|:--------|:---------|:-------|:-------------|",
+      "|(Intercept) |0.417    |0.295     |0.208   |0.984         |",
+      "|**b b**     |-0.467   |0.548     |0.427   |              |",
+      "|**a**       |-0.083   |0.217     |0.714   |              |",
+      "|**aa**      |1.250    |0.183     |< 0.001 |              |"
+    )
+  )
+})
+
+#################################################################################################################################
+
+test_that("05/31/2018: similar column names (#100)", {
+  dat <- data.frame(
+    y = 1:10,
+    a = factor(rep(c("a", "b"), each = 5), levels = c("b", "a")),
+    d = factor(rep(c("c", "d"), times = 5), levels = c("c", "d"))
+  )
+  expect_identical(
+    capture.kable(summary(modelsum(y ~ a, adjust = ~ d, data = set_labels(dat, list(a = "A", d = "D"))), text = TRUE)),
+    c("|            |estimate |std.error |p.value |adj.r.squared |",
+      "|:-----------|:--------|:---------|:-------|:-------------|",
+      "|(Intercept) |8.000    |1.000     |< 0.001 |0.688         |",
+      "|A a         |-5.000   |1.091     |0.003   |              |",
+      "|D d         |-0.000   |1.091     |1.000   |              |"
+    )
+  )
+})
+
+#################################################################################################################################
+
+test_that("06/19/2018: term.name (#109)", {
+  expect_identical(
+    capture.kable(summary(modelsum(Age ~ Sex + time, adjust = ~ trt, data = mdat), text = TRUE, term.name = "Term")),
+    c("|Term            |estimate |std.error |p.value |adj.r.squared |",
+      "|:---------------|:--------|:---------|:-------|:-------------|",
+      "|(Intercept)     |40.632   |1.024     |< 0.001 |-0.005        |",
+      "|Sex Male        |-0.221   |1.112     |0.843   |              |",
+      "|Treatment Arm B |-1.373   |1.135     |0.229   |              |",
+      "|(Intercept)     |41.938   |1.366     |< 0.001 |0.014         |",
+      "|time            |-0.368   |0.275     |0.184   |              |",
+      "|Treatment Arm B |-1.366   |1.123     |0.227   |              |"
+    )
+  )
+})
+

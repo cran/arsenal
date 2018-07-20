@@ -15,10 +15,12 @@
 #' @param labelTranslations  A named list (or vector) where the name is the label in the
 #'        output to be replaced in the pretty rendering of tableby by the character string
 #'        value for the named element of the list, e.g., \code{list(age = "Age(Years)", meansd = "Mean(SD)")}.
-#' @param text Logical, tell R to print the raw text version of the summary to the screen.
-#'		Default is \code{FALSE}, but recommended to be \code{TRUE} for interactive R session development. For
-#'		\code{as.data.frame}, this can be set to \code{NULL} to avoid changing the labels at all.
+#' @param text An argument denoting how to print the summary to the screen.
+#'		Default is \code{FALSE} (show markdown output). \code{TRUE} outputs a text-only version.
+#'		\code{NULL} avoids changing the labels at all. \code{"html"} is like \code{FALSE}, except that it uses
+#'		the HTML tag \code{<strong>} instead of the markdown formatting.
 #' @param pfootnote Logical, denoting whether to put footnotes describing the tests used to generate the p-values.
+#' @param term.name A character string denoting the column name for the first column.
 #' @param format Passed to \code{\link[knitr]{kable}}: the format for the table. The default here is "markdown".
 #'   To use the default in \code{kable}, pass \code{NULL}.
 #' @return An object of class \code{summary.tableby}
@@ -48,7 +50,7 @@ NULL
 
 #' @rdname summary.tableby
 #' @export
-summary.tableby <- function(object, ..., labelTranslations = NULL, text = FALSE, title = NULL, pfootnote = FALSE)
+summary.tableby <- function(object, ..., labelTranslations = NULL, text = FALSE, title = NULL, pfootnote = FALSE, term.name = "")
 {
   dat <- as.data.frame(object, ..., labelTranslations = labelTranslations)
   structure(list(
@@ -57,13 +59,14 @@ summary.tableby <- function(object, ..., labelTranslations = NULL, text = FALSE,
     totals = object$y[[1]]$stats,
     text = text,
     title = title,
-    pfootnote = pfootnote
+    pfootnote = pfootnote,
+    term.name = term.name
   ), class = "summary.tableby")
 }
 
 #' @rdname summary.tableby
 #' @export
-as.data.frame.summary.tableby <- function(x, ..., text = x$text, pfootnote = x$pfootnote)
+as.data.frame.summary.tableby <- function(x, ..., text = x$text, pfootnote = x$pfootnote, term.name = "")
 {
   df <- x$object
 
@@ -116,10 +119,13 @@ as.data.frame.summary.tableby <- function(x, ..., text = x$text, pfootnote = x$p
 
   if(!is.null(text))
   {
-    if(text)
+    df$label <- if(identical(text, "html"))
     {
-      df$label <- ifelse(dups, paste0("-  ", df$label), df$label)
-    } else df$label <- ifelse(dups, paste0("&nbsp;&nbsp;&nbsp;", df$label), paste0("**", ifelse(df$label == "", "&nbsp;", df$label), "**"))
+      ifelse(dups, paste0("&nbsp;&nbsp;&nbsp;", df$label), paste0("<strong>", df$label, "</strong>"))
+    } else if(text)
+    {
+      ifelse(dups, paste0("-  ", df$label), df$label)
+    } else ifelse(dups, paste0("&nbsp;&nbsp;&nbsp;", df$label), paste0("**", ifelse(df$label == "", "&nbsp;", df$label), "**"))
   }
 
   #### tweak column names according to specifications ####
@@ -127,7 +133,7 @@ as.data.frame.summary.tableby <- function(x, ..., text = x$text, pfootnote = x$p
   align <- paste0(c("l", rep("c", times = sum(cn != "p.value")-1), if("p.value" %in% cn) "r"), collapse = "")
   nm <- intersect(cn, names(x$totals))
   if(length(nm)) cn[nm] <- paste0(cn[nm], " (N=", x$totals[nm], ")")
-  cn["label"] <- ""
+  cn["label"] <- term.name
   if("p.value" %in% cn && is.null(x$control$test.pname)) cn["p.value"] <- "p value" else if("p.value" %in% cn) cn["p.value"] <- x$control$test.pname
   colnames(df) <- cn
 
@@ -138,11 +144,11 @@ as.data.frame.summary.tableby <- function(x, ..., text = x$text, pfootnote = x$p
 #' @export
 print.summary.tableby <- function(x, ..., format = "markdown")
 {
-  df <- as.data.frame(x, ...)
+  df <- as.data.frame(x, ..., term.name = x$term.name)
 
   #### finally print it out ####
   if(!is.null(x$title)) cat("\nTable: ", x$title, sep = "")
-  print(knitr::kable(df, caption = NULL, align = attr(df, "align"), format = format, ...))
+  print(knitr::kable(df, caption = NULL, align = attr(df, "align"), format = format, row.names = FALSE, ...))
   if(!is.null(attr(df, "tests"))) cat(paste0(attr(df, "tests"), "\n", collapse = ""))
   cat("\n")
 

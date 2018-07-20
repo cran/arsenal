@@ -7,10 +7,10 @@
 # The `arsenal` Package
 
 The goal of `library(arsenal)` is to make statistical reporting easy. It includes many functions which the useR will find useful to have
-in his/her "arsenal" of functions. There are, at this time, 5 main functions, documented below. Each of these functions is
+in his/her "arsenal" of functions. There are, at this time, 6 main functions, documented below. Each of these functions is
 motivated by a local SAS macro or procedure of similar functionality.
 
-Note that `arsenal` v1.0.0 (and to a smaller degree, v1.1.0) is not backwards compatible with previous versions. See the `NEWS` file for more details.
+Note that `arsenal` v1.0.0 (and to a smaller degree, v1.1.0 and v1.3.0) is not backwards compatible with previous versions. See the `NEWS` file for more details.
 
 ## The `tableby()` Function
 
@@ -20,6 +20,14 @@ the levels of the categorical variable. Options for this function are easily con
 
 The `tableby()` output is easily knitted in an Rmarkdown document or displayed in the command line using the `summary()` function.
 Other S3 methods are implemented for objects of class `"tableby"`, including `print()`, `[`, `as.data.frame()`, and `merge()`.
+
+## The `paired()` Function
+
+`paired()` is a function to easily summarize a set of independent variables across two time points.
+Optionally, an appropriate test is performed to test the distribution of the independent variables across
+the time points. Options for this function are easily controled using `paired.control()`.
+
+The `tableby()` output is easily knitted in an Rmarkdown document or displayed in the command line using the `summary()` function.
 
 ## The `modelsum()` Function
 
@@ -41,7 +49,7 @@ Other S3 methods are implemented for objects of class `"freqlist"`, including `p
 `compare.data.frame()` is the S3 method for comparing two data.frames and reporting any differences between them,
 much like SAS's `PROC COMPARE` procedure.
 
-The `compare.data.frame()` output is easily nknitted in an Rmarkdown document or displayed in the command line using the `summary()` function.
+The `compare.data.frame()` output is easily knitted in an Rmarkdown document or displayed in the command line using the `summary()` function.
 Other S3 methods are implemented for objects of class `"compare.data.frame"`, including `print()` and `diffs()`.
 
 ## The `write2*()` Family of Functions

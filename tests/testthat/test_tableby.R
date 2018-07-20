@@ -207,7 +207,7 @@ test_that("The by-variable droplevels is working correctly", {
     capture.kable(summary(tableby(Group.fac ~ Sex + time + dt, data = mdat[mdat$Group.fac %in% c("High", "Low"), ]), text = TRUE)),
     c("|             |       High (N=30)       |       Low (N=30)        |      Total (N=60)       | p value|",
       "|:------------|:-----------------------:|:-----------------------:|:-----------------------:|-------:|",
-      "|Sex          |                         |                         |                         |   0.796|",
+      "|Sex          |                         |                         |                         |   0.605|",
       "|-  Female    |       15 (50.0%)        |       17 (56.7%)        |       32 (53.3%)        |        |",
       "|-  Male      |       15 (50.0%)        |       13 (43.3%)        |       28 (46.7%)        |        |",
       "|time         |                         |                         |                         |   0.007|",
@@ -384,9 +384,9 @@ test_that("05/25/2017: chisq.correct=FALSE option for chisq.test", {
 set.seed(1000)
 test_that("05/25/2017: simulate.p.value=TRUE option for fisher.test", {
   expect_true(identical(
-    round.p(tests(tableby(Group ~ fe(Sex) + time + dt, data = mdat, simulate.p.value=TRUE))),
-    data.frame(Variable = c("Sex", "time", "dt"), p.value = c(0.80010, 0.02480, 0.39127),
-               Method = c("Fisher's Exact Test for Count Data with simulated p-value\n\t (based on 2000 replicates)",
+    round.p(tests(tableby(Group ~ fe(Sex) + time + dt, data = mdat, simulate.p.value=TRUE, B = 1999))),
+    data.frame(Variable = c("Sex", "time", "dt"), p.value = c(0.80000, 0.02480, 0.39127),
+               Method = c("Fisher's Exact Test for Count Data with simulated p-value\n\t (based on 1999 replicates)",
                           "Linear Model ANOVA", "Kruskal-Wallis rank sum test"), stringsAsFactors = FALSE)
   ))
 })
@@ -562,7 +562,7 @@ test_that("11/15/2017: Krista Goergen and non-syntactic names (#41)", {
     capture.kable(summary(tableby(`1y` ~ `2x`, data = dat), text = TRUE)),
     c("|     |  a (N=3)  |  b (N=3)  | Total (N=6) | p value|",
       "|:----|:---------:|:---------:|:-----------:|-------:|",
-      "|2x   |           |           |             |   1.000|",
+      "|2x   |           |           |             |   0.414|",
       "|-  a | 1 (33.3%) | 2 (66.7%) |  3 (50.0%)  |        |",
       "|-  b | 2 (66.7%) | 1 (33.3%) |  3 (50.0%)  |        |"
     )
@@ -598,7 +598,7 @@ test_that("01/24/2018: count and countpct at the same time (#51)", {
     capture.kable(summary(tableby(y ~ x, data = dat, cat.stats = c("count", "countpct")), text = TRUE)),
     c("|     |  C (N=5)  |  D (N=5)  | Total (N=10) | p value|",
       "|:----|:---------:|:---------:|:------------:|-------:|",
-      "|x    |           |           |              |   1.000|",
+      "|x    |           |           |              |   0.527|",
       "|-  A |     3     |     2     |      5       |        |",
       "|-  B |     2     |     3     |      5       |        |",
       "|-  A | 3 (60.0%) | 2 (40.0%) |  5 (50.0%)   |        |",
@@ -636,33 +636,35 @@ test_that("01/30/2018: additional follow-up statistics (#32)", {
 })
 
 
-test_that("01/31/2018: row percents (#9)", {
+test_that("01/31/2018 and 6/4/18: row and cell percents (#9, #106)", {
+  catstats <- c("Nmiss", "countpct", "countrowpct", "countcellpct", "binomCI", "rowbinomCI")
   expect_identical(
-    capture.kable(summary(tableby(Group ~ Sex + ethan, data = mdat, cat.stats = c("Nmiss", "countrowpct")), text = TRUE)),
-    c("|           | High (N=30) | Low (N=30) | Med (N=30) | Total (N=90) | p value|",
-      "|:----------|:-----------:|:----------:|:----------:|:------------:|-------:|",
-      "|Sex        |             |            |            |              |   0.733|",
-      "|-  Female  | 15 (32.6%)  | 17 (37.0%) | 14 (30.4%) | 46 (100.0%)  |        |",
-      "|-  Male    | 15 (34.1%)  | 13 (29.5%) | 16 (36.4%) | 44 (100.0%)  |        |",
-      "|ethan      |             |            |            |              |   0.178|",
-      "|-  N-Miss  |      3      |     0      |     0      |      3       |        |",
-      "|-  Ethan   | 17 (40.5%)  | 13 (31.0%) | 12 (28.6%) | 42 (100.0%)  |        |",
-      "|-  Heinzen | 10 (22.2%)  | 17 (37.8%) | 18 (40.0%) | 45 (100.0%)  |        |"
-    )
-  )
-
-  expect_identical(
-    capture.kable(summary(tableby(Sex ~ Group + ethan, data = mdat, cat.stats = c("Nmiss", "countrowpct")), text = TRUE)),
-    c("|           | Female (N=46) | Male (N=44) | Total (N=90) | p value|",
-      "|:----------|:-------------:|:-----------:|:------------:|-------:|",
-      "|Group      |               |             |              |   0.733|",
-      "|-  High    |  15 (50.0%)   | 15 (50.0%)  | 30 (100.0%)  |        |",
-      "|-  Low     |  17 (56.7%)   | 13 (43.3%)  | 30 (100.0%)  |        |",
-      "|-  Med     |  14 (46.7%)   | 16 (53.3%)  | 30 (100.0%)  |        |",
-      "|ethan      |               |             |              |   0.166|",
-      "|-  N-Miss  |       1       |      2      |      3       |        |",
-      "|-  Ethan   |  18 (42.9%)   | 24 (57.1%)  | 42 (100.0%)  |        |",
-      "|-  Heinzen |  27 (60.0%)   | 18 (40.0%)  | 45 (100.0%)  |        |"
+    capture.kable(summary(tableby(Group ~ Sex + ethan, data = mdat, cat.stats = catstats), text = TRUE)),
+    c("|           |     High (N=30)      |      Low (N=30)      |      Med (N=30)      |     Total (N=90)     | p value|",
+      "|:----------|:--------------------:|:--------------------:|:--------------------:|:--------------------:|-------:|",
+      "|Sex        |                      |                      |                      |                      |   0.733|",
+      "|-  Female  |      15 (50.0%)      |      17 (56.7%)      |      14 (46.7%)      |      46 (51.1%)      |        |",
+      "|-  Male    |      15 (50.0%)      |      13 (43.3%)      |      16 (53.3%)      |      44 (48.9%)      |        |",
+      "|-  Female  |      15 (32.6%)      |      17 (37.0%)      |      14 (30.4%)      |     46 (100.0%)      |        |",
+      "|-  Male    |      15 (34.1%)      |      13 (29.5%)      |      16 (36.4%)      |     44 (100.0%)      |        |",
+      "|-  Female  |      15 (16.7%)      |      17 (18.9%)      |      14 (15.6%)      |      46 (51.1%)      |        |",
+      "|-  Male    |      15 (16.7%)      |      13 (14.4%)      |      16 (17.8%)      |      44 (48.9%)      |        |",
+      "|-  Female  | 0.500 (0.313, 0.687) | 0.567 (0.374, 0.745) | 0.467 (0.283, 0.657) | 0.511 (0.403, 0.618) |        |",
+      "|-  Male    | 0.500 (0.313, 0.687) | 0.433 (0.255, 0.626) | 0.533 (0.343, 0.717) | 0.489 (0.382, 0.597) |        |",
+      "|-  Female  | 0.326 (0.195, 0.480) | 0.370 (0.232, 0.525) | 0.304 (0.177, 0.458) | 1.000 (0.923, 1.000) |        |",
+      "|-  Male    | 0.341 (0.205, 0.499) | 0.295 (0.168, 0.452) | 0.364 (0.224, 0.522) | 1.000 (0.920, 1.000) |        |",
+      "|ethan      |                      |                      |                      |                      |   0.178|",
+      "|-  N-Miss  |          3           |          0           |          0           |          3           |        |",
+      "|-  Ethan   |      17 (63.0%)      |      13 (43.3%)      |      12 (40.0%)      |      42 (48.3%)      |        |",
+      "|-  Heinzen |      10 (37.0%)      |      17 (56.7%)      |      18 (60.0%)      |      45 (51.7%)      |        |",
+      "|-  Ethan   |      17 (40.5%)      |      13 (31.0%)      |      12 (28.6%)      |     42 (100.0%)      |        |",
+      "|-  Heinzen |      10 (22.2%)      |      17 (37.8%)      |      18 (40.0%)      |     45 (100.0%)      |        |",
+      "|-  Ethan   |      17 (19.5%)      |      13 (14.9%)      |      12 (13.8%)      |      42 (48.3%)      |        |",
+      "|-  Heinzen |      10 (11.5%)      |      17 (19.5%)      |      18 (20.7%)      |      45 (51.7%)      |        |",
+      "|-  Ethan   | 0.630 (0.424, 0.806) | 0.433 (0.255, 0.626) | 0.400 (0.227, 0.594) | 0.483 (0.374, 0.592) |        |",
+      "|-  Heinzen | 0.370 (0.194, 0.576) | 0.567 (0.374, 0.745) | 0.600 (0.406, 0.773) | 0.517 (0.408, 0.626) |        |",
+      "|-  Ethan   | 0.405 (0.256, 0.567) | 0.310 (0.176, 0.471) | 0.286 (0.157, 0.446) | 1.000 (0.916, 1.000) |        |",
+      "|-  Heinzen | 0.222 (0.112, 0.371) | 0.378 (0.238, 0.535) | 0.400 (0.257, 0.557) | 1.000 (0.921, 1.000) |        |"
     )
   )
 })
@@ -786,6 +788,39 @@ test_that("03/07/2018: quantiles for dates and IQR (#86)", {
       "|Age in Years     |                        |                        |                        |   0.818|",
       "|-  Q1, Q3        |     36.000, 44.000     |     37.000, 41.250     |     36.000, 43.000     |        |",
       "|-  iqr           |         8.000          |         4.250          |         7.000          |        |"
+    )
+  )
+})
+
+test_that("03/07/2018: quantiles for dates and IQR (#86)", {
+  expect_identical(
+    capture.kable(summary(tableby(Sex ~ dt + ht_in + Age, data = mdat,
+                                  numeric.stats = c("q1q3", "iqr"), date.stats = c("q1q3", "iqr")), text = TRUE)),
+    c("|                 |     Female (N=46)      |      Male (N=44)       |      Total (N=90)      | p value|",
+      "|:----------------|:----------------------:|:----------------------:|:----------------------:|-------:|",
+      "|dt               |                        |                        |                        |   0.339|",
+      "|-  Q1, Q3        | 1946-04-26, 1953-11-07 | 1946-11-27, 1954-06-13 | 1946-06-13, 1954-04-26 |        |",
+      "|-  iqr           |        2751.250        |        2755.500        |        2873.250        |        |",
+      "|Height in Inches |                        |                        |                        |   0.786|",
+      "|-  Q1, Q3        |     61.250, 68.000     |     62.000, 68.000     |     62.000, 68.000     |        |",
+      "|-  iqr           |         6.750          |         6.000          |         6.000          |        |",
+      "|Age in Years     |                        |                        |                        |   0.818|",
+      "|-  Q1, Q3        |     36.000, 44.000     |     37.000, 41.250     |     36.000, 43.000     |        |",
+      "|-  iqr           |         8.000          |         4.250          |         7.000          |        |"
+    )
+  )
+})
+
+
+test_that("06/19/2018: term.name (#109)", {
+  expect_identical(
+    capture.kable(summary(tableby(Group ~ ethan, data = mdat), text = TRUE, term.name = "Term")),
+    c("|Term       | High (N=30) | Low (N=30) | Med (N=30) | Total (N=90) | p value|",
+      "|:----------|:-----------:|:----------:|:----------:|:------------:|-------:|",
+      "|ethan      |             |            |            |              |   0.178|",
+      "|-  N-Miss  |      3      |     0      |     0      |      3       |        |",
+      "|-  Ethan   | 17 (63.0%)  | 13 (43.3%) | 12 (40.0%) |  42 (48.3%)  |        |",
+      "|-  Heinzen | 10 (37.0%)  | 17 (56.7%) | 18 (60.0%) |  45 (51.7%)  |        |"
     )
   )
 })
