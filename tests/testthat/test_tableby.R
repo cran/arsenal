@@ -824,3 +824,71 @@ test_that("06/19/2018: term.name (#109)", {
     )
   )
 })
+
+mockstudy$grp <- c(rep("Group1", 749), rep("Group2",749), "")
+test_that("08/23/2018: empty string in by-variable (#121)", expect_warning(summary(tableby(grp ~ race, data=mockstudy)), "Empty"))
+
+test_that("08/24/2018: latex (#123)", {
+  expect_identical(
+    capture.output(summary(tableby(Group ~ ethan, data = mdat), text = "latex")),
+    c(""                                                                     ,
+      "\\begin{tabular}{lccccr|lccccr|lccccr|lccccr|lccccr|lccccr}"          ,
+      "\\hline"                                                              ,
+      " & High (N=30) & Low (N=30) & Med (N=30) & Total (N=90) & p value\\\\",
+      "\\hline"                                                              ,
+      "\\textbf{ethan} &  &  &  &  & 0.178\\\\"                              ,
+      "\\hline"                                                              ,
+      "~~~N-Miss & 3 & 0 & 0 & 3 & \\\\"                                     ,
+      "\\hline"                                                              ,
+      "~~~Ethan & 17 (63.0%) & 13 (43.3%) & 12 (40.0%) & 42 (48.3%) & \\\\"  ,
+      "\\hline"                                                              ,
+      "~~~Heinzen & 10 (37.0%) & 17 (56.7%) & 18 (60.0%) & 45 (51.7%) & \\\\",
+      "\\hline"                                                              ,
+      "\\end{tabular}"                                                       ,
+      ""
+    )
+  )
+})
+
+
+test_that("09/07/2018: using countpct with numerics (#137)", {
+  expect_identical(
+    capture.kable(summary(tableby(y ~ chisq(x, "countpct"), data = data.frame(y = c("A", "B", "C"), x = c(1, 2, 3))), text = TRUE)),
+    c("|     |  A (N=1)   |  B (N=1)   |  C (N=1)   | Total (N=3) | p value|",
+      "|:----|:----------:|:----------:|:----------:|:-----------:|-------:|",
+      "|x    |            |            |            |             |   0.199|",
+      "|-  1 | 1 (100.0%) |  0 (0.0%)  |  0 (0.0%)  |  1 (33.3%)  |        |",
+      "|-  2 |  0 (0.0%)  | 1 (100.0%) |  0 (0.0%)  |  1 (33.3%)  |        |",
+      "|-  3 |  0 (0.0%)  |  0 (0.0%)  | 1 (100.0%) |  1 (33.3%)  |        |"
+    )
+  )
+})
+
+test_that("09/07/2018: specifying different digits (#107) and cat.simplify (#134) and numeric.simplify (#139)", {
+  expect_identical(
+    capture.kable(summary(tableby(arm ~ I(age/10) + chisq(sex, digits.count=1, digits.pct=0, cat.simplify=TRUE) + race +
+                                    anova(ast, digits=0, digits.count=1) +
+                                    kwt(fu.time, "medianq1q3", digits=0), numeric.simplify=TRUE, data=mockstudy), text=TRUE)),
+    c("|                    | A: IFL (N=428) | F: FOLFOX (N=691) | G: IROX (N=380) | Total (N=1499) | p value|",
+      "|:-------------------|:--------------:|:-----------------:|:---------------:|:--------------:|-------:|",
+      "|Age in Years        |                |                   |                 |                |   0.614|",
+      "|-  Mean (SD)        | 5.967 (1.136)  |   6.030 (1.163)   |  5.976 (1.150)  | 5.999 (1.152)  |        |",
+      "|-  Range            | 2.700 - 8.800  |   1.900 - 8.800   |  2.600 - 8.500  | 1.900 - 8.800  |        |",
+      "|sex                 |  151.0 (35%)   |    280.0 (41%)    |   152.0 (40%)   |  583.0 (39%)   |   0.190|",
+      "|Race                |                |                   |                 |                |   0.367|",
+      "|-  N-Miss           |       0        |         6         |        1        |       7        |        |",
+      "|-  African-Am       |   39 (9.1%)    |     49 (7.2%)     |    27 (7.1%)    |   115 (7.7%)   |        |",
+      "|-  Asian            |    1 (0.2%)    |     14 (2.0%)     |    3 (0.8%)     |   18 (1.2%)    |        |",
+      "|-  Caucasian        |  371 (86.7%)   |    586 (85.5%)    |   331 (87.3%)   |  1288 (86.3%)  |        |",
+      "|-  Hawaii/Pacific   |    1 (0.2%)    |     3 (0.4%)      |    1 (0.3%)     |    5 (0.3%)    |        |",
+      "|-  Hispanic         |   12 (2.8%)    |     28 (4.1%)     |    14 (3.7%)    |   54 (3.6%)    |        |",
+      "|-  Native-Am/Alaska |    2 (0.5%)    |     1 (0.1%)      |    2 (0.5%)     |    5 (0.3%)    |        |",
+      "|-  Other            |    2 (0.5%)    |     4 (0.6%)      |    1 (0.3%)     |    7 (0.5%)    |        |",
+      "|ast                 |                |                   |                 |                |   0.507|",
+      "|-  N-Miss           |      69.0      |       141.0       |      56.0       |     266.0      |        |",
+      "|-  Mean (SD)        |    37 (28)     |      35 (27)      |     36 (26)     |    36 (27)     |        |",
+      "|-  Range            |    10 - 205    |      7 - 174      |     5 - 176     |    5 - 205     |        |",
+      "|fu.time             | 446 (256, 724) |  601 (345, 1046)  | 516 (306, 807)  | 542 (310, 878) | < 0.001|"
+    )
+  )
+})

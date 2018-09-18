@@ -69,7 +69,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">The paired function</h1>
 <h4 class="author"><em>Ethan Heinzen, Beth Atkinson, Jason Sinnwell</em></h4>
-<h4 class="date"><em>20 July, 2018</em></h4>
+<h4 class="date"><em>18 September, 2018</em></h4>
 
 
 <div id="TOC">
@@ -79,6 +79,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><a href="#nas">NAs</a></li>
 <li><a href="#available-function-options">Available Function Options</a><ul>
 <li><a href="#testing-options">Testing options</a></li>
+<li><a href="#paired.control-settings"><code>paired.control</code> settings</a></li>
+<li><a href="#summary.tableby-settings"><code>summary.tableby</code> settings</a></li>
 </ul></li>
 </ul>
 </div>
@@ -476,6 +478,30 @@ dat &lt;-<span class="st"> </span><span class="kw">data.frame</span>(
 <li><p><code>signed.rank</code>: the signed-rank test.</p></li>
 <li><p><code>sign.test</code>: the sign test.</p></li>
 </ul>
+</div>
+<div id="paired.control-settings" class="section level2">
+<h2><code>paired.control</code> settings</h2>
+<p>A quick way to see what arguments are possible to utilize in a function is to use the <code>args()</code> command. Settings involving the number of digits can be set in <code>paired.control</code> or in <code>summary.tableby</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">args</span>(paired.control)</code></pre></div>
+<pre><code>## function (test = TRUE, diff = TRUE, test.pname = NULL, numeric.test = &quot;paired.t&quot;, 
+##     cat.test = &quot;mcnemar&quot;, ordered.test = &quot;signed.rank&quot;, date.test = &quot;paired.t&quot;, 
+##     numeric.stats = c(&quot;Nmiss&quot;, &quot;meansd&quot;, &quot;range&quot;), cat.stats = c(&quot;Nmiss&quot;, 
+##         &quot;countpct&quot;), ordered.stats = c(&quot;Nmiss&quot;, &quot;countpct&quot;), 
+##     date.stats = c(&quot;Nmiss&quot;, &quot;median&quot;, &quot;range&quot;), stats.labels = list(Nmiss = &quot;N-Miss&quot;, 
+##         Nmiss2 = &quot;N-Miss&quot;, meansd = &quot;Mean (SD)&quot;, medianq1q3 = &quot;Median (Q1, Q3)&quot;, 
+##         q1q3 = &quot;Q1, Q3&quot;, range = &quot;Range&quot;, countpct = &quot;Count (Pct)&quot;), 
+##     digits = 3L, digits.count = 0L, digits.p = 3L, format.p = TRUE, 
+##     conf.level = 0.95, mcnemar.correct = TRUE, signed.rank.exact = NULL, 
+##     signed.rank.correct = TRUE, ...) 
+## NULL</code></pre>
+</div>
+<div id="summary.tableby-settings" class="section level2">
+<h2><code>summary.tableby</code> settings</h2>
+<p>Since the “paired” object inherits “tableby”, the <code>summary.tableby</code> function is what’s actually used to format and print the table.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">args</span>(arsenal<span class="op">:::</span>summary.tableby)</code></pre></div>
+<pre><code>## function (object, ..., labelTranslations = NULL, text = FALSE, 
+##     title = NULL, pfootnote = FALSE, term.name = &quot;&quot;) 
+## NULL</code></pre>
 </div>
 </div>
 

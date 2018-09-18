@@ -1,3 +1,82 @@
+# arsenal v1.4.0
+
+**There are a few non-backwards-compatible updates.**
+
+Major changes:
+
+* `modelsum()`:
+
+    - Added `family="ordinal"` to do ordinal logistic regression using `MASS::polr()`. (#130)
+
+    - Added `family="negbin"` to do negative binomial regression using `MASS::glm.nb()`. (#15)
+  
+    - Added support for ordinal regressors and adjustment terms (by adding support for their associated contrasts). (#133)
+    
+    - Allowed for LaTeX formatting. NOTE: this changes (hence possibly breaking old code) the formatting behavior when specifying `text="html"`. (#123)
+
+* `summary.compare.data.frame()`: Added a small summary of the input data.frames as the first table. (#126)
+  NOTE: this changes the structure and printed output of `summary()`!
+  
+* `tableby()`:
+
+    - Allowed for LaTeX formatting. NOTE: this changes (hence possibly breaking old code) the formatting behavior when specifying `text="html"`. (#123)
+
+    - Added functionality to in-formula functions to allow the specification of `digits=` (etc.), `numeric.simplify=`, and `cat.simplify=`
+      for a single variable. (#107, #134, #139)  NB: this has the following breaking changes:
+    
+        * There is no longer a "name" element in the "tableby" object's x-specifications; instead it's now called "term"
+    
+        * An element for "variable", containing the variable name, was added to the "tableby" object's x-specifications.
+    
+        * An element for "control.list", recording format specifications, was added to the "tableby" object's x-specifications.
+    
+        * The output of `as.data.frame.tableby()` now reports only the variable name in the "variable" column when using
+          internal statistical functions (like `anova()` and `chisq()`--it used to include the function call as well).
+      
+        * The output of `as.data.frame.tableby()` no longer includes category levels in the "term" column;
+          instead, it contains the statistical function used (like `countpct()` and `count()`).
+      
+Smaller changes:
+
+* `modelsum()`:
+
+    - Added support for *calls* to the family functions, in case a different link function (for example) is required.
+    
+    - Properly propogated "term.name" to the `as.data.frame()` method. (#128)
+    
+    - Fixed formatting of error about unsupported families.
+    
+    - Removed "concordance" from the list of supported statistics for Poisson regression. This shouldn't break much code, as specifying "concordance"
+      wouldn't have shown anything anyway.
+      
+    - Fixed a bug with formatting one-per-model p-values. (#140)
+    
+* `tableby()`:
+
+    - Added a warning for when by-variable contains empty string. (#121)
+    
+    - Properly propogated "term.name" to the `as.data.frame()` method. (#127)
+    
+    - Fixed an error that sometimes occured when using categorical statistics on numeric variables. (#137)
+    
+    - Added an argument to `tableby.control()` to simplify one-line numeric output. (#139)
+    
+* `paired()`:
+
+    - Added a warning for when by-variable contains empty string. (#121)
+    
+    - Added error to `na.paired("in.both")` when there are more than two time points.
+
+* `compare.data.frame()`:
+
+    - Implemented `n.diff.obs()`. (#124)
+    
+    - Added an argument to `summary()` to allow for the display of attributes. (#125)
+
+    - Fixed `summary()` to now return the object passed it. (#141)
+      
+* Updated documentation where appropriate.
+
 # arsenal v1.3.0
 
 **This is a mostly backwards-compatible update.**

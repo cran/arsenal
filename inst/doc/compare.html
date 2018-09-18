@@ -69,7 +69,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">The compare function</h1>
 <h4 class="author"><em>Ethan Heinzen, Ryan Lennon, Andrew Hanson</em></h4>
-<h4 class="date"><em>20 July, 2018</em></h4>
+<h4 class="date"><em>18 September, 2018</em></h4>
 
 
 <div id="TOC">
@@ -136,6 +136,31 @@ Differences found in 2/3 variables compared.
 0 variables compared have non-identical attributes.</code></pre>
 <p>Use <code>summary()</code> to get a more detailed summary</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(<span class="kw">compare</span>(df1, df2))</code></pre></div>
+<table>
+<caption>Summary of data.frames</caption>
+<thead>
+<tr class="header">
+<th align="left">version</th>
+<th align="left">arg</th>
+<th align="right">ncol</th>
+<th align="right">nrow</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">x</td>
+<td align="left">df1</td>
+<td align="right">4</td>
+<td align="right">3</td>
+</tr>
+<tr class="even">
+<td align="left">y</td>
+<td align="left">df2</td>
+<td align="right">4</td>
+<td align="right">3</td>
+</tr>
+</tbody>
+</table>
 <table>
 <caption>Variables not shared</caption>
 <thead>
@@ -271,6 +296,31 @@ Differences found in 2/3 variables compared.
 <p>By default, the datasets are compared row-by-row. To change this, use the <code>by=</code> or <code>by.x=</code> and <code>by.y=</code> arguments:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(<span class="kw">compare</span>(df1, df2, <span class="dt">by =</span> <span class="st">&quot;id&quot;</span>))</code></pre></div>
 <table>
+<caption>Summary of data.frames</caption>
+<thead>
+<tr class="header">
+<th align="left">version</th>
+<th align="left">arg</th>
+<th align="right">ncol</th>
+<th align="right">nrow</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">x</td>
+<td align="left">df1</td>
+<td align="right">4</td>
+<td align="right">3</td>
+</tr>
+<tr class="even">
+<td align="left">y</td>
+<td align="left">df2</td>
+<td align="right">4</td>
+<td align="right">3</td>
+</tr>
+</tbody>
+</table>
+<table>
 <caption>Variables not shared</caption>
 <thead>
 <tr class="header">
@@ -386,6 +436,31 @@ Differences found in 2/3 variables compared.
 mockstudy2 &lt;-<span class="st"> </span><span class="kw">muck_up_mockstudy</span>()</code></pre></div>
 <p>We’ve changed row order, so let’s compare by the case ID:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(<span class="kw">compare</span>(mockstudy, mockstudy2, <span class="dt">by =</span> <span class="st">&quot;case&quot;</span>))</code></pre></div>
+<table>
+<caption>Summary of data.frames</caption>
+<thead>
+<tr class="header">
+<th align="left">version</th>
+<th align="left">arg</th>
+<th align="right">ncol</th>
+<th align="right">nrow</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">x</td>
+<td align="left">mockstudy</td>
+<td align="right">14</td>
+<td align="right">1499</td>
+</tr>
+<tr class="even">
+<td align="left">y</td>
+<td align="left">mockstudy2</td>
+<td align="right">13</td>
+<td align="right">1495</td>
+</tr>
+</tbody>
+</table>
 <table>
 <caption>Variables not shared</caption>
 <thead>
@@ -818,6 +893,31 @@ mockstudy2 &lt;-<span class="st"> </span><span class="kw">muck_up_mockstudy</spa
 <p>or pass it through the <code>...</code> arguments.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(<span class="kw">compare</span>(mockstudy, mockstudy2, <span class="dt">by =</span> <span class="st">&quot;case&quot;</span>, <span class="dt">tol.vars =</span> <span class="st">&quot;case&quot;</span>))</code></pre></div>
 <table>
+<caption>Summary of data.frames</caption>
+<thead>
+<tr class="header">
+<th align="left">version</th>
+<th align="left">arg</th>
+<th align="right">ncol</th>
+<th align="right">nrow</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">x</td>
+<td align="left">mockstudy</td>
+<td align="right">14</td>
+<td align="right">1499</td>
+</tr>
+<tr class="even">
+<td align="left">y</td>
+<td align="left">mockstudy2</td>
+<td align="right">13</td>
+<td align="right">1495</td>
+</tr>
+</tbody>
+</table>
+<table>
 <caption>Variables not shared</caption>
 <thead>
 <tr class="header">
@@ -1247,6 +1347,31 @@ mockstudy2 &lt;-<span class="st"> </span><span class="kw">muck_up_mockstudy</spa
                 <span class="dt">tol.vars =</span> <span class="kw">c</span>(<span class="st">&quot;._ &quot;</span>, <span class="st">&quot;case&quot;</span>) <span class="co"># dots=underscores=spaces, ignore case</span>
 ))</code></pre></div>
 <table>
+<caption>Summary of data.frames</caption>
+<thead>
+<tr class="header">
+<th align="left">version</th>
+<th align="left">arg</th>
+<th align="right">ncol</th>
+<th align="right">nrow</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">x</td>
+<td align="left">mockstudy</td>
+<td align="right">14</td>
+<td align="right">1499</td>
+</tr>
+<tr class="even">
+<td align="left">y</td>
+<td align="left">mockstudy2</td>
+<td align="right">13</td>
+<td align="right">1495</td>
+</tr>
+</tbody>
+</table>
+<table>
 <caption>Variables not shared</caption>
 <thead>
 <tr class="header">
@@ -1669,6 +1794,31 @@ mockstudy2 &lt;-<span class="st"> </span><span class="kw">muck_up_mockstudy</spa
                 <span class="dt">tol.vars =</span> <span class="kw">c</span>(<span class="st">&quot;._ &quot;</span>, <span class="st">&quot;case&quot;</span>), <span class="co"># dots=underscores=spaces, ignore case</span>
                 <span class="dt">int.as.num =</span> <span class="ot">TRUE</span>            <span class="co"># compare integers and numerics</span>
 ))</code></pre></div>
+<table>
+<caption>Summary of data.frames</caption>
+<thead>
+<tr class="header">
+<th align="left">version</th>
+<th align="left">arg</th>
+<th align="right">ncol</th>
+<th align="right">nrow</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">x</td>
+<td align="left">mockstudy</td>
+<td align="right">14</td>
+<td align="right">1499</td>
+</tr>
+<tr class="even">
+<td align="left">y</td>
+<td align="left">mockstudy2</td>
+<td align="right">13</td>
+<td align="right">1495</td>
+</tr>
+</tbody>
+</table>
 <table>
 <caption>Variables not shared</caption>
 <thead>
@@ -2108,6 +2258,31 @@ mockstudy2 &lt;-<span class="st"> </span><span class="kw">muck_up_mockstudy</spa
                 <span class="dt">tol.num.val =</span> <span class="dv">10</span>             <span class="co"># allow absolute differences &lt;= 10</span>
 ))</code></pre></div>
 <table>
+<caption>Summary of data.frames</caption>
+<thead>
+<tr class="header">
+<th align="left">version</th>
+<th align="left">arg</th>
+<th align="right">ncol</th>
+<th align="right">nrow</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">x</td>
+<td align="left">mockstudy</td>
+<td align="right">14</td>
+<td align="right">1499</td>
+</tr>
+<tr class="even">
+<td align="left">y</td>
+<td align="left">mockstudy2</td>
+<td align="right">13</td>
+<td align="right">1495</td>
+</tr>
+</tbody>
+</table>
+<table>
 <caption>Variables not shared</caption>
 <thead>
 <tr class="header">
@@ -2532,6 +2707,31 @@ mockstudy2 &lt;-<span class="st"> </span><span class="kw">muck_up_mockstudy</spa
                 <span class="dt">tol.factor =</span> <span class="st">&quot;labels&quot;</span>        <span class="co"># match only factor labels</span>
 ))</code></pre></div>
 <table>
+<caption>Summary of data.frames</caption>
+<thead>
+<tr class="header">
+<th align="left">version</th>
+<th align="left">arg</th>
+<th align="right">ncol</th>
+<th align="right">nrow</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">x</td>
+<td align="left">mockstudy</td>
+<td align="right">14</td>
+<td align="right">1499</td>
+</tr>
+<tr class="even">
+<td align="left">y</td>
+<td align="left">mockstudy2</td>
+<td align="right">13</td>
+<td align="right">1495</td>
+</tr>
+</tbody>
+</table>
+<table>
 <caption>Variables not shared</caption>
 <thead>
 <tr class="header">
@@ -2863,6 +3063,31 @@ mockstudy2 &lt;-<span class="st"> </span><span class="kw">muck_up_mockstudy</spa
                 <span class="dt">tol.factor =</span> <span class="st">&quot;labels&quot;</span>,       <span class="co"># match only factor labels</span>
                 <span class="dt">factor.as.char =</span> <span class="ot">TRUE</span>        <span class="co"># compare factors and characters</span>
 ))</code></pre></div>
+<table>
+<caption>Summary of data.frames</caption>
+<thead>
+<tr class="header">
+<th align="left">version</th>
+<th align="left">arg</th>
+<th align="right">ncol</th>
+<th align="right">nrow</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">x</td>
+<td align="left">mockstudy</td>
+<td align="right">14</td>
+<td align="right">1499</td>
+</tr>
+<tr class="even">
+<td align="left">y</td>
+<td align="left">mockstudy2</td>
+<td align="right">13</td>
+<td align="right">1495</td>
+</tr>
+</tbody>
+</table>
 <table>
 <caption>Variables not shared</caption>
 <thead>
@@ -3281,6 +3506,31 @@ mockstudy2 &lt;-<span class="st"> </span><span class="kw">muck_up_mockstudy</spa
                 <span class="dt">tol.char =</span> <span class="st">&quot;case&quot;</span>            <span class="co"># ignore case in character vectors</span>
 ))</code></pre></div>
 <table>
+<caption>Summary of data.frames</caption>
+<thead>
+<tr class="header">
+<th align="left">version</th>
+<th align="left">arg</th>
+<th align="right">ncol</th>
+<th align="right">nrow</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">x</td>
+<td align="left">mockstudy</td>
+<td align="right">14</td>
+<td align="right">1499</td>
+</tr>
+<tr class="even">
+<td align="left">y</td>
+<td align="left">mockstudy2</td>
+<td align="right">13</td>
+<td align="right">1495</td>
+</tr>
+</tbody>
+</table>
+<table>
 <caption>Variables not shared</caption>
 <thead>
 <tr class="header">
@@ -3658,6 +3908,31 @@ date.df2 &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span 
                 <span class="dt">tol.num =</span> tol.minus9         <span class="co"># ignore NA -&gt; -9 changes</span>
 ))</code></pre></div>
 <table>
+<caption>Summary of data.frames</caption>
+<thead>
+<tr class="header">
+<th align="left">version</th>
+<th align="left">arg</th>
+<th align="right">ncol</th>
+<th align="right">nrow</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">x</td>
+<td align="left">mockstudy</td>
+<td align="right">14</td>
+<td align="right">1499</td>
+</tr>
+<tr class="even">
+<td align="left">y</td>
+<td align="left">mockstudy2</td>
+<td align="right">13</td>
+<td align="right">1495</td>
+</tr>
+</tbody>
+</table>
+<table>
 <caption>Variables not shared</caption>
 <thead>
 <tr class="header">
@@ -3934,6 +4209,7 @@ date.df2 &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span 
 <p>There are two main objects in the <code>&quot;compare.data.frame&quot;</code> object, each with its own print method.</p>
 <p>The <code>frame.summary</code> contains:</p>
 <ul>
+<li><p>the substituted-deparsed arguments</p></li>
 <li><p>information about the number of columns and rows in each dataset</p></li>
 <li><p>the by-variables for each dataset (which may not be the same)</p></li>
 <li><p>the attributes for each dataset (which get counted in the print method)</p></li>
@@ -3941,9 +4217,9 @@ date.df2 &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span 
 <li><p>the number of shared observations</p></li>
 </ul>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">print</span>(obj<span class="op">$</span>frame.summary)</code></pre></div>
-<pre><code>  version ncol nrow   by        attrs       unique n.shared
-1       x   14 1499 case 3 attributes 4 unique obs     1495
-2       y   13 1495 case 3 attributes 0 unique obs     1495</code></pre>
+<pre><code>  version        arg ncol nrow   by        attrs       unique n.shared
+1       x  mockstudy   14 1499 case 3 attributes 4 unique obs     1495
+2       y mockstudy2   13 1495 case 3 attributes 0 unique obs     1495</code></pre>
 <p>The <code>vars.summary</code> contains:</p>
 <ul>
 <li><p>variable name, column number, and class vector (with possibly more than one element) for each x and y. These are all <code>NA</code> if there isn’t a match in both datasets.</p></li>
@@ -3957,6 +4233,7 @@ date.df2 &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span 
 <ul>
 <li><p>The name of the attributes</p></li>
 <li><p>The attributes for x and y, set to <code>NA</code> if non-existant</p></li>
+<li><p>The actual attributes (if <code>show.attr=TRUE</code>).</p></li>
 </ul></li>
 </ul>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">print</span>(obj<span class="op">$</span>vars.summary)</code></pre></div>

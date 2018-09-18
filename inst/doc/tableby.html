@@ -69,7 +69,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">The tableby function</h1>
 <h4 class="author"><em>Beth Atkinson, Ethan Heinzen, Jason Sinnwell, Shannon McDonnell and Greg Dougherty</em></h4>
-<h4 class="date"><em>20 July, 2018</em></h4>
+<h4 class="date"><em>18 September, 2018</em></h4>
 
 
 <div id="TOC">
@@ -106,7 +106,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><a href="#create-a-user-defined-summary-statistic">15. Create a user-defined summary statistic</a></li>
 <li><a href="#use-case-weights-for-creating-summary-statistics">16. Use case-weights for creating summary statistics</a></li>
 <li><a href="#create-your-own-p-value-and-add-it-to-the-table">17. Create your own p-value and add it to the table</a></li>
-<li><a href="#for-two-level-categorical-variables-only-display-one-level.">18. For two-level categorical variables, only display one level.</a></li>
+<li><a href="#for-two-level-categorical-variables-or-one-line-numeric-variables-simplify-the-output.">18. For two-level categorical variables or one-line numeric variables, simplify the output.</a></li>
 <li><a href="#use-tableby-within-an-sweave-document">19. Use <code>tableby</code> within an Sweave document</a></li>
 <li><a href="#export-tableby-object-to-a-.csv-file">20. Export <code>tableby</code> object to a .CSV file</a></li>
 <li><a href="#write-tableby-object-to-a-separate-word-or-html-file">21. Write <code>tableby</code> object to a separate Word or HTML file</a></li>
@@ -246,13 +246,13 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <h2>Data frame version of table</h2>
 <p>If you want a data.frame version, simply use <code>as.data.frame</code>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">as.data.frame</span>(tab1)</code></pre></div>
-<pre><code>##   variable   term        label variable.type              A: IFL           F: FOLFOX
-## 1      sex    sex          sex   categorical                                        
-## 2      sex   Male         Male   categorical 277.00000, 64.71963 411.00000, 59.47902
-## 3      sex Female       Female   categorical 151.00000, 35.28037 280.00000, 40.52098
-## 4      age    age Age in Years       numeric                                        
-## 5      age meansd    Mean (SD)       numeric  59.67290, 11.36454  60.30101, 11.63225
-## 6      age  range        Range       numeric              27, 88              19, 88
+<pre><code>##   variable     term        label variable.type              A: IFL           F: FOLFOX
+## 1      sex      sex          sex   categorical                                        
+## 2      sex countpct         Male   categorical 277.00000, 64.71963 411.00000, 59.47902
+## 3      sex countpct       Female   categorical 151.00000, 35.28037 280.00000, 40.52098
+## 4      age      age Age in Years       numeric                                        
+## 5      age   meansd    Mean (SD)       numeric  59.67290, 11.36454  60.30101, 11.63225
+## 6      age    range        Range       numeric              27, 88              19, 88
 ##              G: IROX              Total                       test   p.value
 ## 1                                       Pearson's Chi-squared test 0.1904388
 ## 2            228, 60  916.0000, 61.1074 Pearson's Chi-squared test 0.1904388
@@ -512,8 +512,8 @@ tab1 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 </table>
 <p>Alternatively, you can check the variable labels and manipulate them with a function called <code>labels</code>, which works on the <code>tableby</code> object.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">labels</span>(tab1)</code></pre></div>
-<pre><code>##             arm             sex             age 
-## &quot;Treatment Arm&quot;        &quot;Gender&quot;      &quot;Age, yrs&quot;</code></pre>
+<pre><code>##        arm        sex        age 
+##      &quot;arm&quot;   &quot;Gender&quot; &quot;Age, yrs&quot;</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">labels</span>(tab1) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dt">arm=</span><span class="st">&quot;Treatment Assignment&quot;</span>, <span class="dt">age=</span><span class="st">&quot;Baseline Age (yrs)&quot;</span>)
 <span class="kw">labels</span>(tab1)</code></pre></div>
 <pre><code>##                    arm                    sex                    age 
@@ -2233,7 +2233,7 @@ tmp2 &lt;-<span class="st"> </span><span class="kw">formulize</span>(<span class
 <p>The labels for these variables isn’t exactly what we’d like so we can change modify those after the fact. Instead of typing out the very long variable names you can modify specific labels by position.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">labels</span>(trans)</code></pre></div>
 <pre><code>##                                                           arm 
-##                                               &quot;Treatment Arm&quot; 
+##                                                         &quot;arm&quot; 
 ##                                                     I(age/10) 
 ##                                                    &quot;Age, yrs&quot; 
 ##                                                      log(bmi) 
@@ -2243,7 +2243,7 @@ tmp2 &lt;-<span class="st"> </span><span class="kw">formulize</span>(<span class
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">labels</span>(trans)[<span class="dv">2</span><span class="op">:</span><span class="dv">4</span>] &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">'Age per 10 yrs'</span>, <span class="st">'log(BMI)'</span>, <span class="st">'MD Quality'</span>)
 <span class="kw">labels</span>(trans)</code></pre></div>
 <pre><code>##                                                     arm 
-##                                         &quot;Treatment Arm&quot; 
+##                                                   &quot;arm&quot; 
 ##                                               I(age/10) 
 ##                                        &quot;Age per 10 yrs&quot; 
 ##                                                log(bmi) 
@@ -3424,6 +3424,103 @@ tab2 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 </tr>
 </tbody>
 </table>
+<p>With the exception of <code>digits.p</code>, all of these can be specified on a per-variable basis using the in-formula functions that specify which tests are run:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(<span class="kw">tableby</span>(arm <span class="op">~</span><span class="st"> </span><span class="kw">chisq</span>(sex, <span class="dt">digits.pct=</span><span class="dv">1</span>) <span class="op">+</span><span class="st"> </span><span class="kw">anova</span>(age, <span class="dt">digits=</span><span class="dv">4</span>) <span class="op">+</span>
+<span class="st">                  </span><span class="kw">anova</span>(fu.time, <span class="dt">digits =</span> <span class="dv">1</span>), <span class="dt">data=</span>mockstudy))</code></pre></div>
+<table>
+<colgroup>
+<col width="24%"></col>
+<col width="16%"></col>
+<col width="16%"></col>
+<col width="16%"></col>
+<col width="16%"></col>
+<col width="7%"></col>
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left"></th>
+<th align="center">A: IFL (N=428)</th>
+<th align="center">F: FOLFOX (N=691)</th>
+<th align="center">G: IROX (N=380)</th>
+<th align="center">Total (N=1499)</th>
+<th align="right">p value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><strong>Gender</strong></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="right">0.190</td>
+</tr>
+<tr class="even">
+<td align="left">   Male</td>
+<td align="center">277 (64.7%)</td>
+<td align="center">411 (59.5%)</td>
+<td align="center">228 (60.0%)</td>
+<td align="center">916 (61.1%)</td>
+<td align="right"></td>
+</tr>
+<tr class="odd">
+<td align="left">   Female</td>
+<td align="center">151 (35.3%)</td>
+<td align="center">280 (40.5%)</td>
+<td align="center">152 (40.0%)</td>
+<td align="center">583 (38.9%)</td>
+<td align="right"></td>
+</tr>
+<tr class="even">
+<td align="left"><strong>Age, yrs</strong></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="right">0.614</td>
+</tr>
+<tr class="odd">
+<td align="left">   Mean (SD)</td>
+<td align="center">59.6729 (11.3645)</td>
+<td align="center">60.3010 (11.6323)</td>
+<td align="center">59.7632 (11.4993)</td>
+<td align="center">59.9853 (11.5188)</td>
+<td align="right"></td>
+</tr>
+<tr class="even">
+<td align="left">   Range</td>
+<td align="center">27.0000 - 88.0000</td>
+<td align="center">19.0000 - 88.0000</td>
+<td align="center">26.0000 - 85.0000</td>
+<td align="center">19.0000 - 88.0000</td>
+<td align="right"></td>
+</tr>
+<tr class="odd">
+<td align="left"><strong>fu.time</strong></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="right">&lt; 0.001</td>
+</tr>
+<tr class="even">
+<td align="left">   Mean (SD)</td>
+<td align="center">553.6 (419.6)</td>
+<td align="center">731.2 (487.7)</td>
+<td align="center">607.2 (435.5)</td>
+<td align="center">649.1 (462.5)</td>
+<td align="right"></td>
+</tr>
+<tr class="odd">
+<td align="left">   Range</td>
+<td align="center">9.0 - 2170.0</td>
+<td align="center">0.0 - 2472.0</td>
+<td align="center">17.0 - 2118.0</td>
+<td align="center">0.0 - 2472.0</td>
+<td align="right"></td>
+</tr>
+</tbody>
+</table>
 </div>
 <div id="create-a-user-defined-summary-statistic" class="section level2">
 <h2>15. Create a user-defined summary statistic</h2>
@@ -3743,11 +3840,9 @@ tab2 &lt;-<span class="st"> </span><span class="kw">modpval.tableby</span>(tab1,
 </tbody>
 </table>
 </div>
-<div id="for-two-level-categorical-variables-only-display-one-level." class="section level2">
-<h2>18. For two-level categorical variables, only display one level.</h2>
-<p>If the <code>cat.simplify</code> option is set to TRUE then only the second level of the group. In the example below sex has the levels and “Female” is the second level, hence only the %female is shown in the table. Similarly, “mdquality.s” was turned to a factor and “1” is the second level, hence</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">levels</span>(mockstudy<span class="op">$</span>sex)</code></pre></div>
-<p>[1] “Male” “Female”</p>
+<div id="for-two-level-categorical-variables-or-one-line-numeric-variables-simplify-the-output." class="section level2">
+<h2>18. For two-level categorical variables or one-line numeric variables, simplify the output.</h2>
+<p>If the <code>cat.simplify</code> option is set to <code>TRUE</code>, then only the second level of two-level categorical varialbes is shown. In the example below, <code>sex</code> has two levels, and “Female” is the second level, hence only the counts and percents for Female are shown. Similarly, “mdquality.s” was turned to a factor, and “1” is the second level, but since there are missings, the table ignores <code>cat.simplify</code> and displays all levels (since the output can no longer be displayed on one line).</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">table2 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm<span class="op">~</span>sex <span class="op">+</span><span class="st"> </span><span class="kw">factor</span>(mdquality.s), <span class="dt">data=</span>mockstudy, <span class="dt">cat.simplify=</span><span class="ot">TRUE</span>)
 <span class="kw">summary</span>(table2, <span class="dt">labelTranslations=</span><span class="kw">c</span>(<span class="dt">sex=</span><span class="st">&quot;Female&quot;</span>, <span class="st">&quot;factor(mdquality.s)&quot;</span>=<span class="st">&quot;MD Quality&quot;</span>))</code></pre></div>
 <table>
@@ -3804,6 +3899,72 @@ tab2 &lt;-<span class="st"> </span><span class="kw">modpval.tableby</span>(tab1,
 </tr>
 </tbody>
 </table>
+<p>Similarly, if <code>numeric.simplify</code> is set to <code>TRUE</code>, then any numerics which only have one row of summary statistics are simplified into a single row. Note again that <code>ast</code> has missing values and so is not simplified to a single row.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(<span class="kw">tableby</span>(arm <span class="op">~</span><span class="st"> </span>age <span class="op">+</span><span class="st"> </span>ast, <span class="dt">data =</span> mockstudy,
+                <span class="dt">numeric.simplify=</span><span class="ot">TRUE</span>, <span class="dt">numeric.stats=</span><span class="kw">c</span>(<span class="st">&quot;Nmiss&quot;</span>, <span class="st">&quot;meansd&quot;</span>)))</code></pre></div>
+<table>
+<colgroup>
+<col width="25%"></col>
+<col width="16%"></col>
+<col width="17%"></col>
+<col width="16%"></col>
+<col width="16%"></col>
+<col width="8%"></col>
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left"></th>
+<th align="center">A: IFL (N=428)</th>
+<th align="center">F: FOLFOX (N=691)</th>
+<th align="center">G: IROX (N=380)</th>
+<th align="center">Total (N=1499)</th>
+<th align="right">p value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><strong>Age, yrs</strong></td>
+<td align="center">59.673 (11.365)</td>
+<td align="center">60.301 (11.632)</td>
+<td align="center">59.763 (11.499)</td>
+<td align="center">59.985 (11.519)</td>
+<td align="right">0.614</td>
+</tr>
+<tr class="even">
+<td align="left"><strong>ast</strong></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="right">0.507</td>
+</tr>
+<tr class="odd">
+<td align="left">   N-Miss</td>
+<td align="center">69</td>
+<td align="center">141</td>
+<td align="center">56</td>
+<td align="center">266</td>
+<td align="right"></td>
+</tr>
+<tr class="even">
+<td align="left">   Mean (SD)</td>
+<td align="center">37.292 (28.036)</td>
+<td align="center">35.202 (26.659)</td>
+<td align="center">35.670 (25.807)</td>
+<td align="center">35.933 (26.843)</td>
+<td align="right"></td>
+</tr>
+</tbody>
+</table>
+<p>The in-formula functions to change which tests are run can also be used to specify these options for each variable at a time.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(<span class="kw">tableby</span>(arm <span class="op">~</span><span class="st"> </span><span class="kw">anova</span>(age, <span class="st">&quot;meansd&quot;</span>, <span class="dt">numeric.simplify=</span><span class="ot">TRUE</span>) <span class="op">+</span>
+<span class="st">                  </span><span class="kw">chisq</span>(sex, <span class="dt">cat.simplify=</span><span class="ot">TRUE</span>), <span class="dt">data =</span> mockstudy))</code></pre></div>
+<pre><code>## 
+## 
+## |             | A: IFL (N=428)  | F: FOLFOX (N=691) | G: IROX (N=380) | Total (N=1499)  | p value|
+## |:------------|:---------------:|:-----------------:|:---------------:|:---------------:|-------:|
+## |**Age, yrs** | 59.673 (11.365) |  60.301 (11.632)  | 59.763 (11.499) | 59.985 (11.519) |   0.614|
+## |**Gender**   |   151 (35.3%)   |    280 (40.5%)    |   152 (40.0%)   |   583 (38.9%)   |   0.190|</code></pre>
 </div>
 <div id="use-tableby-within-an-sweave-document" class="section level2">
 <h2>19. Use <code>tableby</code> within an Sweave document</h2>
@@ -3842,13 +4003,13 @@ render(&quot;Test.md&quot;, pdf_document(keep_tex=TRUE))
 <p>When looking at multiple variables it is sometimes useful to export the results to a csv file. The <code>as.data.frame</code> function creates a data frame object that can be exported or further manipulated within R.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tab1 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm<span class="op">~</span>sex<span class="op">+</span>age, <span class="dt">data=</span>mockstudy)
 <span class="kw">as.data.frame</span>(tab1)</code></pre></div>
-<pre><code>##   variable   term     label variable.type              A: IFL           F: FOLFOX
-## 1      sex    sex    Gender   categorical                                        
-## 2      sex   Male      Male   categorical 277.00000, 64.71963 411.00000, 59.47902
-## 3      sex Female    Female   categorical 151.00000, 35.28037 280.00000, 40.52098
-## 4      age    age  Age, yrs       numeric                                        
-## 5      age meansd Mean (SD)       numeric  59.67290, 11.36454  60.30101, 11.63225
-## 6      age  range     Range       numeric              27, 88              19, 88
+<pre><code>##   variable     term     label variable.type              A: IFL           F: FOLFOX
+## 1      sex      sex    Gender   categorical                                        
+## 2      sex countpct      Male   categorical 277.00000, 64.71963 411.00000, 59.47902
+## 3      sex countpct    Female   categorical 151.00000, 35.28037 280.00000, 40.52098
+## 4      age      age  Age, yrs       numeric                                        
+## 5      age   meansd Mean (SD)       numeric  59.67290, 11.36454  60.30101, 11.63225
+## 6      age    range     Range       numeric              27, 88              19, 88
 ##              G: IROX              Total                       test   p.value
 ## 1                                       Pearson's Chi-squared test 0.1904388
 ## 2            228, 60  916.0000, 61.1074 Pearson's Chi-squared test 0.1904388
@@ -3939,13 +4100,13 @@ tab1 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 <p>A quick way to see what arguments are possible to utilize in a function is to use the <code>args()</code> command. Settings involving the number of digits can be set in <code>tableby.control</code> or in <code>summary.tableby</code>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">args</span>(tableby.control)</code></pre></div>
 <pre><code>## function (test = TRUE, total = TRUE, test.pname = NULL, cat.simplify = FALSE, 
-##     numeric.test = &quot;anova&quot;, cat.test = &quot;chisq&quot;, ordered.test = &quot;trend&quot;, 
-##     surv.test = &quot;logrank&quot;, date.test = &quot;kwt&quot;, numeric.stats = c(&quot;Nmiss&quot;, 
-##         &quot;meansd&quot;, &quot;range&quot;), cat.stats = c(&quot;Nmiss&quot;, &quot;countpct&quot;), 
-##     ordered.stats = c(&quot;Nmiss&quot;, &quot;countpct&quot;), surv.stats = c(&quot;Nevents&quot;, 
-##         &quot;medSurv&quot;), date.stats = c(&quot;Nmiss&quot;, &quot;median&quot;, &quot;range&quot;), 
-##     stats.labels = list(Nmiss = &quot;N-Miss&quot;, Nmiss2 = &quot;N-Miss&quot;, 
-##         meansd = &quot;Mean (SD)&quot;, medianq1q3 = &quot;Median (Q1, Q3)&quot;, 
+##     numeric.simplify = FALSE, numeric.test = &quot;anova&quot;, cat.test = &quot;chisq&quot;, 
+##     ordered.test = &quot;trend&quot;, surv.test = &quot;logrank&quot;, date.test = &quot;kwt&quot;, 
+##     numeric.stats = c(&quot;Nmiss&quot;, &quot;meansd&quot;, &quot;range&quot;), cat.stats = c(&quot;Nmiss&quot;, 
+##         &quot;countpct&quot;), ordered.stats = c(&quot;Nmiss&quot;, &quot;countpct&quot;), 
+##     surv.stats = c(&quot;Nevents&quot;, &quot;medSurv&quot;), date.stats = c(&quot;Nmiss&quot;, 
+##         &quot;median&quot;, &quot;range&quot;), stats.labels = list(Nmiss = &quot;N-Miss&quot;, 
+##         Nmiss2 = &quot;N-Miss&quot;, meansd = &quot;Mean (SD)&quot;, medianq1q3 = &quot;Median (Q1, Q3)&quot;, 
 ##         q1q3 = &quot;Q1, Q3&quot;, range = &quot;Range&quot;, countpct = &quot;Count (Pct)&quot;, 
 ##         Nevents = &quot;Events&quot;, medSurv = &quot;Median Survival&quot;, medTime = &quot;Median Follow-Up&quot;, 
 ##         rangeTime = &quot;Range of Follow-Up&quot;), digits = 3L, digits.count = 0L, 

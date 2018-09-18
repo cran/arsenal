@@ -24,3 +24,9 @@ p <- paired(tp ~ Cat + Fac + Num + Ord + Lgl + Dat, data = dat, id = id,
             signed.rank.exact = FALSE, na.action = na.paired("fill"))
 summary(p)
 
+## -------------------------------------------------------------------------------------------------
+args(paired.control)
+
+## -------------------------------------------------------------------------------------------------
+args(arsenal:::summary.tableby)
+

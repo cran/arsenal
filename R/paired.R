@@ -59,7 +59,14 @@ paired <- function(formula, data, id, na.action, subset=NULL, control = NULL, ..
     temp.call$formula <- stats::terms(formula, special, data = keep.labels(data))
   }
   tabenv <- new.env(parent = environment(formula))
-  tmp.fun <- function(x, ...) set_attr(set_attr(x, "name", deparse(substitute(x))), "stats", list(...))
+  tmp.fun <- function(x, ..., digits = NULL, digits.count = NULL, digits.pct = NULL, cat.simplify = NULL, numeric.simplify = NULL)
+  {
+    attr(x, "name") <- deparse(substitute(x))
+    attr(x, "stats") <- list(...)
+    attr(x, "control.list") <- list(digits = digits, digits.count = digits.count, digits.pct = digits.pct,
+                                    cat.simplify = cat.simplify, numeric.simplify = numeric.simplify)
+    x
+  }
   for(sp in special)
   {
     if(!is.null(attr(temp.call$formula, "specials")[[sp]])) assign(sp, tmp.fun, envir = tabenv)
@@ -85,6 +92,14 @@ paired <- function(formula, data, id, na.action, subset=NULL, control = NULL, ..
     by.col <- droplevels(by.col)
     by.levels <- levels(by.col)
   } else by.levels <- sort(unique(by.col))
+  by.col <- as.character(by.col)
+  by.levels <- as.character(by.levels)
+  if(any(by.levels == ""))
+  {
+    warning('Empty string detected in time point is not allowed; converting to " ".')
+    by.col[by.col == ""] <- " "
+    by.levels <- unique(replace(by.levels, by.levels == "", " "))
+  }
 
   if(length(by.levels) != 2) stop("Please specify exactly 2 time points")
   ids <- modeldf$`(id)`
@@ -106,13 +121,6 @@ paired <- function(formula, data, id, na.action, subset=NULL, control = NULL, ..
   TP2 <- TP2[match(ids.both, TP2$`(id)`, nomatch = 0), cn, drop = FALSE]
   modeldf <- modeldf[, cn, drop = FALSE]
 
-  ## fix of droplevels on by factor suggested by Ethan Heinzen 4/12/2016
-  by.col <- modeldf[[1]]
-  if(is.factor(by.col)) {
-    by.col <- droplevels(by.col)
-    by.levels <- levels(by.col)
-  } else by.levels <- sort(unique(by.col))
-
   for(eff in 2:ncol(modeldf)) {
 
     currcol <- modeldf[[eff]]
@@ -124,6 +132,7 @@ paired <- function(formula, data, id, na.action, subset=NULL, control = NULL, ..
     if(is.null(labelEff))  labelEff <- nameEff
     statList <- list()
     bystatlist <- list()
+    control.list <- attr(currcol, "control.list")
 
     ############################################################
     if(is.ordered(currcol) || is.logical(currcol) || is.factor(currcol) || is.character(currcol)) {
@@ -168,7 +177,7 @@ paired <- function(formula, data, id, na.action, subset=NULL, control = NULL, ..
 
     } else if(is.Date(currcol)) {
       ######## Date variable ###############
-      xlevels <- NULL
+      xlevels <- sort(unique(currcol))
 
       ## get stats funs from either formula  or control
       currstats <- control$date.stats
@@ -182,10 +191,10 @@ paired <- function(formula, data, id, na.action, subset=NULL, control = NULL, ..
 
     } else if(is.numeric(currcol) || inherits(currcol, "difftime")) {
       ######## Continuous variable (numeric) ###############
-      xlevels <- NULL
 
       ## for difftime, convert to numeric
       if(inherits(currcol, "difftime")) currcol <- as.numeric(currcol)
+      xlevels <- sort(unique(currcol))
 
       ## if no missings, and control says not to show missings,
       ## remove Nmiss stat fun
@@ -209,7 +218,7 @@ paired <- function(formula, data, id, na.action, subset=NULL, control = NULL, ..
       {
         for(bylev in by.levels) {
           idx <- by.col == bylev
-          bystatlist[[as.character(bylev)]] <- do.call(statfun, list(currcol[idx], levels=xlevels, na.rm=TRUE, ...))
+          bystatlist[[bylev]] <- do.call(statfun, list(currcol[idx], levels=xlevels, na.rm=TRUE, ...))
         }
       }
       if(statfun %in% c("countpct", "countrowpct", "countcellpct"))
@@ -239,7 +248,8 @@ paired <- function(formula, data, id, na.action, subset=NULL, control = NULL, ..
                 signed.rank.exact = control$signed.rank.exact, signed.rank.correct = control$signed.rank.correct))
     } else NULL
 
-    xList[[nameEff]] <- list(stats=statList, test=testout, label=labelEff, name=names(modeldf)[eff], type=vartype)
+    xList[[nameEff]] <- list(stats=statList, test=testout, variable=nameEff, label=labelEff, term=names(modeldf)[eff],
+                             type=vartype, control.list = control.list)
   }
 
 
@@ -250,7 +260,7 @@ paired <- function(formula, data, id, na.action, subset=NULL, control = NULL, ..
 
   yList <- list()
   yList[[names(modeldf)[1]]] <- list(stats=c(unlist(table(factor(by.col, levels=by.levels), exclude=NA)), Difference=length(ids.both)),
-                                     label=labelBy, name=names(modeldf)[1])
+                                     label=labelBy, term=names(modeldf)[1])
 
   structure(list(y = yList, x = xList, control = control, Call = match.call(), weights=FALSE), class = c("paired", "tableby"))
 }

@@ -69,7 +69,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">A Few Notes on Labels</h1>
 <h4 class="author"><em>Ethan Heinzen</em></h4>
-<h4 class="date"><em>20 July, 2018</em></h4>
+<h4 class="date"><em>18 September, 2018</em></h4>
 
 
 <div id="TOC">
@@ -671,7 +671,7 @@ mockstudy <span class="op">%&gt;%</span><span class="st"> </span>
 </div>
 <div id="add-labels-to-a-data.frame" class="section level2">
 <h2>Add labels to a <code>data.frame</code></h2>
-<p><code>tableby()</code> and <code>modelsum()</code> also allow you to have label attributes on the data. Note that by default these attributes get dropped upon subsetting, hence the call to <code>keep.labels()</code>.</p>
+<p><code>tableby()</code> and <code>modelsum()</code> also allow you to have label attributes on the data. Note that by default these attributes usually get dropped upon subsetting, but <code>tableby()</code> and <code>modelsum()</code> use the <code>keep.labels()</code> function to retain them.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mockstudy.lab &lt;-<span class="st"> </span><span class="kw">keep.labels</span>(mockstudy)</code></pre></div>
 <p>You can set attributes one at a time in two ways:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">attr</span>(mockstudy.lab<span class="op">$</span>sex, <span class="st">&quot;label&quot;</span>) &lt;-<span class="st"> &quot;Sex&quot;</span>

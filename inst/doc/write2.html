@@ -69,7 +69,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">The write2 function</h1>
 <h4 class="author"><em>Ethan Heinzen</em></h4>
-<h4 class="date"><em>20 July, 2018</em></h4>
+<h4 class="date"><em>18 September, 2018</em></h4>
 
 
 <div id="TOC">
@@ -127,7 +127,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 tmpdir &lt;-<span class="st"> </span><span class="kw">tempdir</span>()</code></pre></div>
 <div id="tableby" class="section level2">
 <h2><code>tableby</code></h2>
-<p>For <code>tableby</code> objects, the output function in <code>write2()</code> is <code>summary()</code>. For available arguments, see the help pages for <code>summary.tableby()</code>. Don’t use the option <code>text = TRUE</code> with the <code>write2</code> functions.</p>
+<p>For <code>tableby</code> objects, the output function in <code>write2()</code> is <code>summary()</code>. For <code>summary.tableby</code> objects, the output function is <code>print()</code>. For available arguments, see the help pages for <code>summary.tableby()</code>. Don’t use the option <code>text = TRUE</code> with the <code>write2</code> functions.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mylabels &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">sex =</span> <span class="st">&quot;SEX&quot;</span>, <span class="dt">age =</span><span class="st">&quot;Age, yrs&quot;</span>)
 tab1 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span class="op">~</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span>age, <span class="dt">data=</span>mockstudy)
 
@@ -140,7 +140,7 @@ tab1 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 </div>
 <div id="modelsum" class="section level2">
 <h2><code>modelsum</code></h2>
-<p>For <code>modelsum</code> objects, the output function in <code>write2()</code> is <code>summary()</code>. For available arguments, see the help pages for <code>summary.modelsum()</code>. Don’t use the option <code>text = TRUE</code> with the <code>write2</code> functions.</p>
+<p>For <code>modelsum</code> objects, the output function in <code>write2()</code> is <code>summary()</code>. For <code>summary.modelsum</code> objects, the output function is <code>print()</code>. For available arguments, see the help pages for <code>summary.modelsum()</code>. Don’t use the option <code>text = TRUE</code> with the <code>write2</code> functions.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tab2 &lt;-<span class="st"> </span><span class="kw">modelsum</span>(alk.phos <span class="op">~</span><span class="st"> </span>arm <span class="op">+</span><span class="st"> </span>ps <span class="op">+</span><span class="st"> </span>hgb, <span class="dt">adjust=</span> <span class="op">~</span><span class="st"> </span>age <span class="op">+</span><span class="st"> </span>sex, <span class="dt">family =</span> <span class="st">&quot;gaussian&quot;</span>, <span class="dt">data =</span> mockstudy)
 
 <span class="kw">write2pdf</span>(
@@ -152,7 +152,7 @@ tab1 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 </div>
 <div id="freqlist" class="section level2">
 <h2><code>freqlist</code></h2>
-<p>For <code>freqlist</code> objects, the output function in <code>write2()</code> is <code>summary()</code>. For available arguments, see the help pages for <code>summary.freqlist()</code>.</p>
+<p>For <code>freqlist</code> objects, the output function in <code>write2()</code> is <code>summary()</code>. For <code>summary.freqlist</code> objects, the output function is <code>print()</code>. For available arguments, see the help pages for <code>summary.freqlist()</code>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mockstudy[, <span class="kw">c</span>(<span class="st">&quot;arm&quot;</span>, <span class="st">&quot;sex&quot;</span>, <span class="st">&quot;mdquality.s&quot;</span>)] <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">table</span>(<span class="dt">useNA =</span> <span class="st">&quot;ifany&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">freqlist</span>(<span class="dt">groupBy =</span> <span class="kw">c</span>(<span class="st">&quot;arm&quot;</span>, <span class="st">&quot;sex&quot;</span>)) <span class="op">%&gt;%</span><span class="st"> </span>

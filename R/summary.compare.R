@@ -4,7 +4,9 @@
 #' Print a more detailed output of the \code{\link{compare.data.frame}} object.
 #'
 #' @param object An object of class \code{"compare.data.frame"}, as made by the \code{\link{compare.data.frame}} S3 method.
-#' @param ... Other arguments. In \code{print}, these are passed to  (not in use at this time).
+#' @param ... Other arguments. In \code{print}, these are passed to \code{\link[knitr]{kable}}.
+#' @param show.attrs Logical, denoting whether to show the actual attributes which are different. For (e.g.) factors with lots
+#'   of levels, this can make the tables quite wide, so this feature is \code{FALSE} by default.
 #' @param max.print.vars,max.print.obs,max.print.diff,max.print.attrs Integers denoting the maximum number of differences to report
 #'   for each of the three tables. Passing \code{NA} will print all differences.
 #' @param x An object returned by the \code{summary.compare.data.frame} function.
@@ -18,13 +20,18 @@ NULL
 
 #' @rdname summary.compare
 #' @export
-summary.compare.data.frame <- function(object, ..., max.print.vars = NA, max.print.obs = NA, max.print.diff = 10, max.print.attrs = NA)
+summary.compare.data.frame <- function(object,  ..., show.attrs = FALSE,
+                                       max.print.vars = NA, max.print.obs = NA, max.print.diff = 10, max.print.attrs = NA)
 {
   chk <- function(x) is.na(x) || (is.numeric(x) && x > 0)
   if(!chk(max.print.vars)) stop("'max.print.vars' needs to be a numeric > 0.")
   if(!chk(max.print.obs)) stop("'max.print.obs' needs to be a numeric > 0.")
   if(!chk(max.print.diff)) stop("'max.print.diff' needs to be a numeric > 0.")
   if(!chk(max.print.attrs)) stop("'max.print.attrs' needs to be a numeric > 0.")
+
+  #### start with summaries of the data.frames ####
+
+  frame.summary <- object$frame.summary[c("version", "arg", "ncol", "nrow")]
 
   #### start with differences in variables first ####
   get.vars.not.shared <- function(a, b)
@@ -58,21 +65,26 @@ summary.compare.data.frame <- function(object, ..., max.print.vars = NA, max.pri
 
   attrs.tmp <- as.data.frame(object$vars.summary[idx_var_sum(object, "non.identical.attributes"), c("var.x", "var.y", "attrs"), drop = FALSE])
   attrs.diffs <- do.call(rbind, Map(cbind, var.x = attrs.tmp$var.x, var.y = attrs.tmp$var.y, attrs.tmp$attrs,
-                                    MoreArgs = list(stringsAsFactors = FALSE)))[, c("var.x", "var.y", "name"), drop = FALSE]
-  if(is.null(attrs.diffs)) attrs.diffs <- data.frame(var.x = character(0), var.y = character(0), name = character(0), stringsAsFactors = FALSE)
+                                    MoreArgs = list(stringsAsFactors = FALSE)))
+  if(is.null(attrs.diffs))
+  {
+    attrs.diffs <- data.frame(var.x = character(0), var.y = character(0), name = character(0), stringsAsFactors = FALSE)
+  } else if(!show.attrs) attrs.diffs <- attrs.diffs[c("var.x", "var.y", "name")]
 
-  structure(list(vars.ns.table = vars.ns, vars.nc.table = vars.nc, obs.table = obs.ns,
-                 diffs.byvar.table = diffs(object, by.var = TRUE), diffs.table = diffs(object),
-                 attrs.table = attrs.diffs,
-                 max.print.vars.ns = max.print.vars, max.print.vars.nc = max.print.vars,
-                 max.print.obs = max.print.obs, max.print.diff = max.print.diff, max.print.attrs = max.print.attrs),
-            class = "summary.compare.data.frame")
+  structure(list(
+    frame.summary.table = frame.summary, vars.ns.table = vars.ns, vars.nc.table = vars.nc, obs.table = obs.ns,
+    diffs.byvar.table = diffs(object, by.var = TRUE), diffs.table = diffs(object),
+    attrs.table = attrs.diffs,
+    max.print.vars.ns = max.print.vars, max.print.vars.nc = max.print.vars,
+    max.print.obs = max.print.obs, max.print.diff = max.print.diff, max.print.attrs = max.print.attrs
+  ), class = "summary.compare.data.frame")
 }
 
 #' @rdname summary.compare
 #' @export
 print.summary.compare.data.frame <- function(x, ..., format = "pandoc")
 {
+  orig <- x
   sumdiffs <- sum(x$diffs.byvar.table$n)
 
   if(is.null(x$max.print.diff) || is.na(x$max.print.diff)) x$max.print.diff <- sumdiffs
@@ -86,7 +98,7 @@ print.summary.compare.data.frame <- function(x, ..., format = "pandoc")
     x$diffs.table$values.y <- lapply(x$diffs.table$values.y, as_char)
   }
 
-  for(v in c("vars.ns", "vars.nc", "obs", "diffs.byvar", "diffs", "attrs"))
+  for(v in c("frame.summary", "vars.ns", "vars.nc", "obs", "diffs.byvar", "diffs", "attrs"))
   {
     obj <- x[[paste0(v, ".table")]]
     nprint <- x[[paste0("max.print.", v)]]
@@ -94,7 +106,9 @@ print.summary.compare.data.frame <- function(x, ..., format = "pandoc")
     # there is purposefully no max.print.diffs
     if(is.null(nprint) || is.na(nprint)) nprint <- nrow(obj)
 
-    caption <- switch(v, vars.ns = "Variables not shared",
+    caption <- switch(v,
+                      frame.summary = "Summary of data.frames",
+                      vars.ns = "Variables not shared",
                       vars.nc = "Other variables not compared",
                       obs = "Observations not shared",
                       diffs.byvar = "Differences detected by variable",
@@ -118,6 +132,6 @@ print.summary.compare.data.frame <- function(x, ..., format = "pandoc")
     }
     cat("\n")
   }
-  invisible(NULL)
+  invisible(orig)
 }
 

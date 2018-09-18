@@ -270,6 +270,10 @@ summary(tableby(sex ~ includeNA(ps.cat), data = mockstudy, cat.stats = "countpct
 ## ---- results='asis'------------------------------------------------------------------------------
 summary(tableby(arm ~ sex + age + fu.time, data=mockstudy), digits=4, digits.p=2, digits.pct=1)
 
+## ----results='asis'-------------------------------------------------------------------------------
+summary(tableby(arm ~ chisq(sex, digits.pct=1) + anova(age, digits=4) +
+                  anova(fu.time, digits = 1), data=mockstudy))
+
 ## ---- results='asis'------------------------------------------------------------------------------
 myfunc <- function(x, weights=rep(1,length(x)), ...){
   mean(x, trim=.1, ...)
@@ -316,9 +320,16 @@ tab2 <- modpval.tableby(tab1, mypval, use.pname=TRUE)
 summary(tab2, title='Case Weights used, p-values added') #, pfootnote=TRUE)
 
 ## ---- results='asis'------------------------------------------------------------------------------
-levels(mockstudy$sex)
 table2 <- tableby(arm~sex + factor(mdquality.s), data=mockstudy, cat.simplify=TRUE)
 summary(table2, labelTranslations=c(sex="Female", "factor(mdquality.s)"="MD Quality"))
+
+## ----results='asis'-------------------------------------------------------------------------------
+summary(tableby(arm ~ age + ast, data = mockstudy,
+                numeric.simplify=TRUE, numeric.stats=c("Nmiss", "meansd")))
+
+## -------------------------------------------------------------------------------------------------
+summary(tableby(arm ~ anova(age, "meansd", numeric.simplify=TRUE) +
+                  chisq(sex, cat.simplify=TRUE), data = mockstudy))
 
 ## -------------------------------------------------------------------------------------------------
 tab1 <- tableby(arm~sex+age, data=mockstudy)

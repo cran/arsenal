@@ -24,7 +24,7 @@
 #' summary(compare(df1, df2, by = "id"))
 #' summary(compare(df1, df2, by = "row.names"))
 #' @author Ethan Heinzen, adapted from code from Andrew Hanson
-#' @seealso \code{\link{summary.compare.data.frame}}
+#' @seealso \code{\link{summary.compare.data.frame}}, \code{\link{n.diffs}}, \code{\link{n.diff.obs}}
 #' @name compare.data.frame
 NULL
 #> NULL
@@ -35,6 +35,9 @@ compare.data.frame <- function(x, y, by = NULL, by.x = by, by.y = by, control = 
 
   control <- c(list(...), control)
   control <- do.call("comparison.control", control[!duplicated(names(control))])
+
+  xname <- paste0(deparse(substitute(x)), collapse = "")
+  yname <- paste0(deparse(substitute(y)), collapse = "")
 
   if(!is.data.frame(x) || !is.data.frame(y))
   {
@@ -66,20 +69,23 @@ compare.data.frame <- function(x, y, by = NULL, by.x = by, by.y = by, control = 
 
   #### data frame summary ####
 
-  frame.summary <- data.frame(version = c("x", "y"),
-                              ncol = c(ncol(x), ncol(y)),
-                              nrow = c(nrow(x), nrow(y)), stringsAsFactors = FALSE)
+  frame.summary <- data.frame(
+    version = c("x", "y"),
+    arg = c(xname, yname),
+    ncol = c(ncol(x), ncol(y)),
+    nrow = c(nrow(x), nrow(y)), stringsAsFactors = FALSE
+  )
   frame.summary$by <- list(by.x, by.y)
   frame.summary$attrs <- list(attributes(x), attributes(y))
 
   if("row.names" %in% by.x)
   {
-    x[["..row.names.."]] <- if(byrow) 1:nrow(x) else row.names(x)
+    x[["..row.names.."]] <- if(byrow) seq_len(nrow(x)) else row.names(x)
     by.x <- "..row.names.."
   }
   if("row.names" %in% by.y)
   {
-    y[["..row.names.."]] <- if(byrow) 1:nrow(y) else row.names(y)
+    y[["..row.names.."]] <- if(byrow) seq_len(nrow(y)) else row.names(y)
     by.y <- "..row.names.."
   }
 
@@ -92,8 +98,8 @@ compare.data.frame <- function(x, y, by = NULL, by.x = by, by.y = by, control = 
 
   #### now merge the things together ####
 
-  together <- merge(cbind(stats::setNames(x, tcn$cn.x), ..row.x.. = 1:nrow(x)),
-                    cbind(stats::setNames(y, tcn$cn.y), ..row.y.. = 1:nrow(y)), by = by, all = TRUE)
+  together <- merge(cbind(stats::setNames(x, tcn$cn.x), ..row.x.. = seq_len(nrow(x))),
+                    cbind(stats::setNames(y, tcn$cn.y), ..row.y.. = seq_len(nrow(y))), by = by, all = TRUE)
 
   both <- together[!is.na(together[["..row.x.."]]) & !is.na(together[["..row.y.."]]), , drop = FALSE]
 
@@ -125,8 +131,8 @@ compare.data.frame <- function(x, y, by = NULL, by.x = by, by.y = by, control = 
   vars.summary$class.x <- lapply(vars.summary$class.x, cleanup.null.na)
   vars.summary$class.y <- lapply(vars.summary$class.y, cleanup.null.na)
 
-  vars.summary$values <- lapply(1:nrow(vars.summary), compare_values, v = vars.summary, df = both, byvars = by, contr = control)
-  vars.summary$attrs <- lapply(1:nrow(vars.summary), compare_attrs, v = vars.summary, x_ = x, y_ = y)
+  vars.summary$values <- lapply(seq_len(nrow(vars.summary)), compare_values, v = vars.summary, df = both, byvars = by, contr = control)
+  vars.summary$attrs <- lapply(seq_len(nrow(vars.summary)), compare_attrs, v = vars.summary, x_ = x, y_ = y)
   vars.summary$tmp <- NULL
 
   structure(list(frame.summary = structure(frame.summary, class = c("compare.data.frame.frame.summary", "data.frame")),
@@ -144,8 +150,7 @@ print.compare.data.frame <- function(x, ...)
   cat("\n")
   cat("Shared: ", sum(!idx_var_sum(x, "vars.not.shared")), " variables and ", x$frame.summary$n.shared[1], " observations.\n", sep = "")
   cat("Not shared: ", sum(idx_var_sum(x, "vars.not.shared")), " variables and ",
-      nrow(x$frame.summary$unique[[1]]) + nrow(x$frame.summary$unique[[2]]),
-      " observations.\n", sep = "")
+      n.diff.obs(x), " observations.\n", sep = "")
   cat("\n")
   cat("Differences found in ", sum(idx_var_sum(x, "differences.found")), "/", sum(idx_var_sum(x, "vars.compared")), " variables compared.\n", sep = "")
   cat(sum(idx_var_sum(x, "non.identical.attributes")), " variables compared have non-identical attributes.\n", sep = "")
@@ -155,7 +160,7 @@ print.compare.data.frame <- function(x, ...)
 #' @export
 print.compare.data.frame.vars.summary <- function(x, ...)
 {
-  tmp <- x
+  orig <- x
   f <- function(elt, txt1, txt2)
   {
     if(is.data.frame(elt)) paste0(nrow(elt), txt1) else if(is.null(elt)) txt2 else elt
@@ -164,14 +169,14 @@ print.compare.data.frame.vars.summary <- function(x, ...)
   x$values <- vapply(x$values, f, character(1), txt1 = " differences", txt2 = "Not compared")
   x$attrs <- vapply(x$attrs, f, character(1), txt1 = " attributes", txt2 = "0 attributes")
   NextMethod()
-  invisible(tmp)
+  invisible(orig)
 }
 
 
 #' @export
 print.compare.data.frame.frame.summary <- function(x, ...)
 {
-  tmp <- x
+  orig <- x
   f <- function(elt, txt1, txt2)
   {
     if(is.data.frame(elt)) paste0(nrow(elt), txt1) else if(is.list(elt)) paste0(length(elt), txt1) else if(is.null(elt)) txt2 else elt
@@ -180,5 +185,5 @@ print.compare.data.frame.frame.summary <- function(x, ...)
   x$attrs <- vapply(x$attrs, f, character(1), txt1 = " attributes", txt2 = "0 attributes")
   x$unique <- vapply(x$unique, f, character(1), txt1 = " unique obs", txt2 = "")
   NextMethod()
-  invisible(tmp)
+  invisible(orig)
 }
