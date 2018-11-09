@@ -1,3 +1,31 @@
+# arsenal v1.5.0
+
+* `tableby()` and `paired()`:
+
+    - fixed a bug with specifying individual statistics for character and logical vectors. (#142)
+
+    - `tableby()` and `paired()`: added a function (`notest()`) to prevent performing a test on an individual variable. (#144)
+
+    - `summary.tableby()`: changed NA p-values to blanks. (#145)
+
+    - `summary.tableby()`: added documentation on `bookdown`. (#147)
+    
+    - Wrote `padjust()`, an S3 wrapper for `p.adjust()`, which can also adjust `tableby()` (and hence `paired()`) objects. (#146)
+    
+    - `print.summary.tableby()`, `as.data.frame.summary.tableby()`: added `width=` and `min.split=` as formal arguments.
+    
+    - Fixed `medSurv()` which was calculating the median survival incorrectly, and removed `rangeTime()`, an ambiguous survival statistic. (#32)
+
+* `modelsum()`:
+
+    - `summary.modelsum()`: added documentation on `bookdown`. (#147)
+    
+    - `print.summary.modelsum()`, `as.data.frame.summary.modelsum()`: added `width=` and `min.split=` as formal arguments.
+    
+* `summary.freqlist()`: added documentation on `bookdown`. (#147)
+
+* `formulize()`: added support for names and calls. (#152, #153)
+
 # arsenal v1.4.0
 
 **There are a few non-backwards-compatible updates.**

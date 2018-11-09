@@ -82,7 +82,7 @@ tab3 <- tableby(arm ~ sex + age, data=mockstudy, test=FALSE, total=FALSE,
 summary(tab3)
 
 ## ---- testformula---------------------------------------------------------------------------------
-tab.test <- tableby(arm ~ kwt(age) + anova(bmi) + kwt(ast), data=mockstudy)
+tab.test <- tableby(arm ~ kwt(age) + anova(bmi) + notest(ast), data=mockstudy)
 tests(tab.test)
 
 ## ---- results='asis'------------------------------------------------------------------------------
@@ -90,7 +90,7 @@ summary(tab.test)
 
 ## ---- testsAndStats, results='asis'---------------------------------------------------------------
 tab.test <- tableby(arm ~ kwt(ast, "Nmiss2","median") + anova(age, "N","mean") +
-                    kwt(bmi, "Nmiss","median"), data=mockstudy)
+                    notest(bmi, "Nmiss","median"), data=mockstudy)
 summary(tab.test)
 
 ## ---- simfe, results='asis'-----------------------------------------------------------------------
@@ -359,6 +359,14 @@ as.data.frame(tab1)
 #      }, sanitize.text.function = function(x) x)
 #    }
 #  )
+
+## ----eval=FALSE-----------------------------------------------------------------------------------
+#  summary(tableby(sex ~ age, data = mockstudy), title="(\\#tab:mytableby) Caption here")
+
+## -------------------------------------------------------------------------------------------------
+tab <- summary(tableby(sex ~ age + fu.time + bmi + mdquality.s, data = mockstudy))
+tab
+padjust(tab, method = "bonferroni")
 
 ## -------------------------------------------------------------------------------------------------
 args(tableby.control)

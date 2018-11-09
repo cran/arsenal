@@ -2,7 +2,6 @@
 % Please edit documentation in R/tableby.R
 \name{tableby}
 \alias{tableby}
-\alias{tableby}
 \alias{print.tableby}
 \title{Summary Statistics of a Set of Independent Variables by a Categorical Variable}
 \usage{
@@ -91,6 +90,9 @@ These tests are accepted:
   }
   \item{
     \code{logrank}: log-rank, the default for time-to-event variables
+  }
+  \item{
+    \code{notest}: no test is performed.
   }
 }
 

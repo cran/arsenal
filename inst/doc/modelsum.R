@@ -410,6 +410,9 @@ tmp
 #    }
 #  )
 
+## ----eval=FALSE----------------------------------------------------------
+#  summary(modelsum(age ~ sex, data = mockstudy), title="(\\#tab:mytableby) Caption here")
+
 ## ------------------------------------------------------------------------
 args(modelsum.control)
 

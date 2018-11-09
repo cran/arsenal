@@ -2,7 +2,6 @@
 % Please edit documentation in R/summary.modelsum.R
 \name{summary.modelsum}
 \alias{summary.modelsum}
-\alias{summary.modelsum}
 \alias{as.data.frame.summary.modelsum}
 \alias{print.summary.modelsum}
 \title{Summarize a \code{modelsum} object.}
@@ -11,11 +10,12 @@
   text = FALSE, title = NULL, term.name = "")
 
 \method{as.data.frame}{summary.modelsum}(x, ..., text = x$text,
-  term.name = x$term.name)
+  term.name = x$term.name, width = NULL, min.split = NULL)
 
 \method{print}{summary.modelsum}(x, ..., format = if (!is.null(x$text) &&
-  x$text \%in\% c("html", "latex")) x$text else "markdown", escape = x$text
-  \%nin\% c("html", "latex"))
+  x$text \%in\% c("html", "latex")) x$text else "markdown",
+  escape = x$text \%nin\% c("html", "latex"), width = NULL,
+  min.split = NULL)
 }
 \arguments{
 \item{object}{A \code{\link{modelsum}} object.}
@@ -41,6 +41,10 @@ the LaTeX command \code{\\textbf}.}
 \item{term.name}{A character string denoting the column name for the first column.}
 
 \item{x}{An object of class \code{"summary.modelsum"}.}
+
+\item{width}{Passed to \code{\link{smart.split}} for formatting of the "term" column.}
+
+\item{min.split}{Passed to \code{\link{smart.split}} for formatting of the "term" column.}
 
 \item{format}{Passed to \code{\link[knitr]{kable}}: the format for the table. The default here is "markdown".
 To use the default in \code{kable}, pass \code{NULL}. If \code{x$text} specifies LaTeX or HTML formatting,

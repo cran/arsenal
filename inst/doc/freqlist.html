@@ -69,7 +69,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">The freqlist function</h1>
 <h4 class="author"><em>Tina Gunderson and Ethan Heinzen</em></h4>
-<h4 class="date"><em>18 September, 2018</em></h4>
+<h4 class="date"><em>09 November, 2018</em></h4>
 
 
 <div id="TOC">
@@ -87,6 +87,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><a href="#frequency-counts-and-percentages-subset-by-factor-levels">Frequency counts and percentages subset by factor levels</a></li>
 <li><a href="#change-labels-on-the-fly">Change labels on the fly</a></li>
 <li><a href="#using-xtable-to-format-and-print-freqlist-results">Using <code>xtable()</code> to format and print <code>freqlist()</code> results</a></li>
+<li><a href="#use-freqlist-in-bookdown">Use <code>freqlist</code> in bookdown</a></li>
 </ul></li>
 <li><a href="#appendix-notes-regarding-table-options-in-r">Appendix: Notes regarding table options in R</a><ul>
 <li><a href="#nas">NAs</a></li>
@@ -2891,6 +2892,11 @@ Female
 </td>
 </tr>
 </table>
+</div>
+<div id="use-freqlist-in-bookdown" class="section level2">
+<h2>Use <code>freqlist</code> in bookdown</h2>
+<p>Since the backbone of <code>freqlist()</code> is <code>knitr::kable()</code>, tables still render well in bookdown. However, <code>print.summary.freqlist()</code> doesn’t use the <code>caption=</code> argument of <code>kable()</code>, so some tables may not have a properly numbered caption. To fix this, use the method described <a href="https://bookdown.org/yihui/bookdown/tables.html">on the bookdown site</a> to give the table a tag/ID.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(<span class="kw">freqlist</span>(<span class="op">~</span>sex <span class="op">+</span><span class="st"> </span>age, <span class="dt">data =</span> mockstudy), <span class="dt">title =</span> <span class="st">&quot;(</span><span class="ch">\\</span><span class="st">#tab:mytableby) Caption here&quot;</span>)</code></pre></div>
 </div>
 </div>
 <div id="appendix-notes-regarding-table-options-in-r" class="section level1">

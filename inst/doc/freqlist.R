@@ -84,6 +84,9 @@ names(xftbl)[1:3] <- c("Arm", "Gender", "LASA QOL")
 
 print(xftbl, sanitize.colnames.function = italic, include.rownames = FALSE, type = "html", comment = FALSE)
 
+## ----eval=FALSE---------------------------------------------------------------
+#  summary(freqlist(~ sex + age, data = mockstudy), title="(\\#tab:mytableby) Caption here")
+
 ## -----------------------------------------------------------------------------
 # base table default removes NAs
 tab.d1 <- base::table(mockstudy[, c("arm", "sex", "mdquality.s")], useNA="ifany")

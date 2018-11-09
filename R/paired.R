@@ -19,8 +19,27 @@
 #' @param ... additional arguments to be passed to internal \code{paired} functions or \code{\link{paired.control}}.
 #' @return An object with class \code{c("paired", "tableby")}
 #' @details
-#'   Do note that this function piggybacks off of \code{\link{tableby}} quite heavily, so there is no
-#'   \code{summary.paired} function (for instance).
+#' Do note that this function piggybacks off of \code{\link{tableby}} quite heavily, so there is no
+#' \code{summary.paired} function (for instance).
+#'
+#' These tests are accepted:
+#' \itemize{
+#'   \item{
+#'     \code{paired.t}: a paired \code{\link[stats:t.test]{t-test}}.
+#'   }
+#'   \item{
+#'     \code{mcnemar}: \link[stats:mcnemar.test]{McNemar's test}.
+#'   }
+#'   \item{
+#'     \code{signed.rank}: a \link[stats:wilcox.test]{signed rank test}.
+#'   }
+#'   \item{
+#'     \code{sign.test}: a sign test.
+#'   }
+#'   \item{
+#'     \code{notest}: no test is performed.
+#'   }
+#' }
 #' @seealso \code{\link{paired.control}}, \code{\link{tableby}}, \code{\link{formulize}}
 #' @author Jason Sinnwell, Beth Atkinson, Ryan Lennon, and Ethan Heinzen
 #' @name paired
@@ -50,7 +69,7 @@ paired <- function(formula, data, id, na.action, subset=NULL, control = NULL, ..
 
   if(is.null(temp.call$na.action)) temp.call$na.action <- na.paired("in.both")
 
-  special <- c("paired.t", "mcnemar", "signed.rank", "sign.test")
+  special <- c("paired.t", "mcnemar", "signed.rank", "sign.test", "notest")
   if (missing(data)) {
     temp.call$formula <- stats::terms(formula, special)
   } else {
@@ -62,7 +81,7 @@ paired <- function(formula, data, id, na.action, subset=NULL, control = NULL, ..
   tmp.fun <- function(x, ..., digits = NULL, digits.count = NULL, digits.pct = NULL, cat.simplify = NULL, numeric.simplify = NULL)
   {
     attr(x, "name") <- deparse(substitute(x))
-    attr(x, "stats") <- list(...)
+    attr(x, "stats") <- if(missing(...)) NULL else list(...)
     attr(x, "control.list") <- list(digits = digits, digits.count = digits.count, digits.pct = digits.pct,
                                     cat.simplify = cat.simplify, numeric.simplify = numeric.simplify)
     x
@@ -126,13 +145,14 @@ paired <- function(formula, data, id, na.action, subset=NULL, control = NULL, ..
     currcol <- modeldf[[eff]]
 
     ## label
-    nameEff <- attributes(currcol)$name
-    if(is.null(nameEff))  nameEff <- names(modeldf)[eff]
-    labelEff <-  attributes(currcol)$label
-    if(is.null(labelEff))  labelEff <- nameEff
+    nameEff <- attr(currcol, "name")
+    if(is.null(nameEff)) nameEff <- names(modeldf)[eff]
+    labelEff <-  attr(currcol, "label")
+    if(is.null(labelEff)) labelEff <- nameEff
     statList <- list()
     bystatlist <- list()
     control.list <- attr(currcol, "control.list")
+    attrstats <- attr(currcol, "stats")
 
     ############################################################
     if(is.ordered(currcol) || is.logical(currcol) || is.factor(currcol) || is.character(currcol)) {
@@ -206,7 +226,7 @@ paired <- function(formula, data, id, na.action, subset=NULL, control = NULL, ..
 
     ## if no missings, and control says not to show missings,
     ## remove Nmiss stat fun
-    currstats <- if(length(attributes(currcol)$stats)>0) attributes(currcol)$stats else currstats
+    currstats <- if(is.null(attrstats)) currstats else attrstats
     if(!anyNA(currcol) && "Nmiss" %in% currstats) currstats <- currstats[currstats != "Nmiss"]
     for(statfun in currstats) {
       if(statfun %in% c("countrowpct", "countcellpct", "rowbinomCI"))
@@ -255,7 +275,7 @@ paired <- function(formula, data, id, na.action, subset=NULL, control = NULL, ..
 
   if(length(xList) == 0) stop("No x-variables successfully computed.")
 
-  labelBy <- attributes(by.col)$label
+  labelBy <- attr(by.col, "label")
   if(is.null(labelBy)) labelBy <- names(modeldf)[1]
 
   yList <- list()

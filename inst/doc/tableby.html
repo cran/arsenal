@@ -69,7 +69,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">The tableby function</h1>
 <h4 class="author"><em>Beth Atkinson, Ethan Heinzen, Jason Sinnwell, Shannon McDonnell and Greg Dougherty</em></h4>
-<h4 class="date"><em>18 September, 2018</em></h4>
+<h4 class="date"><em>09 November, 2018</em></h4>
 
 
 <div id="TOC">
@@ -111,6 +111,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><a href="#export-tableby-object-to-a-.csv-file">20. Export <code>tableby</code> object to a .CSV file</a></li>
 <li><a href="#write-tableby-object-to-a-separate-word-or-html-file">21. Write <code>tableby</code> object to a separate Word or HTML file</a></li>
 <li><a href="#use-tableby-in-r-shiny">22. Use <code>tableby</code> in R Shiny</a></li>
+<li><a href="#use-tableby-in-bookdown">23. Use <code>tableby</code> in bookdown</a></li>
+<li><a href="#adjust-tableby-for-multiple-p-values">24. Adjust <code>tableby</code> for multiple p-values</a></li>
 </ul></li>
 <li><a href="#available-function-options">Available Function Options</a><ul>
 <li><a href="#summary-statistics">Summary statistics</a></li>
@@ -685,7 +687,7 @@ tab2 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 <td align="center"></td>
 </tr>
 <tr class="odd">
-<td align="left">   median</td>
+<td align="left">   Median</td>
 <td align="center">61.000</td>
 <td align="center">61.000</td>
 <td align="center">61.000</td>
@@ -701,14 +703,14 @@ tab2 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 </div>
 <div id="change-summary-statistics-within-the-formula" class="section level2">
 <h2>Change summary statistics within the formula</h2>
-<p>In addition to modifying summary options globally, it is possible to modify the test and summary statistics for specific variables within the formula statement. For example, both the kwt (Kruskal-Wallis rank-based) and anova (asymptotic analysis of variance) tests apply to numeric variables and we can use one for the variable “age” and another for the variable “ast”. A list of all the options is shown at the end of the vignette.</p>
+<p>In addition to modifying summary options globally, it is possible to modify the test and summary statistics for specific variables within the formula statement. For example, both the kwt (Kruskal-Wallis rank-based) and anova (asymptotic analysis of variance) tests apply to numeric variables, and we can use one for the variable “age”, another for the variable “bmi”, and no test for the variable “ast”. A list of all the options is shown at the end of the vignette.</p>
 <p>The <code>tests</code> function can do a quick check on what tests were performed on each variable in tableby.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tab.test &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span class="op">~</span><span class="st"> </span><span class="kw">kwt</span>(age) <span class="op">+</span><span class="st"> </span><span class="kw">anova</span>(bmi) <span class="op">+</span><span class="st"> </span><span class="kw">kwt</span>(ast), <span class="dt">data=</span>mockstudy)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tab.test &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span class="op">~</span><span class="st"> </span><span class="kw">kwt</span>(age) <span class="op">+</span><span class="st"> </span><span class="kw">anova</span>(bmi) <span class="op">+</span><span class="st"> </span><span class="kw">notest</span>(ast), <span class="dt">data=</span>mockstudy)
 <span class="kw">tests</span>(tab.test)</code></pre></div>
-<pre><code>##                     Variable    p.value                       Method
-## age                 Age, yrs 0.63906143 Kruskal-Wallis rank sum test
-## bmi Body Mass Index (kg/m^2) 0.89165522           Linear Model ANOVA
-## ast                      ast 0.03902803 Kruskal-Wallis rank sum test</code></pre>
+<pre><code>##                     Variable   p.value                       Method
+## age                 Age, yrs 0.6390614 Kruskal-Wallis rank sum test
+## bmi Body Mass Index (kg/m^2) 0.8916552           Linear Model ANOVA
+## ast                      ast        NA                      No test</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(tab.test)</code></pre></div>
 <table>
 <thead>
@@ -784,7 +786,7 @@ tab2 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 <td align="center"></td>
 <td align="center"></td>
 <td align="center"></td>
-<td align="right">0.039</td>
+<td align="right"></td>
 </tr>
 <tr class="odd">
 <td align="left">   N-Miss</td>
@@ -814,7 +816,7 @@ tab2 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 </table>
 <p>Summary statistics for any individual variable can also be modified, but it must be done as secondary arguments to the test function. The function names must be strings that are functions already written for tableby, built-in R functions like mean and range, or user-defined functions.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tab.test &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span class="op">~</span><span class="st"> </span><span class="kw">kwt</span>(ast, <span class="st">&quot;Nmiss2&quot;</span>,<span class="st">&quot;median&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">anova</span>(age, <span class="st">&quot;N&quot;</span>,<span class="st">&quot;mean&quot;</span>) <span class="op">+</span>
-<span class="st">                    </span><span class="kw">kwt</span>(bmi, <span class="st">&quot;Nmiss&quot;</span>,<span class="st">&quot;median&quot;</span>), <span class="dt">data=</span>mockstudy)
+<span class="st">                    </span><span class="kw">notest</span>(bmi, <span class="st">&quot;Nmiss&quot;</span>,<span class="st">&quot;median&quot;</span>), <span class="dt">data=</span>mockstudy)
 <span class="kw">summary</span>(tab.test)</code></pre></div>
 <table>
 <thead>
@@ -845,7 +847,7 @@ tab2 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 <td align="right"></td>
 </tr>
 <tr class="odd">
-<td align="left">   median</td>
+<td align="left">   Median</td>
 <td align="center">29.000</td>
 <td align="center">25.500</td>
 <td align="center">27.000</td>
@@ -882,7 +884,7 @@ tab2 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 <td align="center"></td>
 <td align="center"></td>
 <td align="center"></td>
-<td align="right">0.641</td>
+<td align="right"></td>
 </tr>
 <tr class="even">
 <td align="left">   N-Miss</td>
@@ -893,7 +895,7 @@ tab2 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 <td align="right"></td>
 </tr>
 <tr class="odd">
-<td align="left">   median</td>
+<td align="left">   Median</td>
 <td align="center">26.234</td>
 <td align="center">26.525</td>
 <td align="center">25.978</td>
@@ -1021,7 +1023,7 @@ tab.catsim &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <sp
 <td align="right"></td>
 </tr>
 <tr class="odd">
-<td align="left">   median</td>
+<td align="left">   Median</td>
 <td align="center">29.000</td>
 <td align="center">25.500</td>
 <td align="center">27.000</td>
@@ -1058,7 +1060,7 @@ tab.catsim &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <sp
 <td align="center"></td>
 <td align="center"></td>
 <td align="center"></td>
-<td align="right">0.641</td>
+<td align="right"></td>
 </tr>
 <tr class="even">
 <td align="left">   N-Miss</td>
@@ -1069,7 +1071,7 @@ tab.catsim &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <sp
 <td align="right"></td>
 </tr>
 <tr class="odd">
-<td align="left">   median</td>
+<td align="left">   Median</td>
 <td align="center">26.234</td>
 <td align="center">26.525</td>
 <td align="center">25.978</td>
@@ -1482,7 +1484,7 @@ mockstudy<span class="op">$</span>dtentry &lt;-<span class="st"> </span><span cl
 <td align="right"></td>
 </tr>
 <tr class="odd">
-<td align="left">   median</td>
+<td align="left">   Median</td>
 <td align="center">2007-06-16</td>
 <td align="center">2007-06-15</td>
 <td align="center">2007-06-15</td>
@@ -2953,7 +2955,7 @@ tab2 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 <td align="right"></td>
 </tr>
 <tr class="even">
-<td align="left">   median</td>
+<td align="left">   Median</td>
 <td align="center">12.100</td>
 <td align="center">12.200</td>
 <td align="center">12.400</td>
@@ -2981,7 +2983,7 @@ tab2 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 <td align="right"></td>
 </tr>
 <tr class="even">
-<td align="left">   median</td>
+<td align="left">   Median</td>
 <td align="center">133.000</td>
 <td align="center">116.000</td>
 <td align="center">122.000</td>
@@ -3107,7 +3109,7 @@ tab2 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 <td align="right"></td>
 </tr>
 <tr class="odd">
-<td align="left">   median</td>
+<td align="left">   Median</td>
 <td align="center">27.000</td>
 <td align="center">27.000</td>
 <td align="right"></td>
@@ -3125,7 +3127,7 @@ tab2 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 <td align="right"></td>
 </tr>
 <tr class="even">
-<td align="left">   median</td>
+<td align="left">   Median</td>
 <td align="center">61.000</td>
 <td align="center">60.000</td>
 <td align="right"></td>
@@ -3158,7 +3160,7 @@ tab2 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 <td align="right"></td>
 </tr>
 <tr class="odd">
-<td align="left">   median</td>
+<td align="left">   Median</td>
 <td align="center">27.000</td>
 <td align="center">27.000</td>
 <td align="right"></td>
@@ -3176,7 +3178,7 @@ tab2 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 <td align="right"></td>
 </tr>
 <tr class="even">
-<td align="left">   median</td>
+<td align="left">   Median</td>
 <td align="center">61.000</td>
 <td align="center">60.000</td>
 <td align="right"></td>
@@ -4046,6 +4048,54 @@ tab1 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 )</code></pre></div>
 <p>This can be especially powerful if you feed the selections from a <code>selectInput(multiple = TRUE)</code> into <code>formulize()</code> to make the table dynamic!</p>
 </div>
+<div id="use-tableby-in-bookdown" class="section level2">
+<h2>23. Use <code>tableby</code> in bookdown</h2>
+<p>Since the backbone of <code>tableby()</code> is <code>knitr::kable()</code>, tables still render well in bookdown. However, <code>print.summary.tableby()</code> doesn’t use the <code>caption=</code> argument of <code>kable()</code>, so some tables may not have a properly numbered caption. To fix this, use the method described <a href="https://bookdown.org/yihui/bookdown/tables.html">on the bookdown site</a> to give the table a tag/ID.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(<span class="kw">tableby</span>(sex <span class="op">~</span><span class="st"> </span>age, <span class="dt">data =</span> mockstudy), <span class="dt">title=</span><span class="st">&quot;(</span><span class="ch">\\</span><span class="st">#tab:mytableby) Caption here&quot;</span>)</code></pre></div>
+</div>
+<div id="adjust-tableby-for-multiple-p-values" class="section level2">
+<h2>24. Adjust <code>tableby</code> for multiple p-values</h2>
+<p>The <code>padjust()</code> function is a new S3 generic piggybacking off of <code>p.adjust()</code>. It works on both <code>tableby</code> and <code>summary.tableby</code> objects:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tab &lt;-<span class="st"> </span><span class="kw">summary</span>(<span class="kw">tableby</span>(sex <span class="op">~</span><span class="st"> </span>age <span class="op">+</span><span class="st"> </span>fu.time <span class="op">+</span><span class="st"> </span>bmi <span class="op">+</span><span class="st"> </span>mdquality.s, <span class="dt">data =</span> mockstudy))
+tab</code></pre></div>
+<pre><code>## 
+## 
+## |                             |   Male (N=916)    |  Female (N=583)   |  Total (N=1499)   | p value|
+## |:----------------------------|:-----------------:|:-----------------:|:-----------------:|-------:|
+## |**Age, yrs**                 |                   |                   |                   |   0.048|
+## |&amp;nbsp;&amp;nbsp;&amp;nbsp;Mean (SD)  |  60.455 (11.369)  |  59.247 (11.722)  |  59.985 (11.519)  |        |
+## |&amp;nbsp;&amp;nbsp;&amp;nbsp;Range      |  19.000 - 88.000  |  22.000 - 88.000  |  19.000 - 88.000  |        |
+## |**fu.time**                  |                   |                   |                   |   0.978|
+## |&amp;nbsp;&amp;nbsp;&amp;nbsp;Mean (SD)  | 649.345 (454.332) | 648.674 (475.472) | 649.084 (462.511) |        |
+## |&amp;nbsp;&amp;nbsp;&amp;nbsp;Range      | 0.000 - 2472.000  | 9.000 - 2441.000  | 0.000 - 2472.000  |        |
+## |**Body Mass Index (kg/m^2)** |                   |                   |                   |   0.012|
+## |&amp;nbsp;&amp;nbsp;&amp;nbsp;N-Miss     |        22         |        11         |        33         |        |
+## |&amp;nbsp;&amp;nbsp;&amp;nbsp;Mean (SD)  |  27.491 (5.030)   |  26.760 (5.984)   |  27.206 (5.432)   |        |
+## |&amp;nbsp;&amp;nbsp;&amp;nbsp;Range      |  14.053 - 60.243  |  15.430 - 53.008  |  14.053 - 60.243  |        |
+## |**mdquality.s**              |                   |                   |                   |   0.827|
+## |&amp;nbsp;&amp;nbsp;&amp;nbsp;N-Miss     |        153        |        99         |        252        |        |
+## |&amp;nbsp;&amp;nbsp;&amp;nbsp;Mean (SD)  |   0.899 (0.301)   |   0.903 (0.296)   |   0.901 (0.299)   |        |
+## |&amp;nbsp;&amp;nbsp;&amp;nbsp;Range      |   0.000 - 1.000   |   0.000 - 1.000   |   0.000 - 1.000   |        |</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">padjust</span>(tab, <span class="dt">method =</span> <span class="st">&quot;bonferroni&quot;</span>)</code></pre></div>
+<pre><code>## 
+## 
+## |                             |   Male (N=916)    |  Female (N=583)   |  Total (N=1499)   | p value|
+## |:----------------------------|:-----------------:|:-----------------:|:-----------------:|-------:|
+## |**Age, yrs**                 |                   |                   |                   |   0.191|
+## |&amp;nbsp;&amp;nbsp;&amp;nbsp;Mean (SD)  |  60.455 (11.369)  |  59.247 (11.722)  |  59.985 (11.519)  |        |
+## |&amp;nbsp;&amp;nbsp;&amp;nbsp;Range      |  19.000 - 88.000  |  22.000 - 88.000  |  19.000 - 88.000  |        |
+## |**fu.time**                  |                   |                   |                   |   1.000|
+## |&amp;nbsp;&amp;nbsp;&amp;nbsp;Mean (SD)  | 649.345 (454.332) | 648.674 (475.472) | 649.084 (462.511) |        |
+## |&amp;nbsp;&amp;nbsp;&amp;nbsp;Range      | 0.000 - 2472.000  | 9.000 - 2441.000  | 0.000 - 2472.000  |        |
+## |**Body Mass Index (kg/m^2)** |                   |                   |                   |   0.048|
+## |&amp;nbsp;&amp;nbsp;&amp;nbsp;N-Miss     |        22         |        11         |        33         |        |
+## |&amp;nbsp;&amp;nbsp;&amp;nbsp;Mean (SD)  |  27.491 (5.030)   |  26.760 (5.984)   |  27.206 (5.432)   |        |
+## |&amp;nbsp;&amp;nbsp;&amp;nbsp;Range      |  14.053 - 60.243  |  15.430 - 53.008  |  14.053 - 60.243  |        |
+## |**mdquality.s**              |                   |                   |                   |   1.000|
+## |&amp;nbsp;&amp;nbsp;&amp;nbsp;N-Miss     |        153        |        99         |        252        |        |
+## |&amp;nbsp;&amp;nbsp;&amp;nbsp;Mean (SD)  |   0.899 (0.301)   |   0.903 (0.296)   |   0.901 (0.299)   |        |
+## |&amp;nbsp;&amp;nbsp;&amp;nbsp;Range      |   0.000 - 1.000   |   0.000 - 1.000   |   0.000 - 1.000   |        |</code></pre>
+</div>
 </div>
 <div id="available-function-options" class="section level1">
 <h1>Available Function Options</h1>
@@ -4079,7 +4129,6 @@ tab1 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 <li><code>NeventsSurv</code>: print number of events and survival at given times</li>
 <li><code>NriskSurv</code>: print the number still at risk at given times</li>
 <li><code>medTime</code>: print the median follow-up time</li>
-<li><code>rangeTime</code>: print the range of follow-up times</li>
 </ul>
 </div>
 <div id="testing-options" class="section level2">
@@ -4093,6 +4142,7 @@ tab1 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 <li><p><code>fe</code>: Fisher’s exact test for categorical variables; optional</p></li>
 <li><p><code>logrank</code>: log-rank test, the default test for time-to-event variables</p></li>
 <li><p><code>trend</code>: The <code>independence_test</code> function from the <code>coin</code> is used to test for trends. Whenthe grouping variable has two levels, it is equivalent to the Armitage trend test. This is the default for ordered factors</p></li>
+<li><p><code>notest</code>: Don’t perform a test.</p></li>
 </ul>
 </div>
 <div id="tableby.control-settings" class="section level2">
@@ -4106,13 +4156,13 @@ tab1 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 ##         &quot;countpct&quot;), ordered.stats = c(&quot;Nmiss&quot;, &quot;countpct&quot;), 
 ##     surv.stats = c(&quot;Nevents&quot;, &quot;medSurv&quot;), date.stats = c(&quot;Nmiss&quot;, 
 ##         &quot;median&quot;, &quot;range&quot;), stats.labels = list(Nmiss = &quot;N-Miss&quot;, 
-##         Nmiss2 = &quot;N-Miss&quot;, meansd = &quot;Mean (SD)&quot;, medianq1q3 = &quot;Median (Q1, Q3)&quot;, 
-##         q1q3 = &quot;Q1, Q3&quot;, range = &quot;Range&quot;, countpct = &quot;Count (Pct)&quot;, 
-##         Nevents = &quot;Events&quot;, medSurv = &quot;Median Survival&quot;, medTime = &quot;Median Follow-Up&quot;, 
-##         rangeTime = &quot;Range of Follow-Up&quot;), digits = 3L, digits.count = 0L, 
-##     digits.pct = 1L, digits.p = 3L, format.p = TRUE, conf.level = 0.95, 
-##     chisq.correct = FALSE, simulate.p.value = FALSE, B = 2000, 
-##     ...) 
+##         Nmiss2 = &quot;N-Miss&quot;, meansd = &quot;Mean (SD)&quot;, medianrange = &quot;Median (Range)&quot;, 
+##         median = &quot;Median&quot;, medianq1q3 = &quot;Median (Q1, Q3)&quot;, q1q3 = &quot;Q1, Q3&quot;, 
+##         iqr = &quot;IQR&quot;, range = &quot;Range&quot;, countpct = &quot;Count (Pct)&quot;, 
+##         Nevents = &quot;Events&quot;, medSurv = &quot;Median Survival&quot;, medTime = &quot;Median Follow-Up&quot;), 
+##     digits = 3L, digits.count = 0L, digits.pct = 1L, digits.p = 3L, 
+##     format.p = TRUE, conf.level = 0.95, chisq.correct = FALSE, 
+##     simulate.p.value = FALSE, B = 2000, ...) 
 ## NULL</code></pre>
 </div>
 <div id="summary.tableby-settings" class="section level2">
