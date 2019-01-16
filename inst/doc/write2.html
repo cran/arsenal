@@ -69,7 +69,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">The write2 function</h1>
 <h4 class="author"><em>Ethan Heinzen</em></h4>
-<h4 class="date"><em>09 November, 2018</em></h4>
+<h4 class="date"><em>15 January, 2019</em></h4>
 
 
 <div id="TOC">
@@ -90,9 +90,10 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><a href="#output-multiple-tables-to-one-document">Output Multiple Tables to One Document</a></li>
 <li><a href="#output-other-objects-monospaced-as-if-in-a-terminal">Output Other Objects Monospaced (as if in a terminal)</a></li>
 <li><a href="#add-a-yaml-header-to-the-output">Add a YAML Header to the Output</a></li>
+<li><a href="#add-a-code-chunk-to-the-output">Add a Code Chunk to the Output</a></li>
 <li><a href="#faqs">FAQs</a><ul>
 <li><a href="#how-do-i-suppress-the-note-about-my-document-getting-rendered">How do I suppress the note about my document getting rendered?</a></li>
-<li><a href="#how-do-i-look-at-the-temporary-.md-file">How do I look at the temporary <code>.md</code> file?</a></li>
+<li><a href="#how-do-i-look-at-the-temporary-.rmd-file">How do I look at the temporary <code>.Rmd</code> file?</a></li>
 <li><a href="#how-do-i-prevent-my-document-from-being-rendered">How do I prevent my document from being rendered?</a></li>
 <li><a href="#how-do-i-output-headers-raw-htmllatex-paragraphs-etc.">How do I output headers, raw HTML/LaTeX, paragraphs, etc.?</a></li>
 <li><a href="#how-do-i-tweak-the-default-format-from-write2word-write2html-or-write2pdf">How do I tweak the default format from <code>write2word()</code>, <code>write2html()</code>, or <code>write2pdf()</code>?</a></li>
@@ -263,7 +264,18 @@ tab1 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
   <span class="kw">tableby</span>(sex <span class="op">~</span><span class="st"> </span>age, <span class="dt">data =</span> mockstudy),
   <span class="kw">yaml</span>(<span class="dt">author =</span> <span class="st">&quot;My cool author name&quot;</span>)
 )
-<span class="kw">write2html</span>(mylist3, <span class="kw">paste0</span>(tmpdir, <span class="st">&quot;/test.yaml2.html&quot;</span>), <span class="dt">quiet =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<span class="kw">write2html</span>(mylist4, <span class="kw">paste0</span>(tmpdir, <span class="st">&quot;/test.yaml2.html&quot;</span>), <span class="dt">quiet =</span> <span class="ot">TRUE</span>)</code></pre></div>
+</div>
+<div id="add-a-code-chunk-to-the-output" class="section level1">
+<h1>Add a Code Chunk to the Output</h1>
+<p>It is now possible to add code chunks to the output <code>.Rmd</code>:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mylist5 &lt;-<span class="st"> </span><span class="kw">list</span>(
+  <span class="st">&quot;# What is 1 + 2?&quot;</span>,
+  <span class="kw">code.chunk</span>(a &lt;-<span class="st"> </span><span class="dv">1</span>, b &lt;-<span class="st"> </span><span class="dv">2</span>),
+  <span class="kw">code.chunk</span>(a <span class="op">+</span><span class="st"> </span>b, <span class="dt">chunk.opts =</span> <span class="st">&quot;r echo=FALSE, eval=TRUE&quot;</span>)
+)
+<span class="kw">write2html</span>(mylist5, <span class="kw">paste0</span>(tmpdir, <span class="st">&quot;/test.code.chunk.html&quot;</span>), <span class="dt">quiet =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<p>This allow flexibility to create objects on-the-fly, to read in saved objects to the temporary <code>.Rmd</code>, etc. The possibilities are endless!</p>
 </div>
 <div id="faqs" class="section level1">
 <h1>FAQs</h1>
@@ -275,18 +287,18 @@ tab1 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
   <span class="dt">quiet =</span> <span class="ot">TRUE</span> <span class="co"># passed to rmarkdown::render</span>
 )</code></pre></div>
 </div>
-<div id="how-do-i-look-at-the-temporary-.md-file" class="section level2">
-<h2>How do I look at the temporary <code>.md</code> file?</h2>
-<p>This is easily accomplished by using the option <code>keep.md = TRUE</code>.</p>
+<div id="how-do-i-look-at-the-temporary-.rmd-file" class="section level2">
+<h2>How do I look at the temporary <code>.Rmd</code> file?</h2>
+<p>This is easily accomplished by using the option <code>keep.rmd = TRUE</code>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">write2html</span>(
-  knitr<span class="op">::</span><span class="kw">kable</span>(<span class="kw">head</span>(mockstudy)), <span class="kw">paste0</span>(tmpdir, <span class="st">&quot;/test.kable.keep.md.html&quot;</span>),
+  knitr<span class="op">::</span><span class="kw">kable</span>(<span class="kw">head</span>(mockstudy)), <span class="kw">paste0</span>(tmpdir, <span class="st">&quot;/test.kable.keep.rmd.html&quot;</span>),
   <span class="dt">quiet =</span> <span class="ot">TRUE</span>, <span class="co"># passed to rmarkdown::render</span>
-  <span class="dt">keep.md =</span> <span class="ot">TRUE</span>
+  <span class="dt">keep.rmd =</span> <span class="ot">TRUE</span>
 )</code></pre></div>
 </div>
 <div id="how-do-i-prevent-my-document-from-being-rendered" class="section level2">
 <h2>How do I prevent my document from being rendered?</h2>
-<p>This is easily accomplished by using the option <code>render. = FALSE</code>. Note that this will then default to <code>keep.md = TRUE</code>.</p>
+<p>This is easily accomplished by using the option <code>render. = FALSE</code>. Note that this will then default to <code>keep.rmd = TRUE</code>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">write2html</span>(
   knitr<span class="op">::</span><span class="kw">kable</span>(<span class="kw">head</span>(mockstudy)), <span class="kw">paste0</span>(tmpdir, <span class="st">&quot;/test.kable.dont.render.html&quot;</span>),
   <span class="dt">render. =</span> <span class="ot">FALSE</span>

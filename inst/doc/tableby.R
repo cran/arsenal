@@ -2,7 +2,7 @@
 options(width = 100)
 
 ## ---- load-data-----------------------------------------------------------------------------------
-require(arsenal)
+library(arsenal)
 require(knitr)
 require(survival)
 data(mockstudy) ##load data
@@ -230,12 +230,9 @@ tab1 <- tableby(arm ~ sex + age, data=mockstudy,
 tab2 <- tableby(arm ~ hgb + alk.phos, data=mockstudy,
                 control=tableby.control(numeric.stats=c("Nmiss","median","q1q3"),
                                         numeric.test="kwt", total=FALSE))
-names(tab1$x)
-names(tab2$x)
-tab12 <- merge(tab1,tab2)
+tab12 <- merge(tab1, tab2)
 class(tab12)
-names(tab12$x)
-summary(tab12) #, pfootnote=TRUE)
+summary(tab12)
 
 ## ---- results='asis'------------------------------------------------------------------------------
 t1 <- tableby(arm ~ sex + age, data=mockstudy)
@@ -327,7 +324,7 @@ summary(table2, labelTranslations=c(sex="Female", "factor(mdquality.s)"="MD Qual
 summary(tableby(arm ~ age + ast, data = mockstudy,
                 numeric.simplify=TRUE, numeric.stats=c("Nmiss", "meansd")))
 
-## -------------------------------------------------------------------------------------------------
+## ----results='asis'-------------------------------------------------------------------------------
 summary(tableby(arm ~ anova(age, "meansd", numeric.simplify=TRUE) +
                   chisq(sex, cat.simplify=TRUE), data = mockstudy))
 
@@ -363,10 +360,19 @@ as.data.frame(tab1)
 ## ----eval=FALSE-----------------------------------------------------------------------------------
 #  summary(tableby(sex ~ age, data = mockstudy), title="(\\#tab:mytableby) Caption here")
 
-## -------------------------------------------------------------------------------------------------
+## ----results='asis'-------------------------------------------------------------------------------
 tab <- summary(tableby(sex ~ age + fu.time + bmi + mdquality.s, data = mockstudy))
 tab
 padjust(tab, method = "bonferroni")
+
+## ----results='asis'-------------------------------------------------------------------------------
+summary(tableby(list(sex, mdquality.s, ps) ~ age + bmi, data = mockstudy))
+
+## ----results='asis'-------------------------------------------------------------------------------
+summary(tableby(list(sex, mdquality.s, ps) ~ age + bmi, data = mockstudy), term.name = TRUE)
+
+## ----results='asis'-------------------------------------------------------------------------------
+summary(tableby(list(sex, ps) ~ age + bmi, strata = arm, data = mockstudy))
 
 ## -------------------------------------------------------------------------------------------------
 args(tableby.control)

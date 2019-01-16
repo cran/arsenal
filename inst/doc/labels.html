@@ -69,7 +69,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">A Few Notes on Labels</h1>
 <h4 class="author"><em>Ethan Heinzen</em></h4>
-<h4 class="date"><em>09 November, 2018</em></h4>
+<h4 class="date"><em>15 January, 2019</em></h4>
 
 
 <div id="TOC">
@@ -92,7 +92,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <span class="kw">library</span>(magrittr)
 
 <span class="co"># for 'freqlist' examples</span>
-tab.ex &lt;-<span class="st"> </span><span class="kw">table</span>(mockstudy[, <span class="kw">c</span>(<span class="st">&quot;arm&quot;</span>, <span class="st">&quot;sex&quot;</span>, <span class="st">&quot;mdquality.s&quot;</span>)], <span class="dt">useNA=</span><span class="st">&quot;ifany&quot;</span>)</code></pre></div>
+tab.ex &lt;-<span class="st"> </span><span class="kw">table</span>(mockstudy[<span class="kw">c</span>(<span class="st">&quot;arm&quot;</span>, <span class="st">&quot;sex&quot;</span>, <span class="st">&quot;mdquality.s&quot;</span>)], <span class="dt">useNA=</span><span class="st">&quot;ifany&quot;</span>)</code></pre></div>
 </div>
 <div id="examples" class="section level1">
 <h1>Examples</h1>
@@ -100,7 +100,7 @@ tab.ex &lt;-<span class="st"> </span><span class="kw">table</span>(mockstudy[, <
 <h2>Set labels in the function call</h2>
 <p>The <code>summary()</code> method for <code>tableby()</code>, <code>modelsum()</code>, and <code>freqlist()</code> objects contains a <code>labelTranslations =</code> argument to specify labels in the function call. Note that the <code>freqlist()</code> function matches labels in order, whereas the other two match labels by name. The labels can be input as a list or a character vector.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(<span class="kw">freqlist</span>(tab.ex),
-        <span class="dt">labelTranslations =</span> <span class="kw">c</span>(<span class="st">&quot;Treatment Arm&quot;</span>, <span class="st">&quot;Gender&quot;</span>, <span class="st">&quot;LASA QOL&quot;</span>))</code></pre></div>
+        <span class="dt">labelTranslations =</span> <span class="kw">c</span>(<span class="dt">arm =</span> <span class="st">&quot;Treatment Arm&quot;</span>, <span class="dt">sex =</span> <span class="st">&quot;Gender&quot;</span>, <span class="dt">mdquality.s =</span> <span class="st">&quot;LASA QOL&quot;</span>))</code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -108,9 +108,9 @@ tab.ex &lt;-<span class="st"> </span><span class="kw">table</span>(mockstudy[, <
 <th align="left">Gender</th>
 <th align="left">LASA QOL</th>
 <th align="right">Freq</th>
-<th align="right">cumFreq</th>
-<th align="right">freqPercent</th>
-<th align="right">cumPercent</th>
+<th align="right">Cumulative Freq</th>
+<th align="right">Percent</th>
+<th align="right">Cumulative Percent</th>
 </tr>
 </thead>
 <tbody>
@@ -384,7 +384,7 @@ tab.ex &lt;-<span class="st"> </span><span class="kw">table</span>(mockstudy[, <
 <p>Another option is to add labels after you have created the object. To do this, you can use the form <code>labels(x) &lt;- value</code> or use the pipe-able version, <code>set_labels()</code>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># the non-pipe version; somewhat clunky</span>
 tmp &lt;-<span class="st"> </span><span class="kw">freqlist</span>(tab.ex)
-<span class="kw">labels</span>(tmp) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Treatment Arm&quot;</span>, <span class="st">&quot;Gender&quot;</span>, <span class="st">&quot;LASA QOL&quot;</span>)
+<span class="kw">labels</span>(tmp) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dt">arm =</span> <span class="st">&quot;Treatment Arm&quot;</span>, <span class="dt">sex =</span> <span class="st">&quot;Gender&quot;</span>, <span class="dt">mdquality.s =</span> <span class="st">&quot;LASA QOL&quot;</span>)
 <span class="kw">summary</span>(tmp)</code></pre></div>
 <table>
 <thead>
@@ -393,9 +393,9 @@ tmp &lt;-<span class="st"> </span><span class="kw">freqlist</span>(tab.ex)
 <th align="left">Gender</th>
 <th align="left">LASA QOL</th>
 <th align="right">Freq</th>
-<th align="right">cumFreq</th>
-<th align="right">freqPercent</th>
-<th align="right">cumPercent</th>
+<th align="right">Cumulative Freq</th>
+<th align="right">Percent</th>
+<th align="right">Cumulative Percent</th>
 </tr>
 </thead>
 <tbody>

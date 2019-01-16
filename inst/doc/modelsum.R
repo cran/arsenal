@@ -320,11 +320,9 @@ tab1 <- modelsum(bmi ~ sex + age, data=mockstudy)
 ## lab data
 tab2 <- modelsum(mdquality.s ~ hgb + alk.phos, data=mockstudy, family=binomial)
                 
-tab12 <- merge(tab1,tab2)
+tab12 <- merge(tab1, tab2, all = TRUE)
 class(tab12)
-
-##ERROR: The merge works, but not the summary
-#summary(tab12)
+summary(tab12)
 
 ## ---- results='asis'-----------------------------------------------------
 t1 <- modelsum(bmi ~ sex + age, data=mockstudy)
@@ -412,6 +410,15 @@ tmp
 
 ## ----eval=FALSE----------------------------------------------------------
 #  summary(modelsum(age ~ sex, data = mockstudy), title="(\\#tab:mytableby) Caption here")
+
+## ----results='asis'------------------------------------------------------
+summary(modelsum(list(age, hgb) ~ bmi + sex, adjust = ~ arm, data = mockstudy))
+
+## ----results='asis'------------------------------------------------------
+summary(modelsum(list(age, hgb) ~ bmi + sex, adjust = ~ arm, data = mockstudy), term.name = TRUE)
+
+## ----results='asis'------------------------------------------------------
+summary(modelsum(list(age, hgb) ~ bmi + sex, strata = arm, data = mockstudy))
 
 ## ------------------------------------------------------------------------
 args(modelsum.control)

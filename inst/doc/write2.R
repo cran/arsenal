@@ -124,7 +124,15 @@ knitr::opts_chunk$set(eval = FALSE, message = FALSE)
 #    tableby(sex ~ age, data = mockstudy),
 #    yaml(author = "My cool author name")
 #  )
-#  write2html(mylist3, paste0(tmpdir, "/test.yaml2.html"), quiet = TRUE)
+#  write2html(mylist4, paste0(tmpdir, "/test.yaml2.html"), quiet = TRUE)
+
+## ------------------------------------------------------------------------
+#  mylist5 <- list(
+#    "# What is 1 + 2?",
+#    code.chunk(a <- 1, b <- 2),
+#    code.chunk(a + b, chunk.opts = "r echo=FALSE, eval=TRUE")
+#  )
+#  write2html(mylist5, paste0(tmpdir, "/test.code.chunk.html"), quiet = TRUE)
 
 ## ------------------------------------------------------------------------
 #  write2html(
@@ -134,9 +142,9 @@ knitr::opts_chunk$set(eval = FALSE, message = FALSE)
 
 ## ------------------------------------------------------------------------
 #  write2html(
-#    knitr::kable(head(mockstudy)), paste0(tmpdir, "/test.kable.keep.md.html"),
+#    knitr::kable(head(mockstudy)), paste0(tmpdir, "/test.kable.keep.rmd.html"),
 #    quiet = TRUE, # passed to rmarkdown::render
-#    keep.md = TRUE
+#    keep.rmd = TRUE
 #  )
 
 ## ------------------------------------------------------------------------

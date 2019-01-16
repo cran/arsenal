@@ -7,11 +7,11 @@ data(mockstudy)
 library(magrittr)
 
 # for 'freqlist' examples
-tab.ex <- table(mockstudy[, c("arm", "sex", "mdquality.s")], useNA="ifany")
+tab.ex <- table(mockstudy[c("arm", "sex", "mdquality.s")], useNA="ifany")
 
 ## ------------------------------------------------------------------------
 summary(freqlist(tab.ex),
-        labelTranslations = c("Treatment Arm", "Gender", "LASA QOL"))
+        labelTranslations = c(arm = "Treatment Arm", sex = "Gender", mdquality.s = "LASA QOL"))
 summary(tableby(arm ~ sex + age, data = mockstudy),
         labelTranslations = c(sex = "SEX", age = "Age, yrs"))
 summary(modelsum(bmi ~ age, adjust = ~sex, data = mockstudy),
@@ -20,7 +20,7 @@ summary(modelsum(bmi ~ age, adjust = ~sex, data = mockstudy),
 ## ------------------------------------------------------------------------
 # the non-pipe version; somewhat clunky
 tmp <- freqlist(tab.ex)
-labels(tmp) <- c("Treatment Arm", "Gender", "LASA QOL")
+labels(tmp) <- c(arm = "Treatment Arm", sex = "Gender", mdquality.s = "LASA QOL")
 summary(tmp)
 
 # piped--much cleaner
