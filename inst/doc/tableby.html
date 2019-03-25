@@ -69,7 +69,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">The tableby function</h1>
 <h4 class="author"><em>Beth Atkinson, Ethan Heinzen, Jason Sinnwell, Shannon McDonnell and Greg Dougherty</em></h4>
-<h4 class="date"><em>15 January, 2019</em></h4>
+<h4 class="date"><em>25 March, 2019</em></h4>
 
 
 <div id="TOC">
@@ -1002,7 +1002,7 @@ tab.catsim &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <sp
 </div>
 <div id="display-footnotes-indicating-which-test-was-used" class="section level2">
 <h2>2. Display footnotes indicating which “test” was used</h2>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(tab.test) <span class="co">#, pfootnote=TRUE)</span></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(tab.test, <span class="dt">pfootnote=</span><span class="ot">TRUE</span>)</code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -1021,7 +1021,7 @@ tab.catsim &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <sp
 <td align="center"></td>
 <td align="center"></td>
 <td align="center"></td>
-<td align="right">0.039</td>
+<td align="right">0.039<sup>1</sup></td>
 </tr>
 <tr class="even">
 <td align="left">   N-Miss</td>
@@ -1045,7 +1045,7 @@ tab.catsim &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <sp
 <td align="center"></td>
 <td align="center"></td>
 <td align="center"></td>
-<td align="right">0.614</td>
+<td align="right">0.614<sup>2</sup></td>
 </tr>
 <tr class="odd">
 <td align="left">   N</td>
@@ -1089,6 +1089,10 @@ tab.catsim &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <sp
 </tr>
 </tbody>
 </table>
+<ol style="list-style-type: decimal">
+<li>Kruskal-Wallis rank sum test</li>
+<li>Linear Model ANOVA</li>
+</ol>
 </div>
 <div id="summarize-an-ordered-factor" class="section level2">
 <h2>3. Summarize an ordered factor</h2>
@@ -1119,7 +1123,7 @@ tab.catsim &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <sp
 ##   a        1      0</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">class</span>(mockstudy<span class="op">$</span>age.ord)</code></pre></div>
 <pre><code>## [1] &quot;ordered&quot; &quot;factor&quot;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(<span class="kw">tableby</span>(sex <span class="op">~</span><span class="st"> </span>age.ordnew, <span class="dt">data =</span> mockstudy)) <span class="co">#, pfootnote = TRUE)</span></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(<span class="kw">tableby</span>(sex <span class="op">~</span><span class="st"> </span>age.ordnew, <span class="dt">data =</span> mockstudy), <span class="dt">pfootnote =</span> <span class="ot">TRUE</span>)</code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -1136,7 +1140,7 @@ tab.catsim &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <sp
 <td align="center"></td>
 <td align="center"></td>
 <td align="center"></td>
-<td align="right">0.040</td>
+<td align="right">0.040<sup>1</sup></td>
 </tr>
 <tr class="even">
 <td align="left">   N-Miss</td>
@@ -1210,7 +1214,10 @@ tab.catsim &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <sp
 </tr>
 </tbody>
 </table>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(<span class="kw">tableby</span>(sex <span class="op">~</span><span class="st"> </span><span class="kw">kwt</span>(age.ord), <span class="dt">data =</span> mockstudy)) <span class="co">#) #, pfootnote = TRUE)</span></code></pre></div>
+<ol style="list-style-type: decimal">
+<li>Trend test for ordinal variables</li>
+</ol>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(<span class="kw">tableby</span>(sex <span class="op">~</span><span class="st"> </span><span class="kw">kwt</span>(age.ord), <span class="dt">data =</span> mockstudy), <span class="dt">pfootnote =</span> <span class="ot">TRUE</span>)</code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -1227,7 +1234,7 @@ tab.catsim &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <sp
 <td align="center"></td>
 <td align="center"></td>
 <td align="center"></td>
-<td align="right">0.067</td>
+<td align="right">0.067<sup>1</sup></td>
 </tr>
 <tr class="even">
 <td align="left">   10-19</td>
@@ -1287,6 +1294,9 @@ tab.catsim &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <sp
 </tr>
 </tbody>
 </table>
+<ol style="list-style-type: decimal">
+<li>Kruskal-Wallis rank sum test</li>
+</ol>
 </div>
 <div id="summarize-a-survival-variable" class="section level2">
 <h2>4. Summarize a survival variable</h2>
@@ -3761,14 +3771,15 @@ mockstudy<span class="op">$</span>wts &lt;-<span class="st"> </span>gpwts[index]
 <div id="create-your-own-p-value-and-add-it-to-the-table" class="section level2">
 <h2>17. Create your own p-value and add it to the table</h2>
 <p>When using weighted summary statistics, it is often desirable to then show a p-value from a model that corresponds to the weighted analysis. It is possible to add your own p-value and modify the column title for that new p-value. Another use for this would be to add standardized differences or confidence intervals instead of a p-value.</p>
-<p>To add the p-value you simply need to create a data frame and use the function <code>modpval.tableby</code>. The first 2 columns in the dataframe are required and are the variable name and the new p-value. The third column can be used to indicate what method was used to calculate the p-value. If you specify <code>use.pname=TRUE</code> then the column name indicating the p-value will be also be used in the tableby summary.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mypval &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">variable=</span><span class="kw">c</span>(<span class="st">'age'</span>,<span class="st">'sex'</span>,<span class="st">'Surv(fu.time/365, fu.stat)'</span>), 
-                     <span class="dt">adj.pvalue=</span><span class="kw">c</span>(.<span class="dv">953</span>,.<span class="dv">811</span>,.<span class="dv">01</span>), 
-                     <span class="dt">method=</span><span class="kw">c</span>(<span class="st">'Age/Sex adjusted model results'</span>))
-tab2 &lt;-<span class="st"> </span><span class="kw">modpval.tableby</span>(tab1, mypval, <span class="dt">use.pname=</span><span class="ot">TRUE</span>)</code></pre></div>
-<pre><code>## Warning in modpval.tableby(tab1, mypval, use.pname = TRUE): Couldn't match any by-variables to the
-## first column of 'x'.</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(tab2, <span class="dt">title=</span><span class="st">'Case Weights used, p-values added'</span>) <span class="co">#, pfootnote=TRUE)</span></code></pre></div>
+<p>To add the p-value, you simply need to create a data frame and use the function <code>modpval.tableby()</code>. The first few columns in the data.frame are required: (1) the by-variable, (2) the strata value (if the table has a strata term), (3) the x-variable, and (4) the new p-value (or test statistic). Another optional column can be used to indicate what method was used to calculate the p-value. If you specify <code>use.pname=TRUE</code> then the column name indicating the p-value will be also be used in the tableby summary.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mypval &lt;-<span class="st"> </span><span class="kw">data.frame</span>(
+  <span class="dt">byvar =</span> <span class="st">&quot;fake_arm&quot;</span>,
+  <span class="dt">variable =</span> <span class="kw">c</span>(<span class="st">'age'</span>,<span class="st">'sex'</span>,<span class="st">'Surv(fu.time/365, fu.stat)'</span>), 
+  <span class="dt">adj.pvalue =</span> <span class="kw">c</span>(.<span class="dv">953</span>,.<span class="dv">811</span>,.<span class="dv">01</span>), 
+  <span class="dt">method =</span> <span class="kw">c</span>(<span class="st">'Age/Sex adjusted model results'</span>)
+)
+tab2 &lt;-<span class="st"> </span><span class="kw">modpval.tableby</span>(tab1, mypval, <span class="dt">use.pname=</span><span class="ot">TRUE</span>)
+<span class="kw">summary</span>(tab2, <span class="dt">title=</span><span class="st">'Case Weights used, p-values added'</span>, <span class="dt">pfootnote=</span><span class="ot">TRUE</span>)</code></pre></div>
 <table>
 <caption>Case Weights used, p-values added</caption>
 <thead>
@@ -3777,6 +3788,7 @@ tab2 &lt;-<span class="st"> </span><span class="kw">modpval.tableby</span>(tab1,
 <th align="center">A (N=605)</th>
 <th align="center">B (N=894)</th>
 <th align="center">Total (N=1499)</th>
+<th align="right">adj.pvalue</th>
 </tr>
 </thead>
 <tbody>
@@ -3785,57 +3797,69 @@ tab2 &lt;-<span class="st"> </span><span class="kw">modpval.tableby</span>(tab1,
 <td align="center"></td>
 <td align="center"></td>
 <td align="center"></td>
+<td align="right">0.010<sup>1</sup></td>
 </tr>
 <tr class="even">
 <td align="left">   Mean (SD)</td>
 <td align="center">58.009 (10.925)</td>
 <td align="center">60.151 (11.428)</td>
 <td align="center">59.126 (11.235)</td>
+<td align="right"></td>
 </tr>
 <tr class="odd">
 <td align="left">   Range</td>
 <td align="center">22.000 - 85.000</td>
 <td align="center">19.000 - 88.000</td>
 <td align="center">19.000 - 88.000</td>
+<td align="right"></td>
 </tr>
 <tr class="even">
 <td align="left"><strong>Gender</strong></td>
 <td align="center"></td>
 <td align="center"></td>
 <td align="center"></td>
+<td align="right">0.953<sup>1</sup></td>
 </tr>
 <tr class="odd">
 <td align="left">   Male</td>
 <td align="center">916 (66.5%)</td>
 <td align="center">916 (61.1%)</td>
 <td align="center">1832 (63.7%)</td>
+<td align="right"></td>
 </tr>
 <tr class="even">
 <td align="left">   Female</td>
 <td align="center">461 (33.5%)</td>
 <td align="center">583 (38.9%)</td>
 <td align="center">1044 (36.3%)</td>
+<td align="right"></td>
 </tr>
 <tr class="odd">
 <td align="left"><strong>Surv(fu.time/365, fu.stat)</strong></td>
 <td align="center"></td>
 <td align="center"></td>
 <td align="center"></td>
+<td align="right">0.811<sup>1</sup></td>
 </tr>
 <tr class="even">
 <td align="left">   Events</td>
 <td align="center">1252</td>
 <td align="center">1348</td>
 <td align="center">2599</td>
+<td align="right"></td>
 </tr>
 <tr class="odd">
 <td align="left">   Median Survival</td>
 <td align="center">1.534</td>
 <td align="center">1.496</td>
 <td align="center">1.532</td>
+<td align="right"></td>
 </tr>
 </tbody>
 </table>
+<ol style="list-style-type: decimal">
+<li>Age/Sex adjusted model results</li>
+</ol>
 </div>
 <div id="for-two-level-categorical-variables-or-one-line-numeric-variables-simplify-the-output." class="section level2">
 <h2>18. For two-level categorical variables or one-line numeric variables, simplify the output.</h2>

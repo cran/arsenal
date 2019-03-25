@@ -69,7 +69,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">A Few Notes on Labels</h1>
 <h4 class="author"><em>Ethan Heinzen</em></h4>
-<h4 class="date"><em>15 January, 2019</em></h4>
+<h4 class="date"><em>25 March, 2019</em></h4>
 
 
 <div id="TOC">
@@ -672,7 +672,14 @@ mockstudy <span class="op">%&gt;%</span><span class="st"> </span>
 <div id="add-labels-to-a-data.frame" class="section level2">
 <h2>Add labels to a <code>data.frame</code></h2>
 <p><code>tableby()</code> and <code>modelsum()</code> also allow you to have label attributes on the data. Note that by default these attributes usually get dropped upon subsetting, but <code>tableby()</code> and <code>modelsum()</code> use the <code>keep.labels()</code> function to retain them.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mockstudy.lab &lt;-<span class="st"> </span><span class="kw">keep.labels</span>(mockstudy)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mockstudy.lab &lt;-<span class="st"> </span><span class="kw">keep.labels</span>(mockstudy)
+<span class="kw">class</span>(mockstudy<span class="op">$</span>age)</code></pre></div>
+<p>[1] “integer”</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">class</span>(mockstudy.lab<span class="op">$</span>age)</code></pre></div>
+<p>[1] “keep_labels” “integer”</p>
+<p>To undo this, simply <code>loosen.labels()</code>:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">class</span>(<span class="kw">loosen.labels</span>(mockstudy.lab)<span class="op">$</span>age)</code></pre></div>
+<p>[1] “integer”</p>
 <p>You can set attributes one at a time in two ways:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">attr</span>(mockstudy.lab<span class="op">$</span>sex, <span class="st">&quot;label&quot;</span>) &lt;-<span class="st"> &quot;Sex&quot;</span>
 <span class="kw">labels</span>(mockstudy.lab<span class="op">$</span>age) &lt;-<span class="st"> &quot;Age, yrs&quot;</span></code></pre></div>

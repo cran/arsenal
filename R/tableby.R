@@ -86,7 +86,7 @@
 #'
 #' @return An object with class \code{c("tableby", "arsenal_table")}
 #' @seealso \code{\link{arsenal_table}}, \code{\link[stats]{anova}}, \code{\link[stats]{chisq.test}}, \code{\link{tableby.control}},
-#'   \code{\link{summary.tableby}}, \code{\link{formulize}}
+#'   \code{\link{summary.tableby}}, \code{\link{tableby.internal}}, \code{\link{formulize}}
 #'
 #' @examples
 #' data(mockstudy)
@@ -163,7 +163,7 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, strata,
     environment(temp.call$formula) <- tabenv
 
     ## evaluate the formula with env set for it
-    modeldf <- eval.parent(temp.call)
+    modeldf <- loosen.labels(eval.parent(temp.call))
     if(nrow(modeldf) == 0) stop("No (non-missing) observations")
 
     Terms <- stats::terms(modeldf)
@@ -328,7 +328,7 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, strata,
           currstats <- control$numeric.stats
           currtest <- control$numeric.test
           vartype <- "numeric"
-        }
+        } else stop("Variable ", names(xTerms), " has unknown class(es): ", paste0(class(currcol)[-1], collapse = ", "))
         ############################################################
 
         ## if no missings, and control says not to show missings,
@@ -361,7 +361,7 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, strata,
         testout <- if(control$test) {
           eval(call(currtest, currcol, factor(bycol, levels = by.levels),
                     chisq.correct=control$chisq.correct, simulate.p.value=control$simulate.p.value, B=control$B))
-        } else NULL
+        } else notest()
 
         xList[[eff]] <- list(stats=statList, test=testout, type=vartype)
       }

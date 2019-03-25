@@ -18,8 +18,8 @@
 #' @param formula,data,subset,na.action,addNA,exclude,drop.unused.levels Arguments passed to \code{\link[stats]{xtabs}}. Note
 #'   that \code{addNA=} only works in R >= 3.4.0.
 #' @return An object of class \code{c("freqlist", "arsenal_table")}
-#' @seealso \code{\link{arsenal_table}}, \code{\link{summary.freqlist}}, \code{\link{freq.control}},
-#'   \code{\link[base]{table}}, \code{\link[stats]{xtabs}}, \code{\link[knitr]{kable}}
+#' @seealso \code{\link{arsenal_table}}, \code{\link{summary.freqlist}}, \code{\link{freq.control}}, \code{\link{freqlist.internal}},
+#'   \code{\link[base]{table}}, \code{\link[stats]{xtabs}}
 #'
 #' @examples
 #' # load mockstudy data
@@ -27,6 +27,10 @@
 #' tab.ex <- table(mockstudy[c("arm", "sex", "mdquality.s")], useNA = "ifany")
 #' noby <- freqlist(tab.ex, na.options = "include")
 #' summary(noby)
+#'
+#' # show the top 6 rows' frequencies and percents
+#' head(summary(sort(noby, decreasing = TRUE)[c(1:4, 6)]))
+#'
 #' withby <- freqlist(tab.ex, strata = c("arm","sex"), na.options = "showexclude")
 #' summary(withby)
 #' @author Tina Gunderson, with revisions by Ethan Heinzen
@@ -92,6 +96,7 @@ freqlist.table <- function(object, na.options = c("include", "showexclude", "rem
       row.names(x) <- NULL
       x
     })
+    xTerms <- xTerms[c(strata, names(xTerms)[names(xTerms) %nin% strata])]
 
     strata.levels <- ""
     strataLabel <- strata
@@ -107,7 +112,8 @@ freqlist.table <- function(object, na.options = c("include", "showexclude", "rem
       strata = list(term = strata, values = strata.levels, label = strataLabel, hasStrata = hasStrata),
       x = add_freqlist_xterms(xTerms),
       tables = unname(tableout),
-      hasWeights = FALSE
+      hasWeights = FALSE,
+      na.options = na.options
     )
   )
 
@@ -144,7 +150,8 @@ freqlist.formula <- function(formula, data, subset, na.action, strata = NULL, la
     temp.call <- Call[c(1, indx[1:4])]
     temp.call[[1L]] <- quote(stats::model.frame)
     temp.call$formula <- FORM
-    modeldf <- eval(temp.call, parent.frame())
+    if(!missing(data)) temp.call$data <- as.call(list(keep.labels, temp.call$data))
+    modeldf <- loosen.labels(eval(temp.call, parent.frame()))
     Terms <- stats::terms(modeldf)
     hasStrata <- !is.null(strata)
     if(hasStrata && any(strata %nin% names(modeldf))) stop("strata variable not found in table names")
@@ -175,10 +182,13 @@ freqlist.formula <- function(formula, data, subset, na.action, strata = NULL, la
       list(variable=nm, label=labelEff, term=nm)
     })
     names(xTerms) <- vapply(xTerms, "[[", NA_character_, "variable")
+    if(hasStrata) xTerms <- xTerms[c(strata, names(xTerms)[names(xTerms) %nin% strata])]
 
     ####
 
+    temp.call <- Call[c(1, indx)]
     temp.call[[1L]] <- quote(stats::xtabs)
+    temp.call$formula <- FORM
     tab <- freqlist(eval(temp.call, parent.frame()), strata = strata, ...)$tables[[1]]
     tab$hasWeights <- hasWeights
     tab$y <- yList

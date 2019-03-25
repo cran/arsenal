@@ -9,7 +9,19 @@ inline_tableby_stat_test <- function(x, ..., digits = NULL, digits.count = NULL,
   attr(x, "stats") <- if(missing(...)) NULL else list(...)
   attr(x, "control.list") <- list(digits = digits, digits.count = digits.count, digits.pct = digits.pct,
                                   cat.simplify = cat.simplify, numeric.simplify = numeric.simplify)
+  class(x) <- c("keep_tableby_attrs", class(x)[class(x) != "keep_tableby_attrs"])
   x
+}
+
+#' @export
+`[.keep_tableby_attrs` <- function(x, ...)
+{
+  y <- NextMethod()
+  attr(y, "name") <- attr(x, "name")
+  attr(y, "stats") <- attr(x, "stats")
+  attr(y, "control.list") <- attr(x, "control.list")
+  class(y) <- class(y)[class(y) != "keep_tableby_attrs"] # purposely drop the class
+  y
 }
 
 get_attr <- function(x, which, default)
@@ -128,7 +140,7 @@ extract2_tbstat <- function(x, ...)
 #'
 #' A set of helper functions for \code{\link{tableby}}.
 #'
-#' @param ... Other arguments, or a vector of indices for extracting.
+#' @param ... Other arguments.
 #' @param x A \code{tableby} object.
 #' @param pdata A named data.frame where the first column is the by-variable names, the (optional) second is the strata value, the next is
 #'   the x variable names, the next is p-values (or some test stat), and the (optional) next column is the method name.
@@ -141,7 +153,8 @@ extract2_tbstat <- function(x, ...)
 #'   a logical vector. \code{xtfrm.tableby} returns the p-values (which are ordered by \code{\link{order}} to \code{\link{sort}}).
 #' @details
 #' Logical comparisons are implemented for \code{Ops.tableby}.
-#' @seealso \code{\link{arsenal_table}}, \code{\link{sort}}, \code{\link[utils]{head}}, \code{\link[utils]{tail}}
+#' @seealso \code{\link{arsenal_table}}, \code{\link{sort}}, \code{\link[utils]{head}}, \code{\link[utils]{tail}},
+#'   \code{\link{tableby}}, \code{\link{summary.tableby}}, \code{\link{tableby.control}}
 #' @name tableby.internal
 NULL
 #> NULL
@@ -174,7 +187,7 @@ modpval.tableby <- function(x, pdata, use.pname=FALSE) {
       strat <- if(hasStrata) pdata[[2]][k] else ""
       xname <- pdata[[2 + hasStrata]][k]
       p <- pdata[[3 + hasStrata]][k]
-      method <- if(ncol(pdata) > 3 + hasStrata) pdata[[4 + hasStrata]][k] else "modified by user"
+      method <- if(ncol(pdata) > 3 + hasStrata) pdata[[4 + hasStrata]][k] else "Modified by user"
 
       if(xname %in% names(x$tables[[yname]]$x) && strat %in% x$tables[[yname]]$strata$values)
       {
@@ -185,9 +198,9 @@ modpval.tableby <- function(x, pdata, use.pname=FALSE) {
         x$tables[[yname]]$tables[[idx]][[xname]]$test$method <- method
       }
     }
-    if(use.pname & nchar(names(pdata)[2])>0) {
+    if(use.pname & nchar(names(pdata)[3 + hasStrata]) > 0) {
       ## put different test column name in control
-      x$control$test.pname <- names(pdata)[2]
+      x$control$test.pname <- names(pdata)[3 + hasStrata]
     }
   } else warning("Couldn't match any by-variables to the first column of 'x'.")
   return(x)

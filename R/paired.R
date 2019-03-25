@@ -95,7 +95,7 @@ paired <- function(formula, data, id, na.action, subset=NULL, strata, control = 
     environment(temp.call$formula) <- tabenv
 
     ## evaluate the formula with env set for it
-    modeldf <- eval.parent(temp.call)
+    modeldf <- loosen.labels(eval.parent(temp.call))
     if(nrow(modeldf) == 0) stop("No (non-missing) observations")
 
     Terms <- stats::terms(modeldf)
@@ -270,7 +270,7 @@ paired <- function(formula, data, id, na.action, subset=NULL, strata, control = 
           currstats <- control$numeric.stats
           currtest <- control$numeric.test
           vartype <- "numeric"
-        }
+        } else stop("Variable ", names(xTerms), " has unknown class(es): ", paste0(class(currcol)[-1], collapse = ", "))
         ############################################################
 
         ## if no missings, and control says not to show missings,
@@ -322,7 +322,7 @@ paired <- function(formula, data, id, na.action, subset=NULL, strata, control = 
         testout <- if(control$test) {
           eval(call(currtest, TP1.eff, TP2.eff, mcnemar.correct=control$mcnemar.correct,
                     signed.rank.exact = control$signed.rank.exact, signed.rank.correct = control$signed.rank.correct))
-        } else NULL
+        } else notest()
 
         xList[[eff]] <- list(stats=statList, test=testout, type=vartype)
       }

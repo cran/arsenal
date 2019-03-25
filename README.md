@@ -12,7 +12,7 @@ The goal of `library(arsenal)` is to make statistical reporting easy. It include
 in his/her "arsenal" of functions. There are, at this time, 6 main functions, documented below. Each of these functions is
 motivated by a local SAS macro or procedure of similar functionality.
 
-Note that `arsenal` v2.0.0 may not be backwards compatible with previous versions.
+Note that `arsenal` v3.0.0 is not backwards compatible with previous versions (mainly because `compare()` got renamed to `comparedf()`).
 See the `NEWS` file for more details.
 
 ## The `tableby()` Function
@@ -22,7 +22,8 @@ Optionally, an appropriate test is performed to test the distribution of the ind
 the levels of the categorical variable. Options for this function are easily controlled using `tableby.control()`.
 
 The `tableby()` output is easily knitted in an Rmarkdown document or displayed in the command line using the `summary()` function.
-Other S3 methods are implemented for objects from `tableby()`, including `print()`, `[`, `as.data.frame()`, and `merge()`.
+Other S3 methods are implemented for objects from `tableby()`, including `print()`, `[`, `as.data.frame()`, `sort()`, `merge()`, `padjust()`,
+`head()`, and `tail()`.
 
 ## The `paired()` Function
 
@@ -47,20 +48,21 @@ Other S3 methods are implemented for objects from `modelsum()`, including `print
 Options for this function are easily controlled using `freq.control()`.
 
 The `freqlist()` output is easily knitted in an Rmarkdown document or displayed in the command line using the `summary()` function.
-Other S3 methods are implemented for objects from `freqlist()`, including `print()`, `[`, `as.data.frame()`, and `merge()`.
+Other S3 methods are implemented for objects from `freqlist()`, including `print()`, `[`, `as.data.frame()`, `sort()`, and `merge()`.
+Additionally, the `summary()` output can be used with `head()` or `tail()`.
 
-## The `compare.data.frame()` Function
+## The `comparedf()` Function
 
-`compare.data.frame()` is the S3 method for comparing two data.frames and reporting any differences between them,
+`comparedf()` compares two data.frames and reporting any differences between them,
 much like SAS's `PROC COMPARE` procedure.
 
-The `compare.data.frame()` output is easily knitted in an Rmarkdown document or displayed in the command line using the `summary()` function.
-Other S3 methods are implemented for objects of class `"compare.data.frame"`, including `print()` and `diffs()`.
+The `comparedf()` output is easily knitted in an Rmarkdown document or displayed in the command line using the `summary()` function.
+Other S3 methods are implemented for objects of class `"comparedf"`, including `print()`, `n.diffs()`, `n.diff.obs()`, and `diffs()`.
 
 ## The `write2*()` Family of Functions
 
 `write2word()`, `write2pdf()`, and `write2html()` are functions to output a table into a document, much like SAS's `ODS` procedure.
-  The S3 method behind them is `write2()`. There are methods implemented for `tableby()`, `modelsum()`, `freqlist()`, and `compare()`, and
+  The S3 method behind them is `write2()`. There are methods implemented for `tableby()`, `modelsum()`, `freqlist()`, and `comparedf()`, and
   also methods for `knitr::kable()`, `xtable::xtable()`, and `pander::pander_return()`. Another option is to coerce an object using
   `verbatim()` to print out the results monospaced (as if they were in the terminal)--the default method does this automatically.
   To output multiple tables into a document, simply make a list of them and call the same function as before. A YAML
@@ -70,7 +72,7 @@ Other S3 methods are implemented for objects of class `"compare.data.frame"`, in
 
 ## Other Notable Functions
 
-* `keep.labels()` keeps the `'label'` attribute on an R object when subsetting.
+* `keep.labels()` keeps the `'label'` attribute on an R object when subsetting. `loosen.labels()` allows the labels to drop again.
 
 * `formulize()` is a shortcut to collapse variable names into a formula.
 

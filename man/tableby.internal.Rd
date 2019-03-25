@@ -48,7 +48,7 @@ in the output of the object.}
 
 \item{lhs}{Logical, denoting whether to remove \code{NA}s from the first column of the data.frame (the "left-hand side")}
 
-\item{...}{Other arguments, or a vector of indices for extracting.}
+\item{...}{Other arguments.}
 
 \item{e1, e2}{\code{\link{tableby}} objects, or numbers to compare them to.}
 
@@ -65,5 +65,6 @@ A set of helper functions for \code{\link{tableby}}.
 Logical comparisons are implemented for \code{Ops.tableby}.
 }
 \seealso{
-\code{\link{arsenal_table}}, \code{\link{sort}}, \code{\link[utils]{head}}, \code{\link[utils]{tail}}
+\code{\link{arsenal_table}}, \code{\link{sort}}, \code{\link[utils]{head}}, \code{\link[utils]{tail}},
+  \code{\link{tableby}}, \code{\link{summary.tableby}}, \code{\link{tableby.control}}
 }

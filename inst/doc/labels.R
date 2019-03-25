@@ -36,6 +36,11 @@ mockstudy %>%
 
 ## ------------------------------------------------------------------------
 mockstudy.lab <- keep.labels(mockstudy)
+class(mockstudy$age)
+class(mockstudy.lab$age)
+
+## ------------------------------------------------------------------------
+class(loosen.labels(mockstudy.lab)$age)
 
 ## ------------------------------------------------------------------------
 attr(mockstudy.lab$sex, "label") <- "Sex"

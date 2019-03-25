@@ -69,7 +69,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">The freqlist function</h1>
 <h4 class="author"><em>Tina Gunderson and Ethan Heinzen</em></h4>
-<h4 class="date"><em>15 January, 2019</em></h4>
+<h4 class="date"><em>25 March, 2019</em></h4>
 
 
 <div id="TOC">
@@ -85,6 +85,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><a href="#including-combinations-with-frequencies-of-zero">Including combinations with frequencies of zero</a></li>
 <li><a href="#options-for-na-handling">Options for NA handling</a></li>
 <li><a href="#frequency-counts-and-percentages-subset-by-factor-levels">Frequency counts and percentages subset by factor levels</a></li>
+<li><a href="#show-only-the-n-most-common-combinations-in-each-table-head-and-sort">Show only the “n” most common combinations in each table (<code>head()</code> and <code>sort()</code>)</a></li>
 <li><a href="#change-labels-on-the-fly">Change labels on the fly</a></li>
 <li><a href="#using-xtable-to-format-and-print-freqlist-results">Using <code>xtable()</code> to format and print <code>freqlist()</code> results</a></li>
 <li><a href="#use-freqlist-in-bookdown">Use <code>freqlist</code> in bookdown</a></li>
@@ -125,7 +126,7 @@ tab.ex &lt;-<span class="st"> </span><span class="kw">table</span>(mockstudy[, <
   ..$ digits.count: int 0
   ..$ digits.pct  : int 2
  $ tables :List of 1
-  ..$ :List of 5
+  ..$ :List of 6
   .. ..$ y         :List of 2
   .. .. ..$ term : chr &quot;&quot;
   .. .. ..$ label: chr &quot;&quot;
@@ -173,6 +174,7 @@ tab.ex &lt;-<span class="st"> </span><span class="kw">table</span>(mockstudy[, <
   .. .. .. ..$ freqPercent: num [1:18] 1.935 14.276 2.268 0.801 7.872 ...
   .. .. .. ..$ cumPercent : num [1:18] 1.93 16.21 18.48 19.28 27.15 ...
   .. ..$ hasWeights: logi FALSE
+  .. ..$ na.options: chr &quot;include&quot;
  - attr(*, &quot;class&quot;)= chr [1:2] &quot;freqlist&quot; &quot;arsenal_table&quot;</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># view the data frame portion of freqlist output</span>
 <span class="kw">head</span>(<span class="kw">as.data.frame</span>(example1))  ## or use as.data.frame(example1)</code></pre></div>
@@ -3009,6 +3011,21 @@ tab.ex &lt;-<span class="st"> </span><span class="kw">table</span>(mockstudy[, <
 </tr>
 </tbody>
 </table>
+</div>
+<div id="show-only-the-n-most-common-combinations-in-each-table-head-and-sort" class="section level2">
+<h2>Show only the “n” most common combinations in each table (<code>head()</code> and <code>sort()</code>)</h2>
+<p>You can now sort <code>freqlist()</code> objects, and, by taking the <code>head()</code> of the summary, output the most common frequencies. This looks the prettiest with <code>dupLabels=TRUE</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(<span class="kw">summary</span>(<span class="kw">sort</span>(example1, <span class="dt">decreasing =</span> <span class="ot">TRUE</span>), <span class="dt">dupLabels =</span> <span class="ot">TRUE</span>))</code></pre></div>
+<pre><code>
+
+|arm       |sex    |mdquality.s | Freq| Cumulative Freq| Percent| Cumulative Percent|
+|:---------|:------|:-----------|----:|---------------:|-------:|------------------:|
+|F: FOLFOX |Male   |1           |  285|             285|   19.01|              19.01|
+|A: IFL    |Male   |1           |  214|             499|   14.28|              33.29|
+|F: FOLFOX |Female |1           |  198|             697|   13.21|              46.50|
+|G: IROX   |Male   |1           |  187|             884|   12.47|              58.97|
+|G: IROX   |Female |1           |  121|            1005|    8.07|              67.04|
+|A: IFL    |Female |1           |  118|            1123|    7.87|              74.92|</code></pre>
 </div>
 <div id="change-labels-on-the-fly" class="section level2">
 <h2>Change labels on the fly</h2>

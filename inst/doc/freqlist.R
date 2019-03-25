@@ -68,6 +68,9 @@ summary(example3)
 summary(example3, single = TRUE)
 
 
+## -----------------------------------------------------------------------------
+head(summary(sort(example1, decreasing = TRUE), dupLabels = TRUE))
+
 ## ----changelabs, results = 'asis'---------------------------------------------
 labs <- c(arm = "Arm", sex = "Sex", mdquality.s = "QOL", freqPercent = "%")
 labels(example1) <- labs

@@ -110,7 +110,7 @@ tab.noby <- tableby(~ bmi + sex + age, data=mockstudy)
 summary(tab.noby)
 
 ## ---- results="asis"------------------------------------------------------------------------------
-summary(tab.test) #, pfootnote=TRUE)
+summary(tab.test, pfootnote=TRUE)
 
 ## -------------------------------------------------------------------------------------------------
 mockstudy$age.ordnew <- ordered(c("a",NA,as.character(mockstudy$age.ord[-(1:2)])))
@@ -118,9 +118,9 @@ table(mockstudy$age.ord, mockstudy$sex)
 table(mockstudy$age.ordnew, mockstudy$sex)
 class(mockstudy$age.ord)
 
-## ---- results="asis"------------------------------------------------------------------------------
-summary(tableby(sex ~ age.ordnew, data = mockstudy)) #, pfootnote = TRUE)
-summary(tableby(sex ~ kwt(age.ord), data = mockstudy)) #) #, pfootnote = TRUE)
+## ---- results="asis", warning=FALSE---------------------------------------------------------------
+summary(tableby(sex ~ age.ordnew, data = mockstudy), pfootnote = TRUE)
+summary(tableby(sex ~ kwt(age.ord), data = mockstudy), pfootnote = TRUE)
 
 ## -------------------------------------------------------------------------------------------------
 survfit(Surv(fu.time, fu.stat)~sex, data=mockstudy)
@@ -310,11 +310,14 @@ tab1 <- tableby(fake_arm ~ age + sex + Surv(fu.time/365, fu.stat), data=mockstud
 summary(tab1, title='Case Weights used')
 
 ## ---- results='asis'------------------------------------------------------------------------------
-mypval <- data.frame(variable=c('age','sex','Surv(fu.time/365, fu.stat)'), 
-                     adj.pvalue=c(.953,.811,.01), 
-                     method=c('Age/Sex adjusted model results'))
+mypval <- data.frame(
+  byvar = "fake_arm",
+  variable = c('age','sex','Surv(fu.time/365, fu.stat)'), 
+  adj.pvalue = c(.953,.811,.01), 
+  method = c('Age/Sex adjusted model results')
+)
 tab2 <- modpval.tableby(tab1, mypval, use.pname=TRUE)
-summary(tab2, title='Case Weights used, p-values added') #, pfootnote=TRUE)
+summary(tab2, title='Case Weights used, p-values added', pfootnote=TRUE)
 
 ## ---- results='asis'------------------------------------------------------------------------------
 table2 <- tableby(arm~sex + factor(mdquality.s), data=mockstudy, cat.simplify=TRUE)

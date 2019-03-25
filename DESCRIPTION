@@ -1,8 +1,8 @@
 Package: arsenal
 Title: An Arsenal of 'R' Functions for Large-Scale Statistical
         Summaries
-Version: 2.0.0
-Date: 2019-01-15
+Version: 3.0.0
+Date: 2019-03-25
 Authors@R: c(
     person("Ethan", "Heinzen", email = "heinzen.ethan@mayo.edu", role = c("aut", "cre")),
     person("Jason", "Sinnwell", role="aut"),
@@ -26,7 +26,7 @@ Description: An Arsenal of 'R' functions for large-scale statistical summaries,
   two time points; modelsum(), which performs simple model fits on one or more endpoints
   for many variables (univariate or adjusted for covariates);
   freqlist(), a powerful frequency table across many categorical variables;
-  compare.data.frame(), the S3 method for comparing data.frames; and
+  comparedf(), a function for comparing data.frames; and
   write2(), a function to output tables to a document.
 Suggests: broom, stringr, magrittr, knitr, rmarkdown, xtable, pander,
         survival (>= 2.41-3), coin, pROC, MASS, gam, rpart, yaml
@@ -41,7 +41,7 @@ RoxygenNote: 6.1.1
 LazyData: true
 Encoding: UTF-8
 NeedsCompilation: no
-Packaged: 2019-01-16 02:39:41 UTC; m144326
+Packaged: 2019-03-25 20:49:24 UTC; m144326
 Author: Ethan Heinzen [aut, cre],
   Jason Sinnwell [aut],
   Elizabeth Atkinson [aut],
@@ -56,4 +56,4 @@ Author: Ethan Heinzen [aut, cre],
   Maddie McCullough [art]
 Maintainer: Ethan Heinzen <heinzen.ethan@mayo.edu>
 Repository: CRAN
-Date/Publication: 2019-01-16 05:30:02 UTC
+Date/Publication: 2019-03-25 21:25:33 UTC

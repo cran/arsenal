@@ -21,6 +21,7 @@ test_that("A three-LHS tableby call", {
 })
 
 test_that("A tableby call with strata", {
+  coin.p <- if(requireNamespace("coin")) c("0.506", "0.005") else c("     ", "     ")
   expect_identical(
     capture.kable(summary(tableby(Group ~ Age + time + Phase, data = mdat, strata = trt), text = TRUE)),
     c("|Treatment Arm |             |   High (N=30)   |   Low (N=30)    |   Med (N=30)    |  Total (N=90)   | p value |",
@@ -31,7 +32,7 @@ test_that("A tableby call with strata", {
       "|              |time         |                 |                 |                 |                 |  0.319  |",
       "|              |-  Mean (SD) |  4.357 (1.865)  |  3.273 (1.421)  |  3.727 (1.954)  |  3.833 (1.781)  |         |",
       "|              |-  Range     |  0.000 - 6.000  |  1.000 - 5.000  |  1.000 - 7.000  |  0.000 - 7.000  |         |",
-      "|              |Phase        |                 |                 |                 |                 |  0.506  |",
+      paste0("|              |Phase        |                 |                 |                 |                 |  ", coin.p[1], "  |"),
       "|              |-  I         |    6 (42.9%)    |    2 (18.2%)    |    0 (0.0%)     |    8 (22.2%)    |         |",
       "|              |-  II        |    3 (21.4%)    |    6 (54.5%)    |    8 (72.7%)    |   17 (47.2%)    |         |",
       "|              |-  III       |    5 (35.7%)    |    3 (27.3%)    |    3 (27.3%)    |   11 (30.6%)    |         |",
@@ -41,7 +42,7 @@ test_that("A tableby call with strata", {
       "|              |time         |                 |                 |                 |                 |  0.081  |",
       "|              |-  Mean (SD) |  4.750 (1.807)  |  3.105 (2.355)  |  3.895 (2.079)  |  3.870 (2.172)  |         |",
       "|              |-  Range     |  1.000 - 7.000  |  0.000 - 6.000  |  1.000 - 7.000  |  0.000 - 7.000  |         |",
-      "|              |Phase        |                 |                 |                 |                 |  0.005  |",
+      paste0("|              |Phase        |                 |                 |                 |                 |  ", coin.p[2], "  |"),
       "|              |-  I         |    5 (31.2%)    |   10 (52.6%)    |    0 (0.0%)     |   15 (27.8%)    |         |",
       "|              |-  II        |    7 (43.8%)    |    6 (31.6%)    |   11 (57.9%)    |   24 (44.4%)    |         |",
       "|              |-  III       |    4 (25.0%)    |    3 (15.8%)    |    8 (42.1%)    |   15 (27.8%)    |         |"
@@ -345,6 +346,29 @@ test_that("strata with includeNA()", {
       "|NA  |Age in Years |                 |                   |                 |                 |  0.949  |",
       "|    |-  Mean (SD) | 61.364 (11.522) |  60.788 (11.725)  | 60.854 (10.009) | 60.925 (11.379) |         |",
       "|    |-  Range     | 27.000 - 81.000 |  22.000 - 85.000  | 40.000 - 81.000 | 22.000 - 85.000 |         |"
+    )
+  )
+})
+
+
+####################################################
+
+
+test_that("01/31/2019: modpval.tableby (#174, #175)", {
+  tmp <- tableby(sex ~ age, data = mockstudy, strata = fu.stat, test = FALSE)
+  expect_true(!any(c("test", "p.value") %in% names(as.data.frame(tmp))))
+  tmp <- modpval.tableby(tmp, data.frame(y = "sex", strata = "1", x = "age", p = 1), use.pname = TRUE)
+  expect_identical(
+    capture.kable(summary(tmp, pfootnote = TRUE, text = TRUE)),
+    c("|fu.stat |             |  Male (N=916)   | Female (N=583)  | Total (N=1499)  |    p     |",
+      "|:-------|:------------|:---------------:|:---------------:|:---------------:|:--------:|",
+      "|1       |Age in Years |                 |                 |                 | 1.000^1^ |",
+      "|        |-  Mean (SD) | 58.253 (12.048) | 61.018 (10.649) | 59.336 (11.561) |          |",
+      "|        |-  Range     | 32.000 - 85.000 | 35.000 - 80.000 | 32.000 - 85.000 |          |",
+      "|2       |Age in Years |                 |                 |                 |          |",
+      "|        |-  Mean (SD) | 60.686 (11.278) | 59.059 (11.824) | 60.054 (11.516) |          |",
+      "|        |-  Range     | 19.000 - 88.000 | 22.000 - 88.000 | 19.000 - 88.000 |          |",
+      "1. Modified by user"
     )
   )
 })

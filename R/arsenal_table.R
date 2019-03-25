@@ -107,7 +107,15 @@ labels.arsenal_table <- function(object, ...) {
 
 make_ms_labs <- function(x)
 {
-  x$label <- if(identical(x$term, x$variable2)) x$varlabel else sub(x$variable2, paste0(x$varlabel, " "), x$term, fixed = TRUE)
+  tmp <- x$term
+  for(i in seq_along(x$varterm2))
+  {
+    colon <- if(i > 1) ":" else ""
+    space <- if(all(grepl(paste0(x$varterm2[i], ":"), tmp, fixed = TRUE))) "" else " "
+
+    tmp <- sub(paste0(colon, x$varterm2[i]), paste0(colon, x$varlabel[i], space), tmp, fixed = TRUE)
+  }
+  x$label <- trimws(tmp)
   x
 }
 
@@ -123,12 +131,12 @@ make_ms_labs <- function(x)
     {
       mk_lab <- function(elt)
       {
-        if(is.null(elt$variable2) || is.null(elt$varlabel))
+        if(is.null(elt$variable2) || is.null(elt$varlabel) || is.null(elt$varterm))
         { # for tableby
           elt$label <- elt$term
         } else
         {
-          elt$varlabel <- elt$variable
+          elt$varlabel <- elt$varterm
           elt <- make_ms_labs(elt)
         }
         elt
@@ -241,11 +249,15 @@ print.summary.arsenal_table <- function(x, ..., format = if(!is.null(x$text) && 
 
   #### finally print it out ####
   if(!is.null(x$title)) cat("\nTable: ", x$title, sep = "")
+  shown <- FALSE
   for(i in seq_along(df))
   {
+    if(nrow(df[[i]]) == 0) next
+    shown <- TRUE
     print(knitr::kable(df[[i]], caption = NULL, align = attr(df[[i]], "align"), format = format, row.names = FALSE, escape = escape, ...))
     if(!is.null(attr(df[[i]], "tests"))) cat(paste0(attr(df[[i]], "tests"), "\n", collapse = ""))
   }
+  if(!shown) stop("There wasn't anything to summarize! (All of the tables have 0 rows)")
   cat("\n")
 
   invisible(x)

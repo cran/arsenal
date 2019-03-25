@@ -29,6 +29,7 @@ test_that("A basic two-sided tableby call--no labels, no missings", {
 })
 
 test_that("A basic two-sided tableby call--labels, no missings", {
+  p.coin <- if(requireNamespace("coin")) "0.008" else "     "
   expect_identical(
     capture.kable(summary(tableby(Group ~ Age + trt + Phase, data = mdat, numeric.stats = c("meansd", "q1q3", "range")), text = TRUE)),
     c("|              |   High (N=30)   |   Low (N=30)    |   Med (N=30)    |  Total (N=90)   | p value|",
@@ -40,7 +41,7 @@ test_that("A basic two-sided tableby call--labels, no missings", {
       "|Treatment Arm |                 |                 |                 |                 |   0.659|",
       "|-  A          |   14 (46.7%)    |   11 (36.7%)    |   11 (36.7%)    |   36 (40.0%)    |        |",
       "|-  B          |   16 (53.3%)    |   19 (63.3%)    |   19 (63.3%)    |   54 (60.0%)    |        |",
-      "|Phase         |                 |                 |                 |                 |   0.008|",
+      paste0("|Phase         |                 |                 |                 |                 |   ", p.coin, "|"),
       "|-  I          |   11 (36.7%)    |   12 (40.0%)    |    0 (0.0%)     |   23 (25.6%)    |        |",
       "|-  II         |   10 (33.3%)    |   12 (40.0%)    |   19 (63.3%)    |   41 (45.6%)    |        |",
       "|-  III        |    9 (30.0%)    |    6 (20.0%)    |   11 (36.7%)    |   26 (28.9%)    |        |"
@@ -740,8 +741,8 @@ test_that("02/26/2018: all NA vars (#80, #81, #82, #83, #84)", {
       "|:------------|:-------------:|:-------:|:-------------:|-------:|",
       "|x            |               |         |               |        |",
       "|-  N-Miss    |       0       |    2    |       2       |        |",
-      "|-  Mean (SD) | 2.000 (1.000) | NA (NA) | 2.000 (1.000) |        |",
-      "|-  Range     | 1.000 - 3.000 | NA - NA | 1.000 - 3.000 |        |"
+      "|-  Mean (SD) | 2.000 (1.000) |   NA    | 2.000 (1.000) |        |",
+      "|-  Range     | 1.000 - 3.000 |   NA    | 1.000 - 3.000 |        |"
     )
   )
   expect_identical(
@@ -750,8 +751,8 @@ test_that("02/26/2018: all NA vars (#80, #81, #82, #83, #84)", {
       "|:------------|:-------------:|:-------:|:-------------:|-------:|",
       "|x            |               |         |               |        |",
       "|-  N-Miss    |       0       |    2    |       2       |        |",
-      "|-  Mean (SD) | 2.000 (1.000) | NA (NA) | 2.000 (1.000) |        |",
-      "|-  Range     | 1.000 - 3.000 | NA - NA | 1.000 - 3.000 |        |"
+      "|-  Mean (SD) | 2.000 (1.000) |   NA    | 2.000 (1.000) |        |",
+      "|-  Range     | 1.000 - 3.000 |   NA    | 1.000 - 3.000 |        |"
     )
   )
   if(require(survival) && packageVersion("survival") >= "2.41-3")
@@ -764,14 +765,30 @@ test_that("02/26/2018: all NA vars (#80, #81, #82, #83, #84)", {
         "|Surv(x)             |          |         |             |        |",
         "|-  Median Survival  |  2.000   |   NA    |    2.000    |        |",
         "|-  Events           |    3     |   NA    |      3      |        |",
-        "|-  time = 1         | 1 (66.7) | NA (NA) |  1 (66.7)   |        |",
-        "|-  time = 2         | 2 (33.3) | NA (NA) |  2 (33.3)   |        |",
+        "|-  time = 1         | 1 (66.7) |   NA    |  1 (66.7)   |        |",
+        "|-  time = 2         | 2 (33.3) |   NA    |  2 (33.3)   |        |",
         "|-  time = 1         |    3     |   NA    |      3      |        |",
         "|-  time = 2         |    2     |   NA    |      2      |        |",
         "|-  Median Follow-Up |    NA    |   NA    |     NA      |        |"
       )
     )
   } else skip("survival package not available or not the right version.")
+
+  dat2 <- data.frame(Group = rep(1:2, each=5), A = rep(c(1, NA), each=5), B = rep(factor(c("A", NA)), each=5))
+  expect_identical(
+    capture.kable(summary(tableby(Group ~ A + B, data = dat2), text = TRUE)),
+    c("|             |    1 (N=5)    | 2 (N=5) | Total (N=10)  | p value|",
+      "|:------------|:-------------:|:-------:|:-------------:|-------:|",
+      "|A            |               |         |               |        |",
+      "|-  N-Miss    |       0       |    5    |       5       |        |",
+      "|-  Mean (SD) | 1.000 (0.000) |   NA    | 1.000 (0.000) |        |",
+      "|-  Range     | 1.000 - 1.000 |   NA    | 1.000 - 1.000 |        |",
+      "|B            |               |         |               |   1.000|",
+      "|-  N-Miss    |       0       |    5    |       5       |        |",
+      "|-  A         |  5 (100.0%)   |    0    |  5 (100.0%)   |        |"
+    )
+  )
+
 })
 
 
@@ -935,4 +952,20 @@ test_that("10/19/2018: padjust works on tableby objects (#146)", {
   )
 })
 
-
+test_that("02/26/2019: digits and stats are maintained when subsetting (#182, #183)", {
+  mck <- mockstudy
+  attr(mck$arm, "name") <- "armm"
+  tmp <- tableby(sex ~ kwt(age, digits = 1, "meansd") + chisq(arm, "count", digits.count = 1), data = mck, subset = age < 65)
+  expect_identical(
+    capture.kable(summary(tmp)),
+    c("|                            | Male (N=552) | Female (N=375) | Total (N=927) | p value|",
+      "|:---------------------------|:------------:|:--------------:|:-------------:|-------:|",
+      "|**Age in Years**            |              |                |               |   0.143|",
+      "|&nbsp;&nbsp;&nbsp;Mean (SD) |  53.3 (8.4)  |   52.5 (8.6)   |  53.0 (8.5)   |        |",
+      "|**Treatment Arm**           |              |                |               |   0.404|",
+      "|&nbsp;&nbsp;&nbsp;A: IFL    |    169.0     |     100.0      |     269.0     |        |",
+      "|&nbsp;&nbsp;&nbsp;F: FOLFOX |    246.0     |     173.0      |     419.0     |        |",
+      "|&nbsp;&nbsp;&nbsp;G: IROX   |    137.0     |     102.0      |     239.0     |        |"
+    )
+  )
+})

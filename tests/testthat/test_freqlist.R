@@ -328,6 +328,13 @@ test_that("Formula method works", {
     capture.kable(summary(freqlist(TAB.na, options = "include"), labelTranslations = c(trt = "Trt", ethan = "Ethan"))),
     capture.kable(summary(freqlist(~ trt + addNA(ethan), data = mdat), labelTranslations = c("addNA(ethan)" = "Ethan", trt = "Trt")))
   )
+  if(getRversion() >= "3.4.0")
+  {
+    expect_identical(
+      capture.kable(summary(freqlist(~ trt + ethan, data = mdat, addNA = TRUE), labelTranslations = c(trt = "Trt", ethan = "Ethan"))),
+      capture.kable(summary(freqlist(~ trt + addNA(ethan), data = mdat), labelTranslations = c("addNA(ethan)" = "Ethan", trt = "Trt")))
+    )
+  } else skip("R version isn't right to use 'addNA=TRUE'")
 })
 
 
@@ -392,4 +399,45 @@ test_that("04/17/18: using 'method' in freqlist (#95)", {
   )
 })
 
+test_that("02/26/19: don't drop labels with subset= argument (#184)", {
+  expect_identical(
+    capture.kable(summary(freqlist(~ age, data = mockstudy, subset = age > 80))),
+    c("|Age in Years | Freq| Cumulative Freq| Percent| Cumulative Percent|",
+      "|:------------|----:|---------------:|-------:|------------------:|",
+      "|81           |   12|              12|   41.38|              41.38|",
+      "|82           |    6|              18|   20.69|              62.07|",
+      "|83           |    6|              24|   20.69|              82.76|",
+      "|84           |    1|              25|    3.45|              86.21|",
+      "|85           |    2|              27|    6.90|              93.10|",
+      "|88           |    2|              29|    6.90|             100.00|"
+    )
+  )
+})
 
+test_that("03/20/2019: freqlist still works with all zero counts (#194, #186).", {
+  tab0 <- table(factor(c(), levels = c("m", "f")))
+  expect_error(print(summary(freqlist(tab0))), "There wasn't anything")
+  expect_identical(
+    capture.kable(summary(freqlist(tab0), sparse = TRUE)),
+    c("|Var1 | Freq| Cumulative Freq| Percent| Cumulative Percent|",
+      "|:----|----:|---------------:|-------:|------------------:|",
+      "|m    |    0|               0|      NA|                 NA|",
+      "|f    |    0|               0|      NA|                 NA|"
+    )
+  )
+})
+
+test_that("03/21/2019: freqlist doesn't lose labels when subsetting (#196)", {
+  expect_identical(
+    capture.kable(summary(freqlist(~ sex + ps + arm, data = mockstudy, strata = "arm", subset = arm == "F: FOLFOX")[c(1:2, 4)])),
+    c("|Treatment Arm |sex    | Freq|",
+      "|:-------------|:------|----:|",
+      "|F: FOLFOX     |Male   |  168|",
+      "|              |       |  148|",
+      "|              |       |   16|",
+      "|              |Female |  110|",
+      "|              |       |   95|",
+      "|              |       |   13|"
+    )
+  )
+})

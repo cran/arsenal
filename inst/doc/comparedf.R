@@ -20,47 +20,52 @@ df2 <- data.frame(id = paste0("person", 3:1),
                   stringsAsFactors = FALSE)
 
 ## ----results='markup'-------------------------------------------------------------------------------------------------
-compare(df1, df2)
+comparedf(df1, df2)
 
 ## ---------------------------------------------------------------------------------------------------------------------
-summary(compare(df1, df2))
+summary(comparedf(df1, df2))
 
 ## ---------------------------------------------------------------------------------------------------------------------
-summary(compare(df1, df2, by = "id"))
+summary(comparedf(df1, df2, by = "id"))
 
 ## ---------------------------------------------------------------------------------------------------------------------
 data(mockstudy)
 mockstudy2 <- muck_up_mockstudy()
 
 ## ---------------------------------------------------------------------------------------------------------------------
-summary(compare(mockstudy, mockstudy2, by = "case"))
+summary(comparedf(mockstudy, mockstudy2, by = "case"))
 
 ## ----eval = FALSE-----------------------------------------------------------------------------------------------------
-#  summary(compare(mockstudy, mockstudy2, by = "case", control = comparison.control(tol.vars = "case")))
+#  summary(comparedf(mockstudy, mockstudy2, by = "case", control = comparedf.control(tol.vars = "case")))
 
 ## ---------------------------------------------------------------------------------------------------------------------
-summary(compare(mockstudy, mockstudy2, by = "case", tol.vars = "case"))
+summary(comparedf(mockstudy, mockstudy2, by = "case", tol.vars = "case"))
 
 ## ---------------------------------------------------------------------------------------------------------------------
-summary(compare(mockstudy, mockstudy2, by = "case",
+summary(comparedf(mockstudy, mockstudy2, by = "case",
                 tol.vars = c("._ ", "case") # dots=underscores=spaces, ignore case
 ))
 
 ## ---------------------------------------------------------------------------------------------------------------------
-summary(compare(mockstudy, mockstudy2, by = "case",
+summary(comparedf(mockstudy, mockstudy2, by = "case",
+                tol.vars = c(arm = "Arm", fu.stat = "fu stat", fu.time = "fu_time")
+))
+
+## ---------------------------------------------------------------------------------------------------------------------
+summary(comparedf(mockstudy, mockstudy2, by = "case",
                 tol.vars = c("._ ", "case"), # dots=underscores=spaces, ignore case
                 int.as.num = TRUE            # compare integers and numerics
 ))
 
 ## ---------------------------------------------------------------------------------------------------------------------
-summary(compare(mockstudy, mockstudy2, by = "case",
+summary(comparedf(mockstudy, mockstudy2, by = "case",
                 tol.vars = c("._ ", "case"), # dots=underscores=spaces, ignore case
                 int.as.num = TRUE,           # compare integers and numerics
                 tol.num.val = 10             # allow absolute differences <= 10
 ))
 
 ## ---------------------------------------------------------------------------------------------------------------------
-summary(compare(mockstudy, mockstudy2, by = "case",
+summary(comparedf(mockstudy, mockstudy2, by = "case",
                 tol.vars = c("._ ", "case"), # dots=underscores=spaces, ignore case
                 int.as.num = TRUE,           # compare integers and numerics
                 tol.num.val = 10,            # allow absolute differences <= 10
@@ -68,7 +73,7 @@ summary(compare(mockstudy, mockstudy2, by = "case",
 ))
 
 ## ---------------------------------------------------------------------------------------------------------------------
-summary(compare(mockstudy, mockstudy2, by = "case",
+summary(comparedf(mockstudy, mockstudy2, by = "case",
                 tol.vars = c("._ ", "case"), # dots=underscores=spaces, ignore case
                 int.as.num = TRUE,           # compare integers and numerics
                 tol.num.val = 10,            # allow absolute differences <= 10
@@ -77,7 +82,7 @@ summary(compare(mockstudy, mockstudy2, by = "case",
 ))
 
 ## ---------------------------------------------------------------------------------------------------------------------
-summary(compare(mockstudy, mockstudy2, by = "case",
+summary(comparedf(mockstudy, mockstudy2, by = "case",
                 tol.vars = c("._ ", "case"), # dots=underscores=spaces, ignore case
                 int.as.num = TRUE,           # compare integers and numerics
                 tol.num.val = 10,            # allow absolute differences <= 10
@@ -97,9 +102,9 @@ my.tol <- function(x, y, tol)
 
 date.df1 <- data.frame(dt = as.Date(c("2017-09-07", "2017-08-08", "2017-07-09", NA)))
 date.df2 <- data.frame(dt = as.Date(c("2017-10-01", "2017-08-08", "2017-07-10", "2017-01-01")))
-n.diffs(compare(date.df1, date.df2)) # default finds any differences
-n.diffs(compare(date.df1, date.df2, tol.date = my.tol)) # our function identifies only the NA as different...
-n.diffs(compare(date.df2, date.df1, tol.date = my.tol)) # ... until we change the argument order
+n.diffs(comparedf(date.df1, date.df2)) # default finds any differences
+n.diffs(comparedf(date.df1, date.df2, tol.date = my.tol)) # our function identifies only the NA as different...
+n.diffs(comparedf(date.df2, date.df1, tol.date = my.tol)) # ... until we change the argument order
 
 
 ## ---------------------------------------------------------------------------------------------------------------------
@@ -110,7 +115,7 @@ tol.minus9 <- function(x, y, tol)
   return(!idx1 & idx2)
 }
 
-summary(compare(mockstudy, mockstudy2, by = "case",
+summary(comparedf(mockstudy, mockstudy2, by = "case",
                 tol.vars = c("._ ", "case"), # dots=underscores=spaces, ignore case
                 int.as.num = TRUE,           # compare integers and numerics
                 tol.num.val = 10,            # allow absolute differences <= 10
@@ -121,7 +126,7 @@ summary(compare(mockstudy, mockstudy2, by = "case",
 ))
 
 ## ----results = 'markup'-----------------------------------------------------------------------------------------------
-cmp <- compare(mockstudy, mockstudy2, by = "case", tol.vars = c("._ ", "case"), int.as.num = TRUE)
+cmp <- comparedf(mockstudy, mockstudy2, by = "case", tol.vars = c("._ ", "case"), int.as.num = TRUE)
 n.diffs(cmp)
 head(diffs(cmp))
 
@@ -133,7 +138,7 @@ diffs(cmp, vars = c("ps", "ast"), by.var = TRUE)
 diffs(cmp, vars = c("ps", "ast"))
 
 ## ---------------------------------------------------------------------------------------------------------------------
-obj <- compare(mockstudy, mockstudy2, by = "case")
+obj <- comparedf(mockstudy, mockstudy2, by = "case")
 
 ## ----results='markup'-------------------------------------------------------------------------------------------------
 print(obj$frame.summary)
