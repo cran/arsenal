@@ -18,47 +18,279 @@
 
 
 <style type="text/css">code{white-space: pre;}</style>
-<style type="text/css">
-div.sourceCode { overflow-x: auto; }
-table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
-  margin: 0; padding: 0; vertical-align: baseline; border: none; }
-table.sourceCode { width: 100%; line-height: 100%; }
-td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
-td.sourceCode { padding-left: 5px; }
-code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code > span.dt { color: #902000; } /* DataType */
-code > span.dv { color: #40a070; } /* DecVal */
-code > span.bn { color: #40a070; } /* BaseN */
-code > span.fl { color: #40a070; } /* Float */
-code > span.ch { color: #4070a0; } /* Char */
-code > span.st { color: #4070a0; } /* String */
-code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code > span.ot { color: #007020; } /* Other */
-code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code > span.fu { color: #06287e; } /* Function */
-code > span.er { color: #ff0000; font-weight: bold; } /* Error */
-code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
-code > span.cn { color: #880000; } /* Constant */
-code > span.sc { color: #4070a0; } /* SpecialChar */
-code > span.vs { color: #4070a0; } /* VerbatimString */
-code > span.ss { color: #bb6688; } /* SpecialString */
-code > span.im { } /* Import */
-code > span.va { color: #19177c; } /* Variable */
-code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code > span.op { color: #666666; } /* Operator */
-code > span.bu { } /* BuiltIn */
-code > span.ex { } /* Extension */
-code > span.pp { color: #bc7a00; } /* Preprocessor */
-code > span.at { color: #7d9029; } /* Attribute */
-code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+<style type="text/css" data-origin="pandoc">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; position: absolute; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; }
+pre.numberSource a.sourceLine:empty
+  { position: absolute; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: absolute; left: -5em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+
 </style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' || rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
 
 
 
-<link href="data:text/css;charset=utf-8,body%20%7B%0Abackground%2Dcolor%3A%20%23fff%3B%0Amargin%3A%201em%20auto%3B%0Amax%2Dwidth%3A%20700px%3B%0Aoverflow%3A%20visible%3B%0Apadding%2Dleft%3A%202em%3B%0Apadding%2Dright%3A%202em%3B%0Afont%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0Afont%2Dsize%3A%2014px%3B%0Aline%2Dheight%3A%201%2E35%3B%0A%7D%0A%23header%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0A%23TOC%20%7B%0Aclear%3A%20both%3B%0Amargin%3A%200%200%2010px%2010px%3B%0Apadding%3A%204px%3B%0Awidth%3A%20400px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Aborder%2Dradius%3A%205px%3B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Afont%2Dsize%3A%2013px%3B%0Aline%2Dheight%3A%201%2E3%3B%0A%7D%0A%23TOC%20%2Etoctitle%20%7B%0Afont%2Dweight%3A%20bold%3B%0Afont%2Dsize%3A%2015px%3B%0Amargin%2Dleft%3A%205px%3B%0A%7D%0A%23TOC%20ul%20%7B%0Apadding%2Dleft%3A%2040px%3B%0Amargin%2Dleft%3A%20%2D1%2E5em%3B%0Amargin%2Dtop%3A%205px%3B%0Amargin%2Dbottom%3A%205px%3B%0A%7D%0A%23TOC%20ul%20ul%20%7B%0Amargin%2Dleft%3A%20%2D2em%3B%0A%7D%0A%23TOC%20li%20%7B%0Aline%2Dheight%3A%2016px%3B%0A%7D%0Atable%20%7B%0Amargin%3A%201em%20auto%3B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dcolor%3A%20%23DDDDDD%3B%0Aborder%2Dstyle%3A%20outset%3B%0Aborder%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0Aborder%2Dwidth%3A%202px%3B%0Apadding%3A%205px%3B%0Aborder%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dstyle%3A%20inset%3B%0Aline%2Dheight%3A%2018px%3B%0Apadding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0Aborder%2Dleft%2Dstyle%3A%20none%3B%0Aborder%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Ap%20%7B%0Amargin%3A%200%2E5em%200%3B%0A%7D%0Ablockquote%20%7B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Apadding%3A%200%2E25em%200%2E75em%3B%0A%7D%0Ahr%20%7B%0Aborder%2Dstyle%3A%20solid%3B%0Aborder%3A%20none%3B%0Aborder%2Dtop%3A%201px%20solid%20%23777%3B%0Amargin%3A%2028px%200%3B%0A%7D%0Adl%20%7B%0Amargin%2Dleft%3A%200%3B%0A%7D%0Adl%20dd%20%7B%0Amargin%2Dbottom%3A%2013px%3B%0Amargin%2Dleft%3A%2013px%3B%0A%7D%0Adl%20dt%20%7B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Aul%20%7B%0Amargin%2Dtop%3A%200%3B%0A%7D%0Aul%20li%20%7B%0Alist%2Dstyle%3A%20circle%20outside%3B%0A%7D%0Aul%20ul%20%7B%0Amargin%2Dbottom%3A%200%3B%0A%7D%0Apre%2C%20code%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0Aborder%2Dradius%3A%203px%3B%0Acolor%3A%20%23333%3B%0Awhite%2Dspace%3A%20pre%2Dwrap%3B%20%0A%7D%0Apre%20%7B%0Aborder%2Dradius%3A%203px%3B%0Amargin%3A%205px%200px%2010px%200px%3B%0Apadding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Acode%20%7B%0Afont%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0Afont%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0Apadding%3A%202px%200px%3B%0A%7D%0Adiv%2Efigure%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0Abackground%2Dcolor%3A%20%23FFFFFF%3B%0Apadding%3A%202px%3B%0Aborder%3A%201px%20solid%20%23DDDDDD%3B%0Aborder%2Dradius%3A%203px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Amargin%3A%200%205px%3B%0A%7D%0Ah1%20%7B%0Amargin%2Dtop%3A%200%3B%0Afont%2Dsize%3A%2035px%3B%0Aline%2Dheight%3A%2040px%3B%0A%7D%0Ah2%20%7B%0Aborder%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Apadding%2Dbottom%3A%202px%3B%0Afont%2Dsize%3A%20145%25%3B%0A%7D%0Ah3%20%7B%0Aborder%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Afont%2Dsize%3A%20120%25%3B%0A%7D%0Ah4%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0Amargin%2Dleft%3A%208px%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Ah5%2C%20h6%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23ccc%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Aa%20%7B%0Acolor%3A%20%230033dd%3B%0Atext%2Ddecoration%3A%20none%3B%0A%7D%0Aa%3Ahover%20%7B%0Acolor%3A%20%236666ff%3B%20%7D%0Aa%3Avisited%20%7B%0Acolor%3A%20%23800080%3B%20%7D%0Aa%3Avisited%3Ahover%20%7B%0Acolor%3A%20%23BB00BB%3B%20%7D%0Aa%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0Aa%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%20code%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%0A" rel="stylesheet" type="text/css" />
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#header {
+text-align: center;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
 
 </head>
 
@@ -69,7 +301,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">The tableby function</h1>
 <h4 class="author"><em>Beth Atkinson, Ethan Heinzen, Jason Sinnwell, Shannon McDonnell and Greg Dougherty</em></h4>
-<h4 class="date"><em>25 March, 2019</em></h4>
+<h4 class="date"><em>03 May, 2019</em></h4>
 
 
 <div id="TOC">
@@ -134,14 +366,14 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div id="simple-example" class="section level1">
 <h1>Simple Example</h1>
 <p>The first step when using the <code>tableby</code> function is to load the <code>arsenal</code> package. All the examples in this report use a dataset called <code>mockstudy</code> made available by Paul Novotny which includes a variety of types of variables (character, numeric, factor, ordered factor, survival) to use as examples.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(arsenal)
-<span class="kw">require</span>(knitr)
-<span class="kw">require</span>(survival)
-<span class="kw">data</span>(mockstudy) ##load data
-<span class="kw">dim</span>(mockstudy)  ##look at how many subjects and variables are in the dataset </code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">library</span>(arsenal)</a>
+<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw">require</span>(knitr)</a>
+<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="kw">require</span>(survival)</a>
+<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="kw">data</span>(mockstudy) ##load data</a>
+<a class="sourceLine" id="cb1-5" data-line-number="5"><span class="kw">dim</span>(mockstudy)  ##look at how many subjects and variables are in the dataset </a></code></pre></div>
 <pre><code>## [1] 1499   14</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># help(mockstudy) ##learn more about the dataset and variables</span>
-<span class="kw">str</span>(mockstudy) ##quick look at the data</code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="co"># help(mockstudy) ##learn more about the dataset and variables</span></a>
+<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="kw">str</span>(mockstudy) ##quick look at the data</a></code></pre></div>
 <pre><code>## 'data.frame':    1499 obs. of  14 variables:
 ##  $ case       : int  110754 99706 105271 105001 112263 86205 99508 90158 88989 90515 ...
 ##  $ age        : atomic  67 74 50 71 69 56 50 57 51 63 ...
@@ -162,12 +394,12 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 ##  $ mdquality.s: int  NA 1 1 1 NA 1 1 1 1 1 ...
 ##  $ age.ord    : Ord.factor w/ 8 levels &quot;10-19&quot;&lt;&quot;20-29&quot;&lt;..: 6 7 4 7 6 5 4 5 5 6 ...</code></pre>
 <p>To create a simple table stratified by treatment arm, use a formula statement to specify the variables that you want summarized. The example below uses age (a continuous variable) and sex (a factor).</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tab1 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span class="op">~</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span>age, <span class="dt">data=</span>mockstudy)</code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">tab1 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span class="op">~</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span>age, <span class="dt">data=</span>mockstudy)</a></code></pre></div>
 <p>If you want to take a quick look at the table, you can use <code>summary()</code> on your tableby object and the table will print out as text in your R console window. If you use <code>summary()</code> without any options you will see a number of <span class="math inline">\(\&amp;nbsp;\)</span> statements which translates to “space” in HTML.</p>
 <div id="pretty-text-version-of-table" class="section level2">
 <h2>Pretty text version of table</h2>
 <p>If you want a nicer version in your console window then add the <code>text=TRUE</code> option.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(tab1, <span class="dt">text=</span><span class="ot">TRUE</span>)</code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw">summary</span>(tab1, <span class="dt">text=</span><span class="ot">TRUE</span>)</a></code></pre></div>
 <pre><code>## 
 ## 
 ## |             | A: IFL (N=428)  | F: FOLFOX (N=691) | G: IROX (N=380) | Total (N=1499)  | p value|
@@ -182,7 +414,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div id="pretty-rmarkdown-version-of-table" class="section level2">
 <h2>Pretty Rmarkdown version of table</h2>
 <p>In order for the report to look nice within an R markdown (knitr) report, you just need to specify <code>results=&quot;asis&quot;</code> when creating the R chunk. This changes the layout slightly (compresses it) and bolds the variable names.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(tab1)</code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw">summary</span>(tab1)</a></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -249,7 +481,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div id="data-frame-version-of-table" class="section level2">
 <h2>Data frame version of table</h2>
 <p>If you want a data.frame version, simply use <code>as.data.frame</code>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">as.data.frame</span>(tab1)</code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw">as.data.frame</span>(tab1)</a></code></pre></div>
 <pre><code>##   group.term   group.label strata.term variable     term        label variable.type
 ## 1        arm Treatment Arm                  sex      sex          sex   categorical
 ## 2        arm Treatment Arm                  sex countpct         Male   categorical
@@ -274,22 +506,22 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </div>
 <div id="summaries-using-standard-r-code" class="section level2">
 <h2>Summaries using standard R code</h2>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## base R frequency example
-tmp &lt;-<span class="st"> </span><span class="kw">table</span>(<span class="dt">Gender=</span>mockstudy<span class="op">$</span>sex, <span class="st">&quot;Study Arm&quot;</span>=mockstudy<span class="op">$</span>arm)
-tmp</code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1">## base R frequency example</a>
+<a class="sourceLine" id="cb11-2" data-line-number="2">tmp &lt;-<span class="st"> </span><span class="kw">table</span>(<span class="dt">Gender=</span>mockstudy<span class="op">$</span>sex, <span class="st">&quot;Study Arm&quot;</span>=mockstudy<span class="op">$</span>arm)</a>
+<a class="sourceLine" id="cb11-3" data-line-number="3">tmp</a></code></pre></div>
 <pre><code>##         Study Arm
 ## Gender   A: IFL F: FOLFOX G: IROX
 ##   Male      277       411     228
 ##   Female    151       280     152</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Note: The continuity correction is applied by default in R (not used in %table)</span>
-<span class="kw">chisq.test</span>(tmp)</code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="co"># Note: The continuity correction is applied by default in R (not used in %table)</span></a>
+<a class="sourceLine" id="cb13-2" data-line-number="2"><span class="kw">chisq.test</span>(tmp)</a></code></pre></div>
 <pre><code>## 
 ##  Pearson's Chi-squared test
 ## 
 ## data:  tmp
 ## X-squared = 3.3168, df = 2, p-value = 0.1904</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## base R numeric summary example
-<span class="kw">tapply</span>(mockstudy<span class="op">$</span>age, mockstudy<span class="op">$</span>arm, summary)</code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1">## base R numeric summary example</a>
+<a class="sourceLine" id="cb15-2" data-line-number="2"><span class="kw">tapply</span>(mockstudy<span class="op">$</span>age, mockstudy<span class="op">$</span>arm, summary)</a></code></pre></div>
 <pre><code>## $`A: IFL`
 ##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
 ##   27.00   53.00   61.00   59.67   68.00   88.00 
@@ -301,7 +533,7 @@ tmp</code></pre></div>
 ## $`G: IROX`
 ##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
 ##   26.00   52.00   61.00   59.76   68.00   85.00</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(<span class="kw">aov</span>(age <span class="op">~</span><span class="st"> </span>arm, <span class="dt">data=</span>mockstudy))</code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1"><span class="kw">summary</span>(<span class="kw">aov</span>(age <span class="op">~</span><span class="st"> </span>arm, <span class="dt">data=</span>mockstudy))</a></code></pre></div>
 <pre><code>##               Df Sum Sq Mean Sq F value Pr(&gt;F)
 ## arm            2    129    64.7   0.487  0.614
 ## Residuals   1496 198628   132.8</code></pre>
@@ -312,21 +544,21 @@ tmp</code></pre></div>
 <div id="add-labels" class="section level2">
 <h2>Add labels</h2>
 <p>In the above example, age is shown with a label (Age in Years), but sex is listed “as is” with lower case letters. This is because the data was created in SAS and in the SAS dataset, age had a label but sex did not. The label is stored as an attribute within R.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## Look at one variable's label
-<span class="kw">attr</span>(mockstudy<span class="op">$</span>age,<span class="st">'label'</span>)</code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" data-line-number="1">## Look at one variable's label</a>
+<a class="sourceLine" id="cb19-2" data-line-number="2"><span class="kw">attr</span>(mockstudy<span class="op">$</span>age,<span class="st">'label'</span>)</a></code></pre></div>
 <pre><code>## [1] &quot;Age in Years&quot;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## See all the variables with a label
-<span class="kw">unlist</span>(<span class="kw">lapply</span>(mockstudy,<span class="st">'attr'</span>,<span class="st">'label'</span>))</code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" data-line-number="1">## See all the variables with a label</a>
+<a class="sourceLine" id="cb21-2" data-line-number="2"><span class="kw">unlist</span>(<span class="kw">lapply</span>(mockstudy,<span class="st">'attr'</span>,<span class="st">'label'</span>))</a></code></pre></div>
 <pre><code>##                        age                        arm                       race 
 ##             &quot;Age in Years&quot;            &quot;Treatment Arm&quot;                     &quot;Race&quot; 
 ##                        bmi 
 ## &quot;Body Mass Index (kg/m^2)&quot;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Can also use labels(mockstudy)</span></code></pre></div>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb23-1" data-line-number="1"><span class="co"># Can also use labels(mockstudy)</span></a></code></pre></div>
 <p>If you want to add labels to other variables, there are a couple of options. First, you could add labels to the variables in your dataset.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">attr</span>(mockstudy<span class="op">$</span>sex,<span class="st">'label'</span>)  &lt;-<span class="st"> 'Gender'</span>
-
-tab1 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span class="op">~</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span>age, <span class="dt">data=</span>mockstudy)
-<span class="kw">summary</span>(tab1)</code></pre></div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb24-1" data-line-number="1"><span class="kw">attr</span>(mockstudy<span class="op">$</span>sex,<span class="st">'label'</span>)  &lt;-<span class="st"> 'Gender'</span></a>
+<a class="sourceLine" id="cb24-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb24-3" data-line-number="3">tab1 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span class="op">~</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span>age, <span class="dt">data=</span>mockstudy)</a>
+<a class="sourceLine" id="cb24-4" data-line-number="4"><span class="kw">summary</span>(tab1)</a></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -390,10 +622,10 @@ tab1 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 </tbody>
 </table>
 <p>You can also use the built-in <code>data.frame</code> method for <code>labels&lt;-</code>:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">labels</span>(mockstudy)  &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dt">age =</span> <span class="st">'Age, yrs'</span>, <span class="dt">sex =</span> <span class="st">&quot;Gender&quot;</span>)
-
-tab1 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span class="op">~</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span>age, <span class="dt">data=</span>mockstudy)
-<span class="kw">summary</span>(tab1)</code></pre></div>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb25-1" data-line-number="1"><span class="kw">labels</span>(mockstudy)  &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dt">age =</span> <span class="st">'Age, yrs'</span>, <span class="dt">sex =</span> <span class="st">&quot;Gender&quot;</span>)</a>
+<a class="sourceLine" id="cb25-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb25-3" data-line-number="3">tab1 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span class="op">~</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span>age, <span class="dt">data=</span>mockstudy)</a>
+<a class="sourceLine" id="cb25-4" data-line-number="4"><span class="kw">summary</span>(tab1)</a></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -457,8 +689,8 @@ tab1 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 </tbody>
 </table>
 <p>Another option is to add labels after you have created the table</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mylabels &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">sex =</span> <span class="st">&quot;SEX&quot;</span>, <span class="dt">age =</span> <span class="st">&quot;Age, yrs&quot;</span>)
-<span class="kw">summary</span>(tab1, <span class="dt">labelTranslations =</span> mylabels)</code></pre></div>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb26-1" data-line-number="1">mylabels &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">sex =</span> <span class="st">&quot;SEX&quot;</span>, <span class="dt">age =</span> <span class="st">&quot;Age, yrs&quot;</span>)</a>
+<a class="sourceLine" id="cb26-2" data-line-number="2"><span class="kw">summary</span>(tab1, <span class="dt">labelTranslations =</span> mylabels)</a></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -522,14 +754,14 @@ tab1 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 </tbody>
 </table>
 <p>Alternatively, you can check the variable labels and manipulate them with a function called <code>labels</code>, which works on the <code>tableby</code> object.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">labels</span>(tab1)</code></pre></div>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb27-1" data-line-number="1"><span class="kw">labels</span>(tab1)</a></code></pre></div>
 <pre><code>##             arm             sex             age 
 ## &quot;Treatment Arm&quot;        &quot;Gender&quot;      &quot;Age, yrs&quot;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">labels</span>(tab1) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dt">arm=</span><span class="st">&quot;Treatment Assignment&quot;</span>, <span class="dt">age=</span><span class="st">&quot;Baseline Age (yrs)&quot;</span>)
-<span class="kw">labels</span>(tab1)</code></pre></div>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb29-1" data-line-number="1"><span class="kw">labels</span>(tab1) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dt">arm=</span><span class="st">&quot;Treatment Assignment&quot;</span>, <span class="dt">age=</span><span class="st">&quot;Baseline Age (yrs)&quot;</span>)</a>
+<a class="sourceLine" id="cb29-2" data-line-number="2"><span class="kw">labels</span>(tab1)</a></code></pre></div>
 <pre><code>##                    arm                    sex                    age 
 ## &quot;Treatment Assignment&quot;               &quot;Gender&quot;   &quot;Baseline Age (yrs)&quot;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(tab1)</code></pre></div>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb31-1" data-line-number="1"><span class="kw">summary</span>(tab1)</a></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -596,13 +828,13 @@ tab1 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 <div id="change-summary-statistics-globally" class="section level2">
 <h2>Change summary statistics globally</h2>
 <p>Currently the default behavior is to summarize continuous variables with: Number of missing values, Mean (SD), 25th - 75th quantiles, and Minimum-Maximum values with an ANOVA (t-test with equal variances) p-value. For categorical variables the default is to show: Number of missing values and count (column percent) with a chi-square p-value. This behavior can be modified using the tableby.control function. In fact, you can save your standard settings and use that for future tables. Note that <code>test=FALSE</code> and <code>total=FALSE</code> results in the total column and p-value column not being printed.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mycontrols  &lt;-<span class="st"> </span><span class="kw">tableby.control</span>(<span class="dt">test=</span><span class="ot">FALSE</span>, <span class="dt">total=</span><span class="ot">FALSE</span>,
-                               <span class="dt">numeric.test=</span><span class="st">&quot;kwt&quot;</span>, <span class="dt">cat.test=</span><span class="st">&quot;chisq&quot;</span>,
-                               <span class="dt">numeric.stats=</span><span class="kw">c</span>(<span class="st">&quot;N&quot;</span>, <span class="st">&quot;median&quot;</span>, <span class="st">&quot;q1q3&quot;</span>),
-                               <span class="dt">cat.stats=</span><span class="kw">c</span>(<span class="st">&quot;countpct&quot;</span>),
-                               <span class="dt">stats.labels=</span><span class="kw">list</span>(<span class="dt">N=</span><span class="st">'Count'</span>, <span class="dt">median=</span><span class="st">'Median'</span>, <span class="dt">q1q3=</span><span class="st">'Q1,Q3'</span>))
-tab2 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span class="op">~</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span>age, <span class="dt">data=</span>mockstudy, <span class="dt">control=</span>mycontrols)
-<span class="kw">summary</span>(tab2)</code></pre></div>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb32-1" data-line-number="1">mycontrols  &lt;-<span class="st"> </span><span class="kw">tableby.control</span>(<span class="dt">test=</span><span class="ot">FALSE</span>, <span class="dt">total=</span><span class="ot">FALSE</span>,</a>
+<a class="sourceLine" id="cb32-2" data-line-number="2">                               <span class="dt">numeric.test=</span><span class="st">&quot;kwt&quot;</span>, <span class="dt">cat.test=</span><span class="st">&quot;chisq&quot;</span>,</a>
+<a class="sourceLine" id="cb32-3" data-line-number="3">                               <span class="dt">numeric.stats=</span><span class="kw">c</span>(<span class="st">&quot;N&quot;</span>, <span class="st">&quot;median&quot;</span>, <span class="st">&quot;q1q3&quot;</span>),</a>
+<a class="sourceLine" id="cb32-4" data-line-number="4">                               <span class="dt">cat.stats=</span><span class="kw">c</span>(<span class="st">&quot;countpct&quot;</span>),</a>
+<a class="sourceLine" id="cb32-5" data-line-number="5">                               <span class="dt">stats.labels=</span><span class="kw">list</span>(<span class="dt">N=</span><span class="st">'Count'</span>, <span class="dt">median=</span><span class="st">'Median'</span>, <span class="dt">q1q3=</span><span class="st">'Q1,Q3'</span>))</a>
+<a class="sourceLine" id="cb32-6" data-line-number="6">tab2 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span class="op">~</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span>age, <span class="dt">data=</span>mockstudy, <span class="dt">control=</span>mycontrols)</a>
+<a class="sourceLine" id="cb32-7" data-line-number="7"><span class="kw">summary</span>(tab2)</a></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -658,9 +890,9 @@ tab2 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 </tbody>
 </table>
 <p>You can also change these settings directly in the tableby call.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tab3 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span class="op">~</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span>age, <span class="dt">data=</span>mockstudy, <span class="dt">test=</span><span class="ot">FALSE</span>, <span class="dt">total=</span><span class="ot">FALSE</span>, 
-                <span class="dt">numeric.stats=</span><span class="kw">c</span>(<span class="st">&quot;median&quot;</span>,<span class="st">&quot;q1q3&quot;</span>), <span class="dt">numeric.test=</span><span class="st">&quot;kwt&quot;</span>)
-<span class="kw">summary</span>(tab3)</code></pre></div>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb33-1" data-line-number="1">tab3 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span class="op">~</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span>age, <span class="dt">data=</span>mockstudy, <span class="dt">test=</span><span class="ot">FALSE</span>, <span class="dt">total=</span><span class="ot">FALSE</span>, </a>
+<a class="sourceLine" id="cb33-2" data-line-number="2">                <span class="dt">numeric.stats=</span><span class="kw">c</span>(<span class="st">&quot;median&quot;</span>,<span class="st">&quot;q1q3&quot;</span>), <span class="dt">numeric.test=</span><span class="st">&quot;kwt&quot;</span>)</a>
+<a class="sourceLine" id="cb33-3" data-line-number="3"><span class="kw">summary</span>(tab3)</a></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -714,13 +946,13 @@ tab2 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 <h2>Change summary statistics within the formula</h2>
 <p>In addition to modifying summary options globally, it is possible to modify the test and summary statistics for specific variables within the formula statement. For example, both the kwt (Kruskal-Wallis rank-based) and anova (asymptotic analysis of variance) tests apply to numeric variables, and we can use one for the variable “age”, another for the variable “bmi”, and no test for the variable “ast”. A list of all the options is shown at the end of the vignette.</p>
 <p>The <code>tests</code> function can do a quick check on what tests were performed on each variable in tableby.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tab.test &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span class="op">~</span><span class="st"> </span><span class="kw">kwt</span>(age) <span class="op">+</span><span class="st"> </span><span class="kw">anova</span>(bmi) <span class="op">+</span><span class="st"> </span><span class="kw">notest</span>(ast), <span class="dt">data=</span>mockstudy)
-<span class="kw">tests</span>(tab.test)</code></pre></div>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb34-1" data-line-number="1">tab.test &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span class="op">~</span><span class="st"> </span><span class="kw">kwt</span>(age) <span class="op">+</span><span class="st"> </span><span class="kw">anova</span>(bmi) <span class="op">+</span><span class="st"> </span><span class="kw">notest</span>(ast), <span class="dt">data=</span>mockstudy)</a>
+<a class="sourceLine" id="cb34-2" data-line-number="2"><span class="kw">tests</span>(tab.test)</a></code></pre></div>
 <pre><code>##           Group Variable   p.value                       Method
 ## 1 Treatment Arm      age 0.6390614 Kruskal-Wallis rank sum test
 ## 2 Treatment Arm      bmi 0.8916552           Linear Model ANOVA
 ## 3 Treatment Arm      ast        NA                      No test</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(tab.test)</code></pre></div>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb36-1" data-line-number="1"><span class="kw">summary</span>(tab.test)</a></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -824,9 +1056,9 @@ tab2 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 </tbody>
 </table>
 <p>Summary statistics for any individual variable can also be modified, but it must be done as secondary arguments to the test function. The function names must be strings that are functions already written for tableby, built-in R functions like mean and range, or user-defined functions.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tab.test &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span class="op">~</span><span class="st"> </span><span class="kw">kwt</span>(ast, <span class="st">&quot;Nmiss2&quot;</span>,<span class="st">&quot;median&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">anova</span>(age, <span class="st">&quot;N&quot;</span>,<span class="st">&quot;mean&quot;</span>) <span class="op">+</span>
-<span class="st">                    </span><span class="kw">notest</span>(bmi, <span class="st">&quot;Nmiss&quot;</span>,<span class="st">&quot;median&quot;</span>), <span class="dt">data=</span>mockstudy)
-<span class="kw">summary</span>(tab.test)</code></pre></div>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb37-1" data-line-number="1">tab.test &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span class="op">~</span><span class="st"> </span><span class="kw">kwt</span>(ast, <span class="st">&quot;Nmiss2&quot;</span>,<span class="st">&quot;median&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">anova</span>(age, <span class="st">&quot;N&quot;</span>,<span class="st">&quot;mean&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb37-2" data-line-number="2"><span class="st">                    </span><span class="kw">notest</span>(bmi, <span class="st">&quot;Nmiss&quot;</span>,<span class="st">&quot;median&quot;</span>), <span class="dt">data=</span>mockstudy)</a>
+<a class="sourceLine" id="cb37-3" data-line-number="3"><span class="kw">summary</span>(tab.test)</a></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -917,19 +1149,19 @@ tab2 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span cla
 <div id="controlling-options-for-categorical-tests-chisq-and-fishers" class="section level2">
 <h2>Controlling Options for Categorical Tests (Chisq and Fisher’s)</h2>
 <p>The formal tests for categorical variables against the levels of the by variable, chisq and fe, have options to simulate p-values. We show how to turn on the simulations for these with 500 replicates for the Fisher’s test (fe).</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">set.seed</span>(<span class="dv">100</span>)
-tab.catsim &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span class="op">~</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span>race, <span class="dt">cat.test=</span><span class="st">&quot;fe&quot;</span>, <span class="dt">simulate.p.value=</span><span class="ot">TRUE</span>, <span class="dt">B=</span><span class="dv">500</span>, <span class="dt">data=</span>mockstudy)
-<span class="kw">tests</span>(tab.catsim)</code></pre></div>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb38-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">100</span>)</a>
+<a class="sourceLine" id="cb38-2" data-line-number="2">tab.catsim &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span class="op">~</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span>race, <span class="dt">cat.test=</span><span class="st">&quot;fe&quot;</span>, <span class="dt">simulate.p.value=</span><span class="ot">TRUE</span>, <span class="dt">B=</span><span class="dv">500</span>, <span class="dt">data=</span>mockstudy)</a>
+<a class="sourceLine" id="cb38-3" data-line-number="3"><span class="kw">tests</span>(tab.catsim)</a></code></pre></div>
 <pre><code>      Group Variable   p.value</code></pre>
 <p>1 Treatment Arm sex 0.2195609 2 Treatment Arm race 0.3093812 Method 1 Fisher’s Exact Test for Count Data with simulated p-value(based on 500 replicates) 2 Fisher’s Exact Test for Count Data with simulated p-value(based on 500 replicates)</p>
 <p>The chi-square test on 2x2 tables applies Yates’ continuity correction by default, so we provide an option to turn off the correction. We show the results with and without the correction that is applied to treatment arm by sex, if we use subset to ignore one of the three treatment arms.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">cat.correct &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span class="op">~</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span>race, <span class="dt">cat.test=</span><span class="st">&quot;chisq&quot;</span>, <span class="dt">subset =</span> <span class="op">!</span><span class="kw">grepl</span>(<span class="st">&quot;^F&quot;</span>, arm), <span class="dt">data=</span>mockstudy)
-<span class="kw">tests</span>(cat.correct)</code></pre></div>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb40-1" data-line-number="1">cat.correct &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span class="op">~</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span>race, <span class="dt">cat.test=</span><span class="st">&quot;chisq&quot;</span>, <span class="dt">subset =</span> <span class="op">!</span><span class="kw">grepl</span>(<span class="st">&quot;^F&quot;</span>, arm), <span class="dt">data=</span>mockstudy)</a>
+<a class="sourceLine" id="cb40-2" data-line-number="2"><span class="kw">tests</span>(cat.correct)</a></code></pre></div>
 <pre><code>      Group Variable   p.value                     Method</code></pre>
 <p>1 Treatment Arm sex 0.1666280 Pearson’s Chi-squared test 2 Treatment Arm race 0.8108543 Pearson’s Chi-squared test</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">cat.nocorrect &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span class="op">~</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span>race, <span class="dt">cat.test=</span><span class="st">&quot;chisq&quot;</span>, <span class="dt">subset =</span> <span class="op">!</span><span class="kw">grepl</span>(<span class="st">&quot;^F&quot;</span>, arm),
-     <span class="dt">chisq.correct=</span><span class="ot">FALSE</span>, <span class="dt">data=</span>mockstudy)
-<span class="kw">tests</span>(cat.nocorrect)</code></pre></div>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb42-1" data-line-number="1">cat.nocorrect &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span class="op">~</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span>race, <span class="dt">cat.test=</span><span class="st">&quot;chisq&quot;</span>, <span class="dt">subset =</span> <span class="op">!</span><span class="kw">grepl</span>(<span class="st">&quot;^F&quot;</span>, arm),</a>
+<a class="sourceLine" id="cb42-2" data-line-number="2">     <span class="dt">chisq.correct=</span><span class="ot">FALSE</span>, <span class="dt">data=</span>mockstudy)</a>
+<a class="sourceLine" id="cb42-3" data-line-number="3"><span class="kw">tests</span>(cat.nocorrect)</a></code></pre></div>
 <pre><code>      Group Variable   p.value                     Method</code></pre>
 <p>1 Treatment Arm sex 0.1666280 Pearson’s Chi-squared test 2 Treatment Arm race 0.8108543 Pearson’s Chi-squared test</p>
 </div>
@@ -947,8 +1179,8 @@ tab.catsim &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <sp
 <p>Here are multiple examples showing how to use some of the different options.</p>
 <div id="summarize-without-a-groupby-variable" class="section level2">
 <h2>1. Summarize without a group/by variable</h2>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tab.noby &lt;-<span class="st"> </span><span class="kw">tableby</span>(<span class="op">~</span><span class="st"> </span>bmi <span class="op">+</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span>age, <span class="dt">data=</span>mockstudy)
-<span class="kw">summary</span>(tab.noby)</code></pre></div>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb45-1" data-line-number="1">tab.noby &lt;-<span class="st"> </span><span class="kw">tableby</span>(<span class="op">~</span><span class="st"> </span>bmi <span class="op">+</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span>age, <span class="dt">data=</span>mockstudy)</a>
+<a class="sourceLine" id="cb45-2" data-line-number="2"><span class="kw">summary</span>(tab.noby)</a></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -1002,7 +1234,7 @@ tab.catsim &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <sp
 </div>
 <div id="display-footnotes-indicating-which-test-was-used" class="section level2">
 <h2>2. Display footnotes indicating which “test” was used</h2>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(tab.test, <span class="dt">pfootnote=</span><span class="ot">TRUE</span>)</code></pre></div>
+<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb46-1" data-line-number="1"><span class="kw">summary</span>(tab.test, <span class="dt">pfootnote=</span><span class="ot">TRUE</span>)</a></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -1097,8 +1329,8 @@ tab.catsim &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <sp
 <div id="summarize-an-ordered-factor" class="section level2">
 <h2>3. Summarize an ordered factor</h2>
 <p>When comparing groups of ordered data there are a couple of options. The <strong>default</strong> uses a general independence test available from the <code>coin</code> package. For two-group comparisons, this is essentially the Armitage trend test. The other option is to specify the Kruskal Wallis test. The example below shows both options.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mockstudy<span class="op">$</span>age.ordnew &lt;-<span class="st"> </span><span class="kw">ordered</span>(<span class="kw">c</span>(<span class="st">&quot;a&quot;</span>,<span class="ot">NA</span>,<span class="kw">as.character</span>(mockstudy<span class="op">$</span>age.ord[<span class="op">-</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>)])))
-<span class="kw">table</span>(mockstudy<span class="op">$</span>age.ord, mockstudy<span class="op">$</span>sex)</code></pre></div>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb47-1" data-line-number="1">mockstudy<span class="op">$</span>age.ordnew &lt;-<span class="st"> </span><span class="kw">ordered</span>(<span class="kw">c</span>(<span class="st">&quot;a&quot;</span>,<span class="ot">NA</span>,<span class="kw">as.character</span>(mockstudy<span class="op">$</span>age.ord[<span class="op">-</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>)])))</a>
+<a class="sourceLine" id="cb47-2" data-line-number="2"><span class="kw">table</span>(mockstudy<span class="op">$</span>age.ord, mockstudy<span class="op">$</span>sex)</a></code></pre></div>
 <pre><code>##        
 ##         Male Female
 ##   10-19    1      0
@@ -1109,7 +1341,7 @@ tab.catsim &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <sp
 ##   60-69  298    170
 ##   70-79  168    101
 ##   80-89   20      9</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">table</span>(mockstudy<span class="op">$</span>age.ordnew, mockstudy<span class="op">$</span>sex)</code></pre></div>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb49-1" data-line-number="1"><span class="kw">table</span>(mockstudy<span class="op">$</span>age.ordnew, mockstudy<span class="op">$</span>sex)</a></code></pre></div>
 <pre><code>##        
 ##         Male Female
 ##   10-19    1      0
@@ -1121,9 +1353,9 @@ tab.catsim &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <sp
 ##   70-79  168    100
 ##   80-89   20      9
 ##   a        1      0</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">class</span>(mockstudy<span class="op">$</span>age.ord)</code></pre></div>
+<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb51-1" data-line-number="1"><span class="kw">class</span>(mockstudy<span class="op">$</span>age.ord)</a></code></pre></div>
 <pre><code>## [1] &quot;ordered&quot; &quot;factor&quot;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(<span class="kw">tableby</span>(sex <span class="op">~</span><span class="st"> </span>age.ordnew, <span class="dt">data =</span> mockstudy), <span class="dt">pfootnote =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb53-1" data-line-number="1"><span class="kw">summary</span>(<span class="kw">tableby</span>(sex <span class="op">~</span><span class="st"> </span>age.ordnew, <span class="dt">data =</span> mockstudy), <span class="dt">pfootnote =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -1217,7 +1449,7 @@ tab.catsim &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <sp
 <ol style="list-style-type: decimal">
 <li>Trend test for ordinal variables</li>
 </ol>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(<span class="kw">tableby</span>(sex <span class="op">~</span><span class="st"> </span><span class="kw">kwt</span>(age.ord), <span class="dt">data =</span> mockstudy), <span class="dt">pfootnote =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb54-1" data-line-number="1"><span class="kw">summary</span>(<span class="kw">tableby</span>(sex <span class="op">~</span><span class="st"> </span>age.ord, <span class="dt">data =</span> mockstudy), <span class="dt">pfootnote =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -1234,7 +1466,7 @@ tab.catsim &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <sp
 <td align="center"></td>
 <td align="center"></td>
 <td align="center"></td>
-<td align="right">0.067<sup>1</sup></td>
+<td align="right">0.049<sup>1</sup></td>
 </tr>
 <tr class="even">
 <td align="left">   10-19</td>
@@ -1295,19 +1527,19 @@ tab.catsim &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <sp
 </tbody>
 </table>
 <ol style="list-style-type: decimal">
-<li>Kruskal-Wallis rank sum test</li>
+<li>Trend test for ordinal variables</li>
 </ol>
 </div>
 <div id="summarize-a-survival-variable" class="section level2">
 <h2>4. Summarize a survival variable</h2>
 <p>First look at the information that is presented by the <code>survfit()</code> function, then see how the same results can be seen with tableby. The default is to show the median survival (time at which the probability of survival = 50%).</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">survfit</span>(<span class="kw">Surv</span>(fu.time, fu.stat)<span class="op">~</span>sex, <span class="dt">data=</span>mockstudy)</code></pre></div>
+<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb55-1" data-line-number="1"><span class="kw">survfit</span>(<span class="kw">Surv</span>(fu.time, fu.stat)<span class="op">~</span>sex, <span class="dt">data=</span>mockstudy)</a></code></pre></div>
 <pre><code>## Call: survfit(formula = Surv(fu.time, fu.stat) ~ sex, data = mockstudy)
 ## 
 ##              n events median 0.95LCL 0.95UCL
 ## sex=Male   916    829    550     515     590
 ## sex=Female 583    527    543     511     575</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">survdiff</span>(<span class="kw">Surv</span>(fu.time, fu.stat)<span class="op">~</span>sex, <span class="dt">data=</span>mockstudy)</code></pre></div>
+<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb57-1" data-line-number="1"><span class="kw">survdiff</span>(<span class="kw">Surv</span>(fu.time, fu.stat)<span class="op">~</span>sex, <span class="dt">data=</span>mockstudy)</a></code></pre></div>
 <pre><code>## Call:
 ## survdiff(formula = Surv(fu.time, fu.stat) ~ sex, data = mockstudy)
 ## 
@@ -1316,7 +1548,7 @@ tab.catsim &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <sp
 ## sex=Female 583      527      526  0.000583  0.000956
 ## 
 ##  Chisq= 0  on 1 degrees of freedom, p= 1</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(<span class="kw">tableby</span>(sex <span class="op">~</span><span class="st"> </span><span class="kw">Surv</span>(fu.time, fu.stat), <span class="dt">data=</span>mockstudy))</code></pre></div>
+<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb59-1" data-line-number="1"><span class="kw">summary</span>(<span class="kw">tableby</span>(sex <span class="op">~</span><span class="st"> </span><span class="kw">Surv</span>(fu.time, fu.stat), <span class="dt">data=</span>mockstudy))</a></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -1352,7 +1584,7 @@ tab.catsim &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <sp
 </tbody>
 </table>
 <p>It is also possible to obtain summaries of the % survival at certain time points (say the probability of surviving 1-year).</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(<span class="kw">survfit</span>(<span class="kw">Surv</span>(fu.time<span class="op">/</span><span class="fl">365.25</span>, fu.stat)<span class="op">~</span>sex, <span class="dt">data=</span>mockstudy), <span class="dt">times=</span><span class="dv">1</span><span class="op">:</span><span class="dv">5</span>)</code></pre></div>
+<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb60-1" data-line-number="1"><span class="kw">summary</span>(<span class="kw">survfit</span>(<span class="kw">Surv</span>(fu.time<span class="op">/</span><span class="fl">365.25</span>, fu.stat)<span class="op">~</span>sex, <span class="dt">data=</span>mockstudy), <span class="dt">times=</span><span class="dv">1</span><span class="op">:</span><span class="dv">5</span>)</a></code></pre></div>
 <pre><code>## Call: survfit(formula = Surv(fu.time/365.25, fu.stat) ~ sex, data = mockstudy)
 ## 
 ##                 sex=Male 
@@ -1370,7 +1602,7 @@ tab.catsim &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <sp
 ##     3     95      90   0.1701  0.0157       0.1420        0.204
 ##     4     51      32   0.1093  0.0133       0.0861        0.139
 ##     5     18      12   0.0745  0.0126       0.0534        0.104</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(<span class="kw">tableby</span>(sex <span class="op">~</span><span class="st"> </span><span class="kw">Surv</span>(fu.time<span class="op">/</span><span class="fl">365.25</span>, fu.stat), <span class="dt">data=</span>mockstudy, <span class="dt">times=</span><span class="dv">1</span><span class="op">:</span><span class="dv">5</span>, <span class="dt">surv.stats=</span><span class="kw">c</span>(<span class="st">&quot;NeventsSurv&quot;</span>,<span class="st">&quot;NriskSurv&quot;</span>)))</code></pre></div>
+<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb62-1" data-line-number="1"><span class="kw">summary</span>(<span class="kw">tableby</span>(sex <span class="op">~</span><span class="st"> </span><span class="kw">Surv</span>(fu.time<span class="op">/</span><span class="fl">365.25</span>, fu.stat), <span class="dt">data=</span>mockstudy, <span class="dt">times=</span><span class="dv">1</span><span class="op">:</span><span class="dv">5</span>, <span class="dt">surv.stats=</span><span class="kw">c</span>(<span class="st">&quot;NeventsSurv&quot;</span>,<span class="st">&quot;NriskSurv&quot;</span>)))</a></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -1426,37 +1658,37 @@ tab.catsim &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <sp
 </tr>
 <tr class="odd">
 <td align="left">   time = 1</td>
-<td align="center">626</td>
-<td align="center">380</td>
-<td align="center">1006</td>
+<td align="center">626 (68.7)</td>
+<td align="center">380 (65.3)</td>
+<td align="center">1006 (67.4)</td>
 <td align="right"></td>
 </tr>
 <tr class="even">
 <td align="left">   time = 2</td>
-<td align="center">309</td>
-<td align="center">190</td>
-<td align="center">499</td>
+<td align="center">309 (34.4)</td>
+<td align="center">190 (32.8)</td>
+<td align="center">499 (33.7)</td>
 <td align="right"></td>
 </tr>
 <tr class="odd">
 <td align="left">   time = 3</td>
-<td align="center">152</td>
-<td align="center">95</td>
-<td align="center">247</td>
+<td align="center">152 (17.5)</td>
+<td align="center">95 (17.0)</td>
+<td align="center">247 (17.3)</td>
 <td align="right"></td>
 </tr>
 <tr class="even">
 <td align="left">   time = 4</td>
-<td align="center">57</td>
-<td align="center">51</td>
-<td align="center">108</td>
+<td align="center">57 (9.4)</td>
+<td align="center">51 (10.9)</td>
+<td align="center">108 (10.1)</td>
 <td align="right"></td>
 </tr>
 <tr class="odd">
 <td align="left">   time = 5</td>
-<td align="center">24</td>
-<td align="center">18</td>
-<td align="center">42</td>
+<td align="center">24 (6.3)</td>
+<td align="center">18 (7.4)</td>
+<td align="center">42 (6.8)</td>
 <td align="right"></td>
 </tr>
 </tbody>
@@ -1465,11 +1697,11 @@ tab.catsim &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <sp
 <div id="summarize-date-variables" class="section level2">
 <h2>5. Summarize date variables</h2>
 <p>Date variables by default are summarized with the number of missing values, the median, and the range. For example purposes we’ve created a random date. Missing values are introduced for impossible February dates.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">set.seed</span>(<span class="dv">100</span>)
-N &lt;-<span class="st"> </span><span class="kw">nrow</span>(mockstudy)
-mockstudy<span class="op">$</span>dtentry &lt;-<span class="st"> </span><span class="kw">mdy.Date</span>(<span class="dt">month=</span><span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">12</span>,N,<span class="dt">replace=</span>T), <span class="dt">day=</span><span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">29</span>,N,<span class="dt">replace=</span>T), 
-                              <span class="dt">year=</span><span class="kw">sample</span>(<span class="dv">2005</span><span class="op">:</span><span class="dv">2009</span>,N,<span class="dt">replace=</span>T))
-<span class="kw">summary</span>(<span class="kw">tableby</span>(sex <span class="op">~</span><span class="st"> </span>dtentry, <span class="dt">data=</span>mockstudy))</code></pre></div>
+<div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb63-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">100</span>)</a>
+<a class="sourceLine" id="cb63-2" data-line-number="2">N &lt;-<span class="st"> </span><span class="kw">nrow</span>(mockstudy)</a>
+<a class="sourceLine" id="cb63-3" data-line-number="3">mockstudy<span class="op">$</span>dtentry &lt;-<span class="st"> </span><span class="kw">mdy.Date</span>(<span class="dt">month=</span><span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">12</span>,N,<span class="dt">replace=</span>T), <span class="dt">day=</span><span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">29</span>,N,<span class="dt">replace=</span>T), </a>
+<a class="sourceLine" id="cb63-4" data-line-number="4">                              <span class="dt">year=</span><span class="kw">sample</span>(<span class="dv">2005</span><span class="op">:</span><span class="dv">2009</span>,N,<span class="dt">replace=</span>T))</a>
+<a class="sourceLine" id="cb63-5" data-line-number="5"><span class="kw">summary</span>(<span class="kw">tableby</span>(sex <span class="op">~</span><span class="st"> </span>dtentry, <span class="dt">data=</span>mockstudy))</a></code></pre></div>
 <table>
 <colgroup>
 <col width="23%"></col>
@@ -1522,19 +1754,19 @@ mockstudy<span class="op">$</span>dtentry &lt;-<span class="st"> </span><span cl
 <div id="summarize-multiple-variables-without-typing-them-out" class="section level2">
 <h2>6. Summarize multiple variables without typing them out</h2>
 <p>Often one wants to summarize a number of variables. Instead of typing by hand each individual variable, an alternative approach is to create a formula using the <code>paste</code> command with the <code>collapse=&quot;+&quot;</code> option.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## create a vector specifying the variable names
-myvars &lt;-<span class="st"> </span><span class="kw">names</span>(mockstudy)
-
-## select the 8th through the last variables
-## paste them together, separated by the + sign
-RHS &lt;-<span class="st"> </span><span class="kw">paste</span>(myvars[<span class="dv">8</span><span class="op">:</span><span class="dv">10</span>], <span class="dt">collapse=</span><span class="st">&quot;+&quot;</span>)
-RHS</code></pre></div>
+<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb64-1" data-line-number="1">## create a vector specifying the variable names</a>
+<a class="sourceLine" id="cb64-2" data-line-number="2">myvars &lt;-<span class="st"> </span><span class="kw">names</span>(mockstudy)</a>
+<a class="sourceLine" id="cb64-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb64-4" data-line-number="4">## select the 8th through the last variables</a>
+<a class="sourceLine" id="cb64-5" data-line-number="5">## paste them together, separated by the + sign</a>
+<a class="sourceLine" id="cb64-6" data-line-number="6">RHS &lt;-<span class="st"> </span><span class="kw">paste</span>(myvars[<span class="dv">8</span><span class="op">:</span><span class="dv">10</span>], <span class="dt">collapse=</span><span class="st">&quot;+&quot;</span>)</a>
+<a class="sourceLine" id="cb64-7" data-line-number="7">RHS</a></code></pre></div>
 <p>[1] “ps+hgb+bmi”</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## create a formula using the as.formula function
-<span class="kw">as.formula</span>(<span class="kw">paste</span>(<span class="st">'arm ~ '</span>, RHS))</code></pre></div>
+<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb65-1" data-line-number="1">## create a formula using the as.formula function</a>
+<a class="sourceLine" id="cb65-2" data-line-number="2"><span class="kw">as.formula</span>(<span class="kw">paste</span>(<span class="st">'arm ~ '</span>, RHS))</a></code></pre></div>
 <p>arm ~ ps + hgb + bmi</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## use the formula in the tableby function
-<span class="kw">summary</span>(<span class="kw">tableby</span>(<span class="kw">as.formula</span>(<span class="kw">paste</span>(<span class="st">'arm ~'</span>, RHS)), <span class="dt">data=</span>mockstudy))</code></pre></div>
+<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb66-1" data-line-number="1">## use the formula in the tableby function</a>
+<a class="sourceLine" id="cb66-2" data-line-number="2"><span class="kw">summary</span>(<span class="kw">tableby</span>(<span class="kw">as.formula</span>(<span class="kw">paste</span>(<span class="st">'arm ~'</span>, RHS)), <span class="dt">data=</span>mockstudy))</a></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -1646,15 +1878,15 @@ RHS</code></pre></div>
 </tbody>
 </table>
 <p>These steps can also be done using the <code>formulize</code> function.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## The formulize function does the paste and as.formula steps
-tmp &lt;-<span class="st"> </span><span class="kw">formulize</span>(<span class="st">'arm'</span>,myvars[<span class="dv">8</span><span class="op">:</span><span class="dv">10</span>])
-tmp</code></pre></div>
+<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb67-1" data-line-number="1">## The formulize function does the paste and as.formula steps</a>
+<a class="sourceLine" id="cb67-2" data-line-number="2">tmp &lt;-<span class="st"> </span><span class="kw">formulize</span>(<span class="st">'arm'</span>,myvars[<span class="dv">8</span><span class="op">:</span><span class="dv">10</span>])</a>
+<a class="sourceLine" id="cb67-3" data-line-number="3">tmp</a></code></pre></div>
 <p>arm ~ ps + hgb + bmi</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## More complex formulas could also be written using formulize
-tmp2 &lt;-<span class="st"> </span><span class="kw">formulize</span>(<span class="st">'arm'</span>,<span class="kw">c</span>(<span class="st">'ps'</span>,<span class="st">'hgb^2'</span>,<span class="st">'bmi'</span>))
-
-## use the formula in the tableby function
-<span class="kw">summary</span>(<span class="kw">tableby</span>(tmp, <span class="dt">data=</span>mockstudy))</code></pre></div>
+<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb68-1" data-line-number="1">## More complex formulas could also be written using formulize</a>
+<a class="sourceLine" id="cb68-2" data-line-number="2">tmp2 &lt;-<span class="st"> </span><span class="kw">formulize</span>(<span class="st">'arm'</span>,<span class="kw">c</span>(<span class="st">'ps'</span>,<span class="st">'hgb^2'</span>,<span class="st">'bmi'</span>))</a>
+<a class="sourceLine" id="cb68-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb68-4" data-line-number="4">## use the formula in the tableby function</a>
+<a class="sourceLine" id="cb68-5" data-line-number="5"><span class="kw">summary</span>(<span class="kw">tableby</span>(tmp, <span class="dt">data=</span>mockstudy))</a></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -1772,18 +2004,18 @@ tmp2 &lt;-<span class="st"> </span><span class="kw">formulize</span>(<span class
 <ul>
 <li>The first approach uses the subset function applied to the dataset <code>mockstudy</code>. This example also selects a subset of variables. The <code>tableby</code> function is then applied to this subsetted data.</li>
 </ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">newdata &lt;-<span class="st"> </span><span class="kw">subset</span>(mockstudy, <span class="dt">subset=</span>age<span class="op">&gt;</span><span class="dv">50</span> <span class="op">&amp;</span><span class="st"> </span>arm<span class="op">==</span><span class="st">'F: FOLFOX'</span>, <span class="dt">select =</span> <span class="kw">c</span>(sex,ps<span class="op">:</span>bmi))
-<span class="kw">dim</span>(mockstudy)</code></pre></div>
+<div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb69-1" data-line-number="1">newdata &lt;-<span class="st"> </span><span class="kw">subset</span>(mockstudy, <span class="dt">subset=</span>age<span class="op">&gt;</span><span class="dv">50</span> <span class="op">&amp;</span><span class="st"> </span>arm<span class="op">==</span><span class="st">'F: FOLFOX'</span>, <span class="dt">select =</span> <span class="kw">c</span>(sex,ps<span class="op">:</span>bmi))</a>
+<a class="sourceLine" id="cb69-2" data-line-number="2"><span class="kw">dim</span>(mockstudy)</a></code></pre></div>
 <pre><code>## [1] 1499   16</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">table</span>(mockstudy<span class="op">$</span>arm)</code></pre></div>
+<div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb71-1" data-line-number="1"><span class="kw">table</span>(mockstudy<span class="op">$</span>arm)</a></code></pre></div>
 <pre><code>## 
 ##    A: IFL F: FOLFOX   G: IROX 
 ##       428       691       380</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">dim</span>(newdata)</code></pre></div>
+<div class="sourceCode" id="cb73"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb73-1" data-line-number="1"><span class="kw">dim</span>(newdata)</a></code></pre></div>
 <pre><code>## [1] 557   4</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">names</span>(newdata)</code></pre></div>
+<div class="sourceCode" id="cb75"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb75-1" data-line-number="1"><span class="kw">names</span>(newdata)</a></code></pre></div>
 <pre><code>## [1] &quot;sex&quot; &quot;ps&quot;  &quot;hgb&quot; &quot;bmi&quot;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(<span class="kw">tableby</span>(sex <span class="op">~</span><span class="st"> </span>., <span class="dt">data=</span>newdata))</code></pre></div>
+<div class="sourceCode" id="cb77"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb77-1" data-line-number="1"><span class="kw">summary</span>(<span class="kw">tableby</span>(sex <span class="op">~</span><span class="st"> </span>., <span class="dt">data=</span>newdata))</a></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -1884,7 +2116,7 @@ tmp2 &lt;-<span class="st"> </span><span class="kw">formulize</span>(<span class
 <ul>
 <li>The second approach does the same analysis but uses the subset argument within <code>tableby</code> to subset the data.</li>
 </ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(<span class="kw">tableby</span>(sex <span class="op">~</span><span class="st"> </span>ps <span class="op">+</span><span class="st"> </span>hgb <span class="op">+</span><span class="st"> </span>bmi, <span class="dt">subset=</span>age<span class="op">&gt;</span><span class="dv">50</span> <span class="op">&amp;</span><span class="st"> </span>arm<span class="op">==</span><span class="st">&quot;F: FOLFOX&quot;</span>, <span class="dt">data=</span>mockstudy))</code></pre></div>
+<div class="sourceCode" id="cb78"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb78-1" data-line-number="1"><span class="kw">summary</span>(<span class="kw">tableby</span>(sex <span class="op">~</span><span class="st"> </span>ps <span class="op">+</span><span class="st"> </span>hgb <span class="op">+</span><span class="st"> </span>bmi, <span class="dt">subset=</span>age<span class="op">&gt;</span><span class="dv">50</span> <span class="op">&amp;</span><span class="st"> </span>arm<span class="op">==</span><span class="st">&quot;F: FOLFOX&quot;</span>, <span class="dt">data=</span>mockstudy))</a></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -1985,12 +2217,12 @@ tmp2 &lt;-<span class="st"> </span><span class="kw">formulize</span>(<span class
 </div>
 <div id="create-combinations-of-variables-on-the-fly" class="section level2">
 <h2>8. Create combinations of variables on the fly</h2>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## create a variable combining the levels of mdquality.s and sex
-<span class="kw">with</span>(mockstudy, <span class="kw">table</span>(<span class="kw">interaction</span>(mdquality.s,sex)))</code></pre></div>
+<div class="sourceCode" id="cb79"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb79-1" data-line-number="1">## create a variable combining the levels of mdquality.s and sex</a>
+<a class="sourceLine" id="cb79-2" data-line-number="2"><span class="kw">with</span>(mockstudy, <span class="kw">table</span>(<span class="kw">interaction</span>(mdquality.s,sex)))</a></code></pre></div>
 <pre><code>## 
 ##   0.Male   1.Male 0.Female 1.Female 
 ##       77      686       47      437</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(<span class="kw">tableby</span>(arm <span class="op">~</span><span class="st"> </span><span class="kw">interaction</span>(mdquality.s,sex), <span class="dt">data=</span>mockstudy))</code></pre></div>
+<div class="sourceCode" id="cb81"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb81-1" data-line-number="1"><span class="kw">summary</span>(<span class="kw">tableby</span>(arm <span class="op">~</span><span class="st"> </span><span class="kw">interaction</span>(mdquality.s,sex), <span class="dt">data=</span>mockstudy))</a></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -2053,8 +2285,8 @@ tmp2 &lt;-<span class="st"> </span><span class="kw">formulize</span>(<span class
 </tr>
 </tbody>
 </table>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## create a new grouping variable with combined levels of arm and sex
-<span class="kw">summary</span>(<span class="kw">tableby</span>(<span class="kw">interaction</span>(mdquality.s, sex) <span class="op">~</span><span class="st">  </span>age <span class="op">+</span><span class="st"> </span>bmi, <span class="dt">data=</span>mockstudy, <span class="dt">subset=</span>arm<span class="op">==</span><span class="st">&quot;F: FOLFOX&quot;</span>))</code></pre></div>
+<div class="sourceCode" id="cb82"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb82-1" data-line-number="1">## create a new grouping variable with combined levels of arm and sex</a>
+<a class="sourceLine" id="cb82-2" data-line-number="2"><span class="kw">summary</span>(<span class="kw">tableby</span>(<span class="kw">interaction</span>(mdquality.s, sex) <span class="op">~</span><span class="st">  </span>age <span class="op">+</span><span class="st"> </span>bmi, <span class="dt">data=</span>mockstudy, <span class="dt">subset=</span>arm<span class="op">==</span><span class="st">&quot;F: FOLFOX&quot;</span>))</a></code></pre></div>
 <table>
 <colgroup>
 <col width="23%"></col>
@@ -2146,9 +2378,9 @@ tmp2 &lt;-<span class="st"> </span><span class="kw">formulize</span>(<span class
 <div id="transform-variables-on-the-fly" class="section level2">
 <h2>9. Transform variables on the fly</h2>
 <p>Certain transformations need to be surrounded by <code>I()</code> so that R knows to treat it as a variable transformation and not some special model feature. If the transformation includes any of the symbols <code>/ - + ^ *</code> then surround the new variable by <code>I()</code>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">trans &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span class="op">~</span><span class="st"> </span><span class="kw">I</span>(age<span class="op">/</span><span class="dv">10</span>) <span class="op">+</span><span class="st"> </span><span class="kw">log</span>(bmi) <span class="op">+</span><span class="st"> </span><span class="kw">factor</span>(mdquality.s, <span class="dt">levels=</span><span class="dv">0</span><span class="op">:</span><span class="dv">1</span>, <span class="dt">labels=</span><span class="kw">c</span>(<span class="st">'N'</span>,<span class="st">'Y'</span>)),
-                 <span class="dt">data=</span>mockstudy)
-<span class="kw">summary</span>(trans)</code></pre></div>
+<div class="sourceCode" id="cb83"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb83-1" data-line-number="1">trans &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span class="op">~</span><span class="st"> </span><span class="kw">I</span>(age<span class="op">/</span><span class="dv">10</span>) <span class="op">+</span><span class="st"> </span><span class="kw">log</span>(bmi) <span class="op">+</span><span class="st"> </span><span class="kw">factor</span>(mdquality.s, <span class="dt">levels=</span><span class="dv">0</span><span class="op">:</span><span class="dv">1</span>, <span class="dt">labels=</span><span class="kw">c</span>(<span class="st">'N'</span>,<span class="st">'Y'</span>)),</a>
+<a class="sourceLine" id="cb83-2" data-line-number="2">                 <span class="dt">data=</span>mockstudy)</a>
+<a class="sourceLine" id="cb83-3" data-line-number="3"><span class="kw">summary</span>(trans)</a></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -2252,7 +2484,7 @@ tmp2 &lt;-<span class="st"> </span><span class="kw">formulize</span>(<span class
 </tbody>
 </table>
 <p>The labels for these variables aren’t exactly what we’d like, so we can change modify those after the fact. Instead of typing out the very long variable names, you can modify specific labels by position.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">labels</span>(trans)</code></pre></div>
+<div class="sourceCode" id="cb84"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb84-1" data-line-number="1"><span class="kw">labels</span>(trans)</a></code></pre></div>
 <pre><code>##                                                           arm 
 ##                                               &quot;Treatment Arm&quot; 
 ##                                                     I(age/10) 
@@ -2261,8 +2493,8 @@ tmp2 &lt;-<span class="st"> </span><span class="kw">formulize</span>(<span class
 ##                                    &quot;Body Mass Index (kg/m^2)&quot; 
 ##       factor(mdquality.s, levels = 0:1, labels = c(&quot;N&quot;, &quot;Y&quot;)) 
 ## &quot;factor(mdquality.s, levels = 0:1, labels = c(\&quot;N\&quot;, \&quot;Y\&quot;))&quot;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">labels</span>(trans)[<span class="dv">2</span><span class="op">:</span><span class="dv">4</span>] &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">'Age per 10 yrs'</span>, <span class="st">'log(BMI)'</span>, <span class="st">'MD Quality'</span>)
-<span class="kw">labels</span>(trans)</code></pre></div>
+<div class="sourceCode" id="cb86"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb86-1" data-line-number="1"><span class="kw">labels</span>(trans)[<span class="dv">2</span><span class="op">:</span><span class="dv">4</span>] &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">'Age per 10 yrs'</span>, <span class="st">'log(BMI)'</span>, <span class="st">'MD Quality'</span>)</a>
+<a class="sourceLine" id="cb86-2" data-line-number="2"><span class="kw">labels</span>(trans)</a></code></pre></div>
 <pre><code>##                                                     arm 
 ##                                         &quot;Treatment Arm&quot; 
 ##                                               I(age/10) 
@@ -2271,7 +2503,7 @@ tmp2 &lt;-<span class="st"> </span><span class="kw">formulize</span>(<span class
 ##                                              &quot;log(BMI)&quot; 
 ## factor(mdquality.s, levels = 0:1, labels = c(&quot;N&quot;, &quot;Y&quot;)) 
 ##                                            &quot;MD Quality&quot;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(trans)</code></pre></div>
+<div class="sourceCode" id="cb88"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb88-1" data-line-number="1"><span class="kw">summary</span>(trans)</a></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -2375,9 +2607,9 @@ tmp2 &lt;-<span class="st"> </span><span class="kw">formulize</span>(<span class
 </tbody>
 </table>
 <p>Note that if we had not changed <code>mdquality.s</code> to a factor, it would have been summarized as though it were a continuous variable.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">class</span>(mockstudy<span class="op">$</span>mdquality.s)</code></pre></div>
+<div class="sourceCode" id="cb89"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb89-1" data-line-number="1"><span class="kw">class</span>(mockstudy<span class="op">$</span>mdquality.s)</a></code></pre></div>
 <p>[1] “integer”</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(<span class="kw">tableby</span>(arm<span class="op">~</span>mdquality.s, <span class="dt">data=</span>mockstudy))</code></pre></div>
+<div class="sourceCode" id="cb90"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb90-1" data-line-number="1"><span class="kw">summary</span>(<span class="kw">tableby</span>(arm<span class="op">~</span>mdquality.s, <span class="dt">data=</span>mockstudy))</a></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -2425,7 +2657,7 @@ tmp2 &lt;-<span class="st"> </span><span class="kw">formulize</span>(<span class
 </tbody>
 </table>
 <p>Another option would be to specify the test and summary statistics. In fact, if I had a set of variables coded 0/1 and that was all I was summarizing, then I could change the global option for continuous variables to use the chi-square test and show countpct.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(<span class="kw">tableby</span>(arm <span class="op">~</span><span class="st"> </span><span class="kw">chisq</span>(mdquality.s, <span class="st">&quot;Nmiss&quot;</span>,<span class="st">&quot;countpct&quot;</span>), <span class="dt">data=</span>mockstudy))</code></pre></div>
+<div class="sourceCode" id="cb91"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb91-1" data-line-number="1"><span class="kw">summary</span>(<span class="kw">tableby</span>(arm <span class="op">~</span><span class="st"> </span><span class="kw">chisq</span>(mdquality.s, <span class="st">&quot;Nmiss&quot;</span>,<span class="st">&quot;countpct&quot;</span>), <span class="dt">data=</span>mockstudy))</a></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -2475,12 +2707,12 @@ tmp2 &lt;-<span class="st"> </span><span class="kw">formulize</span>(<span class
 </div>
 <div id="subsetting-change-the-ordering-of-the-variables-delete-a-variable-sort-by-p-value-filter-by-p-value" class="section level2">
 <h2>10. Subsetting (change the ordering of the variables, delete a variable, sort by p-value, filter by p-value)</h2>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mytab &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span class="op">~</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span>alk.phos <span class="op">+</span><span class="st"> </span>age, <span class="dt">data=</span>mockstudy)
-mytab2 &lt;-<span class="st"> </span>mytab[<span class="kw">c</span>(<span class="st">'age'</span>,<span class="st">'sex'</span>,<span class="st">'alk.phos'</span>)]
-<span class="kw">summary</span>(mytab2)</code></pre></div>
+<div class="sourceCode" id="cb92"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb92-1" data-line-number="1">mytab &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span class="op">~</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span>alk.phos <span class="op">+</span><span class="st"> </span>age, <span class="dt">data=</span>mockstudy)</a>
+<a class="sourceLine" id="cb92-2" data-line-number="2">mytab2 &lt;-<span class="st"> </span>mytab[<span class="kw">c</span>(<span class="st">'age'</span>,<span class="st">'sex'</span>,<span class="st">'alk.phos'</span>)]</a>
+<a class="sourceLine" id="cb92-3" data-line-number="3"><span class="kw">summary</span>(mytab2)</a></code></pre></div>
 <table>
 <colgroup>
-<col width="24%"></col>
+<col width="25%"></col>
 <col width="16%"></col>
 <col width="16%"></col>
 <col width="16%"></col>
@@ -2580,7 +2812,7 @@ mytab2 &lt;-<span class="st"> </span>mytab[<span class="kw">c</span>(<span class
 </tr>
 </tbody>
 </table>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(mytab[<span class="kw">c</span>(<span class="st">'age'</span>,<span class="st">'sex'</span>)], <span class="dt">digits =</span> <span class="dv">2</span>)</code></pre></div>
+<div class="sourceCode" id="cb93"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb93-1" data-line-number="1"><span class="kw">summary</span>(mytab[<span class="kw">c</span>(<span class="st">'age'</span>,<span class="st">'sex'</span>)], <span class="dt">digits =</span> <span class="dv">2</span>)</a></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -2643,7 +2875,7 @@ mytab2 &lt;-<span class="st"> </span>mytab[<span class="kw">c</span>(<span class
 </tr>
 </tbody>
 </table>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(mytab[<span class="kw">c</span>(<span class="dv">3</span>,<span class="dv">1</span>)], <span class="dt">digits =</span> <span class="dv">3</span>)</code></pre></div>
+<div class="sourceCode" id="cb94"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb94-1" data-line-number="1"><span class="kw">summary</span>(mytab[<span class="kw">c</span>(<span class="dv">3</span>,<span class="dv">1</span>)], <span class="dt">digits =</span> <span class="dv">3</span>)</a></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -2706,10 +2938,10 @@ mytab2 &lt;-<span class="st"> </span>mytab[<span class="kw">c</span>(<span class
 </tr>
 </tbody>
 </table>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(<span class="kw">sort</span>(mytab, <span class="dt">decreasing =</span> <span class="ot">TRUE</span>))</code></pre></div>
+<div class="sourceCode" id="cb95"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb95-1" data-line-number="1"><span class="kw">summary</span>(<span class="kw">sort</span>(mytab, <span class="dt">decreasing =</span> <span class="ot">TRUE</span>))</a></code></pre></div>
 <table>
 <colgroup>
-<col width="24%"></col>
+<col width="25%"></col>
 <col width="16%"></col>
 <col width="16%"></col>
 <col width="16%"></col>
@@ -2809,10 +3041,10 @@ mytab2 &lt;-<span class="st"> </span>mytab[<span class="kw">c</span>(<span class
 </tr>
 </tbody>
 </table>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(mytab[mytab <span class="op">&lt;</span><span class="st"> </span><span class="fl">0.5</span>])</code></pre></div>
+<div class="sourceCode" id="cb96"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb96-1" data-line-number="1"><span class="kw">summary</span>(mytab[mytab <span class="op">&lt;</span><span class="st"> </span><span class="fl">0.5</span>])</a></code></pre></div>
 <table>
 <colgroup>
-<col width="24%"></col>
+<col width="25%"></col>
 <col width="16%"></col>
 <col width="16%"></col>
 <col width="16%"></col>
@@ -2888,7 +3120,7 @@ mytab2 &lt;-<span class="st"> </span>mytab[<span class="kw">c</span>(<span class
 </tr>
 </tbody>
 </table>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(mytab, <span class="dv">1</span>) <span class="co"># can also use tail()</span></code></pre></div>
+<div class="sourceCode" id="cb97"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb97-1" data-line-number="1"><span class="kw">head</span>(mytab, <span class="dv">1</span>) <span class="co"># can also use tail()</span></a></code></pre></div>
 <p>tableby Object</p>
 <p>Function Call: tableby(formula = arm ~ sex + alk.phos + age, data = mockstudy)</p>
 <p>Variable(s): arm ~ sex</p>
@@ -2896,17 +3128,17 @@ mytab2 &lt;-<span class="st"> </span>mytab[<span class="kw">c</span>(<span class
 <div id="merge-two-tableby-objects-together" class="section level2">
 <h2>11. Merge two <code>tableby</code> objects together</h2>
 <p>It is possible to combine two tableby objects so that they print out together. Overlapping by-variables will have their x-variables concatenated, and (if <code>all=TRUE</code>) non-overlapping by-variables will have their tables printed separately.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## demographics
-tab1 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span class="op">~</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span>age, <span class="dt">data=</span>mockstudy,
-                <span class="dt">control=</span><span class="kw">tableby.control</span>(<span class="dt">numeric.stats=</span><span class="kw">c</span>(<span class="st">&quot;Nmiss&quot;</span>,<span class="st">&quot;meansd&quot;</span>), <span class="dt">total=</span><span class="ot">FALSE</span>))
-## lab data
-tab2 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span class="op">~</span><span class="st"> </span>hgb <span class="op">+</span><span class="st"> </span>alk.phos, <span class="dt">data=</span>mockstudy,
-                <span class="dt">control=</span><span class="kw">tableby.control</span>(<span class="dt">numeric.stats=</span><span class="kw">c</span>(<span class="st">&quot;Nmiss&quot;</span>,<span class="st">&quot;median&quot;</span>,<span class="st">&quot;q1q3&quot;</span>),
-                                        <span class="dt">numeric.test=</span><span class="st">&quot;kwt&quot;</span>, <span class="dt">total=</span><span class="ot">FALSE</span>))
-tab12 &lt;-<span class="st"> </span><span class="kw">merge</span>(tab1, tab2)
-<span class="kw">class</span>(tab12)</code></pre></div>
+<div class="sourceCode" id="cb98"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb98-1" data-line-number="1">## demographics</a>
+<a class="sourceLine" id="cb98-2" data-line-number="2">tab1 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span class="op">~</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span>age, <span class="dt">data=</span>mockstudy,</a>
+<a class="sourceLine" id="cb98-3" data-line-number="3">                <span class="dt">control=</span><span class="kw">tableby.control</span>(<span class="dt">numeric.stats=</span><span class="kw">c</span>(<span class="st">&quot;Nmiss&quot;</span>,<span class="st">&quot;meansd&quot;</span>), <span class="dt">total=</span><span class="ot">FALSE</span>))</a>
+<a class="sourceLine" id="cb98-4" data-line-number="4">## lab data</a>
+<a class="sourceLine" id="cb98-5" data-line-number="5">tab2 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span class="op">~</span><span class="st"> </span>hgb <span class="op">+</span><span class="st"> </span>alk.phos, <span class="dt">data=</span>mockstudy,</a>
+<a class="sourceLine" id="cb98-6" data-line-number="6">                <span class="dt">control=</span><span class="kw">tableby.control</span>(<span class="dt">numeric.stats=</span><span class="kw">c</span>(<span class="st">&quot;Nmiss&quot;</span>,<span class="st">&quot;median&quot;</span>,<span class="st">&quot;q1q3&quot;</span>),</a>
+<a class="sourceLine" id="cb98-7" data-line-number="7">                                        <span class="dt">numeric.test=</span><span class="st">&quot;kwt&quot;</span>, <span class="dt">total=</span><span class="ot">FALSE</span>))</a>
+<a class="sourceLine" id="cb98-8" data-line-number="8">tab12 &lt;-<span class="st"> </span><span class="kw">merge</span>(tab1, tab2)</a>
+<a class="sourceLine" id="cb98-9" data-line-number="9"><span class="kw">class</span>(tab12)</a></code></pre></div>
 <p>[1] “tableby” “arsenal_table”</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(tab12)</code></pre></div>
+<div class="sourceCode" id="cb99"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb99-1" data-line-number="1"><span class="kw">summary</span>(tab12)</a></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -3015,8 +3247,8 @@ tab12 &lt;-<span class="st"> </span><span class="kw">merge</span>(tab1, tab2)
 <div id="add-a-title-to-the-table" class="section level2">
 <h2>12. Add a title to the table</h2>
 <p>When creating a pdf the tables are automatically numbered and the title appears below the table. In Word and HTML, the titles appear un-numbered and above the table.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">t1 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span class="op">~</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span>age, <span class="dt">data=</span>mockstudy)
-<span class="kw">summary</span>(t1, <span class="dt">title=</span><span class="st">'Demographics'</span>)</code></pre></div>
+<div class="sourceCode" id="cb100"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb100-1" data-line-number="1">t1 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span class="op">~</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span>age, <span class="dt">data=</span>mockstudy)</a>
+<a class="sourceLine" id="cb100-2" data-line-number="2"><span class="kw">summary</span>(t1, <span class="dt">title=</span><span class="st">'Demographics'</span>)</a></code></pre></div>
 <table>
 <caption>Demographics</caption>
 <thead>
@@ -3090,15 +3322,15 @@ tab12 &lt;-<span class="st"> </span><span class="kw">merge</span>(tab1, tab2)
 <li><p>Show how many subjects are missing each variable only if there are any missing values</p></li>
 <li><p>Don’t indicate missing values at all</p></li>
 </ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## look at how many missing values there are for each variable
-<span class="kw">apply</span>(<span class="kw">is.na</span>(mockstudy),<span class="dv">2</span>,sum)</code></pre></div>
+<div class="sourceCode" id="cb101"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb101-1" data-line-number="1">## look at how many missing values there are for each variable</a>
+<a class="sourceLine" id="cb101-2" data-line-number="2"><span class="kw">apply</span>(<span class="kw">is.na</span>(mockstudy),<span class="dv">2</span>,sum)</a></code></pre></div>
 <pre><code>##        case         age         arm         sex        race     fu.time     fu.stat          ps 
 ##           0           0           0           0           7           0           0         266 
 ##         hgb         bmi    alk.phos         ast mdquality.s     age.ord  age.ordnew     dtentry 
 ##         266          33         266         266         252           0           1           5</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## Show how many subjects have each variable (non-missing)
-<span class="kw">summary</span>(<span class="kw">tableby</span>(sex <span class="op">~</span><span class="st"> </span>ast <span class="op">+</span><span class="st"> </span>age, <span class="dt">data=</span>mockstudy,
-                <span class="dt">control=</span><span class="kw">tableby.control</span>(<span class="dt">numeric.stats=</span><span class="kw">c</span>(<span class="st">&quot;N&quot;</span>,<span class="st">&quot;median&quot;</span>), <span class="dt">total=</span><span class="ot">FALSE</span>)))</code></pre></div>
+<div class="sourceCode" id="cb103"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb103-1" data-line-number="1">## Show how many subjects have each variable (non-missing)</a>
+<a class="sourceLine" id="cb103-2" data-line-number="2"><span class="kw">summary</span>(<span class="kw">tableby</span>(sex <span class="op">~</span><span class="st"> </span>ast <span class="op">+</span><span class="st"> </span>age, <span class="dt">data=</span>mockstudy,</a>
+<a class="sourceLine" id="cb103-3" data-line-number="3">                <span class="dt">control=</span><span class="kw">tableby.control</span>(<span class="dt">numeric.stats=</span><span class="kw">c</span>(<span class="st">&quot;N&quot;</span>,<span class="st">&quot;median&quot;</span>), <span class="dt">total=</span><span class="ot">FALSE</span>)))</a></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -3147,9 +3379,9 @@ tab12 &lt;-<span class="st"> </span><span class="kw">merge</span>(tab1, tab2)
 </tr>
 </tbody>
 </table>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## Always list the number of missing values
-<span class="kw">summary</span>(<span class="kw">tableby</span>(sex <span class="op">~</span><span class="st"> </span>ast <span class="op">+</span><span class="st"> </span>age, <span class="dt">data=</span>mockstudy,
-                <span class="dt">control=</span><span class="kw">tableby.control</span>(<span class="dt">numeric.stats=</span><span class="kw">c</span>(<span class="st">&quot;Nmiss2&quot;</span>,<span class="st">&quot;median&quot;</span>), <span class="dt">total=</span><span class="ot">FALSE</span>)))</code></pre></div>
+<div class="sourceCode" id="cb104"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb104-1" data-line-number="1">## Always list the number of missing values</a>
+<a class="sourceLine" id="cb104-2" data-line-number="2"><span class="kw">summary</span>(<span class="kw">tableby</span>(sex <span class="op">~</span><span class="st"> </span>ast <span class="op">+</span><span class="st"> </span>age, <span class="dt">data=</span>mockstudy,</a>
+<a class="sourceLine" id="cb104-3" data-line-number="3">                <span class="dt">control=</span><span class="kw">tableby.control</span>(<span class="dt">numeric.stats=</span><span class="kw">c</span>(<span class="st">&quot;Nmiss2&quot;</span>,<span class="st">&quot;median&quot;</span>), <span class="dt">total=</span><span class="ot">FALSE</span>)))</a></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -3198,9 +3430,9 @@ tab12 &lt;-<span class="st"> </span><span class="kw">merge</span>(tab1, tab2)
 </tr>
 </tbody>
 </table>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## Only show the missing values if there are some (default)
-<span class="kw">summary</span>(<span class="kw">tableby</span>(sex <span class="op">~</span><span class="st"> </span>ast <span class="op">+</span><span class="st"> </span>age, <span class="dt">data=</span>mockstudy, 
-                <span class="dt">control=</span><span class="kw">tableby.control</span>(<span class="dt">numeric.stats=</span><span class="kw">c</span>(<span class="st">&quot;Nmiss&quot;</span>,<span class="st">&quot;mean&quot;</span>),<span class="dt">total=</span><span class="ot">FALSE</span>)))</code></pre></div>
+<div class="sourceCode" id="cb105"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb105-1" data-line-number="1">## Only show the missing values if there are some (default)</a>
+<a class="sourceLine" id="cb105-2" data-line-number="2"><span class="kw">summary</span>(<span class="kw">tableby</span>(sex <span class="op">~</span><span class="st"> </span>ast <span class="op">+</span><span class="st"> </span>age, <span class="dt">data=</span>mockstudy, </a>
+<a class="sourceLine" id="cb105-3" data-line-number="3">                <span class="dt">control=</span><span class="kw">tableby.control</span>(<span class="dt">numeric.stats=</span><span class="kw">c</span>(<span class="st">&quot;Nmiss&quot;</span>,<span class="st">&quot;mean&quot;</span>),<span class="dt">total=</span><span class="ot">FALSE</span>)))</a></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -3243,9 +3475,9 @@ tab12 &lt;-<span class="st"> </span><span class="kw">merge</span>(tab1, tab2)
 </tr>
 </tbody>
 </table>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## Don't show N at all
-<span class="kw">summary</span>(<span class="kw">tableby</span>(sex <span class="op">~</span><span class="st"> </span>ast <span class="op">+</span><span class="st"> </span>age, <span class="dt">data=</span>mockstudy, 
-                <span class="dt">control=</span><span class="kw">tableby.control</span>(<span class="dt">numeric.stats=</span><span class="kw">c</span>(<span class="st">&quot;mean&quot;</span>),<span class="dt">total=</span><span class="ot">FALSE</span>)))</code></pre></div>
+<div class="sourceCode" id="cb106"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb106-1" data-line-number="1">## Don't show N at all</a>
+<a class="sourceLine" id="cb106-2" data-line-number="2"><span class="kw">summary</span>(<span class="kw">tableby</span>(sex <span class="op">~</span><span class="st"> </span>ast <span class="op">+</span><span class="st"> </span>age, <span class="dt">data=</span>mockstudy, </a>
+<a class="sourceLine" id="cb106-3" data-line-number="3">                <span class="dt">control=</span><span class="kw">tableby.control</span>(<span class="dt">numeric.stats=</span><span class="kw">c</span>(<span class="st">&quot;mean&quot;</span>),<span class="dt">total=</span><span class="ot">FALSE</span>)))</a></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -3283,9 +3515,9 @@ tab12 &lt;-<span class="st"> </span><span class="kw">merge</span>(tab1, tab2)
 </tbody>
 </table>
 <p>One might also consider the use of <code>includeNA()</code> to include NAs in the counts and percents for categorical variables.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mockstudy<span class="op">$</span>ps.cat &lt;-<span class="st"> </span><span class="kw">factor</span>(mockstudy<span class="op">$</span>ps)
-<span class="kw">attr</span>(mockstudy<span class="op">$</span>ps.cat, <span class="st">&quot;label&quot;</span>) &lt;-<span class="st"> &quot;ps&quot;</span>
-<span class="kw">summary</span>(<span class="kw">tableby</span>(sex <span class="op">~</span><span class="st"> </span><span class="kw">includeNA</span>(ps.cat), <span class="dt">data =</span> mockstudy, <span class="dt">cat.stats =</span> <span class="st">&quot;countpct&quot;</span>))</code></pre></div>
+<div class="sourceCode" id="cb107"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb107-1" data-line-number="1">mockstudy<span class="op">$</span>ps.cat &lt;-<span class="st"> </span><span class="kw">factor</span>(mockstudy<span class="op">$</span>ps)</a>
+<a class="sourceLine" id="cb107-2" data-line-number="2"><span class="kw">attr</span>(mockstudy<span class="op">$</span>ps.cat, <span class="st">&quot;label&quot;</span>) &lt;-<span class="st"> &quot;ps&quot;</span></a>
+<a class="sourceLine" id="cb107-3" data-line-number="3"><span class="kw">summary</span>(<span class="kw">tableby</span>(sex <span class="op">~</span><span class="st"> </span><span class="kw">includeNA</span>(ps.cat), <span class="dt">data =</span> mockstudy, <span class="dt">cat.stats =</span> <span class="st">&quot;countpct&quot;</span>))</a></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -3344,15 +3576,15 @@ tab12 &lt;-<span class="st"> </span><span class="kw">merge</span>(tab1, tab2)
 <li><p>digits.pct: controls the number of digits after the decimal point for percents</p></li>
 <li><p>digits.p: controls the number of digits after the decimal point for p-values</p></li>
 </ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(<span class="kw">tableby</span>(arm <span class="op">~</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span>age <span class="op">+</span><span class="st"> </span>fu.time, <span class="dt">data=</span>mockstudy), <span class="dt">digits=</span><span class="dv">4</span>, <span class="dt">digits.p=</span><span class="dv">2</span>, <span class="dt">digits.pct=</span><span class="dv">1</span>)</code></pre></div>
-<table style="width:100%;">
+<div class="sourceCode" id="cb108"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb108-1" data-line-number="1"><span class="kw">summary</span>(<span class="kw">tableby</span>(arm <span class="op">~</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span>age <span class="op">+</span><span class="st"> </span>fu.time, <span class="dt">data=</span>mockstudy), <span class="dt">digits=</span><span class="dv">4</span>, <span class="dt">digits.p=</span><span class="dv">2</span>, <span class="dt">digits.pct=</span><span class="dv">1</span>)</a></code></pre></div>
+<table>
 <colgroup>
 <col width="23%"></col>
 <col width="17%"></col>
 <col width="17%"></col>
 <col width="17%"></col>
 <col width="17%"></col>
-<col width="7%"></col>
+<col width="6%"></col>
 </colgroup>
 <thead>
 <tr class="header">
@@ -3440,11 +3672,11 @@ tab12 &lt;-<span class="st"> </span><span class="kw">merge</span>(tab1, tab2)
 </tbody>
 </table>
 <p>With the exception of <code>digits.p</code>, all of these can be specified on a per-variable basis using the in-formula functions that specify which tests are run:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(<span class="kw">tableby</span>(arm <span class="op">~</span><span class="st"> </span><span class="kw">chisq</span>(sex, <span class="dt">digits.pct=</span><span class="dv">1</span>) <span class="op">+</span><span class="st"> </span><span class="kw">anova</span>(age, <span class="dt">digits=</span><span class="dv">4</span>) <span class="op">+</span>
-<span class="st">                  </span><span class="kw">anova</span>(fu.time, <span class="dt">digits =</span> <span class="dv">1</span>), <span class="dt">data=</span>mockstudy))</code></pre></div>
+<div class="sourceCode" id="cb109"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb109-1" data-line-number="1"><span class="kw">summary</span>(<span class="kw">tableby</span>(arm <span class="op">~</span><span class="st"> </span><span class="kw">chisq</span>(sex, <span class="dt">digits.pct=</span><span class="dv">1</span>) <span class="op">+</span><span class="st"> </span><span class="kw">anova</span>(age, <span class="dt">digits=</span><span class="dv">4</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb109-2" data-line-number="2"><span class="st">                  </span><span class="kw">anova</span>(fu.time, <span class="dt">digits =</span> <span class="dv">1</span>), <span class="dt">data=</span>mockstudy))</a></code></pre></div>
 <table>
 <colgroup>
-<col width="24%"></col>
+<col width="25%"></col>
 <col width="16%"></col>
 <col width="16%"></col>
 <col width="16%"></col>
@@ -3540,13 +3772,13 @@ tab12 &lt;-<span class="st"> </span><span class="kw">merge</span>(tab1, tab2)
 <div id="create-a-user-defined-summary-statistic" class="section level2">
 <h2>15. Create a user-defined summary statistic</h2>
 <p>For purposes of this example, the code below creates a trimmed mean function (trims 10%) and use that to summarize the data. Note the use of the <code>...</code> which tells R to pass extra arguments on - this is required for user-defined functions. In this case, <code>na.rm=T</code> is passed to <code>myfunc</code>. The <em>weights</em> argument is also required, even though it isn’t passed on to the internal function in this particular example.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">myfunc &lt;-<span class="st"> </span><span class="cf">function</span>(x, <span class="dt">weights=</span><span class="kw">rep</span>(<span class="dv">1</span>,<span class="kw">length</span>(x)), ...){
-  <span class="kw">mean</span>(x, <span class="dt">trim=</span>.<span class="dv">1</span>, ...)
-}
-
-<span class="kw">summary</span>(<span class="kw">tableby</span>(sex <span class="op">~</span><span class="st"> </span>hgb, <span class="dt">data=</span>mockstudy, 
-                <span class="dt">control=</span><span class="kw">tableby.control</span>(<span class="dt">numeric.stats=</span><span class="kw">c</span>(<span class="st">&quot;Nmiss&quot;</span>,<span class="st">&quot;myfunc&quot;</span>), <span class="dt">numeric.test=</span><span class="st">&quot;kwt&quot;</span>,
-                    <span class="dt">stats.labels=</span><span class="kw">list</span>(<span class="dt">Nmiss=</span><span class="st">'Missing values'</span>, <span class="dt">myfunc=</span><span class="st">&quot;Trimmed Mean, 10%&quot;</span>))))</code></pre></div>
+<div class="sourceCode" id="cb110"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb110-1" data-line-number="1">myfunc &lt;-<span class="st"> </span><span class="cf">function</span>(x, <span class="dt">weights=</span><span class="kw">rep</span>(<span class="dv">1</span>,<span class="kw">length</span>(x)), ...){</a>
+<a class="sourceLine" id="cb110-2" data-line-number="2">  <span class="kw">mean</span>(x, <span class="dt">trim=</span>.<span class="dv">1</span>, ...)</a>
+<a class="sourceLine" id="cb110-3" data-line-number="3">}</a>
+<a class="sourceLine" id="cb110-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb110-5" data-line-number="5"><span class="kw">summary</span>(<span class="kw">tableby</span>(sex <span class="op">~</span><span class="st"> </span>hgb, <span class="dt">data=</span>mockstudy, </a>
+<a class="sourceLine" id="cb110-6" data-line-number="6">                <span class="dt">control=</span><span class="kw">tableby.control</span>(<span class="dt">numeric.stats=</span><span class="kw">c</span>(<span class="st">&quot;Nmiss&quot;</span>,<span class="st">&quot;myfunc&quot;</span>), <span class="dt">numeric.test=</span><span class="st">&quot;kwt&quot;</span>,</a>
+<a class="sourceLine" id="cb110-7" data-line-number="7">                    <span class="dt">stats.labels=</span><span class="kw">list</span>(<span class="dt">Nmiss=</span><span class="st">'Missing values'</span>, <span class="dt">myfunc=</span><span class="st">&quot;Trimmed Mean, 10%&quot;</span>))))</a></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -3585,17 +3817,17 @@ tab12 &lt;-<span class="st"> </span><span class="kw">merge</span>(tab1, tab2)
 <div id="use-case-weights-for-creating-summary-statistics" class="section level2">
 <h2>16. Use case-weights for creating summary statistics</h2>
 <p>When comparing groups, they are often unbalanced when it comes to nuisances such as age and sex. The <code>tableby</code> function allows you to create weighted summary statistics. If this option us used then p-values are not calculated (<code>test=FALSE</code>).</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">##create fake group that is not balanced by age/sex 
-<span class="kw">set.seed</span>(<span class="dv">200</span>)
-mockstudy<span class="op">$</span>fake_arm &lt;-<span class="st"> </span><span class="kw">ifelse</span>(mockstudy<span class="op">$</span>age<span class="op">&gt;</span><span class="dv">60</span> <span class="op">&amp;</span><span class="st"> </span>mockstudy<span class="op">$</span>sex<span class="op">==</span><span class="st">'Female'</span>,<span class="kw">sample</span>(<span class="kw">c</span>(<span class="st">'A'</span>,<span class="st">'B'</span>),<span class="dt">replace=</span>T, <span class="dt">prob=</span><span class="kw">c</span>(.<span class="dv">2</span>,.<span class="dv">8</span>)),
-                            <span class="kw">sample</span>(<span class="kw">c</span>(<span class="st">'A'</span>,<span class="st">'B'</span>),<span class="dt">replace=</span>T, <span class="dt">prob=</span><span class="kw">c</span>(.<span class="dv">8</span>,.<span class="dv">4</span>)))
-
-mockstudy<span class="op">$</span>agegp &lt;-<span class="st"> </span><span class="kw">cut</span>(mockstudy<span class="op">$</span>age, <span class="dt">breaks=</span><span class="kw">c</span>(<span class="dv">18</span>,<span class="dv">50</span>,<span class="dv">60</span>,<span class="dv">70</span>,<span class="dv">90</span>), <span class="dt">right=</span><span class="ot">FALSE</span>)
-
-## create weights based on agegp and sex distribution
-tab1 &lt;-<span class="st"> </span><span class="kw">with</span>(mockstudy,<span class="kw">table</span>(agegp, sex))
-tab2 &lt;-<span class="st"> </span><span class="kw">with</span>(mockstudy, <span class="kw">table</span>(agegp, sex, fake_arm))
-tab2</code></pre></div>
+<div class="sourceCode" id="cb111"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb111-1" data-line-number="1">##create fake group that is not balanced by age/sex </a>
+<a class="sourceLine" id="cb111-2" data-line-number="2"><span class="kw">set.seed</span>(<span class="dv">200</span>)</a>
+<a class="sourceLine" id="cb111-3" data-line-number="3">mockstudy<span class="op">$</span>fake_arm &lt;-<span class="st"> </span><span class="kw">ifelse</span>(mockstudy<span class="op">$</span>age<span class="op">&gt;</span><span class="dv">60</span> <span class="op">&amp;</span><span class="st"> </span>mockstudy<span class="op">$</span>sex<span class="op">==</span><span class="st">'Female'</span>,<span class="kw">sample</span>(<span class="kw">c</span>(<span class="st">'A'</span>,<span class="st">'B'</span>),<span class="dt">replace=</span>T, <span class="dt">prob=</span><span class="kw">c</span>(.<span class="dv">2</span>,.<span class="dv">8</span>)),</a>
+<a class="sourceLine" id="cb111-4" data-line-number="4">                            <span class="kw">sample</span>(<span class="kw">c</span>(<span class="st">'A'</span>,<span class="st">'B'</span>),<span class="dt">replace=</span>T, <span class="dt">prob=</span><span class="kw">c</span>(.<span class="dv">8</span>,.<span class="dv">4</span>)))</a>
+<a class="sourceLine" id="cb111-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb111-6" data-line-number="6">mockstudy<span class="op">$</span>agegp &lt;-<span class="st"> </span><span class="kw">cut</span>(mockstudy<span class="op">$</span>age, <span class="dt">breaks=</span><span class="kw">c</span>(<span class="dv">18</span>,<span class="dv">50</span>,<span class="dv">60</span>,<span class="dv">70</span>,<span class="dv">90</span>), <span class="dt">right=</span><span class="ot">FALSE</span>)</a>
+<a class="sourceLine" id="cb111-7" data-line-number="7"></a>
+<a class="sourceLine" id="cb111-8" data-line-number="8">## create weights based on agegp and sex distribution</a>
+<a class="sourceLine" id="cb111-9" data-line-number="9">tab1 &lt;-<span class="st"> </span><span class="kw">with</span>(mockstudy,<span class="kw">table</span>(agegp, sex))</a>
+<a class="sourceLine" id="cb111-10" data-line-number="10">tab2 &lt;-<span class="st"> </span><span class="kw">with</span>(mockstudy, <span class="kw">table</span>(agegp, sex, fake_arm))</a>
+<a class="sourceLine" id="cb111-11" data-line-number="11">tab2</a></code></pre></div>
 <pre><code>## , , fake_arm = A
 ## 
 ##          sex
@@ -3613,15 +3845,15 @@ tab2</code></pre></div>
 ##   [50,60)  130     84
 ##   [60,70)  156    166
 ##   [70,90)  109    122</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">gpwts &lt;-<span class="st"> </span><span class="kw">rep</span>(tab1, <span class="kw">length</span>(<span class="kw">unique</span>(mockstudy<span class="op">$</span>fake_arm)))<span class="op">/</span>tab2
-gpwts[gpwts<span class="op">&gt;</span><span class="dv">50</span>] &lt;-<span class="st"> </span><span class="dv">30</span>
-
-## apply weights to subjects
-index &lt;-<span class="st"> </span><span class="kw">with</span>(mockstudy, <span class="kw">cbind</span>(<span class="kw">as.numeric</span>(agegp), <span class="kw">as.numeric</span>(sex), <span class="kw">as.numeric</span>(<span class="kw">as.factor</span>(fake_arm)))) 
-mockstudy<span class="op">$</span>wts &lt;-<span class="st"> </span>gpwts[index]
-
-## show weights by treatment arm group
-<span class="kw">tapply</span>(mockstudy<span class="op">$</span>wts,mockstudy<span class="op">$</span>fake_arm, summary)</code></pre></div>
+<div class="sourceCode" id="cb113"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb113-1" data-line-number="1">gpwts &lt;-<span class="st"> </span><span class="kw">rep</span>(tab1, <span class="kw">length</span>(<span class="kw">unique</span>(mockstudy<span class="op">$</span>fake_arm)))<span class="op">/</span>tab2</a>
+<a class="sourceLine" id="cb113-2" data-line-number="2">gpwts[gpwts<span class="op">&gt;</span><span class="dv">50</span>] &lt;-<span class="st"> </span><span class="dv">30</span></a>
+<a class="sourceLine" id="cb113-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb113-4" data-line-number="4">## apply weights to subjects</a>
+<a class="sourceLine" id="cb113-5" data-line-number="5">index &lt;-<span class="st"> </span><span class="kw">with</span>(mockstudy, <span class="kw">cbind</span>(<span class="kw">as.numeric</span>(agegp), <span class="kw">as.numeric</span>(sex), <span class="kw">as.numeric</span>(<span class="kw">as.factor</span>(fake_arm)))) </a>
+<a class="sourceLine" id="cb113-6" data-line-number="6">mockstudy<span class="op">$</span>wts &lt;-<span class="st"> </span>gpwts[index]</a>
+<a class="sourceLine" id="cb113-7" data-line-number="7"></a>
+<a class="sourceLine" id="cb113-8" data-line-number="8">## show weights by treatment arm group</a>
+<a class="sourceLine" id="cb113-9" data-line-number="9"><span class="kw">tapply</span>(mockstudy<span class="op">$</span>wts,mockstudy<span class="op">$</span>fake_arm, summary)</a></code></pre></div>
 <pre><code>## $A
 ##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
 ##   1.774   1.894   2.069   2.276   2.082  24.714 
@@ -3629,8 +3861,8 @@ mockstudy<span class="op">$</span>wts &lt;-<span class="st"> </span>gpwts[index]
 ## $B
 ##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
 ##   1.000   1.042   1.924   1.677   1.985   2.292</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">orig &lt;-<span class="st"> </span><span class="kw">tableby</span>(fake_arm <span class="op">~</span><span class="st"> </span>age <span class="op">+</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span><span class="kw">Surv</span>(fu.time<span class="op">/</span><span class="dv">365</span>, fu.stat), <span class="dt">data=</span>mockstudy, <span class="dt">test=</span><span class="ot">FALSE</span>)
-<span class="kw">summary</span>(orig, <span class="dt">title=</span><span class="st">'No Case Weights used'</span>)</code></pre></div>
+<div class="sourceCode" id="cb115"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb115-1" data-line-number="1">orig &lt;-<span class="st"> </span><span class="kw">tableby</span>(fake_arm <span class="op">~</span><span class="st"> </span>age <span class="op">+</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span><span class="kw">Surv</span>(fu.time<span class="op">/</span><span class="dv">365</span>, fu.stat), <span class="dt">data=</span>mockstudy, <span class="dt">test=</span><span class="ot">FALSE</span>)</a>
+<a class="sourceLine" id="cb115-2" data-line-number="2"><span class="kw">summary</span>(orig, <span class="dt">title=</span><span class="st">'No Case Weights used'</span>)</a></code></pre></div>
 <table>
 <caption>No Case Weights used</caption>
 <thead>
@@ -3698,8 +3930,8 @@ mockstudy<span class="op">$</span>wts &lt;-<span class="st"> </span>gpwts[index]
 </tr>
 </tbody>
 </table>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tab1 &lt;-<span class="st"> </span><span class="kw">tableby</span>(fake_arm <span class="op">~</span><span class="st"> </span>age <span class="op">+</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span><span class="kw">Surv</span>(fu.time<span class="op">/</span><span class="dv">365</span>, fu.stat), <span class="dt">data=</span>mockstudy, <span class="dt">weights=</span>wts)
-<span class="kw">summary</span>(tab1, <span class="dt">title=</span><span class="st">'Case Weights used'</span>)</code></pre></div>
+<div class="sourceCode" id="cb116"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb116-1" data-line-number="1">tab1 &lt;-<span class="st"> </span><span class="kw">tableby</span>(fake_arm <span class="op">~</span><span class="st"> </span>age <span class="op">+</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span><span class="kw">Surv</span>(fu.time<span class="op">/</span><span class="dv">365</span>, fu.stat), <span class="dt">data=</span>mockstudy, <span class="dt">weights=</span>wts)</a>
+<a class="sourceLine" id="cb116-2" data-line-number="2"><span class="kw">summary</span>(tab1, <span class="dt">title=</span><span class="st">'Case Weights used'</span>)</a></code></pre></div>
 <table>
 <caption>Case Weights used</caption>
 <thead>
@@ -3772,14 +4004,14 @@ mockstudy<span class="op">$</span>wts &lt;-<span class="st"> </span>gpwts[index]
 <h2>17. Create your own p-value and add it to the table</h2>
 <p>When using weighted summary statistics, it is often desirable to then show a p-value from a model that corresponds to the weighted analysis. It is possible to add your own p-value and modify the column title for that new p-value. Another use for this would be to add standardized differences or confidence intervals instead of a p-value.</p>
 <p>To add the p-value, you simply need to create a data frame and use the function <code>modpval.tableby()</code>. The first few columns in the data.frame are required: (1) the by-variable, (2) the strata value (if the table has a strata term), (3) the x-variable, and (4) the new p-value (or test statistic). Another optional column can be used to indicate what method was used to calculate the p-value. If you specify <code>use.pname=TRUE</code> then the column name indicating the p-value will be also be used in the tableby summary.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mypval &lt;-<span class="st"> </span><span class="kw">data.frame</span>(
-  <span class="dt">byvar =</span> <span class="st">&quot;fake_arm&quot;</span>,
-  <span class="dt">variable =</span> <span class="kw">c</span>(<span class="st">'age'</span>,<span class="st">'sex'</span>,<span class="st">'Surv(fu.time/365, fu.stat)'</span>), 
-  <span class="dt">adj.pvalue =</span> <span class="kw">c</span>(.<span class="dv">953</span>,.<span class="dv">811</span>,.<span class="dv">01</span>), 
-  <span class="dt">method =</span> <span class="kw">c</span>(<span class="st">'Age/Sex adjusted model results'</span>)
-)
-tab2 &lt;-<span class="st"> </span><span class="kw">modpval.tableby</span>(tab1, mypval, <span class="dt">use.pname=</span><span class="ot">TRUE</span>)
-<span class="kw">summary</span>(tab2, <span class="dt">title=</span><span class="st">'Case Weights used, p-values added'</span>, <span class="dt">pfootnote=</span><span class="ot">TRUE</span>)</code></pre></div>
+<div class="sourceCode" id="cb117"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb117-1" data-line-number="1">mypval &lt;-<span class="st"> </span><span class="kw">data.frame</span>(</a>
+<a class="sourceLine" id="cb117-2" data-line-number="2">  <span class="dt">byvar =</span> <span class="st">&quot;fake_arm&quot;</span>,</a>
+<a class="sourceLine" id="cb117-3" data-line-number="3">  <span class="dt">variable =</span> <span class="kw">c</span>(<span class="st">'age'</span>,<span class="st">'sex'</span>,<span class="st">'Surv(fu.time/365, fu.stat)'</span>), </a>
+<a class="sourceLine" id="cb117-4" data-line-number="4">  <span class="dt">adj.pvalue =</span> <span class="kw">c</span>(.<span class="dv">953</span>,.<span class="dv">811</span>,.<span class="dv">01</span>), </a>
+<a class="sourceLine" id="cb117-5" data-line-number="5">  <span class="dt">method =</span> <span class="kw">c</span>(<span class="st">'Age/Sex adjusted model results'</span>)</a>
+<a class="sourceLine" id="cb117-6" data-line-number="6">)</a>
+<a class="sourceLine" id="cb117-7" data-line-number="7">tab2 &lt;-<span class="st"> </span><span class="kw">modpval.tableby</span>(tab1, mypval, <span class="dt">use.pname=</span><span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb117-8" data-line-number="8"><span class="kw">summary</span>(tab2, <span class="dt">title=</span><span class="st">'Case Weights used, p-values added'</span>, <span class="dt">pfootnote=</span><span class="ot">TRUE</span>)</a></code></pre></div>
 <table>
 <caption>Case Weights used, p-values added</caption>
 <thead>
@@ -3864,8 +4096,8 @@ tab2 &lt;-<span class="st"> </span><span class="kw">modpval.tableby</span>(tab1,
 <div id="for-two-level-categorical-variables-or-one-line-numeric-variables-simplify-the-output." class="section level2">
 <h2>18. For two-level categorical variables or one-line numeric variables, simplify the output.</h2>
 <p>If the <code>cat.simplify</code> option is set to <code>TRUE</code>, then only the second level of two-level categorical varialbes is shown. In the example below, <code>sex</code> has two levels, and “Female” is the second level, hence only the counts and percents for Female are shown. Similarly, “mdquality.s” was turned to a factor, and “1” is the second level, but since there are missings, the table ignores <code>cat.simplify</code> and displays all levels (since the output can no longer be displayed on one line).</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">table2 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm<span class="op">~</span>sex <span class="op">+</span><span class="st"> </span><span class="kw">factor</span>(mdquality.s), <span class="dt">data=</span>mockstudy, <span class="dt">cat.simplify=</span><span class="ot">TRUE</span>)
-<span class="kw">summary</span>(table2, <span class="dt">labelTranslations=</span><span class="kw">c</span>(<span class="dt">sex=</span><span class="st">&quot;Female&quot;</span>, <span class="st">&quot;factor(mdquality.s)&quot;</span>=<span class="st">&quot;MD Quality&quot;</span>))</code></pre></div>
+<div class="sourceCode" id="cb118"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb118-1" data-line-number="1">table2 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm<span class="op">~</span>sex <span class="op">+</span><span class="st"> </span><span class="kw">factor</span>(mdquality.s), <span class="dt">data=</span>mockstudy, <span class="dt">cat.simplify=</span><span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb118-2" data-line-number="2"><span class="kw">summary</span>(table2, <span class="dt">labelTranslations=</span><span class="kw">c</span>(<span class="dt">sex=</span><span class="st">&quot;Female&quot;</span>, <span class="st">&quot;factor(mdquality.s)&quot;</span>=<span class="st">&quot;MD Quality&quot;</span>))</a></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -3921,16 +4153,16 @@ tab2 &lt;-<span class="st"> </span><span class="kw">modpval.tableby</span>(tab1,
 </tbody>
 </table>
 <p>Similarly, if <code>numeric.simplify</code> is set to <code>TRUE</code>, then any numerics which only have one row of summary statistics are simplified into a single row. Note again that <code>ast</code> has missing values and so is not simplified to a single row.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(<span class="kw">tableby</span>(arm <span class="op">~</span><span class="st"> </span>age <span class="op">+</span><span class="st"> </span>ast, <span class="dt">data =</span> mockstudy,
-                <span class="dt">numeric.simplify=</span><span class="ot">TRUE</span>, <span class="dt">numeric.stats=</span><span class="kw">c</span>(<span class="st">&quot;Nmiss&quot;</span>, <span class="st">&quot;meansd&quot;</span>)))</code></pre></div>
-<table>
+<div class="sourceCode" id="cb119"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb119-1" data-line-number="1"><span class="kw">summary</span>(<span class="kw">tableby</span>(arm <span class="op">~</span><span class="st"> </span>age <span class="op">+</span><span class="st"> </span>ast, <span class="dt">data =</span> mockstudy,</a>
+<a class="sourceLine" id="cb119-2" data-line-number="2">                <span class="dt">numeric.simplify=</span><span class="ot">TRUE</span>, <span class="dt">numeric.stats=</span><span class="kw">c</span>(<span class="st">&quot;Nmiss&quot;</span>, <span class="st">&quot;meansd&quot;</span>)))</a></code></pre></div>
+<table style="width:100%;">
 <colgroup>
-<col width="25%"></col>
+<col width="26%"></col>
 <col width="16%"></col>
 <col width="17%"></col>
 <col width="16%"></col>
 <col width="16%"></col>
-<col width="8%"></col>
+<col width="7%"></col>
 </colgroup>
 <thead>
 <tr class="header">
@@ -3978,16 +4210,16 @@ tab2 &lt;-<span class="st"> </span><span class="kw">modpval.tableby</span>(tab1,
 </tbody>
 </table>
 <p>The in-formula functions to change which tests are run can also be used to specify these options for each variable at a time.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(<span class="kw">tableby</span>(arm <span class="op">~</span><span class="st"> </span><span class="kw">anova</span>(age, <span class="st">&quot;meansd&quot;</span>, <span class="dt">numeric.simplify=</span><span class="ot">TRUE</span>) <span class="op">+</span>
-<span class="st">                  </span><span class="kw">chisq</span>(sex, <span class="dt">cat.simplify=</span><span class="ot">TRUE</span>), <span class="dt">data =</span> mockstudy))</code></pre></div>
-<table style="width:100%;">
+<div class="sourceCode" id="cb120"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb120-1" data-line-number="1"><span class="kw">summary</span>(<span class="kw">tableby</span>(arm <span class="op">~</span><span class="st"> </span><span class="kw">anova</span>(age, <span class="st">&quot;meansd&quot;</span>, <span class="dt">numeric.simplify=</span><span class="ot">TRUE</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb120-2" data-line-number="2"><span class="st">                  </span><span class="kw">chisq</span>(sex, <span class="dt">cat.simplify=</span><span class="ot">TRUE</span>), <span class="dt">data =</span> mockstudy))</a></code></pre></div>
+<table>
 <colgroup>
 <col width="14%"></col>
 <col width="18%"></col>
 <col width="20%"></col>
 <col width="18%"></col>
 <col width="18%"></col>
-<col width="9%"></col>
+<col width="8%"></col>
 </colgroup>
 <thead>
 <tr class="header">
@@ -4054,8 +4286,8 @@ render(&quot;Test.md&quot;, pdf_document(keep_tex=TRUE))
 <div id="export-tableby-object-to-a-.csv-file" class="section level2">
 <h2>20. Export <code>tableby</code> object to a .CSV file</h2>
 <p>When looking at multiple variables it is sometimes useful to export the results to a csv file. The <code>as.data.frame</code> function creates a data frame object that can be exported or further manipulated within R.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tab1 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm<span class="op">~</span>sex<span class="op">+</span>age, <span class="dt">data=</span>mockstudy)
-<span class="kw">as.data.frame</span>(tab1)</code></pre></div>
+<div class="sourceCode" id="cb122"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb122-1" data-line-number="1">tab1 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm<span class="op">~</span>sex<span class="op">+</span>age, <span class="dt">data=</span>mockstudy)</a>
+<a class="sourceLine" id="cb122-2" data-line-number="2"><span class="kw">as.data.frame</span>(tab1)</a></code></pre></div>
 <pre><code>##   group.term   group.label strata.term variable     term     label variable.type
 ## 1        arm Treatment Arm                  sex      sex    Gender   categorical
 ## 2        arm Treatment Arm                  sex countpct      Male   categorical
@@ -4077,45 +4309,45 @@ render(&quot;Test.md&quot;, pdf_document(keep_tex=TRUE))
 ## 4         Linear Model ANOVA 0.6143859
 ## 5         Linear Model ANOVA 0.6143859
 ## 6         Linear Model ANOVA 0.6143859</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># write.csv(tmp, '/my/path/here/mymodel.csv')</span></code></pre></div>
+<div class="sourceCode" id="cb124"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb124-1" data-line-number="1"><span class="co"># write.csv(tmp, '/my/path/here/mymodel.csv')</span></a></code></pre></div>
 </div>
 <div id="write-tableby-object-to-a-separate-word-or-html-file" class="section level2">
 <h2>21. Write <code>tableby</code> object to a separate Word or HTML file</h2>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## write to an HTML document
-tab1 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span class="op">~</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span>age, <span class="dt">data=</span>mockstudy)
-<span class="kw">write2html</span>(tab1, <span class="st">&quot;~/trash.html&quot;</span>)
-
-## write to a Word document
-<span class="kw">write2word</span>(tab1, <span class="st">&quot;~/trash.doc&quot;</span>, <span class="dt">title=</span><span class="st">&quot;My table in Word&quot;</span>)</code></pre></div>
+<div class="sourceCode" id="cb125"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb125-1" data-line-number="1">## write to an HTML document</a>
+<a class="sourceLine" id="cb125-2" data-line-number="2">tab1 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span class="op">~</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span>age, <span class="dt">data=</span>mockstudy)</a>
+<a class="sourceLine" id="cb125-3" data-line-number="3"><span class="kw">write2html</span>(tab1, <span class="st">&quot;~/trash.html&quot;</span>)</a>
+<a class="sourceLine" id="cb125-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb125-5" data-line-number="5">## write to a Word document</a>
+<a class="sourceLine" id="cb125-6" data-line-number="6"><span class="kw">write2word</span>(tab1, <span class="st">&quot;~/trash.doc&quot;</span>, <span class="dt">title=</span><span class="st">&quot;My table in Word&quot;</span>)</a></code></pre></div>
 </div>
 <div id="use-tableby-in-r-shiny" class="section level2">
 <h2>22. Use <code>tableby</code> in R Shiny</h2>
 <p>The easiest way to output a <code>tableby()</code> object in an R Shiny app is to use the <code>tableOutput()</code> UI in combination with the <code>renderTable()</code> server function and <code>as.data.frame(summary(tableby()))</code>:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># A standalone shiny app</span>
-<span class="kw">library</span>(shiny)
-<span class="kw">library</span>(arsenal)
-<span class="kw">data</span>(mockstudy)
-
-<span class="kw">shinyApp</span>(
-  <span class="dt">ui =</span> <span class="kw">fluidPage</span>(<span class="kw">tableOutput</span>(<span class="st">&quot;table&quot;</span>)),
-  <span class="dt">server =</span> <span class="cf">function</span>(input, output) {
-    output<span class="op">$</span>table &lt;-<span class="st"> </span><span class="kw">renderTable</span>({
-      <span class="kw">as.data.frame</span>(<span class="kw">summary</span>(<span class="kw">tableby</span>(sex <span class="op">~</span><span class="st"> </span>age, <span class="dt">data =</span> mockstudy), <span class="dt">text =</span> <span class="st">&quot;html&quot;</span>))
-    }, <span class="dt">sanitize.text.function =</span> <span class="cf">function</span>(x) x)
-  }
-)</code></pre></div>
+<div class="sourceCode" id="cb126"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb126-1" data-line-number="1"><span class="co"># A standalone shiny app</span></a>
+<a class="sourceLine" id="cb126-2" data-line-number="2"><span class="kw">library</span>(shiny)</a>
+<a class="sourceLine" id="cb126-3" data-line-number="3"><span class="kw">library</span>(arsenal)</a>
+<a class="sourceLine" id="cb126-4" data-line-number="4"><span class="kw">data</span>(mockstudy)</a>
+<a class="sourceLine" id="cb126-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb126-6" data-line-number="6"><span class="kw">shinyApp</span>(</a>
+<a class="sourceLine" id="cb126-7" data-line-number="7">  <span class="dt">ui =</span> <span class="kw">fluidPage</span>(<span class="kw">tableOutput</span>(<span class="st">&quot;table&quot;</span>)),</a>
+<a class="sourceLine" id="cb126-8" data-line-number="8">  <span class="dt">server =</span> <span class="cf">function</span>(input, output) {</a>
+<a class="sourceLine" id="cb126-9" data-line-number="9">    output<span class="op">$</span>table &lt;-<span class="st"> </span><span class="kw">renderTable</span>({</a>
+<a class="sourceLine" id="cb126-10" data-line-number="10">      <span class="kw">as.data.frame</span>(<span class="kw">summary</span>(<span class="kw">tableby</span>(sex <span class="op">~</span><span class="st"> </span>age, <span class="dt">data =</span> mockstudy), <span class="dt">text =</span> <span class="st">&quot;html&quot;</span>))</a>
+<a class="sourceLine" id="cb126-11" data-line-number="11">    }, <span class="dt">sanitize.text.function =</span> <span class="cf">function</span>(x) x)</a>
+<a class="sourceLine" id="cb126-12" data-line-number="12">  }</a>
+<a class="sourceLine" id="cb126-13" data-line-number="13">)</a></code></pre></div>
 <p>This can be especially powerful if you feed the selections from a <code>selectInput(multiple = TRUE)</code> into <code>formulize()</code> to make the table dynamic!</p>
 </div>
 <div id="use-tableby-in-bookdown" class="section level2">
 <h2>23. Use <code>tableby</code> in bookdown</h2>
 <p>Since the backbone of <code>tableby()</code> is <code>knitr::kable()</code>, tables still render well in bookdown. However, <code>print.summary.tableby()</code> doesn’t use the <code>caption=</code> argument of <code>kable()</code>, so some tables may not have a properly numbered caption. To fix this, use the method described <a href="https://bookdown.org/yihui/bookdown/tables.html">on the bookdown site</a> to give the table a tag/ID.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(<span class="kw">tableby</span>(sex <span class="op">~</span><span class="st"> </span>age, <span class="dt">data =</span> mockstudy), <span class="dt">title=</span><span class="st">&quot;(</span><span class="ch">\\</span><span class="st">#tab:mytableby) Caption here&quot;</span>)</code></pre></div>
+<div class="sourceCode" id="cb127"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb127-1" data-line-number="1"><span class="kw">summary</span>(<span class="kw">tableby</span>(sex <span class="op">~</span><span class="st"> </span>age, <span class="dt">data =</span> mockstudy), <span class="dt">title=</span><span class="st">&quot;(</span><span class="ch">\\</span><span class="st">#tab:mytableby) Caption here&quot;</span>)</a></code></pre></div>
 </div>
 <div id="adjust-tableby-for-multiple-p-values" class="section level2">
 <h2>24. Adjust <code>tableby</code> for multiple p-values</h2>
 <p>The <code>padjust()</code> function is a new S3 generic piggybacking off of <code>p.adjust()</code>. It works on both <code>tableby</code> and <code>summary.tableby</code> objects:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tab &lt;-<span class="st"> </span><span class="kw">summary</span>(<span class="kw">tableby</span>(sex <span class="op">~</span><span class="st"> </span>age <span class="op">+</span><span class="st"> </span>fu.time <span class="op">+</span><span class="st"> </span>bmi <span class="op">+</span><span class="st"> </span>mdquality.s, <span class="dt">data =</span> mockstudy))
-tab</code></pre></div>
+<div class="sourceCode" id="cb128"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb128-1" data-line-number="1">tab &lt;-<span class="st"> </span><span class="kw">summary</span>(<span class="kw">tableby</span>(sex <span class="op">~</span><span class="st"> </span>age <span class="op">+</span><span class="st"> </span>fu.time <span class="op">+</span><span class="st"> </span>bmi <span class="op">+</span><span class="st"> </span>mdquality.s, <span class="dt">data =</span> mockstudy))</a>
+<a class="sourceLine" id="cb128-2" data-line-number="2">tab</a></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -4227,7 +4459,7 @@ tab</code></pre></div>
 </tr>
 </tbody>
 </table>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">padjust</span>(tab, <span class="dt">method =</span> <span class="st">&quot;bonferroni&quot;</span>)</code></pre></div>
+<div class="sourceCode" id="cb129"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb129-1" data-line-number="1"><span class="kw">padjust</span>(tab, <span class="dt">method =</span> <span class="st">&quot;bonferroni&quot;</span>)</a></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -4343,7 +4575,7 @@ tab</code></pre></div>
 <div id="tabulate-multiple-endpoints" class="section level2">
 <h2>25. Tabulate multiple endpoints</h2>
 <p>You can now use <code>list()</code> on the left-hand side of <code>tableby()</code> to give multiple endpoints.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(<span class="kw">tableby</span>(<span class="kw">list</span>(sex, mdquality.s, ps) <span class="op">~</span><span class="st"> </span>age <span class="op">+</span><span class="st"> </span>bmi, <span class="dt">data =</span> mockstudy))</code></pre></div>
+<div class="sourceCode" id="cb130"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb130-1" data-line-number="1"><span class="kw">summary</span>(<span class="kw">tableby</span>(<span class="kw">list</span>(sex, mdquality.s, ps) <span class="op">~</span><span class="st"> </span>age <span class="op">+</span><span class="st"> </span>bmi, <span class="dt">data =</span> mockstudy))</a></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -4539,7 +4771,7 @@ tab</code></pre></div>
 </tbody>
 </table>
 <p>To avoid confusion about which table is which endpoint, you can set <code>term.name=TRUE</code> in <code>summary()</code>. This takes the labels for each by-variable and puts them in the top-left of the table.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(<span class="kw">tableby</span>(<span class="kw">list</span>(sex, mdquality.s, ps) <span class="op">~</span><span class="st"> </span>age <span class="op">+</span><span class="st"> </span>bmi, <span class="dt">data =</span> mockstudy), <span class="dt">term.name =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<div class="sourceCode" id="cb131"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb131-1" data-line-number="1"><span class="kw">summary</span>(<span class="kw">tableby</span>(<span class="kw">list</span>(sex, mdquality.s, ps) <span class="op">~</span><span class="st"> </span>age <span class="op">+</span><span class="st"> </span>bmi, <span class="dt">data =</span> mockstudy), <span class="dt">term.name =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -4738,7 +4970,7 @@ tab</code></pre></div>
 <div id="tabulate-data-by-a-non-test-group-strata" class="section level2">
 <h2>26. Tabulate data by a non-test group (strata)</h2>
 <p>You can also specify a second grouping variable that doesn’t get tested (but instead separates results): a <em>strata</em> variable.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(<span class="kw">tableby</span>(<span class="kw">list</span>(sex, ps) <span class="op">~</span><span class="st"> </span>age <span class="op">+</span><span class="st"> </span>bmi, <span class="dt">strata =</span> arm, <span class="dt">data =</span> mockstudy))</code></pre></div>
+<div class="sourceCode" id="cb132"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb132-1" data-line-number="1"><span class="kw">summary</span>(<span class="kw">tableby</span>(<span class="kw">list</span>(sex, ps) <span class="op">~</span><span class="st"> </span>age <span class="op">+</span><span class="st"> </span>bmi, <span class="dt">strata =</span> arm, <span class="dt">data =</span> mockstudy))</a></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -5145,6 +5377,8 @@ tab</code></pre></div>
 <li><code>Nmiss</code>: only show the count of the number of missing values if there are some missing values</li>
 <li><code>Nmiss2</code>: always show a count of the number of missing values for a variable within each group</li>
 <li><code>meansd</code>: print the mean and standard deviation in the format <code>mean(sd)</code></li>
+<li><code>count</code>: print the number of values in a category</li>
+<li><code>countN</code>: print the number of values in a category plus the total N for the group in the format <code>N/Total</code></li>
 <li><code>countpct</code>: print the number of values in a category plus the column-percentage in the format <code>N (%)</code></li>
 <li><code>countrowpct</code>: print the number of values in a category plus the row-percentage in the format <code>N (%)</code></li>
 <li><code>countcellpct</code>: print the number of values in a category plus the cell-percentage in the format <code>N (%)</code></li>
@@ -5157,7 +5391,8 @@ tab</code></pre></div>
 <li><code>Nevents</code>: print number of events for a survival object within each grouping level</li>
 <li><code>medsurv</code>: print the median survival</li>
 <li><code>NeventsSurv</code>: print number of events and survival at given times</li>
-<li><code>NriskSurv</code>: print the number still at risk at given times</li>
+<li><code>NriskSurv</code>: print the number still at risk and survival at given times</li>
+<li><code>Nrisk</code>: print the number still at risk at given times</li>
 <li><code>medTime</code>: print the median follow-up time</li>
 </ul>
 </div>
@@ -5178,15 +5413,16 @@ tab</code></pre></div>
 <div id="tableby.control-settings" class="section level2">
 <h2><code>tableby.control</code> settings</h2>
 <p>A quick way to see what arguments are possible to utilize in a function is to use the <code>args()</code> command. Settings involving the number of digits can be set in <code>tableby.control</code> or in <code>summary.tableby</code>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">args</span>(tableby.control)</code></pre></div>
-<pre><code>## function (test = TRUE, total = TRUE, test.pname = NULL, cat.simplify = FALSE, 
-##     numeric.simplify = FALSE, numeric.test = &quot;anova&quot;, cat.test = &quot;chisq&quot;, 
-##     ordered.test = &quot;trend&quot;, surv.test = &quot;logrank&quot;, date.test = &quot;kwt&quot;, 
-##     numeric.stats = c(&quot;Nmiss&quot;, &quot;meansd&quot;, &quot;range&quot;), cat.stats = c(&quot;Nmiss&quot;, 
-##         &quot;countpct&quot;), ordered.stats = c(&quot;Nmiss&quot;, &quot;countpct&quot;), 
-##     surv.stats = c(&quot;Nevents&quot;, &quot;medSurv&quot;), date.stats = c(&quot;Nmiss&quot;, 
-##         &quot;median&quot;, &quot;range&quot;), stats.labels = list(Nmiss = &quot;N-Miss&quot;, 
-##         Nmiss2 = &quot;N-Miss&quot;, meansd = &quot;Mean (SD)&quot;, medianrange = &quot;Median (Range)&quot;, 
+<div class="sourceCode" id="cb133"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb133-1" data-line-number="1"><span class="kw">args</span>(tableby.control)</a></code></pre></div>
+<pre><code>## function (test = TRUE, total = TRUE, test.pname = NULL, numeric.simplify = FALSE, 
+##     cat.simplify = FALSE, ordered.simplify = FALSE, date.simplify = FALSE, 
+##     numeric.test = &quot;anova&quot;, cat.test = &quot;chisq&quot;, ordered.test = &quot;trend&quot;, 
+##     surv.test = &quot;logrank&quot;, date.test = &quot;kwt&quot;, numeric.stats = c(&quot;Nmiss&quot;, 
+##         &quot;meansd&quot;, &quot;range&quot;), cat.stats = c(&quot;Nmiss&quot;, &quot;countpct&quot;), 
+##     ordered.stats = c(&quot;Nmiss&quot;, &quot;countpct&quot;), surv.stats = c(&quot;Nmiss&quot;, 
+##         &quot;Nevents&quot;, &quot;medSurv&quot;), date.stats = c(&quot;Nmiss&quot;, &quot;median&quot;, 
+##         &quot;range&quot;), stats.labels = list(Nmiss = &quot;N-Miss&quot;, Nmiss2 = &quot;N-Miss&quot;, 
+##         meansd = &quot;Mean (SD)&quot;, medianrange = &quot;Median (Range)&quot;, 
 ##         median = &quot;Median&quot;, medianq1q3 = &quot;Median (Q1, Q3)&quot;, q1q3 = &quot;Q1, Q3&quot;, 
 ##         iqr = &quot;IQR&quot;, range = &quot;Range&quot;, countpct = &quot;Count (Pct)&quot;, 
 ##         Nevents = &quot;Events&quot;, medSurv = &quot;Median Survival&quot;, medTime = &quot;Median Follow-Up&quot;), 
@@ -5198,7 +5434,7 @@ tab</code></pre></div>
 <div id="summary.tableby-settings" class="section level2">
 <h2><code>summary.tableby</code> settings</h2>
 <p>The <code>summary.tableby</code> function has options that modify how the table appears (such as adding a title or modifying labels).</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">args</span>(arsenal<span class="op">:::</span>summary.tableby)</code></pre></div>
+<div class="sourceCode" id="cb135"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb135-1" data-line-number="1"><span class="kw">args</span>(arsenal<span class="op">:::</span>summary.tableby)</a></code></pre></div>
 <pre><code>## function (object, ..., labelTranslations = NULL, text = FALSE, 
 ##     title = NULL, pfootnote = FALSE, term.name = &quot;&quot;) 
 ## NULL</code></pre>

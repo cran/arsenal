@@ -29,7 +29,7 @@ test_that("A basic two-sided tableby call--no labels, no missings", {
 })
 
 test_that("A basic two-sided tableby call--labels, no missings", {
-  p.coin <- if(requireNamespace("coin")) "0.008" else "     "
+  skip_if_not_installed("coin")
   expect_identical(
     capture.kable(summary(tableby(Group ~ Age + trt + Phase, data = mdat, numeric.stats = c("meansd", "q1q3", "range")), text = TRUE)),
     c("|              |   High (N=30)   |   Low (N=30)    |   Med (N=30)    |  Total (N=90)   | p value|",
@@ -41,7 +41,7 @@ test_that("A basic two-sided tableby call--labels, no missings", {
       "|Treatment Arm |                 |                 |                 |                 |   0.659|",
       "|-  A          |   14 (46.7%)    |   11 (36.7%)    |   11 (36.7%)    |   36 (40.0%)    |        |",
       "|-  B          |   16 (53.3%)    |   19 (63.3%)    |   19 (63.3%)    |   54 (60.0%)    |        |",
-      paste0("|Phase         |                 |                 |                 |                 |   ", p.coin, "|"),
+      "|Phase         |                 |                 |                 |                 |   0.008|",
       "|-  I          |   11 (36.7%)    |   12 (40.0%)    |    0 (0.0%)     |   23 (25.6%)    |        |",
       "|-  II         |   10 (33.3%)    |   12 (40.0%)    |   19 (63.3%)    |   41 (45.6%)    |        |",
       "|-  III        |    9 (30.0%)    |    6 (20.0%)    |   11 (36.7%)    |   26 (28.9%)    |        |"
@@ -597,15 +597,17 @@ test_that("7/27/2017: as.data.frame.tableby and dates (#10)", {
   expect_identical(as.data.frame(tableby(~ dt, data = mdat))$Overall[[3]][2], as.Date("1968-05-14"))
 })
 
-test_that("01/24/2018: count and countpct at the same time (#51)", {
+test_that("01/24/2018: count, countN, and countpct at the same time (#51, #201)", {
   dat <- data.frame(y = rep(c("C", "D"), times = 5), x = rep(c("A", "B"), each = 5), stringsAsFactors = FALSE)
   expect_identical(
-    capture.kable(summary(tableby(y ~ x, data = dat, cat.stats = c("count", "countpct")), text = TRUE)),
+    capture.kable(summary(tableby(y ~ x, data = dat, cat.stats = c("count", "countN", "countpct")), text = TRUE)),
     c("|     |  C (N=5)  |  D (N=5)  | Total (N=10) | p value|",
       "|:----|:---------:|:---------:|:------------:|-------:|",
       "|x    |           |           |              |   0.527|",
       "|-  A |     3     |     2     |      5       |        |",
       "|-  B |     2     |     3     |      5       |        |",
+      "|-  A |    3/5    |    2/5    |     5/10     |        |",
+      "|-  B |    2/5    |    3/5    |     5/10     |        |",
       "|-  A | 3 (60.0%) | 2 (40.0%) |  5 (50.0%)   |        |",
       "|-  B | 2 (40.0%) | 3 (60.0%) |  5 (50.0%)   |        |"
     )
@@ -613,30 +615,35 @@ test_that("01/24/2018: count and countpct at the same time (#51)", {
 })
 
 test_that("01/30/2018: additional follow-up statistics (#32)", {
-  if(require(survival) && packageVersion("survival") >= "2.41-3")
-  {
-    expect_identical(
-      capture.kable(summary(tableby(sex ~ Surv(fu.time/365.25, fu.stat), data=mockstudy, times=1:5,
-                                    surv.stats=c("medSurv", "Nevents", "NeventsSurv", "NriskSurv", "medTime")), text = TRUE)),
-      c("|                              | Male (N=916) | Female (N=583) | Total (N=1499) | p value|",
-        "|:-----------------------------|:------------:|:--------------:|:--------------:|-------:|",
-        "|Surv(fu.time/365.25, fu.stat) |              |                |                |   0.975|",
-        "|-  Median Survival            |    1.506     |     1.487      |     1.495      |        |",
-        "|-  Events                     |     829      |      527       |      1356      |        |",
-        "|-  time = 1                   |  286 (68.7)  |   202 (65.3)   |   488 (67.4)   |        |",
-        "|-  time = 2                   |  597 (34.4)  |   391 (32.8)   |   988 (33.7)   |        |",
-        "|-  time = 3                   |  748 (17.5)  |   481 (17.0)   |  1229 (17.3)   |        |",
-        "|-  time = 4                   |  809 (9.4)   |   513 (10.9)   |  1322 (10.1)   |        |",
-        "|-  time = 5                   |  825 (6.3)   |   525 (7.4)    |   1350 (6.8)   |        |",
-        "|-  time = 1                   |     626      |      380       |      1006      |        |",
-        "|-  time = 2                   |     309      |      190       |      499       |        |",
-        "|-  time = 3                   |     152      |       95       |      247       |        |",
-        "|-  time = 4                   |      57      |       51       |      108       |        |",
-        "|-  time = 5                   |      24      |       18       |       42       |        |",
-        "|-  Median Follow-Up           |    4.665     |     4.413      |     4.561      |        |"
-      )
+  skip_if_not(getRversion() >= "3.3.0")
+  skip_if_not_installed("survival", "2.41-3")
+  require(survival)
+  expect_identical(
+    capture.kable(summary(tableby(sex ~ Surv(fu.time/365.25, fu.stat), data=mockstudy, times=1:5,
+                                  surv.stats=c("medSurv", "Nevents", "NeventsSurv", "Nrisk", "NriskSurv", "medTime")), text = TRUE)),
+    c("|                              | Male (N=916) | Female (N=583) | Total (N=1499) | p value|",
+      "|:-----------------------------|:------------:|:--------------:|:--------------:|-------:|",
+      "|Surv(fu.time/365.25, fu.stat) |              |                |                |   0.975|",
+      "|-  Median Survival            |    1.506     |     1.487      |     1.495      |        |",
+      "|-  Events                     |     829      |      527       |      1356      |        |",
+      "|-  time = 1                   |  286 (68.7)  |   202 (65.3)   |   488 (67.4)   |        |",
+      "|-  time = 2                   |  597 (34.4)  |   391 (32.8)   |   988 (33.7)   |        |",
+      "|-  time = 3                   |  748 (17.5)  |   481 (17.0)   |  1229 (17.3)   |        |",
+      "|-  time = 4                   |  809 (9.4)   |   513 (10.9)   |  1322 (10.1)   |        |",
+      "|-  time = 5                   |  825 (6.3)   |   525 (7.4)    |   1350 (6.8)   |        |",
+      "|-  time = 1                   |     626      |      380       |      1006      |        |",
+      "|-  time = 2                   |     309      |      190       |      499       |        |",
+      "|-  time = 3                   |     152      |       95       |      247       |        |",
+      "|-  time = 4                   |      57      |       51       |      108       |        |",
+      "|-  time = 5                   |      24      |       18       |       42       |        |",
+      "|-  time = 1                   |  626 (68.7)  |   380 (65.3)   |  1006 (67.4)   |        |",
+      "|-  time = 2                   |  309 (34.4)  |   190 (32.8)   |   499 (33.7)   |        |",
+      "|-  time = 3                   |  152 (17.5)  |   95 (17.0)    |   247 (17.3)   |        |",
+      "|-  time = 4                   |   57 (9.4)   |   51 (10.9)    |   108 (10.1)   |        |",
+      "|-  time = 5                   |   24 (6.3)   |    18 (7.4)    |    42 (6.8)    |        |",
+      "|-  Median Follow-Up           |    4.665     |     4.413      |     4.561      |        |"
     )
-  } else skip("survival package not available or not the right version.")
+  )
 })
 
 
@@ -755,24 +762,6 @@ test_that("02/26/2018: all NA vars (#80, #81, #82, #83, #84)", {
       "|-  Range     | 1.000 - 3.000 |   NA    | 1.000 - 3.000 |        |"
     )
   )
-  if(require(survival) && packageVersion("survival") >= "2.41-3")
-  {
-    expect_identical(
-      capture.kable(summary(tableby(y ~ Surv(x), data=dat, times = 1:2,
-                                    surv.stats=c("medSurv", "Nevents", "NeventsSurv", "NriskSurv", "medTime")), text = TRUE)),
-      c("|                    | A (N=3)  | B (N=2) | Total (N=5) | p value|",
-        "|:-------------------|:--------:|:-------:|:-----------:|-------:|",
-        "|Surv(x)             |          |         |             |        |",
-        "|-  Median Survival  |  2.000   |   NA    |    2.000    |        |",
-        "|-  Events           |    3     |   NA    |      3      |        |",
-        "|-  time = 1         | 1 (66.7) |   NA    |  1 (66.7)   |        |",
-        "|-  time = 2         | 2 (33.3) |   NA    |  2 (33.3)   |        |",
-        "|-  time = 1         |    3     |   NA    |      3      |        |",
-        "|-  time = 2         |    2     |   NA    |      2      |        |",
-        "|-  Median Follow-Up |    NA    |   NA    |     NA      |        |"
-      )
-    )
-  } else skip("survival package not available or not the right version.")
 
   dat2 <- data.frame(Group = rep(1:2, each=5), A = rep(c(1, NA), each=5), B = rep(factor(c("A", NA)), each=5))
   expect_identical(
@@ -789,6 +778,26 @@ test_that("02/26/2018: all NA vars (#80, #81, #82, #83, #84)", {
     )
   )
 
+  skip_if_not(getRversion() >= "3.3.0")
+  skip_if_not_installed("survival", "2.41-3")
+  require(survival)
+  expect_identical(
+    capture.kable(summary(tableby(y ~ Surv(x), data=dat, times = 1:2,
+                                  surv.stats=c("medSurv", "Nevents", "NeventsSurv", "Nrisk", "NriskSurv", "medTime")), text = TRUE)),
+    c("|                    | A (N=3)  | B (N=2) | Total (N=5) | p value|",
+      "|:-------------------|:--------:|:-------:|:-----------:|-------:|",
+      "|Surv(x)             |          |         |             |        |",
+      "|-  Median Survival  |  2.000   |   NA    |    2.000    |        |",
+      "|-  Events           |    3     |   NA    |      3      |        |",
+      "|-  time = 1         | 1 (66.7) |   NA    |  1 (66.7)   |        |",
+      "|-  time = 2         | 2 (33.3) |   NA    |  2 (33.3)   |        |",
+      "|-  time = 1         |    3     |   NA    |      3      |        |",
+      "|-  time = 2         |    2     |   NA    |      2      |        |",
+      "|-  time = 1         | 3 (66.7) |   NA    |  3 (66.7)   |        |",
+      "|-  time = 2         | 2 (33.3) |   NA    |  2 (33.3)   |        |",
+      "|-  Median Follow-Up |    NA    |   NA    |     NA      |        |"
+    )
+  )
 })
 
 
@@ -864,10 +873,16 @@ test_that("09/07/2018: using countpct with numerics (#137)", {
 })
 
 test_that("09/07/2018: specifying different digits (#107) and cat.simplify (#134) and numeric.simplify (#139)", {
+  tmp.mockstudy <- mockstudy
+  tmp.mockstudy$date <- as.Date("2019-03-01") + c(rep(1, times = 750), rep(2, times = 749))
+  tmp.mockstudy$date2 <- tmp.mockstudy$date
+  tmp.mockstudy$ord <- ordered(c(rep("A", times = 749), rep("B", times = 750)))
+  tmp.mockstudy$ord2 <- tmp.mockstudy$ord
   expect_identical(
     capture.kable(summary(tableby(arm ~ I(age/10) + chisq(sex, digits.count=1, digits.pct=0, cat.simplify=TRUE) + race +
-                                    anova(ast, digits=0, digits.count=1) +
-                                    kwt(fu.time, "medianq1q3", digits=0), numeric.simplify=TRUE, data=mockstudy), text=TRUE)),
+                                    anova(ast, digits=0, digits.count=1) + kwt(fu.time, "medianq1q3", digits=0) +
+                                    kwt(date, date.simplify=TRUE) + notest(ord, ordered.simplify=TRUE) + date2 + notest(ord2),
+                                  numeric.simplify=TRUE, date.stats = "median", data = tmp.mockstudy), text=TRUE)),
     c("|                    | A: IFL (N=428) | F: FOLFOX (N=691) | G: IROX (N=380) | Total (N=1499) | p value|",
       "|:-------------------|:--------------:|:-----------------:|:---------------:|:--------------:|-------:|",
       "|Age in Years        |                |                   |                 |                |   0.614|",
@@ -887,7 +902,14 @@ test_that("09/07/2018: specifying different digits (#107) and cat.simplify (#134
       "|-  N-Miss           |      69.0      |       141.0       |      56.0       |     266.0      |        |",
       "|-  Mean (SD)        |    37 (28)     |      35 (27)      |     36 (26)     |    36 (27)     |        |",
       "|-  Range            |    10 - 205    |      7 - 174      |     5 - 176     |    5 - 205     |        |",
-      "|fu.time             | 446 (256, 724) |  601 (345, 1046)  | 516 (306, 807)  | 542 (310, 878) | < 0.001|"
+      "|fu.time             | 446 (256, 724) |  601 (345, 1046)  | 516 (306, 807)  | 542 (310, 878) | < 0.001|",
+      "|date                |   2019-03-02   |    2019-03-03     |   2019-03-02    |   2019-03-02   | < 0.001|",
+      "|ord                 |  170 (39.7%)   |    439 (63.5%)    |   141 (37.1%)   |  750 (50.0%)   |        |",
+      "|date2               |                |                   |                 |                | < 0.001|",
+      "|-  Median           |   2019-03-02   |    2019-03-03     |   2019-03-02    |   2019-03-02   |        |",
+      "|ord2                |                |                   |                 |                |        |",
+      "|-  A                |  258 (60.3%)   |    252 (36.5%)    |   239 (62.9%)   |  749 (50.0%)   |        |",
+      "|-  B                |  170 (39.7%)   |    439 (63.5%)    |   141 (37.1%)   |  750 (50.0%)   |        |"
     )
   )
 })
@@ -966,6 +988,50 @@ test_that("02/26/2019: digits and stats are maintained when subsetting (#182, #1
       "|&nbsp;&nbsp;&nbsp;A: IFL    |    169.0     |     100.0      |     269.0     |        |",
       "|&nbsp;&nbsp;&nbsp;F: FOLFOX |    246.0     |     173.0      |     419.0     |        |",
       "|&nbsp;&nbsp;&nbsp;G: IROX   |    137.0     |     102.0      |     239.0     |        |"
+    )
+  )
+})
+
+test_that("03/27/2019: cat.simplify and numeric.simplify work right, even with custom stats (#199, #200, #203)", {
+  dat <- data.frame(x = c("A", "A"))
+  expect_identical(
+    capture.kable(summary(tableby(~ x, data = dat, numeric.simplify = TRUE), text = TRUE)),
+    c("|     | Overall (N=2) |",
+      "|:----|:-------------:|",
+      "|x    |               |",
+      "|-  A |  2 (100.0%)   |"
+    )
+  )
+  expect_identical(
+    capture.kable(summary(tableby(~ x, data = dat, cat.simplify = TRUE), text = TRUE)),
+    c("|   | Overall (N=2) |",
+      "|:--|:-------------:|",
+      "|x  |  2 (100.0%)   |"
+    )
+  )
+  # mystat <- countpct
+  # expect_identical(
+  #   capture.kable(summary(tableby(~ x, data = dat, cat.simplify = TRUE, cat.stats = "mystat"), text = TRUE)),
+  #   c("|   | Overall (N=2) |",
+  #     "|:--|:-------------:|",
+  #     "|x  |  2 (100.0%)   |"
+  #   )
+  # )
+})
+
+test_that("04/12/2019: Missing Surv()[,2] (#208)", {
+  skip_if_not(getRversion() >= "3.3.0")
+  skip_if_not_installed("survival", "2.41-3")
+  require(survival)
+  dat <- data.frame(by = c(1, 1, 2), time = c(1, 2, 2), event = c(0, NA, 1))
+  expect_identical(
+    capture.kable(summary(tableby(by ~ Surv(time, event), data = dat), text = TRUE)),
+    c("|                   | 1 (N=2) | 2 (N=1) | Total (N=3) | p value|",
+      "|:------------------|:-------:|:-------:|:-----------:|-------:|",
+      "|Surv(time, event)  |         |         |             |   1.000|",
+      "|-  N-Miss          |    1    |    0    |      1      |        |",
+      "|-  Events          |    0    |    1    |      1      |        |",
+      "|-  Median Survival |   NA    |  2.000  |    2.000    |        |"
     )
   )
 })

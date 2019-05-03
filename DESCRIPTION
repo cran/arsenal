@@ -1,8 +1,8 @@
 Package: arsenal
 Title: An Arsenal of 'R' Functions for Large-Scale Statistical
         Summaries
-Version: 3.0.0
-Date: 2019-03-25
+Version: 3.1.0
+Date: 2019-05-03
 Authors@R: c(
     person("Ethan", "Heinzen", email = "heinzen.ethan@mayo.edu", role = c("aut", "cre")),
     person("Jason", "Sinnwell", role="aut"),
@@ -41,7 +41,7 @@ RoxygenNote: 6.1.1
 LazyData: true
 Encoding: UTF-8
 NeedsCompilation: no
-Packaged: 2019-03-25 20:49:24 UTC; m144326
+Packaged: 2019-05-03 13:59:18 UTC; m144326
 Author: Ethan Heinzen [aut, cre],
   Jason Sinnwell [aut],
   Elizabeth Atkinson [aut],
@@ -56,4 +56,4 @@ Author: Ethan Heinzen [aut, cre],
   Maddie McCullough [art]
 Maintainer: Ethan Heinzen <heinzen.ethan@mayo.edu>
 Repository: CRAN
-Date/Publication: 2019-03-25 21:25:33 UTC
+Date/Publication: 2019-05-03 14:20:06 UTC

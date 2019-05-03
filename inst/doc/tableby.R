@@ -1,5 +1,6 @@
 ## ----echo = FALSE---------------------------------------------------------------------------------
 options(width = 100)
+ge330 <- getRversion() >= "3.3.0"
 
 ## ---- load-data-----------------------------------------------------------------------------------
 library(arsenal)
@@ -118,21 +119,21 @@ table(mockstudy$age.ord, mockstudy$sex)
 table(mockstudy$age.ordnew, mockstudy$sex)
 class(mockstudy$age.ord)
 
-## ---- results="asis", warning=FALSE---------------------------------------------------------------
+## ---- results="asis", eval=requireNamespace("coin", quietly = TRUE)-------------------------------
 summary(tableby(sex ~ age.ordnew, data = mockstudy), pfootnote = TRUE)
-summary(tableby(sex ~ kwt(age.ord), data = mockstudy), pfootnote = TRUE)
+summary(tableby(sex ~ age.ord, data = mockstudy), pfootnote = TRUE)
 
-## -------------------------------------------------------------------------------------------------
+## ---- eval=ge330----------------------------------------------------------------------------------
 survfit(Surv(fu.time, fu.stat)~sex, data=mockstudy)
 survdiff(Surv(fu.time, fu.stat)~sex, data=mockstudy)
 
 ## ---- results='asis'------------------------------------------------------------------------------
 summary(tableby(sex ~ Surv(fu.time, fu.stat), data=mockstudy))
 
-## -------------------------------------------------------------------------------------------------
+## ---- eval=ge330----------------------------------------------------------------------------------
 summary(survfit(Surv(fu.time/365.25, fu.stat)~sex, data=mockstudy), times=1:5)
 
-## ---- results='asis'------------------------------------------------------------------------------
+## ---- results='asis', eval=ge330------------------------------------------------------------------
 summary(tableby(sex ~ Surv(fu.time/365.25, fu.stat), data=mockstudy, times=1:5, surv.stats=c("NeventsSurv","NriskSurv")))
 
 ## ---- results='asis'------------------------------------------------------------------------------
@@ -303,13 +304,13 @@ mockstudy$wts <- gpwts[index]
 ## show weights by treatment arm group
 tapply(mockstudy$wts,mockstudy$fake_arm, summary)
 
-## ---- results='asis'------------------------------------------------------------------------------
+## ---- results='asis', eval=ge330------------------------------------------------------------------
 orig <- tableby(fake_arm ~ age + sex + Surv(fu.time/365, fu.stat), data=mockstudy, test=FALSE)
 summary(orig, title='No Case Weights used')
 tab1 <- tableby(fake_arm ~ age + sex + Surv(fu.time/365, fu.stat), data=mockstudy, weights=wts)
 summary(tab1, title='Case Weights used')
 
-## ---- results='asis'------------------------------------------------------------------------------
+## ---- results='asis', eval=ge330------------------------------------------------------------------
 mypval <- data.frame(
   byvar = "fake_arm",
   variable = c('age','sex','Surv(fu.time/365, fu.stat)'), 
