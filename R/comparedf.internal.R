@@ -80,7 +80,7 @@ compare_values <- function(i, v, df, byvars, contr)
   int.num <- function(vr) is.integer(vr) || is.numeric(vr)
   fac.chr <- function(vr) is.factor(vr)  || is.character(vr)
 
-  if(!identical(v$class.x[i], v$class.y[i]) &&
+  if(length(intersect(v$class.x[[i]], v$class.y[[i]])) == 0 &&
      !(contr$int.as.num && int.num(var.x) && int.num(var.y)) &&
      !(contr$factor.as.char && fac.chr(var.x) && fac.chr(var.y))) return("Not compared")
 
@@ -154,13 +154,16 @@ compare_attrs <- function(i, v, x_, y_)
 ####################################################################################################
 ####################################################################################################
 
-idx_var_sum <- function(object, which = c("vars.not.shared", "vars.compared", "vars.not.compared",
+idx_var_sum <- function(object, which = c("vars.not.shared", "nonby.vars.shared", "vars.compared", "vars.not.compared",
                                           "differences.found", "non.identical.attributes", "by.variables"))
 {
   which <- match.arg(which, several.ok = FALSE)
   if(which == "vars.not.shared")
   {
     vapply(object$vars.summary$values, is.null, logical(1))
+  } else if(which == "nonby.vars.shared")
+  {
+    vapply(object$vars.summary$values, function(elt) !is.null(elt) && !identical(elt, "by-variable"), logical(1))
   } else if(which == "vars.not.compared")
   {
     vapply(object$vars.summary$values, identical, logical(1), y = "Not compared")

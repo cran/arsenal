@@ -156,7 +156,14 @@ make_ms_labs <- function(x)
         val <- unname(value[L])
         for(j in seq_along(x$tables[[i]]$x))
         {
-          if(nm %in% x$tables[[i]]$x[[j]]$term) x$tables[[i]]$x[[j]]$label[x$tables[[i]]$x[[j]]$term == nm] <- val
+          if(nm %in% x$tables[[i]]$x[[j]]$term)
+          {
+            x$tables[[i]]$x[[j]]$label[x$tables[[i]]$x[[j]]$term == nm] <- val
+          } else if(nm %in% x$tables[[i]]$x[[j]]$term.orig)
+          {
+            # for backwards-compatibility
+            x$tables[[i]]$x[[j]]$label[x$tables[[i]]$x[[j]]$term.orig == nm] <- val
+          }
         }
         for(j in seq_along(x$tables[[i]]$adjust))
         {
@@ -215,10 +222,13 @@ merge.arsenal_table <- function(x, y, all = FALSE, all.x = all, all.y = all, ...
     if(!identical(x$tables[[ytrm]]$strata, y$tables[[ytrm]]$strata)) stop("Strata not identical for term ", ytrm)
     if(!identical(x$tables[[ytrm]]$adjust, y$tables[[ytrm]]$adjust)) stop("Adjust not identical for term ", ytrm)
     if(x$tables[[ytrm]]$hasWeights != y$tables[[ytrm]]$hasWeights) stop("Weights not present in both objects for term ", ytrm)
-    if(!identical(x$tables[[ytrm]]$family, y$tables[[ytrm]]$family)) stop("Weights not present in both objects for term ", ytrm)
+    if(!identical(x$tables[[ytrm]]$family, y$tables[[ytrm]]$family)) stop("'family' not the same in both objects for term ", ytrm)
 
     xtrms <- names(y$tables[[ytrm]]$x)
     x$tables[[ytrm]]$x[xtrms] <- y$tables[[ytrm]]$x
+    if(!is.null(x$tables[[ytrm]]$control.list) && !is.null(y$tables[[ytrm]]$control.list))
+      x$tables[[ytrm]]$control.list[xtrms] <- y$tables[[ytrm]]$control.list
+
     for(j in seq_along(x$tables[[ytrm]]$tables))
     {
       x$tables[[ytrm]]$tables[[j]][xtrms] <- y$tables[[ytrm]]$tables[[j]]

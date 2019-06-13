@@ -372,3 +372,48 @@ test_that("01/31/2019: modpval.tableby (#174, #175)", {
     )
   )
 })
+
+test_that("05/20/2019: non-alphabetical strata with missing values (#215)", {
+  dat <- data.frame(
+    strat = factor(rep(1:2, each = 5), levels = 2:1),
+    a = c("a", "a", "a", "b", NA, "b", "a", "b", "a", "b")
+  )
+  expect_identical(
+    capture.kable(summary(tableby(~ a, data = dat, strata = strat))),
+    c("|strat |                         | Overall (N=10) |",
+      "|:-----|:------------------------|:--------------:|",
+      "|2     |**a**                    |                |",
+      "|      |&nbsp;&nbsp;&nbsp;a      |   2 (40.0%)    |",
+      "|      |&nbsp;&nbsp;&nbsp;b      |   3 (60.0%)    |",
+      "|1     |**a**                    |                |",
+      "|      |&nbsp;&nbsp;&nbsp;N-Miss |       1        |",
+      "|      |&nbsp;&nbsp;&nbsp;a      |   3 (75.0%)    |",
+      "|      |&nbsp;&nbsp;&nbsp;b      |   1 (25.0%)    |"
+    )
+  )
+})
+
+test_that("06/11/2019: retaining control.list with merge() (#221)", {
+
+  tab1 <- tableby(sex ~ age, data = mockstudy)
+  tab2 <- tableby(sex ~ anova(ps, digits = 0), data = mockstudy)
+
+  # this also doesn't work... I'm planning to fix this
+  expect_identical(
+    capture.kable(summary(merge(tab1, tab2))),
+    capture.kable(summary(merge(tab2, tab1)[2:1]))
+  )
+  expect_identical(
+    capture.kable(summary(merge(tab1, tab2), text = TRUE)),
+    c("|             |  Male (N=916)   | Female (N=583)  | Total (N=1499)  | p value|",
+      "|:------------|:---------------:|:---------------:|:---------------:|-------:|",
+      "|Age in Years |                 |                 |                 |   0.048|",
+      "|-  Mean (SD) | 60.455 (11.369) | 59.247 (11.722) | 59.985 (11.519) |        |",
+      "|-  Range     | 19.000 - 88.000 | 22.000 - 88.000 | 19.000 - 88.000 |        |",
+      "|ps           |                 |                 |                 |   0.345|",
+      "|-  N-Miss    |       162       |       104       |       266       |        |",
+      "|-  Mean (SD) |      1 (1)      |      1 (1)      |      1 (1)      |        |",
+      "|-  Range     |      0 - 2      |      0 - 2      |      0 - 2      |        |"
+    )
+  )
+})
