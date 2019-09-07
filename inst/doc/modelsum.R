@@ -421,6 +421,11 @@ summary(modelsum(list(age, hgb) ~ bmi + sex, adjust = ~ arm, data = mockstudy), 
 summary(modelsum(list(age, hgb) ~ bmi + sex, strata = arm, data = mockstudy))
 
 ## ------------------------------------------------------------------------
+multi.adjust <- modelsum(list(age, bmi) ~ fu.time + ast, adjust = list(Unadjusted = ~ 1, "Adjusted for Arm" = ~ arm), data = mockstudy)
+summary(multi.adjust, adjustment.names = TRUE)
+summary(multi.adjust, adjustment.names = TRUE, show.intercept = FALSE, show.adjust = FALSE)
+
+## ------------------------------------------------------------------------
 args(modelsum.control)
 
 ## ------------------------------------------------------------------------

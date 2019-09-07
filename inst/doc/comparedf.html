@@ -7,6 +7,7 @@
 <meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -21,7 +22,7 @@
 <style type="text/css" data-origin="pandoc">
 a.sourceLine { display: inline-block; line-height: 1.25; }
 a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
-a.sourceLine:empty { height: 1.2em; position: absolute; }
+a.sourceLine:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
 div.sourceCode { margin: 1em 0; }
@@ -34,13 +35,11 @@ code.sourceCode { white-space: pre-wrap; }
 a.sourceLine { text-indent: -1em; padding-left: 1em; }
 }
 pre.numberSource a.sourceLine
-  { position: relative; }
-pre.numberSource a.sourceLine:empty
-  { position: absolute; }
+  { position: relative; left: -4em; }
 pre.numberSource a.sourceLine::before
   { content: attr(data-line-number);
-    position: absolute; left: -5em; text-align: right; vertical-align: baseline;
-    border: none; pointer-events: all;
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
@@ -97,7 +96,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
       var style = rule.style.cssText;
       // check if color or background-color is set
-      if (rule.style.color === '' || rule.style.backgroundColor === '') continue;
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
       // replace div.sourceCode by a pre.sourceCode rule
       sheets[i].deleteRule(j);
       sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
@@ -292,6 +291,9 @@ code > span.al { color: #ff0000; font-weight: bold; }
 code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61717; background-color: #e3d2d2; } 
 </style>
 
+
+
+
 </head>
 
 <body>
@@ -300,8 +302,8 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 
 
 <h1 class="title toc-ignore">The compare function</h1>
-<h4 class="author"><em>Ethan Heinzen, Ryan Lennon, Andrew Hanson</em></h4>
-<h4 class="date"><em>13 June, 2019</em></h4>
+<h4 class="author">Ethan Heinzen, Ryan Lennon, Andrew Hanson</h4>
+<h4 class="date">06 September, 2019</h4>
 
 
 <div id="TOC">
@@ -1831,7 +1833,7 @@ Differences found in 2/3 variables compared.
 <h2>Treating dots and underscores the same (equivalence classes)</h2>
 <p>It is possible to treat certain characters or sets of characters as the same by passing a character vector of equivalence classes to the <code>tol.vars=</code> argument.</p>
 <p>In short, each string in the vector is split into single characters, and the resulting set of characters is replaced by the first character in the string. For example, passing <code>c(&quot;._&quot;)</code> would replace all underscores with dots in the column names of both datasets. Similarly, passing <code>c(&quot;aA&quot;, &quot;BbCc&quot;)</code> would replace all instances of <code>&quot;A&quot;</code> with <code>&quot;a&quot;</code> and all instances of <code>&quot;b&quot;</code>, <code>&quot;C&quot;</code>, or <code>&quot;c&quot;</code> with <code>&quot;B&quot;</code>. This is one way to ignore case for certain letters. Otherwise, it’s possible to combine the equivalence classes with ignoring case, by passing (e.g.) <code>c(&quot;._&quot;, &quot;case&quot;)</code>.</p>
-<p>Passing a single character as an element this vector will replace that character with the empty string. For example, passing c(&quot; “,”.“) would remove all spaces and dots from the column names.</p>
+<p>Passing a single character as an element this vector will replace that character with the empty string. For example, passing c(&quot; “,”.&quot;) would remove all spaces and dots from the column names.</p>
 <p>For mockstudy, let’s treat dots, underscores, and spaces as the same, and ignore case:</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="kw">summary</span>(<span class="kw">comparedf</span>(mockstudy, mockstudy2, <span class="dt">by =</span> <span class="st">&quot;case&quot;</span>,</a>
 <a class="sourceLine" id="cb11-2" data-line-number="2">                <span class="dt">tol.vars =</span> <span class="kw">c</span>(<span class="st">&quot;._ &quot;</span>, <span class="st">&quot;case&quot;</span>) <span class="co"># dots=underscores=spaces, ignore case</span></a>
@@ -5238,6 +5240,7 @@ Differences found in 2/3 variables compared.
     (is.na(x) &amp; !is.na(y)) | (is.na(y) &amp; !is.na(x)) | (!is.na(x) &amp; 
         !is.na(y) &amp; idx)
 }
+&lt;bytecode: 0x2a89300&gt;
 &lt;environment: namespace:arsenal&gt;</code></pre>
 <p>The <code>tol.NA()</code> function is used in all default tolerance functions to help handle NAs.</p>
 </div>
@@ -5692,6 +5695,9 @@ Differences found in 2/3 variables compared.
 </div>
 </div>
 
+
+
+<!-- code folding -->
 
 
 <!-- dynamically load mathjax for compatibility with self-contained -->

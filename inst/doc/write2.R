@@ -108,6 +108,9 @@ knitr::opts_chunk$set(eval = FALSE, message = FALSE)
 #  write2pdf(verbatim(chr), paste0(tmpdir, "/test.character.pdf"), quiet = TRUE)
 
 ## ------------------------------------------------------------------------
+#  write2pdf(verbatim(tab4, chr), paste0(tmpdir, "/test.verbatim.pdf"), quiet = TRUE)
+
+## ------------------------------------------------------------------------
 #  mylist3 <- list(
 #    yaml(title = "Test YAML Title", author = "My cool author name"),
 #    "# Header 1",

@@ -38,6 +38,10 @@ format.tbstat <- function(x, digits = NULL, ...)
 {
   x <- x[] # to remove classes
   if(is.numeric(x)) x <- trimws(formatC(x, digits = digits, format = "f"))
+  if(is.list(x) && any(idx <- vapply(x, inherits, NA, "difftime")))
+  {
+    x[idx] <- lapply(x[idx], function(xx) paste(trimws(formatC(unclass(xx), digits = digits, format = "f")), units(xx)))
+  }
   if(length(x) == 1) return(paste0(x))
 
   parens <- get_attr(x, "parens", c("", ""))
@@ -184,11 +188,11 @@ modpval.tableby <- function(x, pdata, use.pname=FALSE) {
 
     ## change test results
     for(k in seq_len(nrow(pdata))) {
-      yname <- pdata[[1]][k]
+      yname <- as.character(pdata[[1]][k])
 
       hasStrata <- x$tables[[yname]]$strata$hasStrata
-      strat <- if(hasStrata) pdata[[2]][k] else ""
-      xname <- pdata[[2 + hasStrata]][k]
+      strat <- if(hasStrata) as.character(pdata[[2]][k]) else ""
+      xname <- as.character(pdata[[2 + hasStrata]][k])
       p <- pdata[[3 + hasStrata]][k]
       method <- if(ncol(pdata) > 3 + hasStrata) pdata[[4 + hasStrata]][k] else "Modified by user"
 

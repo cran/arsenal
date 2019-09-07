@@ -7,6 +7,7 @@
 <meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -21,7 +22,7 @@
 <style type="text/css" data-origin="pandoc">
 a.sourceLine { display: inline-block; line-height: 1.25; }
 a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
-a.sourceLine:empty { height: 1.2em; position: absolute; }
+a.sourceLine:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
 div.sourceCode { margin: 1em 0; }
@@ -34,13 +35,11 @@ code.sourceCode { white-space: pre-wrap; }
 a.sourceLine { text-indent: -1em; padding-left: 1em; }
 }
 pre.numberSource a.sourceLine
-  { position: relative; }
-pre.numberSource a.sourceLine:empty
-  { position: absolute; }
+  { position: relative; left: -4em; }
 pre.numberSource a.sourceLine::before
   { content: attr(data-line-number);
-    position: absolute; left: -5em; text-align: right; vertical-align: baseline;
-    border: none; pointer-events: all;
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
@@ -97,7 +96,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
       var style = rule.style.cssText;
       // check if color or background-color is set
-      if (rule.style.color === '' || rule.style.backgroundColor === '') continue;
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
       // replace div.sourceCode by a pre.sourceCode rule
       sheets[i].deleteRule(j);
       sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
@@ -292,6 +291,9 @@ code > span.al { color: #ff0000; font-weight: bold; }
 code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61717; background-color: #e3d2d2; } 
 </style>
 
+
+
+
 </head>
 
 <body>
@@ -300,8 +302,8 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 
 
 <h1 class="title toc-ignore">The freqlist function</h1>
-<h4 class="author"><em>Tina Gunderson and Ethan Heinzen</em></h4>
-<h4 class="date"><em>13 June, 2019</em></h4>
+<h4 class="author">Tina Gunderson and Ethan Heinzen</h4>
+<h4 class="date">06 September, 2019</h4>
 
 
 <div id="TOC">
@@ -409,7 +411,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
   .. ..$ na.options: chr &quot;include&quot;
  - attr(*, &quot;class&quot;)= chr [1:2] &quot;freqlist&quot; &quot;arsenal_table&quot;</code></pre>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="co"># view the data frame portion of freqlist output</span></a>
-<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="kw">head</span>(<span class="kw">as.data.frame</span>(example1))  ## or use as.data.frame(example1)</a></code></pre></div>
+<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="kw">head</span>(<span class="kw">as.data.frame</span>(example1))  <span class="co">## or use as.data.frame(example1)</span></a></code></pre></div>
 <pre><code>     arm    sex mdquality.s Freq cumFreq freqPercent cumPercent
 1 A: IFL   Male           0   29      29   1.9346231   1.934623
 2 A: IFL   Male           1  214     243  14.2761841  16.210807
@@ -794,10 +796,10 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <h1>Using a formula with <code>freqlist</code></h1>
 <p>Instead of passing a pre-computed table to <code>freqlist()</code>, you can instead pass a formula, which will be in turn passed to the <code>xtabs()</code> function. Additional <code>freqlist()</code> arguments are passed through the <code>...</code> to the <code>freqlist()</code> table method.</p>
 <p>Note that the <code>addNA=</code> argument was added to <code>xtabs()</code> in R 3.4.0. In previous versions, NAs have to be added to relevant columns using <code>addNA()</code>.</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1">### this works in R &gt;= 3.4.0 summary(freqlist(~ arm + sex + mdquality.s, data =</a>
-<a class="sourceLine" id="cb11-2" data-line-number="2">### mockstudy, addNA = TRUE))</a>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="co">### this works in R &gt;= 3.4.0 summary(freqlist(~ arm + sex + mdquality.s, data =</span></a>
+<a class="sourceLine" id="cb11-2" data-line-number="2"><span class="co">### mockstudy, addNA = TRUE))</span></a>
 <a class="sourceLine" id="cb11-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb11-4" data-line-number="4">### This one is backwards-compatible</a>
+<a class="sourceLine" id="cb11-4" data-line-number="4"><span class="co">### This one is backwards-compatible</span></a>
 <a class="sourceLine" id="cb11-5" data-line-number="5"><span class="kw">summary</span>(<span class="kw">freqlist</span>(<span class="op">~</span>arm <span class="op">+</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span><span class="kw">addNA</span>(mdquality.s), <span class="dt">data =</span> mockstudy))</a></code></pre></div>
 <table>
 <colgroup>
@@ -4192,6 +4194,9 @@ Arm         Male Female
 </div>
 </div>
 
+
+
+<!-- code folding -->
 
 
 <!-- dynamically load mathjax for compatibility with self-contained -->

@@ -295,7 +295,7 @@ paired <- function(formula, data, id, na.action, subset=NULL, strata, control = 
           {
             for(bylev in by.levels) {
               idx <- bycol == bylev
-              bystatlist[[bylev]] <- do.call(statfun, list(currcol[idx], levels=xlevels, na.rm=TRUE, ...))
+              bystatlist[[bylev]] <- do.call(statfun, list(currcol[idx], levels=xlevels, na.rm=TRUE, conf.level = control$conf.level))
             }
           }
           if(statfun %in% c("countpct", "countrowpct", "countcellpct"))
@@ -306,15 +306,15 @@ paired <- function(formula, data, id, na.action, subset=NULL, strata, control = 
           } else if(statfun == "count")
           {
             # this doesn't have percentages
-            bystatlist$Difference <- count(ifelse(TP1.eff == TP2.eff, TP1.eff, NA), levels = xlevels, na.rm = TRUE)
+            bystatlist$Difference <- count(replace(TP1.eff, TP1.eff == TP2.eff, NA), levels = xlevels, na.rm = TRUE)
           } else if(statfun %in% c("binomCI", "rowbinomCI"))
           {
             bystatlist$Difference <- rowbinomCI(TP1.eff, levels = xlevels, by = TP1.eff == TP2.eff,
-                                                by.levels = c(TRUE, FALSE), na.rm = TRUE)[[2]]
+                                                by.levels = c(TRUE, FALSE), na.rm = TRUE, conf.level = control$conf.level)[[2]]
           } else
           {
             bystatlist$Difference <- do.call(statfun, list(as.numeric(TP2.eff) - as.numeric(TP1.eff),
-                                                           levels=xlevels, na.rm=TRUE, ...))
+                                                           levels=xlevels, na.rm=TRUE, conf.level = control$conf.level))
           }
           statList[[statfun]] <- bystatlist
         }

@@ -7,6 +7,7 @@
 <meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -21,7 +22,7 @@
 <style type="text/css" data-origin="pandoc">
 a.sourceLine { display: inline-block; line-height: 1.25; }
 a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
-a.sourceLine:empty { height: 1.2em; position: absolute; }
+a.sourceLine:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
 div.sourceCode { margin: 1em 0; }
@@ -34,13 +35,11 @@ code.sourceCode { white-space: pre-wrap; }
 a.sourceLine { text-indent: -1em; padding-left: 1em; }
 }
 pre.numberSource a.sourceLine
-  { position: relative; }
-pre.numberSource a.sourceLine:empty
-  { position: absolute; }
+  { position: relative; left: -4em; }
 pre.numberSource a.sourceLine::before
   { content: attr(data-line-number);
-    position: absolute; left: -5em; text-align: right; vertical-align: baseline;
-    border: none; pointer-events: all;
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
@@ -97,7 +96,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
       var style = rule.style.cssText;
       // check if color or background-color is set
-      if (rule.style.color === '' || rule.style.backgroundColor === '') continue;
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
       // replace div.sourceCode by a pre.sourceCode rule
       sheets[i].deleteRule(j);
       sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
@@ -292,6 +291,9 @@ code > span.al { color: #ff0000; font-weight: bold; }
 code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61717; background-color: #e3d2d2; } 
 </style>
 
+
+
+
 </head>
 
 <body>
@@ -300,8 +302,8 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 
 
 <h1 class="title toc-ignore">The tableby function</h1>
-<h4 class="author"><em>Beth Atkinson, Ethan Heinzen, Jason Sinnwell, Shannon McDonnell and Greg Dougherty</em></h4>
-<h4 class="date"><em>13 June, 2019</em></h4>
+<h4 class="author">Beth Atkinson, Ethan Heinzen, Jason Sinnwell, Shannon McDonnell and Greg Dougherty</h4>
+<h4 class="date">06 September, 2019</h4>
 
 
 <div id="TOC">
@@ -369,25 +371,25 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">library</span>(arsenal)</a>
 <a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw">require</span>(knitr)</a>
 <a class="sourceLine" id="cb1-3" data-line-number="3"><span class="kw">require</span>(survival)</a>
-<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="kw">data</span>(mockstudy) ##load data</a>
-<a class="sourceLine" id="cb1-5" data-line-number="5"><span class="kw">dim</span>(mockstudy)  ##look at how many subjects and variables are in the dataset </a></code></pre></div>
+<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="kw">data</span>(mockstudy) <span class="co">##load data</span></a>
+<a class="sourceLine" id="cb1-5" data-line-number="5"><span class="kw">dim</span>(mockstudy)  <span class="co">##look at how many subjects and variables are in the dataset </span></a></code></pre></div>
 <pre><code>## [1] 1499   14</code></pre>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="co"># help(mockstudy) ##learn more about the dataset and variables</span></a>
-<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="kw">str</span>(mockstudy) ##quick look at the data</a></code></pre></div>
+<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="kw">str</span>(mockstudy) <span class="co">##quick look at the data</span></a></code></pre></div>
 <pre><code>## 'data.frame':    1499 obs. of  14 variables:
 ##  $ case       : int  110754 99706 105271 105001 112263 86205 99508 90158 88989 90515 ...
-##  $ age        : atomic  67 74 50 71 69 56 50 57 51 63 ...
+##  $ age        : int  67 74 50 71 69 56 50 57 51 63 ...
 ##   ..- attr(*, &quot;label&quot;)= chr &quot;Age in Years&quot;
-##  $ arm        : atomic  F: FOLFOX A: IFL A: IFL G: IROX ...
+##  $ arm        : chr  &quot;F: FOLFOX&quot; &quot;A: IFL&quot; &quot;A: IFL&quot; &quot;G: IROX&quot; ...
 ##   ..- attr(*, &quot;label&quot;)= chr &quot;Treatment Arm&quot;
 ##  $ sex        : Factor w/ 2 levels &quot;Male&quot;,&quot;Female&quot;: 1 2 2 2 2 1 1 1 2 1 ...
-##  $ race       : atomic  Caucasian Caucasian Caucasian Caucasian ...
+##  $ race       : chr  &quot;Caucasian&quot; &quot;Caucasian&quot; &quot;Caucasian&quot; &quot;Caucasian&quot; ...
 ##   ..- attr(*, &quot;label&quot;)= chr &quot;Race&quot;
 ##  $ fu.time    : int  922 270 175 128 233 120 369 421 387 363 ...
 ##  $ fu.stat    : int  2 2 2 2 2 2 2 2 2 2 ...
 ##  $ ps         : int  0 1 1 1 0 0 0 0 1 1 ...
 ##  $ hgb        : num  11.5 10.7 11.1 12.6 13 10.2 13.3 12.1 13.8 12.1 ...
-##  $ bmi        : atomic  25.1 19.5 NA 29.4 26.4 ...
+##  $ bmi        : num  25.1 19.5 NA 29.4 26.4 ...
 ##   ..- attr(*, &quot;label&quot;)= chr &quot;Body Mass Index (kg/m^2)&quot;
 ##  $ alk.phos   : int  160 290 700 771 350 569 162 152 231 492 ...
 ##  $ ast        : int  35 52 100 68 35 27 16 12 25 18 ...
@@ -506,7 +508,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 </div>
 <div id="summaries-using-standard-r-code" class="section level2">
 <h2>Summaries using standard R code</h2>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1">## base R frequency example</a>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="co">## base R frequency example</span></a>
 <a class="sourceLine" id="cb11-2" data-line-number="2">tmp &lt;-<span class="st"> </span><span class="kw">table</span>(<span class="dt">Gender=</span>mockstudy<span class="op">$</span>sex, <span class="st">&quot;Study Arm&quot;</span>=mockstudy<span class="op">$</span>arm)</a>
 <a class="sourceLine" id="cb11-3" data-line-number="3">tmp</a></code></pre></div>
 <pre><code>##         Study Arm
@@ -520,7 +522,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 ## 
 ## data:  tmp
 ## X-squared = 3.3168, df = 2, p-value = 0.1904</code></pre>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1">## base R numeric summary example</a>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1"><span class="co">## base R numeric summary example</span></a>
 <a class="sourceLine" id="cb15-2" data-line-number="2"><span class="kw">tapply</span>(mockstudy<span class="op">$</span>age, mockstudy<span class="op">$</span>arm, summary)</a></code></pre></div>
 <pre><code>## $`A: IFL`
 ##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
@@ -544,10 +546,10 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <div id="add-labels" class="section level2">
 <h2>Add labels</h2>
 <p>In the above example, age is shown with a label (Age in Years), but sex is listed “as is” with lower case letters. This is because the data was created in SAS and in the SAS dataset, age had a label but sex did not. The label is stored as an attribute within R.</p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" data-line-number="1">## Look at one variable's label</a>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" data-line-number="1"><span class="co">## Look at one variable's label</span></a>
 <a class="sourceLine" id="cb19-2" data-line-number="2"><span class="kw">attr</span>(mockstudy<span class="op">$</span>age,<span class="st">'label'</span>)</a></code></pre></div>
 <pre><code>## [1] &quot;Age in Years&quot;</code></pre>
-<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" data-line-number="1">## See all the variables with a label</a>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" data-line-number="1"><span class="co">## See all the variables with a label</span></a>
 <a class="sourceLine" id="cb21-2" data-line-number="2"><span class="kw">unlist</span>(<span class="kw">lapply</span>(mockstudy,<span class="st">'attr'</span>,<span class="st">'label'</span>))</a></code></pre></div>
 <pre><code>##                        age                        arm                       race 
 ##             &quot;Age in Years&quot;            &quot;Treatment Arm&quot;                     &quot;Race&quot; 
@@ -1153,7 +1155,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <a class="sourceLine" id="cb38-2" data-line-number="2">tab.catsim &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span class="op">~</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span>race, <span class="dt">cat.test=</span><span class="st">&quot;fe&quot;</span>, <span class="dt">simulate.p.value=</span><span class="ot">TRUE</span>, <span class="dt">B=</span><span class="dv">500</span>, <span class="dt">data=</span>mockstudy)</a>
 <a class="sourceLine" id="cb38-3" data-line-number="3"><span class="kw">tests</span>(tab.catsim)</a></code></pre></div>
 <pre><code>      Group Variable   p.value</code></pre>
-<p>1 Treatment Arm sex 0.2195609 2 Treatment Arm race 0.3093812 Method 1 Fisher’s Exact Test for Count Data with simulated p-value(based on 500 replicates) 2 Fisher’s Exact Test for Count Data with simulated p-value(based on 500 replicates)</p>
+<p>1 Treatment Arm sex 0.2195609 2 Treatment Arm race 0.3093812 Method 1 Fisher’s Exact Test for Count Data with simulated p-valuebased on 500 replicates) 2 Fisher’s Exact Test for Count Data with simulated p-valuebased on 500 replicates)</p>
 <p>The chi-square test on 2x2 tables applies Yates’ continuity correction by default, so we provide an option to turn off the correction. We show the results with and without the correction that is applied to treatment arm by sex, if we use subset to ignore one of the three treatment arms.</p>
 <div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb40-1" data-line-number="1">cat.correct &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span class="op">~</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span>race, <span class="dt">cat.test=</span><span class="st">&quot;chisq&quot;</span>, <span class="dt">subset =</span> <span class="op">!</span><span class="kw">grepl</span>(<span class="st">&quot;^F&quot;</span>, arm), <span class="dt">data=</span>mockstudy)</a>
 <a class="sourceLine" id="cb40-2" data-line-number="2"><span class="kw">tests</span>(cat.correct)</a></code></pre></div>
@@ -1725,26 +1727,26 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <td align="center"></td>
 <td align="center"></td>
 <td align="center"></td>
-<td align="right">0.554</td>
+<td align="right">0.661</td>
 </tr>
 <tr class="even">
 <td align="left">   N-Miss</td>
-<td align="center">3</td>
 <td align="center">2</td>
+<td align="center">3</td>
 <td align="center">5</td>
 <td align="right"></td>
 </tr>
 <tr class="odd">
 <td align="left">   Median</td>
-<td align="center">2007-06-16</td>
-<td align="center">2007-06-15</td>
-<td align="center">2007-06-15</td>
+<td align="center">2007-05-25</td>
+<td align="center">2007-05-08</td>
+<td align="center">2007-05-22</td>
 <td align="right"></td>
 </tr>
 <tr class="even">
 <td align="left">   Range</td>
-<td align="center">2005-01-03 - 2009-12-27</td>
-<td align="center">2005-01-01 - 2009-12-28</td>
+<td align="center">2005-01-02 - 2009-12-28</td>
+<td align="center">2005-01-01 - 2009-12-25</td>
 <td align="center">2005-01-01 - 2009-12-28</td>
 <td align="right"></td>
 </tr>
@@ -1754,18 +1756,18 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <div id="summarize-multiple-variables-without-typing-them-out" class="section level2">
 <h2>6. Summarize multiple variables without typing them out</h2>
 <p>Often one wants to summarize a number of variables. Instead of typing by hand each individual variable, an alternative approach is to create a formula using the <code>paste</code> command with the <code>collapse=&quot;+&quot;</code> option.</p>
-<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb64-1" data-line-number="1">## create a vector specifying the variable names</a>
+<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb64-1" data-line-number="1"><span class="co">## create a vector specifying the variable names</span></a>
 <a class="sourceLine" id="cb64-2" data-line-number="2">myvars &lt;-<span class="st"> </span><span class="kw">names</span>(mockstudy)</a>
 <a class="sourceLine" id="cb64-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb64-4" data-line-number="4">## select the 8th through the last variables</a>
-<a class="sourceLine" id="cb64-5" data-line-number="5">## paste them together, separated by the + sign</a>
+<a class="sourceLine" id="cb64-4" data-line-number="4"><span class="co">## select the 8th through the last variables</span></a>
+<a class="sourceLine" id="cb64-5" data-line-number="5"><span class="co">## paste them together, separated by the + sign</span></a>
 <a class="sourceLine" id="cb64-6" data-line-number="6">RHS &lt;-<span class="st"> </span><span class="kw">paste</span>(myvars[<span class="dv">8</span><span class="op">:</span><span class="dv">10</span>], <span class="dt">collapse=</span><span class="st">&quot;+&quot;</span>)</a>
 <a class="sourceLine" id="cb64-7" data-line-number="7">RHS</a></code></pre></div>
 <p>[1] “ps+hgb+bmi”</p>
-<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb65-1" data-line-number="1">## create a formula using the as.formula function</a>
+<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb65-1" data-line-number="1"><span class="co">## create a formula using the as.formula function</span></a>
 <a class="sourceLine" id="cb65-2" data-line-number="2"><span class="kw">as.formula</span>(<span class="kw">paste</span>(<span class="st">'arm ~ '</span>, RHS))</a></code></pre></div>
 <p>arm ~ ps + hgb + bmi</p>
-<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb66-1" data-line-number="1">## use the formula in the tableby function</a>
+<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb66-1" data-line-number="1"><span class="co">## use the formula in the tableby function</span></a>
 <a class="sourceLine" id="cb66-2" data-line-number="2"><span class="kw">summary</span>(<span class="kw">tableby</span>(<span class="kw">as.formula</span>(<span class="kw">paste</span>(<span class="st">'arm ~'</span>, RHS)), <span class="dt">data=</span>mockstudy))</a></code></pre></div>
 <table>
 <thead>
@@ -1878,14 +1880,14 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 </tbody>
 </table>
 <p>These steps can also be done using the <code>formulize</code> function.</p>
-<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb67-1" data-line-number="1">## The formulize function does the paste and as.formula steps</a>
+<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb67-1" data-line-number="1"><span class="co">## The formulize function does the paste and as.formula steps</span></a>
 <a class="sourceLine" id="cb67-2" data-line-number="2">tmp &lt;-<span class="st"> </span><span class="kw">formulize</span>(<span class="st">'arm'</span>,myvars[<span class="dv">8</span><span class="op">:</span><span class="dv">10</span>])</a>
 <a class="sourceLine" id="cb67-3" data-line-number="3">tmp</a></code></pre></div>
 <p>arm ~ ps + hgb + bmi</p>
-<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb68-1" data-line-number="1">## More complex formulas could also be written using formulize</a>
+<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb68-1" data-line-number="1"><span class="co">## More complex formulas could also be written using formulize</span></a>
 <a class="sourceLine" id="cb68-2" data-line-number="2">tmp2 &lt;-<span class="st"> </span><span class="kw">formulize</span>(<span class="st">'arm'</span>,<span class="kw">c</span>(<span class="st">'ps'</span>,<span class="st">'hgb^2'</span>,<span class="st">'bmi'</span>))</a>
 <a class="sourceLine" id="cb68-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb68-4" data-line-number="4">## use the formula in the tableby function</a>
+<a class="sourceLine" id="cb68-4" data-line-number="4"><span class="co">## use the formula in the tableby function</span></a>
 <a class="sourceLine" id="cb68-5" data-line-number="5"><span class="kw">summary</span>(<span class="kw">tableby</span>(tmp, <span class="dt">data=</span>mockstudy))</a></code></pre></div>
 <table>
 <thead>
@@ -2217,7 +2219,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 </div>
 <div id="create-combinations-of-variables-on-the-fly" class="section level2">
 <h2>8. Create combinations of variables on the fly</h2>
-<div class="sourceCode" id="cb79"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb79-1" data-line-number="1">## create a variable combining the levels of mdquality.s and sex</a>
+<div class="sourceCode" id="cb79"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb79-1" data-line-number="1"><span class="co">## create a variable combining the levels of mdquality.s and sex</span></a>
 <a class="sourceLine" id="cb79-2" data-line-number="2"><span class="kw">with</span>(mockstudy, <span class="kw">table</span>(<span class="kw">interaction</span>(mdquality.s,sex)))</a></code></pre></div>
 <pre><code>## 
 ##   0.Male   1.Male 0.Female 1.Female 
@@ -2285,7 +2287,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb82"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb82-1" data-line-number="1">## create a new grouping variable with combined levels of arm and sex</a>
+<div class="sourceCode" id="cb82"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb82-1" data-line-number="1"><span class="co">## create a new grouping variable with combined levels of arm and sex</span></a>
 <a class="sourceLine" id="cb82-2" data-line-number="2"><span class="kw">summary</span>(<span class="kw">tableby</span>(<span class="kw">interaction</span>(mdquality.s, sex) <span class="op">~</span><span class="st">  </span>age <span class="op">+</span><span class="st"> </span>bmi, <span class="dt">data=</span>mockstudy, <span class="dt">subset=</span>arm<span class="op">==</span><span class="st">&quot;F: FOLFOX&quot;</span>))</a></code></pre></div>
 <table>
 <colgroup>
@@ -3128,10 +3130,10 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <div id="merge-two-tableby-objects-together" class="section level2">
 <h2>11. Merge two <code>tableby</code> objects together</h2>
 <p>It is possible to combine two tableby objects so that they print out together. Overlapping by-variables will have their x-variables concatenated, and (if <code>all=TRUE</code>) non-overlapping by-variables will have their tables printed separately.</p>
-<div class="sourceCode" id="cb98"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb98-1" data-line-number="1">## demographics</a>
+<div class="sourceCode" id="cb98"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb98-1" data-line-number="1"><span class="co">## demographics</span></a>
 <a class="sourceLine" id="cb98-2" data-line-number="2">tab1 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span class="op">~</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span>age, <span class="dt">data=</span>mockstudy,</a>
 <a class="sourceLine" id="cb98-3" data-line-number="3">                <span class="dt">control=</span><span class="kw">tableby.control</span>(<span class="dt">numeric.stats=</span><span class="kw">c</span>(<span class="st">&quot;Nmiss&quot;</span>,<span class="st">&quot;meansd&quot;</span>), <span class="dt">total=</span><span class="ot">FALSE</span>))</a>
-<a class="sourceLine" id="cb98-4" data-line-number="4">## lab data</a>
+<a class="sourceLine" id="cb98-4" data-line-number="4"><span class="co">## lab data</span></a>
 <a class="sourceLine" id="cb98-5" data-line-number="5">tab2 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span class="op">~</span><span class="st"> </span>hgb <span class="op">+</span><span class="st"> </span>alk.phos, <span class="dt">data=</span>mockstudy,</a>
 <a class="sourceLine" id="cb98-6" data-line-number="6">                <span class="dt">control=</span><span class="kw">tableby.control</span>(<span class="dt">numeric.stats=</span><span class="kw">c</span>(<span class="st">&quot;Nmiss&quot;</span>,<span class="st">&quot;median&quot;</span>,<span class="st">&quot;q1q3&quot;</span>),</a>
 <a class="sourceLine" id="cb98-7" data-line-number="7">                                        <span class="dt">numeric.test=</span><span class="st">&quot;kwt&quot;</span>, <span class="dt">total=</span><span class="ot">FALSE</span>))</a>
@@ -3322,13 +3324,13 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <li><p>Show how many subjects are missing each variable only if there are any missing values</p></li>
 <li><p>Don’t indicate missing values at all</p></li>
 </ul>
-<div class="sourceCode" id="cb101"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb101-1" data-line-number="1">## look at how many missing values there are for each variable</a>
+<div class="sourceCode" id="cb101"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb101-1" data-line-number="1"><span class="co">## look at how many missing values there are for each variable</span></a>
 <a class="sourceLine" id="cb101-2" data-line-number="2"><span class="kw">apply</span>(<span class="kw">is.na</span>(mockstudy),<span class="dv">2</span>,sum)</a></code></pre></div>
 <pre><code>##        case         age         arm         sex        race     fu.time     fu.stat          ps 
 ##           0           0           0           0           7           0           0         266 
 ##         hgb         bmi    alk.phos         ast mdquality.s     age.ord  age.ordnew     dtentry 
 ##         266          33         266         266         252           0           1           5</code></pre>
-<div class="sourceCode" id="cb103"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb103-1" data-line-number="1">## Show how many subjects have each variable (non-missing)</a>
+<div class="sourceCode" id="cb103"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb103-1" data-line-number="1"><span class="co">## Show how many subjects have each variable (non-missing)</span></a>
 <a class="sourceLine" id="cb103-2" data-line-number="2"><span class="kw">summary</span>(<span class="kw">tableby</span>(sex <span class="op">~</span><span class="st"> </span>ast <span class="op">+</span><span class="st"> </span>age, <span class="dt">data=</span>mockstudy,</a>
 <a class="sourceLine" id="cb103-3" data-line-number="3">                <span class="dt">control=</span><span class="kw">tableby.control</span>(<span class="dt">numeric.stats=</span><span class="kw">c</span>(<span class="st">&quot;N&quot;</span>,<span class="st">&quot;median&quot;</span>), <span class="dt">total=</span><span class="ot">FALSE</span>)))</a></code></pre></div>
 <table>
@@ -3379,7 +3381,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb104"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb104-1" data-line-number="1">## Always list the number of missing values</a>
+<div class="sourceCode" id="cb104"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb104-1" data-line-number="1"><span class="co">## Always list the number of missing values</span></a>
 <a class="sourceLine" id="cb104-2" data-line-number="2"><span class="kw">summary</span>(<span class="kw">tableby</span>(sex <span class="op">~</span><span class="st"> </span>ast <span class="op">+</span><span class="st"> </span>age, <span class="dt">data=</span>mockstudy,</a>
 <a class="sourceLine" id="cb104-3" data-line-number="3">                <span class="dt">control=</span><span class="kw">tableby.control</span>(<span class="dt">numeric.stats=</span><span class="kw">c</span>(<span class="st">&quot;Nmiss2&quot;</span>,<span class="st">&quot;median&quot;</span>), <span class="dt">total=</span><span class="ot">FALSE</span>)))</a></code></pre></div>
 <table>
@@ -3430,7 +3432,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb105"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb105-1" data-line-number="1">## Only show the missing values if there are some (default)</a>
+<div class="sourceCode" id="cb105"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb105-1" data-line-number="1"><span class="co">## Only show the missing values if there are some (default)</span></a>
 <a class="sourceLine" id="cb105-2" data-line-number="2"><span class="kw">summary</span>(<span class="kw">tableby</span>(sex <span class="op">~</span><span class="st"> </span>ast <span class="op">+</span><span class="st"> </span>age, <span class="dt">data=</span>mockstudy, </a>
 <a class="sourceLine" id="cb105-3" data-line-number="3">                <span class="dt">control=</span><span class="kw">tableby.control</span>(<span class="dt">numeric.stats=</span><span class="kw">c</span>(<span class="st">&quot;Nmiss&quot;</span>,<span class="st">&quot;mean&quot;</span>),<span class="dt">total=</span><span class="ot">FALSE</span>)))</a></code></pre></div>
 <table>
@@ -3475,7 +3477,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb106"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb106-1" data-line-number="1">## Don't show N at all</a>
+<div class="sourceCode" id="cb106"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb106-1" data-line-number="1"><span class="co">## Don't show N at all</span></a>
 <a class="sourceLine" id="cb106-2" data-line-number="2"><span class="kw">summary</span>(<span class="kw">tableby</span>(sex <span class="op">~</span><span class="st"> </span>ast <span class="op">+</span><span class="st"> </span>age, <span class="dt">data=</span>mockstudy, </a>
 <a class="sourceLine" id="cb106-3" data-line-number="3">                <span class="dt">control=</span><span class="kw">tableby.control</span>(<span class="dt">numeric.stats=</span><span class="kw">c</span>(<span class="st">&quot;mean&quot;</span>),<span class="dt">total=</span><span class="ot">FALSE</span>)))</a></code></pre></div>
 <table>
@@ -3808,7 +3810,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <td align="left">   Trimmed Mean, 10%</td>
 <td align="center">12.6</td>
 <td align="center">11.9</td>
-<td align="center">NA</td>
+<td align="center">12.3</td>
 <td align="right"></td>
 </tr>
 </tbody>
@@ -3817,14 +3819,14 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <div id="use-case-weights-for-creating-summary-statistics" class="section level2">
 <h2>16. Use case-weights for creating summary statistics</h2>
 <p>When comparing groups, they are often unbalanced when it comes to nuisances such as age and sex. The <code>tableby</code> function allows you to create weighted summary statistics. If this option us used then p-values are not calculated (<code>test=FALSE</code>).</p>
-<div class="sourceCode" id="cb111"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb111-1" data-line-number="1">##create fake group that is not balanced by age/sex </a>
+<div class="sourceCode" id="cb111"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb111-1" data-line-number="1"><span class="co">##create fake group that is not balanced by age/sex </span></a>
 <a class="sourceLine" id="cb111-2" data-line-number="2"><span class="kw">set.seed</span>(<span class="dv">200</span>)</a>
 <a class="sourceLine" id="cb111-3" data-line-number="3">mockstudy<span class="op">$</span>fake_arm &lt;-<span class="st"> </span><span class="kw">ifelse</span>(mockstudy<span class="op">$</span>age<span class="op">&gt;</span><span class="dv">60</span> <span class="op">&amp;</span><span class="st"> </span>mockstudy<span class="op">$</span>sex<span class="op">==</span><span class="st">'Female'</span>,<span class="kw">sample</span>(<span class="kw">c</span>(<span class="st">'A'</span>,<span class="st">'B'</span>),<span class="dt">replace=</span>T, <span class="dt">prob=</span><span class="kw">c</span>(.<span class="dv">2</span>,.<span class="dv">8</span>)),</a>
 <a class="sourceLine" id="cb111-4" data-line-number="4">                            <span class="kw">sample</span>(<span class="kw">c</span>(<span class="st">'A'</span>,<span class="st">'B'</span>),<span class="dt">replace=</span>T, <span class="dt">prob=</span><span class="kw">c</span>(.<span class="dv">8</span>,.<span class="dv">4</span>)))</a>
 <a class="sourceLine" id="cb111-5" data-line-number="5"></a>
 <a class="sourceLine" id="cb111-6" data-line-number="6">mockstudy<span class="op">$</span>agegp &lt;-<span class="st"> </span><span class="kw">cut</span>(mockstudy<span class="op">$</span>age, <span class="dt">breaks=</span><span class="kw">c</span>(<span class="dv">18</span>,<span class="dv">50</span>,<span class="dv">60</span>,<span class="dv">70</span>,<span class="dv">90</span>), <span class="dt">right=</span><span class="ot">FALSE</span>)</a>
 <a class="sourceLine" id="cb111-7" data-line-number="7"></a>
-<a class="sourceLine" id="cb111-8" data-line-number="8">## create weights based on agegp and sex distribution</a>
+<a class="sourceLine" id="cb111-8" data-line-number="8"><span class="co">## create weights based on agegp and sex distribution</span></a>
 <a class="sourceLine" id="cb111-9" data-line-number="9">tab1 &lt;-<span class="st"> </span><span class="kw">with</span>(mockstudy,<span class="kw">table</span>(agegp, sex))</a>
 <a class="sourceLine" id="cb111-10" data-line-number="10">tab2 &lt;-<span class="st"> </span><span class="kw">with</span>(mockstudy, <span class="kw">table</span>(agegp, sex, fake_arm))</a>
 <a class="sourceLine" id="cb111-11" data-line-number="11">tab2</a></code></pre></div>
@@ -3848,11 +3850,11 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <div class="sourceCode" id="cb113"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb113-1" data-line-number="1">gpwts &lt;-<span class="st"> </span><span class="kw">rep</span>(tab1, <span class="kw">length</span>(<span class="kw">unique</span>(mockstudy<span class="op">$</span>fake_arm)))<span class="op">/</span>tab2</a>
 <a class="sourceLine" id="cb113-2" data-line-number="2">gpwts[gpwts<span class="op">&gt;</span><span class="dv">50</span>] &lt;-<span class="st"> </span><span class="dv">30</span></a>
 <a class="sourceLine" id="cb113-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb113-4" data-line-number="4">## apply weights to subjects</a>
+<a class="sourceLine" id="cb113-4" data-line-number="4"><span class="co">## apply weights to subjects</span></a>
 <a class="sourceLine" id="cb113-5" data-line-number="5">index &lt;-<span class="st"> </span><span class="kw">with</span>(mockstudy, <span class="kw">cbind</span>(<span class="kw">as.numeric</span>(agegp), <span class="kw">as.numeric</span>(sex), <span class="kw">as.numeric</span>(<span class="kw">as.factor</span>(fake_arm)))) </a>
 <a class="sourceLine" id="cb113-6" data-line-number="6">mockstudy<span class="op">$</span>wts &lt;-<span class="st"> </span>gpwts[index]</a>
 <a class="sourceLine" id="cb113-7" data-line-number="7"></a>
-<a class="sourceLine" id="cb113-8" data-line-number="8">## show weights by treatment arm group</a>
+<a class="sourceLine" id="cb113-8" data-line-number="8"><span class="co">## show weights by treatment arm group</span></a>
 <a class="sourceLine" id="cb113-9" data-line-number="9"><span class="kw">tapply</span>(mockstudy<span class="op">$</span>wts,mockstudy<span class="op">$</span>fake_arm, summary)</a></code></pre></div>
 <pre><code>## $A
 ##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
@@ -3937,9 +3939,9 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <thead>
 <tr class="header">
 <th align="left"></th>
-<th align="center">A (N=605)</th>
-<th align="center">B (N=894)</th>
-<th align="center">Total (N=1499)</th>
+<th align="center">A (N=1377)</th>
+<th align="center">B (N=1499)</th>
+<th align="center">Total (N=2876)</th>
 </tr>
 </thead>
 <tbody>
@@ -4017,9 +4019,9 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <thead>
 <tr class="header">
 <th align="left"></th>
-<th align="center">A (N=605)</th>
-<th align="center">B (N=894)</th>
-<th align="center">Total (N=1499)</th>
+<th align="center">A (N=1377)</th>
+<th align="center">B (N=1499)</th>
+<th align="center">Total (N=2876)</th>
 <th align="right">adj.pvalue</th>
 </tr>
 </thead>
@@ -4029,7 +4031,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <td align="center"></td>
 <td align="center"></td>
 <td align="center"></td>
-<td align="right">0.010<sup>1</sup></td>
+<td align="right">0.953<sup>1</sup></td>
 </tr>
 <tr class="even">
 <td align="left">   Mean (SD)</td>
@@ -4050,7 +4052,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <td align="center"></td>
 <td align="center"></td>
 <td align="center"></td>
-<td align="right">0.953<sup>1</sup></td>
+<td align="right">0.811<sup>1</sup></td>
 </tr>
 <tr class="odd">
 <td align="left">   Male</td>
@@ -4071,7 +4073,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <td align="center"></td>
 <td align="center"></td>
 <td align="center"></td>
-<td align="right">0.811<sup>1</sup></td>
+<td align="right">0.010<sup>1</sup></td>
 </tr>
 <tr class="even">
 <td align="left">   Events</td>
@@ -4313,11 +4315,11 @@ render(&quot;Test.md&quot;, pdf_document(keep_tex=TRUE))
 </div>
 <div id="write-tableby-object-to-a-separate-word-or-html-file" class="section level2">
 <h2>21. Write <code>tableby</code> object to a separate Word or HTML file</h2>
-<div class="sourceCode" id="cb125"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb125-1" data-line-number="1">## write to an HTML document</a>
+<div class="sourceCode" id="cb125"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb125-1" data-line-number="1"><span class="co">## write to an HTML document</span></a>
 <a class="sourceLine" id="cb125-2" data-line-number="2">tab1 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span class="op">~</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span>age, <span class="dt">data=</span>mockstudy)</a>
 <a class="sourceLine" id="cb125-3" data-line-number="3"><span class="kw">write2html</span>(tab1, <span class="st">&quot;~/trash.html&quot;</span>)</a>
 <a class="sourceLine" id="cb125-4" data-line-number="4"></a>
-<a class="sourceLine" id="cb125-5" data-line-number="5">## write to a Word document</a>
+<a class="sourceLine" id="cb125-5" data-line-number="5"><span class="co">## write to a Word document</span></a>
 <a class="sourceLine" id="cb125-6" data-line-number="6"><span class="kw">write2word</span>(tab1, <span class="st">&quot;~/trash.doc&quot;</span>, <span class="dt">title=</span><span class="st">&quot;My table in Word&quot;</span>)</a></code></pre></div>
 </div>
 <div id="use-tableby-in-r-shiny" class="section level2">
@@ -5377,6 +5379,7 @@ render(&quot;Test.md&quot;, pdf_document(keep_tex=TRUE))
 <li><code>Nmiss</code>: only show the count of the number of missing values if there are some missing values</li>
 <li><code>Nmiss2</code>: always show a count of the number of missing values for a variable within each group</li>
 <li><code>meansd</code>: print the mean and standard deviation in the format <code>mean(sd)</code></li>
+<li><code>meanCI</code>: print the mean and a (t) confidence interval</li>
 <li><code>count</code>: print the number of values in a category</li>
 <li><code>countN</code>: print the number of values in a category plus the total N for the group in the format <code>N/Total</code></li>
 <li><code>countpct</code>: print the number of values in a category plus the column-percentage in the format <code>N (%)</code></li>
@@ -5417,18 +5420,19 @@ render(&quot;Test.md&quot;, pdf_document(keep_tex=TRUE))
 <pre><code>## function (test = TRUE, total = TRUE, test.pname = NULL, numeric.simplify = FALSE, 
 ##     cat.simplify = FALSE, ordered.simplify = FALSE, date.simplify = FALSE, 
 ##     numeric.test = &quot;anova&quot;, cat.test = &quot;chisq&quot;, ordered.test = &quot;trend&quot;, 
-##     surv.test = &quot;logrank&quot;, date.test = &quot;kwt&quot;, numeric.stats = c(&quot;Nmiss&quot;, 
-##         &quot;meansd&quot;, &quot;range&quot;), cat.stats = c(&quot;Nmiss&quot;, &quot;countpct&quot;), 
-##     ordered.stats = c(&quot;Nmiss&quot;, &quot;countpct&quot;), surv.stats = c(&quot;Nmiss&quot;, 
-##         &quot;Nevents&quot;, &quot;medSurv&quot;), date.stats = c(&quot;Nmiss&quot;, &quot;median&quot;, 
-##         &quot;range&quot;), stats.labels = list(Nmiss = &quot;N-Miss&quot;, Nmiss2 = &quot;N-Miss&quot;, 
-##         meansd = &quot;Mean (SD)&quot;, medianrange = &quot;Median (Range)&quot;, 
+##     surv.test = &quot;logrank&quot;, date.test = &quot;kwt&quot;, test.always = FALSE, 
+##     numeric.stats = c(&quot;Nmiss&quot;, &quot;meansd&quot;, &quot;range&quot;), cat.stats = c(&quot;Nmiss&quot;, 
+##         &quot;countpct&quot;), ordered.stats = c(&quot;Nmiss&quot;, &quot;countpct&quot;), 
+##     surv.stats = c(&quot;Nmiss&quot;, &quot;Nevents&quot;, &quot;medSurv&quot;), date.stats = c(&quot;Nmiss&quot;, 
+##         &quot;median&quot;, &quot;range&quot;), stats.labels = list(Nmiss = &quot;N-Miss&quot;, 
+##         Nmiss2 = &quot;N-Miss&quot;, meansd = &quot;Mean (SD)&quot;, medianrange = &quot;Median (Range)&quot;, 
 ##         median = &quot;Median&quot;, medianq1q3 = &quot;Median (Q1, Q3)&quot;, q1q3 = &quot;Q1, Q3&quot;, 
 ##         iqr = &quot;IQR&quot;, range = &quot;Range&quot;, countpct = &quot;Count (Pct)&quot;, 
-##         Nevents = &quot;Events&quot;, medSurv = &quot;Median Survival&quot;, medTime = &quot;Median Follow-Up&quot;), 
-##     digits = 3L, digits.count = 0L, digits.pct = 1L, digits.p = 3L, 
-##     format.p = TRUE, conf.level = 0.95, chisq.correct = FALSE, 
-##     simulate.p.value = FALSE, B = 2000, ...) 
+##         Nevents = &quot;Events&quot;, medSurv = &quot;Median Survival&quot;, medTime = &quot;Median Follow-Up&quot;, 
+##         medianmad = &quot;Median (MAD)&quot;), digits = 3L, digits.count = 0L, 
+##     digits.pct = 1L, digits.p = 3L, format.p = TRUE, conf.level = 0.95, 
+##     chisq.correct = FALSE, simulate.p.value = FALSE, B = 2000, 
+##     times = 1:5, ...) 
 ## NULL</code></pre>
 </div>
 <div id="summary.tableby-settings" class="section level2">
@@ -5441,6 +5445,9 @@ render(&quot;Test.md&quot;, pdf_document(keep_tex=TRUE))
 </div>
 </div>
 
+
+
+<!-- code folding -->
 
 
 <!-- dynamically load mathjax for compatibility with self-contained -->

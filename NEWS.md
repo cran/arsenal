@@ -1,3 +1,54 @@
+# arsenal v3.3.0
+
+* `tableby()` / `paired()`:
+
+    - Redid how weights are handled. The only user-visible changes should be that standard deviations
+      on length-1 groups are now reported as `NA` instead of `NaN`.
+  
+    - Fixed a bug with `modpval.tableby()` when factors are involved. (#239)
+  
+    - Added `meanCI()` and `medianmad()`. (#230, #232)
+
+    - Added the units for `difftime` statistics when using dates (e.g., `meansd`, `medianmad`, `iqr`).
+
+    - Fixed Chi-square and Fisher's Exact test for one-level categorical variables. (#227, #228)
+
+    - Fixed the n's in the header when using weights. (#229)
+
+    - Fixed a bug with confidence levels supplied through the control argument. (#234)
+
+    - `paired()`: fixed a bug when using `count()` with factors. (#235)
+
+    - `tableby.control()`: added explicit `times=` argument for survival summaries.
+
+    - Added option to run statistical tests even if one by-group has 0 observations. (#233, #250, #251)
+
+    - Stopped the formatting of p-values when they're not numeric (if, say, they're pre-formatted by the user). (#249)
+
+* `modelsum()`:
+
+    - Added functionality for multiple adjustor sets. (#240)
+
+    - Fixed "Nmiss" and "N" when used with strata, which now both report the missings for the entire fit. (#241, #242, #243)
+
+    - Suppressed messages from `pROC::auc()` when calculating AUC. (#244)
+
+    - Fixed confidence level for survival models. (#245)
+
+    - Added an option for the likelihood ratio test for the main effect (but not the adjustors): `p.value.lrt` (#238)
+
+    - Blanked out p-values that are NA. (#246)
+
+* `code.chunk()`:
+
+    - Fixed logic checking the length of `chunk.opts=`.
+
+    - Allowed for empty code chunks. (#236)
+
+* `verbatim()`: removed named argument in favor of the dots; reworked the object structure to fix edge case printing oddities. (#248)
+
+* Removed defunct functions.
+
 # arsenal v3.2.0
 
 * `comparedf()`:

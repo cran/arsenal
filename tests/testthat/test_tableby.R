@@ -431,7 +431,7 @@ test_that("02/07/2017: Jason Sinnwell's chisq problem", {
     capture.kable(summary(tableby(x ~ y, data = dat[dat$y == "cough",]), text = TRUE)),
     c("|              |  A (N=1)   |  B (N=3)   |  C (N=1)   | Total (N=5) | p value|",
       "|:-------------|:----------:|:----------:|:----------:|:-----------:|-------:|",
-      "|y             |            |            |            |             |   1.000|",
+      "|y             |            |            |            |             |        |",
       "|-  chest pain |  0 (0.0%)  |  0 (0.0%)  |  0 (0.0%)  |  0 (0.0%)   |        |",
       "|-  cough      | 1 (100.0%) | 3 (100.0%) | 1 (100.0%) | 5 (100.0%)  |        |",
       "|-  pneumonia  |  0 (0.0%)  |  0 (0.0%)  |  0 (0.0%)  |  0 (0.0%)   |        |"
@@ -441,7 +441,7 @@ test_that("02/07/2017: Jason Sinnwell's chisq problem", {
     capture.kable(summary(tableby(x ~ as.character(y), data = dat[dat$y == "cough",]), text = TRUE)),
     c("|                |  A (N=1)   |  B (N=3)   |  C (N=1)   | Total (N=5) | p value|",
       "|:---------------|:----------:|:----------:|:----------:|:-----------:|-------:|",
-      "|as.character(y) |            |            |            |             |   1.000|",
+      "|as.character(y) |            |            |            |             |   0.449|",
       "|-  cough        | 1 (100.0%) | 3 (100.0%) | 1 (100.0%) | 5 (100.0%)  |        |"
     )
   )
@@ -487,7 +487,7 @@ test_that("05/24/2017: Katherine King's count vs countpct", {
       "|-  Male      |        0        |        1        |        0        |        1        |",
       "|-  Female    |        2        |        1        |        1        |        4        |",
       "|age          |                 |                 |                 |                 |",
-      "|-  Mean (SD) | 62.000 (16.971) | 68.000 (1.414)  |  71.000 (NaN)   | 66.200 (9.418)  |",
+      "|-  Mean (SD) | 62.000 (16.971) | 68.000 (1.414)  |   71.000 (NA)   | 66.200 (9.418)  |",
       "|-  Range     | 50.000 - 74.000 | 67.000 - 69.000 | 71.000 - 71.000 | 50.000 - 74.000 |"
     )
   )
@@ -772,7 +772,7 @@ test_that("02/26/2018: all NA vars (#80, #81, #82, #83, #84)", {
       "|-  N-Miss    |       0       |    5    |       5       |        |",
       "|-  Mean (SD) | 1.000 (0.000) |   NA    | 1.000 (0.000) |        |",
       "|-  Range     | 1.000 - 1.000 |   NA    | 1.000 - 1.000 |        |",
-      "|B            |               |         |               |   1.000|",
+      "|B            |               |         |               |   0.025|",
       "|-  N-Miss    |       0       |    5    |       5       |        |",
       "|-  A         |  5 (100.0%)   |    0    |  5 (100.0%)   |        |"
     )
@@ -801,21 +801,24 @@ test_that("02/26/2018: all NA vars (#80, #81, #82, #83, #84)", {
 })
 
 
-test_that("03/07/2018: quantiles for dates and IQR (#86)", {
+test_that("03/07/2018 and 07/17/2019: quantiles for dates and IQR and mad (#86)", {
   expect_identical(
     capture.kable(summary(tableby(Sex ~ dt + ht_in + Age, data = mdat,
-                                  numeric.stats = c("q1q3", "iqr"), date.stats = c("q1q3", "iqr")), text = TRUE)),
-    c("|                 |     Female (N=46)      |      Male (N=44)       |      Total (N=90)      | p value|",
-      "|:----------------|:----------------------:|:----------------------:|:----------------------:|-------:|",
-      "|dt               |                        |                        |                        |   0.339|",
-      "|-  Q1, Q3        | 1946-04-26, 1953-11-07 | 1946-11-27, 1954-06-13 | 1946-06-13, 1954-04-26 |        |",
-      "|-  IQR           |        2751.250        |        2755.500        |        2873.250        |        |",
-      "|Height in Inches |                        |                        |                        |   0.786|",
-      "|-  Q1, Q3        |     61.250, 68.000     |     62.000, 68.000     |     62.000, 68.000     |        |",
-      "|-  IQR           |         6.750          |         6.000          |         6.000          |        |",
-      "|Age in Years     |                        |                        |                        |   0.818|",
-      "|-  Q1, Q3        |     36.000, 44.000     |     37.000, 41.250     |     36.000, 43.000     |        |",
-      "|-  IQR           |         8.000          |         4.250          |         7.000          |        |"
+                                  numeric.stats = c("q1q3", "iqr", "medianmad"), date.stats = c("q1q3", "iqr", "medianmad")), text = TRUE)),
+    c("|                 |       Female (N=46)        |        Male (N=44)         |        Total (N=90)        | p value|",
+      "|:----------------|:--------------------------:|:--------------------------:|:--------------------------:|-------:|",
+      "|dt               |                            |                            |                            |   0.339|",
+      "|-  Q1, Q3        |   1946-04-26, 1953-11-07   |   1946-11-27, 1954-06-13   |   1946-06-13, 1954-04-26   |        |",
+      "|-  IQR           |       2751.250 days        |       2755.500 days        |       2873.250 days        |        |",
+      "|-  Median (MAD)  | 1948-12-07 (1574.000 days) | 1951-03-26 (1420.500 days) | 1949-10-07 (1601.500 days) |        |",
+      "|Height in Inches |                            |                            |                            |   0.786|",
+      "|-  Q1, Q3        |       61.250, 68.000       |       62.000, 68.000       |       62.000, 68.000       |        |",
+      "|-  IQR           |           6.750            |           6.000            |           6.000            |        |",
+      "|-  Median (MAD)  |       65.000 (3.000)       |       64.000 (3.000)       |       64.000 (4.000)       |        |",
+      "|Age in Years     |                            |                            |                            |   0.818|",
+      "|-  Q1, Q3        |       36.000, 44.000       |       37.000, 41.250       |       36.000, 43.000       |        |",
+      "|-  IQR           |           8.000            |           4.250            |           7.000            |        |",
+      "|-  Median (MAD)  |       39.000 (4.000)       |       39.500 (2.500)       |       39.000 (3.000)       |        |"
     )
   )
 })
@@ -868,6 +871,17 @@ test_that("09/07/2018: using countpct with numerics (#137)", {
       "|-  1 | 1 (100.0%) |  0 (0.0%)  |  0 (0.0%)  |  1 (33.3%)  |        |",
       "|-  2 |  0 (0.0%)  | 1 (100.0%) |  0 (0.0%)  |  1 (33.3%)  |        |",
       "|-  3 |  0 (0.0%)  |  0 (0.0%)  | 1 (100.0%) |  1 (33.3%)  |        |"
+    )
+  )
+  expect_identical(
+    capture.kable(summary(tableby(sex ~ anova(ps, "count", "meansd"), data = mockstudy), text = TRUE)),
+    c("|             | Male (N=916)  | Female (N=583) | Total (N=1499) | p value|",
+      "|:------------|:-------------:|:--------------:|:--------------:|-------:|",
+      "|ps           |               |                |                |   0.345|",
+      "|-  0         |      391      |      244       |      635       |        |",
+      "|-  1         |      329      |      202       |      531       |        |",
+      "|-  2         |      34       |       33       |       67       |        |",
+      "|-  Mean (SD) | 0.527 (0.583) | 0.559 (0.621)  | 0.539 (0.598)  |        |"
     )
   )
 })
@@ -1060,5 +1074,197 @@ test_that("06/12/2019: labelTranslations for non-default stat tests (#220, #222)
     capture.kable(summary(tableby(sex ~ kwt(fu.time), data = set_labels(mockstudy, list(fu.time = "FU time"))), labelTranslations = list(NULL))),
     capture.kable(summary(tableby(sex ~ kwt(fu.time), data = mockstudy)))
   )
-
 })
+
+test_that("06/24/2019: fe() and chisq() works with only one level (#227)", {
+  expect_identical(
+    capture.kable(summary(tableby(sex ~ fe(arm), data = mockstudy, subset = arm == "F: FOLFOX"), text = TRUE)),
+    c("|              | Male (N=411) | Female (N=280) | Total (N=691) | p value|",
+      "|:-------------|:------------:|:--------------:|:-------------:|-------:|",
+      "|Treatment Arm |              |                |               |        |",
+      "|-  F: FOLFOX  | 411 (100.0%) |  280 (100.0%)  | 691 (100.0%)  |        |"
+    )
+  )
+  expect_identical(
+    capture.kable(summary(tableby(sex ~ chisq(arm), data = mockstudy, subset = arm == "F: FOLFOX"), text = TRUE)),
+    c("|              | Male (N=411) | Female (N=280) | Total (N=691) | p value|",
+      "|:-------------|:------------:|:--------------:|:-------------:|-------:|",
+      "|Treatment Arm |              |                |               | < 0.001|",
+      "|-  F: FOLFOX  | 411 (100.0%) |  280 (100.0%)  | 691 (100.0%)  |        |"
+    )
+  )
+  expect_identical(
+    capture.kable(summary(tableby(sex ~ ordered(arm), data = mockstudy, subset = arm == "F: FOLFOX"), text = TRUE)),
+    c("|             | Male (N=411) | Female (N=280) | Total (N=691) | p value|",
+      "|:------------|:------------:|:--------------:|:-------------:|-------:|",
+      "|ordered(arm) |              |                |               |        |",
+      "|-  A: IFL    |   0 (0.0%)   |    0 (0.0%)    |   0 (0.0%)    |        |",
+      "|-  F: FOLFOX | 411 (100.0%) |  280 (100.0%)  | 691 (100.0%)  |        |",
+      "|-  G: IROX   |   0 (0.0%)   |    0 (0.0%)    |   0 (0.0%)    |        |"
+    )
+  )
+})
+
+test_that("07/16/2019: n's in tableby header work with weights (#229)", {
+  d <- data.frame(a = 1:10, b = rep(c("A", "B"), 5), w = 1:10)
+  expect_identical(
+    capture.kable(summary(tableby(b ~ a, weights = w, data = d), text = TRUE)),
+    c("|             |   A (N=25)    |    B (N=30)    |  Total (N=55)  |",
+      "|:------------|:-------------:|:--------------:|:--------------:|",
+      "|a            |               |                |                |",
+      "|-  Mean (SD) | 6.600 (2.719) | 7.333 (2.870)  | 7.000 (2.622)  |",
+      "|-  Range     | 1.000 - 9.000 | 2.000 - 10.000 | 1.000 - 10.000 |"
+    )
+  )
+})
+
+
+test_that("07/17/2019: fix bug with confidence limits (#234)", {
+  expect_identical(
+    capture.kable(summary(tableby(sex ~ arm, data = mockstudy, cat.stats = "binomCI",
+                                  control = tableby.control(conf.level = 0.9)), text = TRUE)),
+    c("|              |     Male (N=916)     |    Female (N=583)    |    Total (N=1499)    | p value|",
+      "|:-------------|:--------------------:|:--------------------:|:--------------------:|-------:|",
+      "|Treatment Arm |                      |                      |                      |   0.190|",
+      "|-  A: IFL     | 0.302 (0.277, 0.328) | 0.259 (0.229, 0.291) | 0.286 (0.266, 0.305) |        |",
+      "|-  F: FOLFOX  | 0.449 (0.421, 0.476) | 0.480 (0.446, 0.515) | 0.461 (0.440, 0.483) |        |",
+      "|-  G: IROX    | 0.249 (0.225, 0.274) | 0.261 (0.231, 0.292) | 0.254 (0.235, 0.273) |        |"
+    )
+  )
+})
+
+test_that("07/17/2019: run stat test even if one group has 0 observations (#233, #250)", {
+  dd <- data.frame(group=factor(rep(c("A", "B", "C"), 20)), x1=1:60, x2 = rep(c("D", "E", "F"), each = 20))
+  dd$x1[dd$group == "C"] <- NA
+  dd$x2[dd$group == "C"] <- NA
+  expect_identical(
+    capture.kable(summary(tableby(group ~ x1, data = dd), text = TRUE)),
+    c("|             |    A (N=20)     |    B (N=20)     | C (N=20) |  Total (N=60)   | p value|",
+      "|:------------|:---------------:|:---------------:|:--------:|:---------------:|-------:|",
+      "|x1           |                 |                 |          |                 |        |",
+      "|-  N-Miss    |        0        |        0        |    20    |       20        |        |",
+      "|-  Mean (SD) | 29.500 (17.748) | 30.500 (17.748) |    NA    | 30.000 (17.527) |        |",
+      "|-  Range     | 1.000 - 58.000  | 2.000 - 59.000  |    NA    | 1.000 - 59.000  |        |"
+    )
+  )
+  expect_identical(
+    capture.kable(summary(tableby(group ~ x1, data = dd, test.always = TRUE), text = TRUE)),
+    c("|             |    A (N=20)     |    B (N=20)     | C (N=20) |  Total (N=60)   | p value|",
+      "|:------------|:---------------:|:---------------:|:--------:|:---------------:|-------:|",
+      "|x1           |                 |                 |          |                 |   0.860|",
+      "|-  N-Miss    |        0        |        0        |    20    |       20        |        |",
+      "|-  Mean (SD) | 29.500 (17.748) | 30.500 (17.748) |    NA    | 30.000 (17.527) |        |",
+      "|-  Range     | 1.000 - 58.000  | 2.000 - 59.000  |    NA    | 1.000 - 59.000  |        |"
+    )
+  )
+  expect_identical(
+    capture.kable(summary(tableby(group ~ x2, data = dd), text = TRUE)),
+    c("|          | A (N=20)  | B (N=20)  | C (N=20) | Total (N=60) | p value|",
+      "|:---------|:---------:|:---------:|:--------:|:------------:|-------:|",
+      "|x2        |           |           |          |              |        |",
+      "|-  N-Miss |     0     |     0     |    20    |      20      |        |",
+      "|-  D      | 7 (35.0%) | 7 (35.0%) |    0     |  14 (35.0%)  |        |",
+      "|-  E      | 7 (35.0%) | 6 (30.0%) |    0     |  13 (32.5%)  |        |",
+      "|-  F      | 6 (30.0%) | 7 (35.0%) |    0     |  13 (32.5%)  |        |"
+    )
+  )
+  expect_identical(
+    capture.kable(summary(tableby(group ~ x2, data = dd, test.always = TRUE), text = TRUE)),
+    c("|          | A (N=20)  | B (N=20)  | C (N=20) | Total (N=60) | p value|",
+      "|:---------|:---------:|:---------:|:--------:|:------------:|-------:|",
+      "|x2        |           |           |          |              |   0.926|",
+      "|-  N-Miss |     0     |     0     |    20    |      20      |        |",
+      "|-  D      | 7 (35.0%) | 7 (35.0%) |    0     |  14 (35.0%)  |        |",
+      "|-  E      | 7 (35.0%) | 6 (30.0%) |    0     |  13 (32.5%)  |        |",
+      "|-  F      | 6 (30.0%) | 7 (35.0%) |    0     |  13 (32.5%)  |        |"
+    )
+  )
+  expect_identical(
+    capture.kable(summary(tableby(group ~ x2, data = dd), text = TRUE)),
+    capture.kable(summary(tableby(group ~ fe(x2), data = dd), text = TRUE))
+  )
+  expect_identical(
+    capture.kable(summary(tableby(group ~ fe(x2), data = dd, test.always = TRUE, subset = group != "A" | x2 != "F"), text = TRUE)),
+    c("|          | A (N=14)  | B (N=20)  | C (N=20) | Total (N=54) | p value|",
+      "|:---------|:---------:|:---------:|:--------:|:------------:|-------:|",
+      "|x2        |           |           |          |              |   0.055|",
+      "|-  N-Miss |     0     |     0     |    20    |      20      |        |",
+      "|-  D      | 7 (50.0%) | 7 (35.0%) |    0     |  14 (41.2%)  |        |",
+      "|-  E      | 7 (50.0%) | 6 (30.0%) |    0     |  13 (38.2%)  |        |",
+      "|-  F      | 0 (0.0%)  | 7 (35.0%) |    0     |  7 (20.6%)   |        |"
+    )
+  )
+  expect_identical(
+    capture.kable(summary(tableby(group ~ x2, data = dd), text = TRUE)),
+    capture.kable(summary(tableby(group ~ ordered(x2), data = dd), labelTranslations = list("ordered(x2)" = "x2"), text = TRUE))
+  )
+  skip_if_not(getRversion() >= "3.3.0")
+  skip_if_not_installed("coin")
+  expect_identical(
+    capture.kable(summary(tableby(group ~ ordered(x2), data = dd, test.always = TRUE), labelTranslations = list("ordered(x2)" = "x2"), text = TRUE)),
+    c("|          | A (N=20)  | B (N=20)  | C (N=20) | Total (N=60) | p value|",
+      "|:---------|:---------:|:---------:|:--------:|:------------:|-------:|",
+      "|x2        |           |           |          |              |   0.849|",
+      "|-  N-Miss |     0     |     0     |    20    |      20      |        |",
+      "|-  D      | 7 (35.0%) | 7 (35.0%) |    0     |  14 (35.0%)  |        |",
+      "|-  E      | 7 (35.0%) | 6 (30.0%) |    0     |  13 (32.5%)  |        |",
+      "|-  F      | 6 (30.0%) | 7 (35.0%) |    0     |  13 (32.5%)  |        |"
+    )
+  )
+
+  skip_if_not_installed("survival", "2.41-3")
+  require(survival)
+  dd$surv <- Surv(1:60)
+  dd$surv[dd$group == "C"] <- NA
+  expect_identical(
+    capture.kable(summary(tableby(group ~ surv, data = dd), text = TRUE)),
+    c("|                   | A (N=20) | B (N=20) | C (N=20) | Total (N=60) | p value|",
+      "|:------------------|:--------:|:--------:|:--------:|:------------:|-------:|",
+      "|surv               |          |          |          |              |        |",
+      "|-  N-Miss          |    0     |    0     |    20    |      20      |        |",
+      "|-  Events          |    20    |    20    |    NA    |      40      |        |",
+      "|-  Median Survival |  29.500  |  30.500  |    NA    |    30.000    |        |"
+    )
+  )
+  expect_identical(
+    capture.kable(summary(tableby(group ~ surv, data = dd, test.always = TRUE), text = TRUE)),
+    c("|                   | A (N=20) | B (N=20) | C (N=20) | Total (N=60) | p value|",
+      "|:------------------|:--------:|:--------:|:--------:|:------------:|-------:|",
+      "|surv               |          |          |          |              |   0.690|",
+      "|-  N-Miss          |    0     |    0     |    20    |      20      |        |",
+      "|-  Events          |    20    |    20    |    NA    |      40      |        |",
+      "|-  Median Survival |  29.500  |  30.500  |    NA    |    30.000    |        |"
+    )
+  )
+})
+
+test_that("07/30/2019: modpval.tableby and factors (#239)", {
+  tab1 <- tableby(arm ~ sex + age + race, total = FALSE, test = FALSE, data = mockstudy)
+  mypval <- data.frame(
+    byvar = factor("arm"),
+    variable = factor(c("sex", "age", "race")),
+    adj.pvalue = 1:3
+  )
+  tab2 <- modpval.tableby(tab1, mypval, use.pname = TRUE)
+  expect_equal(tests(tab2)$adj.pvalue, mypval$adj.pvalue)
+})
+
+
+test_that("07/30/2019: summary.tableby and pre-formatted p-values (#249)", {
+  tab1 <- tableby(arm ~ sex + age, total = FALSE, test = FALSE, data = mockstudy)
+  mypval <- data.frame(byvar = "arm", variable = "sex", adj.pvalue = "0.0001", stringsAsFactors = FALSE)
+  tab2 <- modpval.tableby(tab1, mypval, use.pname = TRUE)
+  expect_identical(
+    capture.kable(summary(tab2, text = TRUE)),
+    c("|             | A: IFL (N=428)  | F: FOLFOX (N=691) | G: IROX (N=380) | adj.pvalue|",
+      "|:------------|:---------------:|:-----------------:|:---------------:|----------:|",
+      "|sex          |                 |                   |                 |     0.0001|",
+      "|-  Male      |   277 (64.7%)   |    411 (59.5%)    |   228 (60.0%)   |           |",
+      "|-  Female    |   151 (35.3%)   |    280 (40.5%)    |   152 (40.0%)   |           |",
+      "|Age in Years |                 |                   |                 |           |",
+      "|-  Mean (SD) | 59.673 (11.365) |  60.301 (11.632)  | 59.763 (11.499) |           |",
+      "|-  Range     | 27.000 - 88.000 |  19.000 - 88.000  | 26.000 - 85.000 |           |"
+    )
+  )
+})
+

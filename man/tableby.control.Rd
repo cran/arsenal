@@ -8,7 +8,7 @@ tableby.control(test = TRUE, total = TRUE, test.pname = NULL,
   numeric.simplify = FALSE, cat.simplify = FALSE,
   ordered.simplify = FALSE, date.simplify = FALSE,
   numeric.test = "anova", cat.test = "chisq", ordered.test = "trend",
-  surv.test = "logrank", date.test = "kwt",
+  surv.test = "logrank", date.test = "kwt", test.always = FALSE,
   numeric.stats = c("Nmiss", "meansd", "range"), cat.stats = c("Nmiss",
   "countpct"), ordered.stats = c("Nmiss", "countpct"),
   surv.stats = c("Nmiss", "Nevents", "medSurv"),
@@ -17,10 +17,10 @@ tableby.control(test = TRUE, total = TRUE, test.pname = NULL,
   "Median (Range)", median = "Median", medianq1q3 = "Median (Q1, Q3)", q1q3
   = "Q1, Q3", iqr = "IQR", range = "Range", countpct = "Count (Pct)",
   Nevents = "Events", medSurv = "Median Survival", medTime =
-  "Median Follow-Up"), digits = 3L, digits.count = 0L,
-  digits.pct = 1L, digits.p = 3L, format.p = TRUE,
-  conf.level = 0.95, chisq.correct = FALSE, simulate.p.value = FALSE,
-  B = 2000, ...)
+  "Median Follow-Up", medianmad = "Median (MAD)"), digits = 3L,
+  digits.count = 0L, digits.pct = 1L, digits.p = 3L,
+  format.p = TRUE, conf.level = 0.95, chisq.correct = FALSE,
+  simulate.p.value = FALSE, B = 2000, times = 1:5, ...)
 }
 \arguments{
 \item{test}{logical, telling \code{tableby} whether to perform tests of x variables across levels of the group variable.}
@@ -49,6 +49,9 @@ If no LHS variable exists, then a mean is required for a univariate test.}
 \item{surv.test}{name of test for survival variables: logrank}
 
 \item{date.test}{name of test for date variables: kwt}
+
+\item{test.always}{Should the test be performed even if one or more by-group has 0 observations? Relevant
+for kwt and anova.}
 
 \item{numeric.stats}{summary statistics to include for numeric RHS variables within the levels of the group LHS variable.
 Options are N, Nmiss, Nmiss2, mean, meansd, median, q1q3, medianq1q3, iqr, range, medianrange, or other R built-in or user-written functions.}
@@ -87,6 +90,8 @@ e.g., \code{list(countpct="Count (Pct)")}.}
 \item{simulate.p.value}{logical, simulate p-value for categorical tests (fe and chisq)}
 
 \item{B}{number of simulations to perform for simulation-based p-value}
+
+\item{times}{A vector of times to use for survival summaries.}
 
 \item{...}{additional arguments.}
 }

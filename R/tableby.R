@@ -175,7 +175,7 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, strata,
       if(!is.numeric(weights) || any(weights < 0)) stop("'weights' must be a numeric vector and must be non-negative")
       modeldf[["(weights)"]] <- NULL
       control$test <- FALSE
-    } else weights <- rep(1, nrow(modeldf))
+    } else weights <- NULL
 
     ###### Check for strata ######
 
@@ -232,9 +232,11 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, strata,
       control$test <- FALSE
     }
 
-
-    yList <- list(stats=c(table(factor(by.col, levels=by.levels), exclude=NA), Total=sum(!is.na(by.col))),
-                  label=labelBy, term=termBy)
+    ystats <- if(hasWeights)
+    {
+      c(stats::xtabs(weights ~ factor(by.col, levels=by.levels), exclude = NA), Total = sum(weights[!is.na(by.col)]))
+    } else c(table(factor(by.col, levels=by.levels), exclude=NA), Total=sum(!is.na(by.col)))
+    yList <- list(stats=ystats, label=labelBy, term=termBy)
 
     ## find which columnss of modeldf have specials assigned to known specials
     specialIndices <- unlist(attr(Terms, "specials")) - attributes(Terms)$response
@@ -350,10 +352,12 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, strata,
           {
             for(bylev in by.levels) {
               idx <- bycol == bylev
-              bystatlist[[bylev]] <- do.call(statfun, list(currcol[idx], levels=xlevels, na.rm=TRUE, weights=weightscol[idx], ...))
+              bystatlist[[bylev]] <- do.call(statfun, list(currcol[idx], levels=xlevels, na.rm=TRUE,
+                                                           weights=weightscol[idx], conf.level=control$conf.level, times=control$times))
             }
             ## add Total
-            bystatlist$Total <- do.call(statfun, list(currcol, levels=xlevels, weights=weightscol, ...))
+            bystatlist$Total <- do.call(statfun, list(currcol, levels=xlevels, na.rm=TRUE,
+                                                      weights=weightscol, conf.level=control$conf.level, times=control$times))
           }
           statList[[statfun]] <- bystatlist
         }
@@ -361,7 +365,7 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, strata,
         currtest <- if(nchar(specialTests[eff]) > 0) specialTests[eff] else currtest
         testout <- if(control$test) {
           eval(call(currtest, currcol, factor(bycol, levels = by.levels),
-                    chisq.correct=control$chisq.correct, simulate.p.value=control$simulate.p.value, B=control$B))
+                    chisq.correct=control$chisq.correct, simulate.p.value=control$simulate.p.value, B=control$B, test.always=control$test.always))
         } else notest()
 
         xList[[eff]] <- list(stats=statList, test=testout, type=vartype)

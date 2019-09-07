@@ -12,9 +12,9 @@ notest <- function(x, x.by, ...)
 ## aov does not return p-value. Could add it after.
 ## For now, just write our own to avoid over-writing anova R-base function
 ## also, nice to keep same format to call, eval(call(function, x, x,by)), as other tests
-anova <- function(x, x.by, ...) {
+anova <- function(x, x.by, ..., test.always = FALSE) {
   tab <- table(is.na(x), x.by)
-  if(any(tab[1, ] == 0) || any(colSums(tab) == 0)) {
+  if(!test.always && (any(tab[1, ] == 0) || any(colSums(tab) == 0))) {
     return(list(p.value=NA_real_, statistic.F=NA_real_, method="Linear Model ANOVA"))
   }
   aov.out <- stats::lm(x~x.by)
@@ -24,9 +24,9 @@ anova <- function(x, x.by, ...) {
        method = "Linear Model ANOVA")
 }
 ## 2. kruskal-wallis (non-parametric)
-kwt <- function(x, x.by, ...) {
+kwt <- function(x, x.by, ..., test.always = FALSE) {
   tab <- table(is.na(x), x.by)
-  if(any(tab[1, ] == 0) || any(colSums(tab) == 0)) {
+  if(!test.always && (any(tab[1, ] == 0) || any(colSums(tab) == 0))) {
     return(list(p.value=NA_real_, statistic.F=NA_real_, method="Kruskal-Wallis rank sum test"))
   }
   stats::kruskal.test(x, as.factor(x.by))
@@ -34,26 +34,46 @@ kwt <- function(x, x.by, ...) {
 
 ## two tests for categorical,
 ## 1. chisq goodness of fit, equal proportions across table cells
-chisq <- function(x, x.by, ..., chisq.correct=FALSE, simulate.p.value=FALSE, B=2000) {
+chisq <- function(x, x.by, ..., chisq.correct=FALSE, simulate.p.value=FALSE, B=2000, test.always = FALSE) {
   tab <- table(x, x.by, exclude=NA)
-  if(sum(rowSums(tab)>0)>1) {
-    suppressWarnings(stats::chisq.test(tab[rowSums(tab)>0,], correct=chisq.correct, simulate.p.value=simulate.p.value, B=B))
-  } else {
-    list(statistic=0, p.value=1, method="Pearson's Chi-squared test")
+  rs <- rowSums(tab)
+  cs <- colSums(tab)
+
+  if(!test.always && (any(rs == 0) || any(cs == 0)) && ncol(tab) > 1 && nrow(tab) > 1) {
+    return(list(p.value=NA_real_, method="Pearson's Chi-squared test"))
   }
+  if(length(cs) > 1) tab <- tab[rs > 0, , drop = FALSE]
+  if(length(rs) > 1) tab <- tab[, cs > 0, drop = FALSE]
+  suppressWarnings(stats::chisq.test(tab, correct=chisq.correct, simulate.p.value=simulate.p.value, B=B))
 }
+
 ## 2. Fisher's exact test for prob of as or more extreme table
-fe <- function(x, x.by, ..., simulate.p.value=FALSE, B=2000) {
-  tab <- table(x,x.by, exclude=NA)
+fe <- function(x, x.by, ..., simulate.p.value=FALSE, B=2000, test.always = FALSE) {
+  tab <- table(x, x.by, exclude=NA)
+  rs <- rowSums(tab)
+  cs <- colSums(tab)
+
+  if((!test.always && (any(rs == 0) || any(cs == 0))) || ncol(tab) == 1 || nrow(tab) == 1) {
+    return(list(p.value=NA_real_, method = "Fisher's Exact Test for Count Data"))
+  }
+  # this already subsets out rows and cols with all 0's
   stats::fisher.test(tab, simulate.p.value=simulate.p.value, B=B)
 }
 
 ## trend test for ordinal data
-trend <- function(x, x.by, ...) {
+trend <- function(x, x.by, ..., test.always = FALSE) {
   if(!requireNamespace("coin", quietly = TRUE))
   {
     warning("The \"coin\" package is required to run a trend test.", call. = FALSE)
     return(notest(x, x.by, ...))
+  }
+
+  tab <- table(x, x.by, exclude=NA)
+  rs <- rowSums(tab)
+  cs <- colSums(tab)
+
+  if(!test.always && (any(rs == 0) || any(cs == 0))) {
+    return(list(p.value=NA_real_, method = "Trend test for ordinal variables"))
   }
   ## should be taken care of with coin::
   ## require(coin, quietly=TRUE, warn.conflicts=FALSE)
@@ -67,13 +87,13 @@ trend <- function(x, x.by, ...) {
 ## ' @param x  surv variable
 ## ' @param x.by  by, categorical variable
 ## ' @return   test output with $method and $p.value
-logrank <- function(x, x.by, ...) {
-  tab <- table(is.na(x), x.by)
-  if(any(tab[1, ] == 0) || any(colSums(tab) == 0)) {
+logrank <- function(x, x.by, ..., test.always = FALSE) {
+  tab <- table(is.na(x), x.by, exclude=NA)
+  if(!test.always && (any(tab[1, ] == 0) || any(colSums(tab) == 0))) {
     return(list(p.value=NA_real_, method="survdiff logrank"))
   }
   out <- survival::survdiff(x ~ x.by)
-  out$p.value <- 1-stats::pchisq(out$chisq, df=length(unique(x.by))-1)
+  out$p.value <- 1-stats::pchisq(out$chisq, df=sum(tab[1,] != 0)-1)
   out$method <- "survdiff logrank"
   out
 }

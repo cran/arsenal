@@ -7,6 +7,7 @@
 <meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -21,7 +22,7 @@
 <style type="text/css" data-origin="pandoc">
 a.sourceLine { display: inline-block; line-height: 1.25; }
 a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
-a.sourceLine:empty { height: 1.2em; position: absolute; }
+a.sourceLine:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
 div.sourceCode { margin: 1em 0; }
@@ -34,13 +35,11 @@ code.sourceCode { white-space: pre-wrap; }
 a.sourceLine { text-indent: -1em; padding-left: 1em; }
 }
 pre.numberSource a.sourceLine
-  { position: relative; }
-pre.numberSource a.sourceLine:empty
-  { position: absolute; }
+  { position: relative; left: -4em; }
 pre.numberSource a.sourceLine::before
   { content: attr(data-line-number);
-    position: absolute; left: -5em; text-align: right; vertical-align: baseline;
-    border: none; pointer-events: all;
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
@@ -97,7 +96,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
       var style = rule.style.cssText;
       // check if color or background-color is set
-      if (rule.style.color === '' || rule.style.backgroundColor === '') continue;
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
       // replace div.sourceCode by a pre.sourceCode rule
       sheets[i].deleteRule(j);
       sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
@@ -292,6 +291,9 @@ code > span.al { color: #ff0000; font-weight: bold; }
 code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61717; background-color: #e3d2d2; } 
 </style>
 
+
+
+
 </head>
 
 <body>
@@ -300,8 +302,8 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 
 
 <h1 class="title toc-ignore">The write2 function</h1>
-<h4 class="author"><em>Ethan Heinzen</em></h4>
-<h4 class="date"><em>13 June, 2019</em></h4>
+<h4 class="author">Ethan Heinzen</h4>
+<h4 class="date">06 September, 2019</h4>
 
 
 <div id="TOC">
@@ -477,36 +479,38 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <p>Or suppose you wanted to print a character vector (as if it were to print in the terminal):</p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1">chr &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;MyVector&quot;</span>, <span class="dv">1</span><span class="op">:</span><span class="dv">10</span>)</a>
 <a class="sourceLine" id="cb14-2" data-line-number="2"><span class="kw">write2pdf</span>(<span class="kw">verbatim</span>(chr), <span class="kw">paste0</span>(tmpdir, <span class="st">&quot;/test.character.pdf&quot;</span>), <span class="dt">quiet =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
+<p>Note that you can combine multiple objects in one call:</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1"><span class="kw">write2pdf</span>(<span class="kw">verbatim</span>(tab4, chr), <span class="kw">paste0</span>(tmpdir, <span class="st">&quot;/test.verbatim.pdf&quot;</span>), <span class="dt">quiet =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
 </div>
 <div id="add-a-yaml-header-to-the-output" class="section level1">
 <h1>Add a YAML Header to the Output</h1>
 <p>You can add a YAML header to <code>write2()</code> output using the <code>yaml()</code> function.</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1">mylist3 &lt;-<span class="st"> </span><span class="kw">list</span>(</a>
-<a class="sourceLine" id="cb15-2" data-line-number="2">  <span class="kw">yaml</span>(<span class="dt">title =</span> <span class="st">&quot;Test YAML Title&quot;</span>, <span class="dt">author =</span> <span class="st">&quot;My cool author name&quot;</span>),</a>
-<a class="sourceLine" id="cb15-3" data-line-number="3">  <span class="st">&quot;# Header 1&quot;</span>,</a>
-<a class="sourceLine" id="cb15-4" data-line-number="4">  <span class="st">&quot;This is a small paragraph introducing tableby.&quot;</span>,</a>
-<a class="sourceLine" id="cb15-5" data-line-number="5">  <span class="kw">tableby</span>(sex <span class="op">~</span><span class="st"> </span>age, <span class="dt">data =</span> mockstudy)</a>
-<a class="sourceLine" id="cb15-6" data-line-number="6">)</a>
-<a class="sourceLine" id="cb15-7" data-line-number="7"><span class="kw">write2html</span>(mylist3, <span class="kw">paste0</span>(tmpdir, <span class="st">&quot;/test.yaml.html&quot;</span>), <span class="dt">quiet =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1">mylist3 &lt;-<span class="st"> </span><span class="kw">list</span>(</a>
+<a class="sourceLine" id="cb16-2" data-line-number="2">  <span class="kw">yaml</span>(<span class="dt">title =</span> <span class="st">&quot;Test YAML Title&quot;</span>, <span class="dt">author =</span> <span class="st">&quot;My cool author name&quot;</span>),</a>
+<a class="sourceLine" id="cb16-3" data-line-number="3">  <span class="st">&quot;# Header 1&quot;</span>,</a>
+<a class="sourceLine" id="cb16-4" data-line-number="4">  <span class="st">&quot;This is a small paragraph introducing tableby.&quot;</span>,</a>
+<a class="sourceLine" id="cb16-5" data-line-number="5">  <span class="kw">tableby</span>(sex <span class="op">~</span><span class="st"> </span>age, <span class="dt">data =</span> mockstudy)</a>
+<a class="sourceLine" id="cb16-6" data-line-number="6">)</a>
+<a class="sourceLine" id="cb16-7" data-line-number="7"><span class="kw">write2html</span>(mylist3, <span class="kw">paste0</span>(tmpdir, <span class="st">&quot;/test.yaml.html&quot;</span>), <span class="dt">quiet =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
 <p>In fact, all detected YAML pieces will be moved as the first output, so that the above code chunk gives the same output as this one:</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1">mylist4 &lt;-<span class="st"> </span><span class="kw">list</span>(</a>
-<a class="sourceLine" id="cb16-2" data-line-number="2">  <span class="st">&quot;# Header 1&quot;</span>,</a>
-<a class="sourceLine" id="cb16-3" data-line-number="3">  <span class="st">&quot;This is a small paragraph introducing tableby.&quot;</span>,</a>
-<a class="sourceLine" id="cb16-4" data-line-number="4">  <span class="kw">yaml</span>(<span class="dt">title =</span> <span class="st">&quot;Test YAML Title&quot;</span>),</a>
-<a class="sourceLine" id="cb16-5" data-line-number="5">  <span class="kw">tableby</span>(sex <span class="op">~</span><span class="st"> </span>age, <span class="dt">data =</span> mockstudy),</a>
-<a class="sourceLine" id="cb16-6" data-line-number="6">  <span class="kw">yaml</span>(<span class="dt">author =</span> <span class="st">&quot;My cool author name&quot;</span>)</a>
-<a class="sourceLine" id="cb16-7" data-line-number="7">)</a>
-<a class="sourceLine" id="cb16-8" data-line-number="8"><span class="kw">write2html</span>(mylist4, <span class="kw">paste0</span>(tmpdir, <span class="st">&quot;/test.yaml2.html&quot;</span>), <span class="dt">quiet =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1">mylist4 &lt;-<span class="st"> </span><span class="kw">list</span>(</a>
+<a class="sourceLine" id="cb17-2" data-line-number="2">  <span class="st">&quot;# Header 1&quot;</span>,</a>
+<a class="sourceLine" id="cb17-3" data-line-number="3">  <span class="st">&quot;This is a small paragraph introducing tableby.&quot;</span>,</a>
+<a class="sourceLine" id="cb17-4" data-line-number="4">  <span class="kw">yaml</span>(<span class="dt">title =</span> <span class="st">&quot;Test YAML Title&quot;</span>),</a>
+<a class="sourceLine" id="cb17-5" data-line-number="5">  <span class="kw">tableby</span>(sex <span class="op">~</span><span class="st"> </span>age, <span class="dt">data =</span> mockstudy),</a>
+<a class="sourceLine" id="cb17-6" data-line-number="6">  <span class="kw">yaml</span>(<span class="dt">author =</span> <span class="st">&quot;My cool author name&quot;</span>)</a>
+<a class="sourceLine" id="cb17-7" data-line-number="7">)</a>
+<a class="sourceLine" id="cb17-8" data-line-number="8"><span class="kw">write2html</span>(mylist4, <span class="kw">paste0</span>(tmpdir, <span class="st">&quot;/test.yaml2.html&quot;</span>), <span class="dt">quiet =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
 </div>
 <div id="add-a-code-chunk-to-the-output" class="section level1">
 <h1>Add a Code Chunk to the Output</h1>
 <p>It is now possible to add code chunks to the output <code>.Rmd</code>:</p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1">mylist5 &lt;-<span class="st"> </span><span class="kw">list</span>(</a>
-<a class="sourceLine" id="cb17-2" data-line-number="2">  <span class="st">&quot;# What is 1 + 2?&quot;</span>,</a>
-<a class="sourceLine" id="cb17-3" data-line-number="3">  <span class="kw">code.chunk</span>(a &lt;-<span class="st"> </span><span class="dv">1</span>, b &lt;-<span class="st"> </span><span class="dv">2</span>),</a>
-<a class="sourceLine" id="cb17-4" data-line-number="4">  <span class="kw">code.chunk</span>(a <span class="op">+</span><span class="st"> </span>b, <span class="dt">chunk.opts =</span> <span class="st">&quot;r echo=FALSE, eval=TRUE&quot;</span>)</a>
-<a class="sourceLine" id="cb17-5" data-line-number="5">)</a>
-<a class="sourceLine" id="cb17-6" data-line-number="6"><span class="kw">write2html</span>(mylist5, <span class="kw">paste0</span>(tmpdir, <span class="st">&quot;/test.code.chunk.html&quot;</span>), <span class="dt">quiet =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1">mylist5 &lt;-<span class="st"> </span><span class="kw">list</span>(</a>
+<a class="sourceLine" id="cb18-2" data-line-number="2">  <span class="st">&quot;# What is 1 + 2?&quot;</span>,</a>
+<a class="sourceLine" id="cb18-3" data-line-number="3">  <span class="kw">code.chunk</span>(a &lt;-<span class="st"> </span><span class="dv">1</span>, b &lt;-<span class="st"> </span><span class="dv">2</span>),</a>
+<a class="sourceLine" id="cb18-4" data-line-number="4">  <span class="kw">code.chunk</span>(a <span class="op">+</span><span class="st"> </span>b, <span class="dt">chunk.opts =</span> <span class="st">&quot;r echo=FALSE, eval=TRUE&quot;</span>)</a>
+<a class="sourceLine" id="cb18-5" data-line-number="5">)</a>
+<a class="sourceLine" id="cb18-6" data-line-number="6"><span class="kw">write2html</span>(mylist5, <span class="kw">paste0</span>(tmpdir, <span class="st">&quot;/test.code.chunk.html&quot;</span>), <span class="dt">quiet =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
 <p>This allow flexibility to create objects on-the-fly, to read in saved objects to the temporary <code>.Rmd</code>, etc. The possibilities are endless!</p>
 </div>
 <div id="faqs" class="section level1">
@@ -514,83 +518,86 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <div id="how-do-i-suppress-the-note-about-my-document-getting-rendered" class="section level2">
 <h2>How do I suppress the note about my document getting rendered?</h2>
 <p>This is easily accomplished by using the argument <code>quiet = TRUE</code> (passed to the <code>rmarkdown::render()</code> function).</p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1"><span class="kw">write2html</span>(</a>
-<a class="sourceLine" id="cb18-2" data-line-number="2">  knitr<span class="op">::</span><span class="kw">kable</span>(<span class="kw">head</span>(mockstudy)), <span class="kw">paste0</span>(tmpdir, <span class="st">&quot;/test.kable.quiet.html&quot;</span>),</a>
-<a class="sourceLine" id="cb18-3" data-line-number="3">  <span class="dt">quiet =</span> <span class="ot">TRUE</span> <span class="co"># passed to rmarkdown::render</span></a>
-<a class="sourceLine" id="cb18-4" data-line-number="4">)</a></code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" data-line-number="1"><span class="kw">write2html</span>(</a>
+<a class="sourceLine" id="cb19-2" data-line-number="2">  knitr<span class="op">::</span><span class="kw">kable</span>(<span class="kw">head</span>(mockstudy)), <span class="kw">paste0</span>(tmpdir, <span class="st">&quot;/test.kable.quiet.html&quot;</span>),</a>
+<a class="sourceLine" id="cb19-3" data-line-number="3">  <span class="dt">quiet =</span> <span class="ot">TRUE</span> <span class="co"># passed to rmarkdown::render</span></a>
+<a class="sourceLine" id="cb19-4" data-line-number="4">)</a></code></pre></div>
 </div>
 <div id="how-do-i-look-at-the-temporary-.rmd-file" class="section level2">
 <h2>How do I look at the temporary <code>.Rmd</code> file?</h2>
 <p>This is easily accomplished by using the option <code>keep.rmd = TRUE</code>.</p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" data-line-number="1"><span class="kw">write2html</span>(</a>
-<a class="sourceLine" id="cb19-2" data-line-number="2">  knitr<span class="op">::</span><span class="kw">kable</span>(<span class="kw">head</span>(mockstudy)), <span class="kw">paste0</span>(tmpdir, <span class="st">&quot;/test.kable.keep.rmd.html&quot;</span>),</a>
-<a class="sourceLine" id="cb19-3" data-line-number="3">  <span class="dt">quiet =</span> <span class="ot">TRUE</span>, <span class="co"># passed to rmarkdown::render</span></a>
-<a class="sourceLine" id="cb19-4" data-line-number="4">  <span class="dt">keep.rmd =</span> <span class="ot">TRUE</span></a>
-<a class="sourceLine" id="cb19-5" data-line-number="5">)</a></code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" data-line-number="1"><span class="kw">write2html</span>(</a>
+<a class="sourceLine" id="cb20-2" data-line-number="2">  knitr<span class="op">::</span><span class="kw">kable</span>(<span class="kw">head</span>(mockstudy)), <span class="kw">paste0</span>(tmpdir, <span class="st">&quot;/test.kable.keep.rmd.html&quot;</span>),</a>
+<a class="sourceLine" id="cb20-3" data-line-number="3">  <span class="dt">quiet =</span> <span class="ot">TRUE</span>, <span class="co"># passed to rmarkdown::render</span></a>
+<a class="sourceLine" id="cb20-4" data-line-number="4">  <span class="dt">keep.rmd =</span> <span class="ot">TRUE</span></a>
+<a class="sourceLine" id="cb20-5" data-line-number="5">)</a></code></pre></div>
 </div>
 <div id="how-do-i-prevent-my-document-from-being-rendered" class="section level2">
 <h2>How do I prevent my document from being rendered?</h2>
 <p>This is easily accomplished by using the option <code>render. = FALSE</code>. Note that this will then default to <code>keep.rmd = TRUE</code>.</p>
-<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" data-line-number="1"><span class="kw">write2html</span>(</a>
-<a class="sourceLine" id="cb20-2" data-line-number="2">  knitr<span class="op">::</span><span class="kw">kable</span>(<span class="kw">head</span>(mockstudy)), <span class="kw">paste0</span>(tmpdir, <span class="st">&quot;/test.kable.dont.render.html&quot;</span>),</a>
-<a class="sourceLine" id="cb20-3" data-line-number="3">  <span class="dt">render. =</span> <span class="ot">FALSE</span></a>
-<a class="sourceLine" id="cb20-4" data-line-number="4">)</a></code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" data-line-number="1"><span class="kw">write2html</span>(</a>
+<a class="sourceLine" id="cb21-2" data-line-number="2">  knitr<span class="op">::</span><span class="kw">kable</span>(<span class="kw">head</span>(mockstudy)), <span class="kw">paste0</span>(tmpdir, <span class="st">&quot;/test.kable.dont.render.html&quot;</span>),</a>
+<a class="sourceLine" id="cb21-3" data-line-number="3">  <span class="dt">render. =</span> <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="cb21-4" data-line-number="4">)</a></code></pre></div>
 </div>
 <div id="how-do-i-output-headers-raw-htmllatex-paragraphs-etc." class="section level2">
 <h2>How do I output headers, raw HTML/LaTeX, paragraphs, etc.?</h2>
 <p>One can simply abuse the list S3 method for <code>write2()</code>!</p>
-<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" data-line-number="1">mylist2 &lt;-<span class="st"> </span><span class="kw">list</span>(</a>
-<a class="sourceLine" id="cb21-2" data-line-number="2">  <span class="st">&quot;# Header 1&quot;</span>,</a>
-<a class="sourceLine" id="cb21-3" data-line-number="3">  <span class="st">&quot;This is a small paragraph introducing tableby.&quot;</span>,</a>
-<a class="sourceLine" id="cb21-4" data-line-number="4">  <span class="kw">tableby</span>(sex <span class="op">~</span><span class="st"> </span>age, <span class="dt">data =</span> mockstudy),</a>
-<a class="sourceLine" id="cb21-5" data-line-number="5">  <span class="st">&quot;&lt;hr&gt;&quot;</span>,</a>
-<a class="sourceLine" id="cb21-6" data-line-number="6">  <span class="st">&quot;# Header 2&quot;</span>,</a>
-<a class="sourceLine" id="cb21-7" data-line-number="7">  <span class="st">&quot;&lt;font color='red'&gt;I can change color of my text!&lt;/font&gt;&quot;</span></a>
-<a class="sourceLine" id="cb21-8" data-line-number="8">)</a>
-<a class="sourceLine" id="cb21-9" data-line-number="9"><span class="kw">write2html</span>(mylist2, <span class="kw">paste0</span>(tmpdir, <span class="st">&quot;/test.mylist2.html&quot;</span>), <span class="dt">quiet =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb22-1" data-line-number="1">mylist2 &lt;-<span class="st"> </span><span class="kw">list</span>(</a>
+<a class="sourceLine" id="cb22-2" data-line-number="2">  <span class="st">&quot;# Header 1&quot;</span>,</a>
+<a class="sourceLine" id="cb22-3" data-line-number="3">  <span class="st">&quot;This is a small paragraph introducing tableby.&quot;</span>,</a>
+<a class="sourceLine" id="cb22-4" data-line-number="4">  <span class="kw">tableby</span>(sex <span class="op">~</span><span class="st"> </span>age, <span class="dt">data =</span> mockstudy),</a>
+<a class="sourceLine" id="cb22-5" data-line-number="5">  <span class="st">&quot;&lt;hr&gt;&quot;</span>,</a>
+<a class="sourceLine" id="cb22-6" data-line-number="6">  <span class="st">&quot;# Header 2&quot;</span>,</a>
+<a class="sourceLine" id="cb22-7" data-line-number="7">  <span class="st">&quot;&lt;font color='red'&gt;I can change color of my text!&lt;/font&gt;&quot;</span></a>
+<a class="sourceLine" id="cb22-8" data-line-number="8">)</a>
+<a class="sourceLine" id="cb22-9" data-line-number="9"><span class="kw">write2html</span>(mylist2, <span class="kw">paste0</span>(tmpdir, <span class="st">&quot;/test.mylist2.html&quot;</span>), <span class="dt">quiet =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
 </div>
 <div id="how-do-i-tweak-the-default-format-from-write2word-write2html-or-write2pdf" class="section level2">
 <h2>How do I tweak the default format from <code>write2word()</code>, <code>write2html()</code>, or <code>write2pdf()</code>?</h2>
 <p>You can pass arguments to the format functions used behind the scenes.</p>
-<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb22-1" data-line-number="1"><span class="kw">write2html</span>(</a>
-<a class="sourceLine" id="cb22-2" data-line-number="2">  knitr<span class="op">::</span><span class="kw">kable</span>(<span class="kw">head</span>(mockstudy)), <span class="kw">paste0</span>(tmpdir, <span class="st">&quot;/test.kable.theme.html&quot;</span>),</a>
-<a class="sourceLine" id="cb22-3" data-line-number="3">  <span class="dt">quiet =</span> <span class="ot">TRUE</span>,  <span class="co"># passed to rmarkdown::render</span></a>
-<a class="sourceLine" id="cb22-4" data-line-number="4">  <span class="dt">theme =</span> <span class="st">&quot;yeti&quot;</span> <span class="co"># passed to rmarkdown::html_document</span></a>
-<a class="sourceLine" id="cb22-5" data-line-number="5">)</a></code></pre></div>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb23-1" data-line-number="1"><span class="kw">write2html</span>(</a>
+<a class="sourceLine" id="cb23-2" data-line-number="2">  knitr<span class="op">::</span><span class="kw">kable</span>(<span class="kw">head</span>(mockstudy)), <span class="kw">paste0</span>(tmpdir, <span class="st">&quot;/test.kable.theme.html&quot;</span>),</a>
+<a class="sourceLine" id="cb23-3" data-line-number="3">  <span class="dt">quiet =</span> <span class="ot">TRUE</span>,  <span class="co"># passed to rmarkdown::render</span></a>
+<a class="sourceLine" id="cb23-4" data-line-number="4">  <span class="dt">theme =</span> <span class="st">&quot;yeti&quot;</span> <span class="co"># passed to rmarkdown::html_document</span></a>
+<a class="sourceLine" id="cb23-5" data-line-number="5">)</a></code></pre></div>
 <p>See the help pages for <code>rmarkdown::word_document()</code>, <code>rmarkdown::html_document()</code>, and <code>rmarkdown::pdf_document()</code>.</p>
 </div>
 <div id="how-do-i-output-to-a-file-format-other-than-word-html-and-pdf" class="section level2">
 <h2>How do I output to a file format other than word, HTML, and PDF?</h2>
 <p>This can be done using the generic <code>write2()</code> function. The last argument in the function can be another format specification. For details on the acceptable inputs, see the help page for <code>write2()</code>.</p>
-<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb23-1" data-line-number="1"><span class="kw">write2</span>(</a>
-<a class="sourceLine" id="cb23-2" data-line-number="2">  knitr<span class="op">::</span><span class="kw">kable</span>(<span class="kw">head</span>(mockstudy[, <span class="dv">1</span><span class="op">:</span><span class="dv">4</span>])), <span class="kw">paste0</span>(tmpdir, <span class="st">&quot;/test.kable.rtf&quot;</span>),</a>
-<a class="sourceLine" id="cb23-3" data-line-number="3">  <span class="dt">quiet =</span> <span class="ot">TRUE</span>,  <span class="co"># passed to rmarkdown::render</span></a>
-<a class="sourceLine" id="cb23-4" data-line-number="4">  <span class="dt">output_format =</span> rmarkdown<span class="op">::</span>rtf_document</a>
-<a class="sourceLine" id="cb23-5" data-line-number="5">)</a></code></pre></div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb24-1" data-line-number="1"><span class="kw">write2</span>(</a>
+<a class="sourceLine" id="cb24-2" data-line-number="2">  knitr<span class="op">::</span><span class="kw">kable</span>(<span class="kw">head</span>(mockstudy[, <span class="dv">1</span><span class="op">:</span><span class="dv">4</span>])), <span class="kw">paste0</span>(tmpdir, <span class="st">&quot;/test.kable.rtf&quot;</span>),</a>
+<a class="sourceLine" id="cb24-3" data-line-number="3">  <span class="dt">quiet =</span> <span class="ot">TRUE</span>,  <span class="co"># passed to rmarkdown::render</span></a>
+<a class="sourceLine" id="cb24-4" data-line-number="4">  <span class="dt">output_format =</span> rmarkdown<span class="op">::</span>rtf_document</a>
+<a class="sourceLine" id="cb24-5" data-line-number="5">)</a></code></pre></div>
 </div>
 <div id="how-do-i-avoid-prefixes-on-my-table-captions-in-pdf" class="section level2">
 <h2>How do I avoid prefixes on my table captions in PDF?</h2>
 <p>You can do this pretty easily with the <code>yaml()</code> function:</p>
-<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb24-1" data-line-number="1">mylist5 &lt;-<span class="st"> </span><span class="kw">list</span>(</a>
-<a class="sourceLine" id="cb24-2" data-line-number="2">  <span class="kw">yaml</span>(<span class="st">&quot;header-includes&quot;</span> =<span class="st"> </span><span class="kw">list</span>(<span class="st">&quot;</span><span class="ch">\\</span><span class="st">usepackage[labelformat=empty]{caption}&quot;</span>)),</a>
-<a class="sourceLine" id="cb24-3" data-line-number="3">  <span class="st">&quot;# Header 1&quot;</span>,</a>
-<a class="sourceLine" id="cb24-4" data-line-number="4">  <span class="st">&quot;This is a small paragraph introducing tableby.&quot;</span>,</a>
-<a class="sourceLine" id="cb24-5" data-line-number="5">  <span class="kw">tableby</span>(sex <span class="op">~</span><span class="st"> </span>age, <span class="dt">data =</span> mockstudy)</a>
-<a class="sourceLine" id="cb24-6" data-line-number="6">)</a>
-<a class="sourceLine" id="cb24-7" data-line-number="7"><span class="kw">write2pdf</span>(mylist5, <span class="kw">paste0</span>(tmpdir, <span class="st">&quot;/test.noprefixes.pdf&quot;</span>), <span class="dt">title =</span> <span class="st">&quot;My tableby&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb25-1" data-line-number="1">mylist5 &lt;-<span class="st"> </span><span class="kw">list</span>(</a>
+<a class="sourceLine" id="cb25-2" data-line-number="2">  <span class="kw">yaml</span>(<span class="st">&quot;header-includes&quot;</span> =<span class="st"> </span><span class="kw">list</span>(<span class="st">&quot;</span><span class="ch">\\</span><span class="st">usepackage[labelformat=empty]{caption}&quot;</span>)),</a>
+<a class="sourceLine" id="cb25-3" data-line-number="3">  <span class="st">&quot;# Header 1&quot;</span>,</a>
+<a class="sourceLine" id="cb25-4" data-line-number="4">  <span class="st">&quot;This is a small paragraph introducing tableby.&quot;</span>,</a>
+<a class="sourceLine" id="cb25-5" data-line-number="5">  <span class="kw">tableby</span>(sex <span class="op">~</span><span class="st"> </span>age, <span class="dt">data =</span> mockstudy)</a>
+<a class="sourceLine" id="cb25-6" data-line-number="6">)</a>
+<a class="sourceLine" id="cb25-7" data-line-number="7"><span class="kw">write2pdf</span>(mylist5, <span class="kw">paste0</span>(tmpdir, <span class="st">&quot;/test.noprefixes.pdf&quot;</span>), <span class="dt">title =</span> <span class="st">&quot;My tableby&quot;</span>)</a></code></pre></div>
 </div>
 <div id="how-do-i-output-multiple-tables-with-different-titles" class="section level2">
 <h2>How do I output multiple tables with different titles?</h2>
 <p>There are now <code>write2()</code> methods for the summary objects of <code>arsenal</code> functions. This allows you to specify a title for each table:</p>
-<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb25-1" data-line-number="1">mylist6 &lt;-<span class="st"> </span><span class="kw">list</span>(</a>
-<a class="sourceLine" id="cb25-2" data-line-number="2">  <span class="kw">summary</span>(<span class="kw">tableby</span>(sex <span class="op">~</span><span class="st"> </span>age, <span class="dt">data =</span> mockstudy), <span class="dt">title =</span> <span class="st">&quot;A Title for tableby&quot;</span>),</a>
-<a class="sourceLine" id="cb25-3" data-line-number="3">  <span class="kw">summary</span>(<span class="kw">modelsum</span>(age <span class="op">~</span><span class="st"> </span>sex, <span class="dt">data =</span> mockstudy), <span class="dt">title =</span> <span class="st">&quot;A Title for modelsum&quot;</span>),</a>
-<a class="sourceLine" id="cb25-4" data-line-number="4">  <span class="kw">summary</span>(<span class="kw">freqlist</span>(<span class="op">~</span><span class="st"> </span>sex, <span class="dt">data =</span> mockstudy), <span class="dt">title =</span> <span class="st">&quot;A Title for freqlist&quot;</span>)</a>
-<a class="sourceLine" id="cb25-5" data-line-number="5">)</a>
-<a class="sourceLine" id="cb25-6" data-line-number="6"><span class="kw">write2pdf</span>(mylist6, <span class="kw">paste0</span>(tmpdir, <span class="st">&quot;/test.multiple.titles.pdf&quot;</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb26-1" data-line-number="1">mylist6 &lt;-<span class="st"> </span><span class="kw">list</span>(</a>
+<a class="sourceLine" id="cb26-2" data-line-number="2">  <span class="kw">summary</span>(<span class="kw">tableby</span>(sex <span class="op">~</span><span class="st"> </span>age, <span class="dt">data =</span> mockstudy), <span class="dt">title =</span> <span class="st">&quot;A Title for tableby&quot;</span>),</a>
+<a class="sourceLine" id="cb26-3" data-line-number="3">  <span class="kw">summary</span>(<span class="kw">modelsum</span>(age <span class="op">~</span><span class="st"> </span>sex, <span class="dt">data =</span> mockstudy), <span class="dt">title =</span> <span class="st">&quot;A Title for modelsum&quot;</span>),</a>
+<a class="sourceLine" id="cb26-4" data-line-number="4">  <span class="kw">summary</span>(<span class="kw">freqlist</span>(<span class="op">~</span><span class="st"> </span>sex, <span class="dt">data =</span> mockstudy), <span class="dt">title =</span> <span class="st">&quot;A Title for freqlist&quot;</span>)</a>
+<a class="sourceLine" id="cb26-5" data-line-number="5">)</a>
+<a class="sourceLine" id="cb26-6" data-line-number="6"><span class="kw">write2pdf</span>(mylist6, <span class="kw">paste0</span>(tmpdir, <span class="st">&quot;/test.multiple.titles.pdf&quot;</span>))</a></code></pre></div>
 </div>
 </div>
 
+
+
+<!-- code folding -->
 
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
