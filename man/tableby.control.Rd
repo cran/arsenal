@@ -4,23 +4,46 @@
 \alias{tableby.control}
 \title{Control settings for \code{tableby} function}
 \usage{
-tableby.control(test = TRUE, total = TRUE, test.pname = NULL,
-  numeric.simplify = FALSE, cat.simplify = FALSE,
-  ordered.simplify = FALSE, date.simplify = FALSE,
-  numeric.test = "anova", cat.test = "chisq", ordered.test = "trend",
-  surv.test = "logrank", date.test = "kwt", test.always = FALSE,
-  numeric.stats = c("Nmiss", "meansd", "range"), cat.stats = c("Nmiss",
-  "countpct"), ordered.stats = c("Nmiss", "countpct"),
+tableby.control(
+  test = TRUE,
+  total = TRUE,
+  test.pname = NULL,
+  numeric.simplify = FALSE,
+  cat.simplify = FALSE,
+  ordered.simplify = FALSE,
+  date.simplify = FALSE,
+  numeric.test = "anova",
+  cat.test = "chisq",
+  ordered.test = "trend",
+  surv.test = "logrank",
+  date.test = "kwt",
+  test.always = FALSE,
+  numeric.stats = c("Nmiss", "meansd", "range"),
+  cat.stats = c("Nmiss", "countpct"),
+  ordered.stats = c("Nmiss", "countpct"),
   surv.stats = c("Nmiss", "Nevents", "medSurv"),
-  date.stats = c("Nmiss", "median", "range"), stats.labels = list(Nmiss
-  = "N-Miss", Nmiss2 = "N-Miss", meansd = "Mean (SD)", medianrange =
-  "Median (Range)", median = "Median", medianq1q3 = "Median (Q1, Q3)", q1q3
-  = "Q1, Q3", iqr = "IQR", range = "Range", countpct = "Count (Pct)",
-  Nevents = "Events", medSurv = "Median Survival", medTime =
-  "Median Follow-Up", medianmad = "Median (MAD)"), digits = 3L,
-  digits.count = 0L, digits.pct = 1L, digits.p = 3L,
-  format.p = TRUE, conf.level = 0.95, chisq.correct = FALSE,
-  simulate.p.value = FALSE, B = 2000, times = 1:5, ...)
+  date.stats = c("Nmiss", "median", "range"),
+  stats.labels = list(Nmiss = "N-Miss", Nmiss2 = "N-Miss", meansd = "Mean (SD)",
+    medianrange = "Median (Range)", median = "Median", medianq1q3 = "Median (Q1, Q3)",
+    q1q3 = "Q1, Q3", iqr = "IQR", mean = "Mean", sd = "SD", var = "Var", max = "Max", min
+    = "Min", meanCI = "Mean (CI)", sum = "Sum", gmean = "Geom Mean", gsd = "Geom SD",
+    gmeansd = "Geom Mean (Geom SD)", gmeanCI = "Geom Mean (CI)", range = "Range", Npct =
+    "N (Pct)", Nevents = "Events", medSurv = "Median Survival", medTime =
+    "Median Follow-Up", medianmad = "Median (MAD)",      overall = "Overall", total =
+    "Total", difference = "Difference"),
+  digits = 3L,
+  digits.count = 0L,
+  digits.pct = 1L,
+  digits.p = 3L,
+  format.p = TRUE,
+  digits.n = 0L,
+  conf.level = 0.95,
+  chisq.correct = FALSE,
+  simulate.p.value = FALSE,
+  B = 2000,
+  times = 1:5,
+  ...
+)
 }
 \arguments{
 \item{test}{logical, telling \code{tableby} whether to perform tests of x variables across levels of the group variable.}
@@ -81,6 +104,8 @@ e.g., \code{list(countpct="Count (Pct)")}.}
 \item{digits.p}{Number of decimal places for p-values.}
 
 \item{format.p}{Logical, denoting whether to format p-values. See "Details", below.}
+
+\item{digits.n}{Number of decimal places for N's in the header. Set it to NA to suppress the N's.}
 
 \item{conf.level}{Numeric, denoting what confidence level to use for confidence intervals.
 (See, e.g., \code{\link{binomCI}})}

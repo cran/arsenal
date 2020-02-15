@@ -1,15 +1,14 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 
 <meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 
 <meta name="author" content="Ethan Heinzen" />
 
@@ -117,9 +116,6 @@ padding-right: 2em;
 font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
 font-size: 14px;
 line-height: 1.35;
-}
-#header {
-text-align: center;
 }
 #TOC {
 clear: both;
@@ -288,7 +284,8 @@ code > span.st { color: #d14; }
 code > span.co { color: #888888; font-style: italic; } 
 code > span.ot { color: #007020; } 
 code > span.al { color: #ff0000; font-weight: bold; } 
-code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61717; background-color: #e3d2d2; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
 </style>
 
 
@@ -303,7 +300,6 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 
 <h1 class="title toc-ignore">A Few Notes on Labels</h1>
 <h4 class="author">Ethan Heinzen</h4>
-<h4 class="date">06 September, 2019</h4>
 
 
 <div id="TOC">
@@ -313,6 +309,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <li><a href="#set-labels-in-the-function-call">Set labels in the function call</a></li>
 <li><a href="#modify-labels-after-the-fact">Modify labels after the fact</a></li>
 <li><a href="#add-labels-to-a-data.frame">Add labels to a <code>data.frame</code></a></li>
+<li><a href="#when-labels-get-long">When labels get long</a></li>
 </ul></li>
 </ul>
 </div>
@@ -1076,6 +1073,63 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 ## 
 ## $age.ord
 ## NULL</code></pre>
+</div>
+<div id="when-labels-get-long" class="section level2">
+<h2>When labels get long</h2>
+<p><code>tableby()</code> and <code>modelsum()</code> both support the wrapping of long labels. Consider the <code>width=</code> argument in the <code>print()</code> function:</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1">mockstudy <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb16-2" data-line-number="2"><span class="st">  </span><span class="kw">set_labels</span>(<span class="kw">list</span>(<span class="dt">age =</span> <span class="st">&quot;This is a really long label for the arm variable&quot;</span>)) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb16-3" data-line-number="3"><span class="st">  </span><span class="kw">tableby</span>(sex <span class="op">~</span><span class="st"> </span>age, <span class="dt">data =</span> .) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb16-4" data-line-number="4"><span class="st">  </span><span class="kw">summary</span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb16-5" data-line-number="5"><span class="st">  </span><span class="kw">print</span>(<span class="dt">width =</span> <span class="dv">20</span>)</a></code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="left"></th>
+<th align="center">Male (N=916)</th>
+<th align="center">Female (N=583)</th>
+<th align="center">Total (N=1499)</th>
+<th align="right">p value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><strong>This is a really</strong></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="right">0.048</td>
+</tr>
+<tr class="even">
+<td align="left"><strong>long label for the</strong></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="right"></td>
+</tr>
+<tr class="odd">
+<td align="left"><strong>arm variable</strong></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="right"></td>
+</tr>
+<tr class="even">
+<td align="left">   Mean (SD)</td>
+<td align="center">60.455 (11.369)</td>
+<td align="center">59.247 (11.722)</td>
+<td align="center">59.985 (11.519)</td>
+<td align="right"></td>
+</tr>
+<tr class="odd">
+<td align="left">   Range</td>
+<td align="center">19.000 - 88.000</td>
+<td align="center">22.000 - 88.000</td>
+<td align="center">19.000 - 88.000</td>
+<td align="right"></td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 

@@ -169,6 +169,13 @@ tmp2 <- formulize('arm',c('ps','hgb^2','bmi'))
 ## use the formula in the tableby function
 summary(tableby(tmp, data=mockstudy))
 
+## ----results='asis'-------------------------------------------------------------------------------
+varlist1 <- c('age','sex','hgb')
+varlist2 <- paste0("anova(", c('bmi','alk.phos','ast'), ", 'meansd')")
+
+summary(tableby(formulize("arm", c(varlist1, varlist2)),
+                data = mockstudy, numeric.test = "kwt"), pfootnote = TRUE)
+
 ## -------------------------------------------------------------------------------------------------
 newdata <- subset(mockstudy, subset=age>50 & arm=='F: FOLFOX', select = c(sex,ps:bmi))
 dim(mockstudy)
@@ -234,6 +241,13 @@ tab2 <- tableby(arm ~ hgb + alk.phos, data=mockstudy,
 tab12 <- merge(tab1, tab2)
 class(tab12)
 summary(tab12)
+
+## ---- results='asis'------------------------------------------------------------------------------
+summary(merge(
+  tableby(sex ~ age, data = mockstudy),
+  tableby(arm ~ bmi, data = mockstudy),
+  all = TRUE
+))
 
 ## ---- results='asis'------------------------------------------------------------------------------
 t1 <- tableby(arm ~ sex + age, data=mockstudy)
@@ -333,10 +347,10 @@ summary(tableby(arm ~ anova(age, "meansd", numeric.simplify=TRUE) +
                   chisq(sex, cat.simplify=TRUE), data = mockstudy))
 
 ## -------------------------------------------------------------------------------------------------
-tab1 <- tableby(arm~sex+age, data=mockstudy)
+tab1 <- summary(tableby(arm~sex+age, data=mockstudy), text = NULL)
 as.data.frame(tab1)
 
-# write.csv(tmp, '/my/path/here/mymodel.csv')
+# write.csv(tab1, '/my/path/here/my_table.csv')
 
 ## ----eval = FALSE---------------------------------------------------------------------------------
 #  ## write to an HTML document

@@ -19,10 +19,79 @@
 #' @param ... Other arguments.
 #' @return Usually a vector of the appropriate numbers.
 #' @details Not all these functions are exported, in order to avoid conflicting NAMESPACES.
+#'   Note also that the functions prefixed with \code{"arsenal_"} can be referred to by their short names
+#'   (e.g., \code{"min"} for \code{"arsenal_min"}).
 #' @seealso \code{\link{includeNA}}, \code{\link{tableby.control}}
 #' @name tableby.stats
 NULL
 #> NULL
+
+get_stat_function <- function(x) switch(x, sum = , min = , max = , range = , mean = , sd = , var = , median = paste0("arsenal_", x), x)
+
+#' @rdname tableby.stats
+arsenal_sum <- function(x, na.rm=TRUE, ...) {
+  y <- if(na.rm && allNA(x)) {
+    NA_real_
+  } else {
+    sum(x, na.rm=na.rm)
+  }
+  as.tbstat(y) # unclear what the sum of dates should be?
+}
+
+#' @rdname tableby.stats
+arsenal_min <- function(x, na.rm=TRUE, ...) {
+  y <- if(na.rm && allNA(x)) {
+    NA_real_
+  } else {
+    min(x, na.rm=na.rm)
+  }
+  as.tbstat(y, oldClass = if(is.Date(x)) "Date" else NULL)
+}
+
+#' @rdname tableby.stats
+arsenal_max <- function(x, na.rm=TRUE, ...) {
+  y <- if(na.rm && allNA(x)) {
+    NA_real_
+  } else {
+    max(x, na.rm=na.rm)
+  }
+  as.tbstat(y, oldClass = if(is.Date(x)) "Date" else NULL)
+}
+
+#' @rdname tableby.stats
+arsenal_mean <- function(x, na.rm=TRUE, weights = NULL, ...) {
+  y <- if(na.rm && allNA(x))
+  {
+    NA_real_
+  } else {
+    wtd.mean(x, weights=weights, na.rm=na.rm)
+  }
+  as.tbstat(y, oldClass = if(is.Date(x)) "Date" else NULL)
+}
+
+#' @rdname tableby.stats
+arsenal_sd <- function(x, na.rm=TRUE, weights = NULL, ...) {
+  y <- if(na.rm && allNA(x))
+  {
+    NA_real_
+  } else {
+    s <- sqrt(wtd.var(x, weights=weights, na.rm=na.rm))
+    if(is.Date(x)) list(as.difftime(s, units = "days")) else s
+  }
+  as.tbstat(y)
+}
+
+#' @rdname tableby.stats
+arsenal_var <- function(x, na.rm=TRUE, weights = NULL, ...) {
+  y <- if(na.rm && allNA(x))
+  {
+    NA_real_
+  } else {
+    wtd.var(x, weights=weights, na.rm=na.rm)
+    # if(is.Date(x)) as.difftime(s, units = "days") else s
+  }
+  as.tbstat(y)
+}
 
 #' @rdname tableby.stats
 #' @export
@@ -80,7 +149,7 @@ medianmad <- function(x, na.rm=TRUE, weights = NULL, ...) {
 
 
 #' @rdname tableby.stats
-median <- function(x, na.rm=TRUE, weights = NULL, ...) {
+arsenal_median <- function(x, na.rm=TRUE, weights = NULL, ...) {
   y <- if(na.rm && allNA(x)) {
     NA_real_
   } else if(is.Date(x)) {
@@ -92,15 +161,74 @@ median <- function(x, na.rm=TRUE, weights = NULL, ...) {
 }
 
 #' @rdname tableby.stats
-range <- function(x, na.rm=TRUE, ...) {
+arsenal_range <- function(x, na.rm=TRUE, ...) {
   y <- if(na.rm && allNA(x)) {
     NA_real_
-  } else if(is.Date(x)) {
-    as.Date(base::range(as.integer(x), na.rm=na.rm), origin="1970/01/01")
   } else {
-    base::range(x, na.rm=na.rm)
+    range(x, na.rm=na.rm)
   }
   as.tbstat(y, oldClass = if(is.Date(x)) "Date" else NULL, sep = " - ")
+}
+
+#' @rdname tableby.stats
+#' @export
+gmean <- function(x, na.rm=TRUE, weights = NULL, ...) {
+  y <- if((na.rm && allNA(x)) || any(x < 0, na.rm = TRUE) || is.Date(x))
+  {
+    NA_real_
+  } else {
+    exp(wtd.mean(log(x), weights=weights, na.rm=na.rm))
+  }
+  as.tbstat(y)
+}
+
+#' @rdname tableby.stats
+#' @export
+gsd <- function(x, na.rm=TRUE, weights = NULL, ...) {
+  y <- if((na.rm && allNA(x)) || any(x <= 0, na.rm = TRUE) || is.Date(x))
+  {
+    NA_real_
+  } else {
+    n <- sum(!is.na(x))
+    exp(sqrt(wtd.var(log(x), weights = weights, na.rm = na.rm) * (n-1)/n))
+  }
+  as.tbstat(y)
+}
+
+#' @rdname tableby.stats
+#' @export
+gmeansd <- function(x, na.rm=TRUE, weights = NULL, ...) {
+  y <- if((na.rm && allNA(x)) || any(x < 0, na.rm = TRUE) || is.Date(x))
+  {
+    NA_real_
+  } else {
+    m <- exp(wtd.mean(log(x), weights=weights, na.rm=na.rm))
+    n <- sum(!is.na(x))
+    s <- if(any(x == 0, na.rm = TRUE)) {
+      NA_real_
+    } else exp(sqrt(wtd.var(log(x), weights = weights, na.rm = na.rm) * (n-1)/n))
+    c(m, s)
+  }
+  as.tbstat(y, parens = c("(", ")"))
+}
+
+#' @rdname tableby.stats
+#' @export
+gmeanCI <- function(x, na.rm=TRUE, weights = NULL, conf.level = 0.95, ...) {
+  y <- if(!is.null(weights) || (na.rm && allNA(x)) || any(x < 0, na.rm = TRUE) || is.Date(x))
+  {
+    NA_real_
+  } else
+  {
+    if(na.rm) x <- x[!is.na(x)]
+    n <- length(x)
+    s <- sqrt(stats::var(log(x), na.rm = na.rm) * (n-1)/n)
+    m <- mean(log(x), na.rm = na.rm)
+    a <- (1 - conf.level)/2
+    ci <- if(any(x == 0, na.rm = TRUE)) NA_real_ else m + stats::qt(c(a, 1 - a), df = n - 1) * s / sqrt(n)
+    exp(c(m, ci))
+  }
+  as.tbstat(y, parens = c("(", ")"), sep2 = ", ")
 }
 
 
@@ -241,6 +369,24 @@ Nmiss2 <- Nmiss
 N <- function(x, na.rm=TRUE, weights = NULL, ...) {
   if(is.null(weights)) weights <- rep(1, length(x))
   as.countpct(sum(weights[!is.na(x)]))
+}
+
+#' @rdname tableby.stats
+#' @export
+Npct <- function(x, levels=NULL, by, by.levels=sort(unique(by)), na.rm=TRUE, weights = NULL, ...) {
+  if(is.null(levels)) levels <- sort(unique(x))
+  if(na.rm)
+  {
+    idx <- !is.na(x) & !is.na(by)
+    if(!is.null(weights)) idx <- idx & !is.na(weights)
+    x <- x[idx]
+    by <- by[idx]
+    weights <- weights[idx]
+  }
+
+  tmp <- wtd.table(factor(by, levels = by.levels), weights = weights)
+  wtbl <- c(tmp, Total = sum(tmp))
+  lapply(wtbl, function(elt) as.countpct(c(elt, 100*elt/sum(tmp)), parens = c("(", ")"), pct = "%", which.pct = 2L))
 }
 
 ## count within group variable

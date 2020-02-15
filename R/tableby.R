@@ -226,16 +226,19 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, strata,
     } else
     {
       ## no response, create a dummy one
-      by.col <- rep("Overall", nrow(modeldf))
-      termBy <- labelBy <- by.levels <- "Overall"
+      if(is.null(overall <- control$stats.labels$overall)) overall <- "Overall"
+      by.col <- rep(overall, nrow(modeldf))
+      termBy <- labelBy <- by.levels <- overall
       control$total <- FALSE
       control$test <- FALSE
     }
 
+    if(is.null(totallab <- control$stats.labels$total)) totallab <- "Total"
     ystats <- if(hasWeights)
     {
       c(stats::xtabs(weights ~ factor(by.col, levels=by.levels), exclude = NA), Total = sum(weights[!is.na(by.col)]))
     } else c(table(factor(by.col, levels=by.levels), exclude=NA), Total=sum(!is.na(by.col)))
+    names(ystats)[names(ystats) == "Total"] <- totallab
     yList <- list(stats=ystats, label=labelBy, term=termBy)
 
     ## find which columnss of modeldf have specials assigned to known specials
@@ -342,12 +345,14 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, strata,
         currcol <- currcol[strata.col == strat]
         if(!anyNA(currcol) && "Nmiss" %in% currstats) currstats <- currstats[currstats != "Nmiss"]
         statList <- list()
-        for(statfun in currstats) {
+        for(statfun2 in currstats) {
+          statfun <- get_stat_function(statfun2)
           bystatlist <- list()
-          if(statfun %in% c("countrowpct", "countcellpct", "rowbinomCI"))
+          if(statfun2 %in% c("countrowpct", "countcellpct", "rowbinomCI", "Npct"))
           {
             bystatlist <- do.call(statfun, list(currcol, levels = xlevels,
                                                 by = bycol, by.levels = by.levels, weights = weightscol, na.rm = TRUE))
+            names(bystatlist)[names(bystatlist) == "Total"] <- totallab
           } else
           {
             for(bylev in by.levels) {
@@ -356,11 +361,12 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, strata,
                                                            weights=weightscol[idx], conf.level=control$conf.level, times=control$times))
             }
             ## add Total
-            bystatlist$Total <- do.call(statfun, list(currcol, levels=xlevels, na.rm=TRUE,
-                                                      weights=weightscol, conf.level=control$conf.level, times=control$times))
+            bystatlist[[totallab]] <- do.call(statfun, list(currcol, levels=xlevels, na.rm=TRUE,
+                                                            weights=weightscol, conf.level=control$conf.level, times=control$times))
           }
-          statList[[statfun]] <- bystatlist
+          statList[[statfun2]] <- bystatlist
         }
+        if(length(statList) == 0) stop(paste0("Nothing to show for variable '", names(xTerms)[eff], "'"))
 
         currtest <- if(nchar(specialTests[eff]) > 0) specialTests[eff] else currtest
         testout <- if(control$test) {

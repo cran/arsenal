@@ -2,12 +2,22 @@
 % Please edit documentation in R/tableby.stats.R
 \name{tableby.stats}
 \alias{tableby.stats}
+\alias{arsenal_sum}
+\alias{arsenal_min}
+\alias{arsenal_max}
+\alias{arsenal_mean}
+\alias{arsenal_sd}
+\alias{arsenal_var}
 \alias{meansd}
 \alias{meanCI}
 \alias{medianrange}
 \alias{medianmad}
-\alias{median}
-\alias{range}
+\alias{arsenal_median}
+\alias{arsenal_range}
+\alias{gmean}
+\alias{gsd}
+\alias{gmeansd}
+\alias{gmeanCI}
 \alias{Nevents}
 \alias{medSurv}
 \alias{NeventsSurv}
@@ -20,6 +30,7 @@
 \alias{Nmiss}
 \alias{Nmiss2}
 \alias{N}
+\alias{Npct}
 \alias{count}
 \alias{countpct}
 \alias{countN}
@@ -29,6 +40,18 @@
 \alias{rowbinomCI}
 \title{tableby Summary Statistics Functions}
 \usage{
+arsenal_sum(x, na.rm = TRUE, ...)
+
+arsenal_min(x, na.rm = TRUE, ...)
+
+arsenal_max(x, na.rm = TRUE, ...)
+
+arsenal_mean(x, na.rm = TRUE, weights = NULL, ...)
+
+arsenal_sd(x, na.rm = TRUE, weights = NULL, ...)
+
+arsenal_var(x, na.rm = TRUE, weights = NULL, ...)
+
 meansd(x, na.rm = TRUE, weights = NULL, ...)
 
 meanCI(x, na.rm = TRUE, weights = NULL, conf.level = 0.95, ...)
@@ -37,9 +60,17 @@ medianrange(x, na.rm = TRUE, weights = NULL, ...)
 
 medianmad(x, na.rm = TRUE, weights = NULL, ...)
 
-median(x, na.rm = TRUE, weights = NULL, ...)
+arsenal_median(x, na.rm = TRUE, weights = NULL, ...)
 
-range(x, na.rm = TRUE, ...)
+arsenal_range(x, na.rm = TRUE, ...)
+
+gmean(x, na.rm = TRUE, weights = NULL, ...)
+
+gsd(x, na.rm = TRUE, weights = NULL, ...)
+
+gmeansd(x, na.rm = TRUE, weights = NULL, ...)
+
+gmeanCI(x, na.rm = TRUE, weights = NULL, conf.level = 0.95, ...)
 
 Nevents(x, na.rm = TRUE, weights = NULL, ...)
 
@@ -65,32 +96,63 @@ Nmiss2(x, na.rm = TRUE, weights = NULL, ...)
 
 N(x, na.rm = TRUE, weights = NULL, ...)
 
+Npct(
+  x,
+  levels = NULL,
+  by,
+  by.levels = sort(unique(by)),
+  na.rm = TRUE,
+  weights = NULL,
+  ...
+)
+
 count(x, levels = NULL, na.rm = TRUE, weights = NULL, ...)
 
 countpct(x, levels = NULL, na.rm = TRUE, weights = NULL, ...)
 
 countN(x, levels = NULL, na.rm = TRUE, weights = NULL, ...)
 
-countrowpct(x, levels = NULL, by, by.levels = sort(unique(by)),
-  na.rm = TRUE, weights = NULL, ...)
+countrowpct(
+  x,
+  levels = NULL,
+  by,
+  by.levels = sort(unique(by)),
+  na.rm = TRUE,
+  weights = NULL,
+  ...
+)
 
-countcellpct(x, levels = NULL, by, by.levels = sort(unique(by)),
-  na.rm = TRUE, weights = NULL, ...)
+countcellpct(
+  x,
+  levels = NULL,
+  by,
+  by.levels = sort(unique(by)),
+  na.rm = TRUE,
+  weights = NULL,
+  ...
+)
 
-binomCI(x, levels = NULL, na.rm = TRUE, weights = NULL,
-  conf.level = 0.95, ...)
+binomCI(x, levels = NULL, na.rm = TRUE, weights = NULL, conf.level = 0.95, ...)
 
-rowbinomCI(x, levels = NULL, by, by.levels = sort(unique(by)),
-  na.rm = TRUE, weights = NULL, conf.level = 0.95, ...)
+rowbinomCI(
+  x,
+  levels = NULL,
+  by,
+  by.levels = sort(unique(by)),
+  na.rm = TRUE,
+  weights = NULL,
+  conf.level = 0.95,
+  ...
+)
 }
 \arguments{
 \item{x}{Usually a vector.}
 
 \item{na.rm}{Should NAs be removed?}
 
-\item{weights}{A vector of weights.}
-
 \item{...}{Other arguments.}
+
+\item{weights}{A vector of weights.}
 
 \item{conf.level}{Numeric, denoting what confidence level to use for confidence intervals.}
 
@@ -112,6 +174,8 @@ A collection of functions that will report summary statistics. To create a custo
 }
 \details{
 Not all these functions are exported, in order to avoid conflicting NAMESPACES.
+  Note also that the functions prefixed with \code{"arsenal_"} can be referred to by their short names
+  (e.g., \code{"min"} for \code{"arsenal_min"}).
 }
 \seealso{
 \code{\link{includeNA}}, \code{\link{tableby.control}}

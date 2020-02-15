@@ -11,7 +11,6 @@
 #' @param object A \code{data.frame} resulting from evaluating a \code{modelsum} formula.
 #' @param ... Other arguments, or a vector of indices for extracting.
 #' @param x A \code{modelsum} object.
-#' @inheritParams tableby.internal
 #' @return \code{na.modelsum} returns a subsetted version of \code{object} (with attributes).
 #' @seealso \code{\link{arsenal_table}}
 #' @name modelsum.internal
@@ -138,6 +137,7 @@ modelsum_guts <- function(fam, temp.call, envir, conf.level, scope, anyna)
     ## Continuous variable (numeric) ###############
     ## Note: Using tidy changes colname from 't value' to 'statistic'
     modelGlance <- broom::glance(fit)
+    names(modelGlance)[names(modelGlance) == "statistic"] <- "statistic.F"
     names(modelGlance)[names(modelGlance) == "p.value"] <- "p.value.F"
     modelGlance$p.value.lrt <- try_lrt(fit, scope, FALSE)
 
@@ -201,6 +201,7 @@ modelsum_guts <- function(fam, temp.call, envir, conf.level, scope, anyna)
     coeffTidy <- broom::tidy(fit, exponentiate=FALSE, conf.int=conf.level)
     coeffTidy <- cbind(coeffTidy, HR=coeffHRTidy$estimate, CI.lower.HR=coeffHRTidy$conf.low, CI.upper.HR=coeffHRTidy$conf.high)
     modelGlance <-  broom::glance(fit)
+    names(modelGlance)[names(modelGlance) == "nevent"] <- "Nevents"
     modelGlance$p.value.lrt <- try_lrt(fit, scope, anyna)
   }
 

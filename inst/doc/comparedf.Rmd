@@ -1,13 +1,12 @@
 ---
-title: "The compare function"
+title: "The comparedf function"
 author: "Ethan Heinzen, Ryan Lennon, Andrew Hanson"
-date: '`r format(Sys.time(),"%d %B, %Y")`'
 output:
   rmarkdown::html_vignette:
     toc: yes
     toc_depth: 3
 vignette: |
-  %\VignetteIndexEntry{The compare function}
+  %\VignetteIndexEntry{The comparedf function}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
 ---
@@ -235,6 +234,18 @@ Use the `tol.date=` argument to change how dates are compared. By default, they'
 Use the `tol.other=` argument to change how other objects are compared. By default,
 they're expected to be `identical()`.
 
+## Specifying tolerances for each variable
+
+You can also provide a list of tolerance functions to `comparedf()`:
+
+```{r eval=FALSE}
+comparedf.control(tol.char = list(
+  "none",      # the default
+  x1 = "case", # be case-insensitive for the variable "x1"
+  x2 = function(x, y) tol.NA(x, y, x != y | y == "NA") # a custom-defined tolerance
+))
+```
+
 ## User-defined tolerance functions
 
 ### Details
@@ -248,10 +259,6 @@ include a third argument for tolerance size (even if it's not used).
 
 CAUTION: the results should not include NAs, since the logical vector is used to subset the input data.frames. The `tol.NA()` function
 is useful for considering any NAs in the two vectors (but not both) as differences, in addition to other criteria.
-
-```{r results='markup'}
-tol.NA
-```
 
 The `tol.NA()` function is used in all default tolerance functions to help handle NAs.
 

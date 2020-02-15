@@ -619,3 +619,31 @@ test_that("08/07/2019: p.value.lrt (#238)", {
   )
 })
 
+test_that("statistic.F works (#262)", {
+  tab3 <- modelsum(bmi ~ age + sex, data=mockstudy, family=gaussian, gaussian.stats=c("estimate", "N","Nmiss","statistic.F"))
+  expect_identical(
+    capture.kable(summary(tab3, text=TRUE)),
+    c("|             |estimate |N    |Nmiss |statistic.F |",
+      "|:------------|:--------|:----|:-----|:-----------|",
+      "|(Intercept)  |26.424   |1466 |33    |1.122       |",
+      "|Age in Years |0.013    |     |      |            |",
+      "|(Intercept)  |27.491   |1466 |33    |6.341       |",
+      "|sex Female   |-0.731   |     |      |            |"
+    )
+  )
+})
+
+test_that("Nevents works (#266)", {
+  skip_if_not(getRversion() >= "3.3.0")
+  skip_if_not_installed("survival", "2.41-3")
+  require(survival)
+  tab3 <- modelsum(Surv(fu.time,fu.stat)~sex, data=mockstudy, survival.stats=c('HR','p.value','Nmiss','Nevents','N'), family = "survival")
+  expect_identical(
+    capture.kable(summary(tab3)),
+    c("|               |HR    |p.value |Nevents |N    |",
+      "|:--------------|:-----|:-------|:-------|:----|",
+      "|**sex Female** |1.002 |0.975   |1356    |1499 |"
+    )
+  )
+})
+

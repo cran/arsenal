@@ -8,50 +8,53 @@
 #' @param collapse How should terms be collapsed? Default is addition.
 #' @param collapse.y How should the y-terms be collapsed? Default is addition. Also accepts the special string "list",
 #'   which combines them into a multiple-left-hand-side formula, for use in other functions.
+#' @param escape A logical indicating whether character vectors should be coerced to names (that is, whether names with spaces should
+#'   be surrounded with backticks or not)
 #' @seealso \code{\link[stats]{reformulate}}
 #' @author Ethan Heinzen
 #' @examples
 #' ## two-sided formula
-#' formulize("y", c("x1", "x2", "x3"))
+#' f1 <- formulize("y", c("x1", "x2", "x3"))
 #'
 #' ## one-sided formula
-#' formulize(x = c("x1", "x2", "x3"))
+#' f2 <- formulize(x = c("x1", "x2", "x3"))
 #'
 #' ## multi-sided formula
-#' formulize("y", c("x1", "x2", "x3"), c("z1", "z2"), "w1")
+#' f3 <- formulize("y", c("x1", "x2", "x3"), c("z1", "z2"), "w1")
 #'
 #' ## can use numerics for column names
 #' data(mockstudy)
-#' formulize(y = 1, x = 2:4, data = mockstudy)
+#' f4 <- formulize(y = 1, x = 2:4, data = mockstudy)
 #'
 #' ## mix and match
-#' formulize(1, c("x1", "x2", "x3"), data = mockstudy)
+#' f5 <- formulize(1, c("x1", "x2", "x3"), data = mockstudy)
 #'
 #' ## get an interaction
-#' formulize("y", c("x1*x2", "x3"))
+#' f6 <- formulize("y", c("x1*x2", "x3"))
 #'
 #' ## get only interactions
-#' formulize("y", c("x1", "x2", "x3"), collapse = "*")
+#' f7 <- formulize("y", c("x1", "x2", "x3"), collapse = "*")
 #'
 #' ## no intercept
-#' formulize("y", "x1 - 1")
-#' formulize("y", c("x1", "x2", "-1"))
+#' f8 <- formulize("y", "x1 - 1")
+#' f9 <- formulize("y", c("x1", "x2", "-1"))
 #'
 #' ## LHS as a list to use in arsenal functions
-#' formulize(c("y1", "y2", "y3"), c("x", "z"), collapse.y = "list")
+#' f10 <- formulize(c("y1", "y2", "y3"), c("x", "z"), collapse.y = "list")
 #'
 #' ## use in an lm
-#' form <- formulize(2, 3:4, data = mockstudy)
-#' summary(lm(form, data = mockstudy))
+#' f11 <- formulize(2, 3:4, data = mockstudy)
+#' summary(lm(f11, data = mockstudy))
 #'
 #' ## using non-syntactic names or calls (like reformulate example)
-#' formulize(as.name("+-"), c("`P/E`", "`% Growth`"))
+#' f12 <- formulize(as.name("+-"), c("`P/E`", "`% Growth`"))
+#' f12 <- formulize("+-", c("P/E", "% Growth"), escape = TRUE)
 #'
 #' f <- Surv(ft, case) ~ a + b
-#' formulize(f[[2]], f[[3]])
+#' f13 <- formulize(f[[2]], f[[3]])
+#'
 #' @export
-
-formulize <- function(y = "", x = "", ..., data = NULL, collapse = "+", collapse.y = collapse)
+formulize <- function(y = "", x = "", ..., data = NULL, collapse = "+", collapse.y = collapse, escape = FALSE)
 {
   dots <- list(y = y, x = x, ...)
   if(!is.null(data))
@@ -60,7 +63,7 @@ formulize <- function(y = "", x = "", ..., data = NULL, collapse = "+", collapse
     dots <- lapply(dots, function(elt, cn) if(is.numeric(elt)) lapply(cn[elt], as.name) else elt, cn = colnames(data))
   }
   name.or.call <- function(elt) is.name(elt) || is.call(elt)
-  dots <- lapply(dots, function(elt) if(name.or.call(elt)) list(elt) else elt)
+  dots <- lapply(dots, function(elt) if(name.or.call(elt)) list(elt) else if(is.character(elt) && all(nzchar(elt)) && escape) lapply(elt, as.name) else elt)
   is.ok <- function(x) is.character(x) || (is.list(x) && all(vapply(x, name.or.call, NA)))
   trash <- lapply(dots, function(elt) if(!is.ok(elt))
     stop("One or more argument isn't a character vector, numeric vector, list of names, or list of calls"))

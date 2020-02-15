@@ -1,7 +1,6 @@
 ---
 title: "The tableby function"
 author: "Beth Atkinson, Ethan Heinzen, Jason Sinnwell, Shannon McDonnell and Greg Dougherty"
-date: '`r format(Sys.time(),"%d %B, %Y")`'
 output: 
   rmarkdown::html_vignette:
     toc: yes
@@ -362,6 +361,16 @@ tmp2 <- formulize('arm',c('ps','hgb^2','bmi'))
 summary(tableby(tmp, data=mockstudy))
 ```
 
+To change summary statistics or statistical tests en masse, consider using `paste0()` together with `formulize()`:
+
+```{r results='asis'}
+varlist1 <- c('age','sex','hgb')
+varlist2 <- paste0("anova(", c('bmi','alk.phos','ast'), ", 'meansd')")
+
+summary(tableby(formulize("arm", c(varlist1, varlist2)),
+                data = mockstudy, numeric.test = "kwt"), pfootnote = TRUE)
+```
+
 ## 7. Subset the dataset used in the analysis
 
 Here are two ways to get the same result (limit the analysis to subjects age>5 and in the F: FOLFOX treatment group). 
@@ -475,6 +484,16 @@ tab2 <- tableby(arm ~ hgb + alk.phos, data=mockstudy,
 tab12 <- merge(tab1, tab2)
 class(tab12)
 summary(tab12)
+```
+
+For tables with two different outcomes, consider the `all=TRUE` argument:
+
+```{r, results='asis'}
+summary(merge(
+  tableby(sex ~ age, data = mockstudy),
+  tableby(arm ~ bmi, data = mockstudy),
+  all = TRUE
+))
 ```
 
 ## 12. Add a title to the table
@@ -703,10 +722,10 @@ render("Test.md", pdf_document(keep_tex=TRUE))
 When looking at multiple variables it is sometimes useful to export the results to a csv file. The `as.data.frame` function creates a data frame object that can be exported or further manipulated within R.
 
 ```{r}
-tab1 <- tableby(arm~sex+age, data=mockstudy)
+tab1 <- summary(tableby(arm~sex+age, data=mockstudy), text = NULL)
 as.data.frame(tab1)
 
-# write.csv(tmp, '/my/path/here/mymodel.csv')
+# write.csv(tab1, '/my/path/here/my_table.csv')
 ```
 
 ## 21. Write `tableby` object to a separate Word or HTML file
@@ -799,8 +818,7 @@ The **default** summary statistics, by varible type, are:
 * `surv.stats`: Survival variables will show by default `Nmiss, Nevents, medsurv`
 * `date.stats`: Date variables will show by default `Nmiss, median, range`
 
-Any summary statistics standardly defined in R (e.g. mean, median, sd, med, range) can be specified,
-however there are a number of extra functions defined specifically for the tableby function.
+There are a number of extra functions defined specifically for the tableby function.
 
 * `N`: a count of the number of observations for a particular group
 * `Nmiss`: only show the count of the number of missing values if there are some missing values
@@ -824,6 +842,14 @@ however there are a number of extra functions defined specifically for the table
 * `NriskSurv`: print the number still at risk and survival at given times
 * `Nrisk`: print the number still at risk at given times
 * `medTime`: print the median follow-up time
+* `max`
+* `min`
+* `mean`
+* `sd`
+* `var`
+* `median`
+* `range`
+* `gmean`, `gsd`, `gmeansd`, `gmeanCI`: geometric means, sds, and confidence intervals.
 
 ## Testing options
 

@@ -126,7 +126,7 @@ as_data_frame_summary_tableby <- function(df, totals, hasStrata, term.name, cont
   df$test <- NULL
   df$variable.type <- NULL
   if(!control$test) df$p.value <- NULL
-  if(!control$total) df$Total <- NULL
+  if(!control$total && !identical(control$stats.labels$overall, "Total")) df$Total <- NULL
 
   #### Format if necessary ####
   if(!is.null(width))
@@ -153,13 +153,16 @@ as_data_frame_summary_tableby <- function(df, totals, hasStrata, term.name, cont
     {
       ifelse(dups, paste0("-  ", df$label), df$label)
     } else ifelse(dups, paste0("&nbsp;&nbsp;&nbsp;", df$label), paste0("**", ifelse(df$label == "", "&nbsp;", df$label), "**"))
+
+    if(identical(text, "latex")) df[] <- lapply(df, gsub, pattern = "%", replacement = "\\%", fixed = TRUE)
   }
 
   #### tweak column names according to specifications ####
   cn <- stats::setNames(colnames(df), colnames(df))
   align <- c(if(hasStrata) "l", "l", rep("c", times = sum(cn != "p.value")-1), if("p.value" %in% cn) "r")
   nm <- intersect(cn, names(totals))
-  if(length(nm)) cn[nm] <- paste0(cn[nm], " (N=", totals[nm], ")")
+  if(length(nm) && (is.null(control$digits.n) || !is.na(control$digits.n)))
+    cn[nm] <- paste0(cn[nm], " (N=", formatC(totals[nm], digits = control$digits.n, format = "f"), ")")
   cn["label"] <- term.name
   if("p.value" %in% cn && is.null(control$test.pname)) cn["p.value"] <- "p value" else if("p.value" %in% cn) cn["p.value"] <- control$test.pname
   colnames(df) <- cn

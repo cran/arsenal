@@ -91,8 +91,12 @@ summary(comparedf(mockstudy, mockstudy2, by = "case",
                 tol.char = "case"            # ignore case in character vectors
 ))
 
-## ----results='markup'-------------------------------------------------------------------------------------------------
-tol.NA
+## ----eval=FALSE-------------------------------------------------------------------------------------------------------
+#  comparedf.control(tol.char = list(
+#    "none",      # the default
+#    x1 = "case", # be case-insensitive for the variable "x1"
+#    x2 = function(x, y) tol.NA(x, y, x != y | y == "NA") # a custom-defined tolerance
+#  ))
 
 ## ----results = 'markup'-----------------------------------------------------------------------------------------------
 my.tol <- function(x, y, tol)

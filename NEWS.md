@@ -1,3 +1,52 @@
+# arsenal v3.4.0
+
+* Added a `pkgdown` site: https://eheinzen.github.io/arsenal/
+
+* Moved knitr to an import. (#255)
+
+* `comparedf()`: Added support for tolerances by variable. (#167)
+
+* `tableby()` / `paired()`:
+
+    - `tableby()`:
+    
+        * Allowed for changing of "Overall" and "Total" labels. (#253, #261)
+        
+        * Allowed for suppression of N's in the header. (#256, #36)
+        
+        * Allowed for digits formatting of N's in the header. (#257)
+        
+        * Escaped `%` for `text="latex"`. (#258)
+        
+        * Added to vignette describing `merge(all=TRUE)`.
+        
+        * Fixed vignette re: outputting to CSV. (#278)
+
+    - `paired()`:
+    
+        * Allowed for changing of "Difference" label. (#271)
+        
+        * Removed "..." from the documentation for `paired.internal` per CRAN's request (PR#16223 for R-devel).
+
+    - Added support for "min", "max", "sd", "mean", and "var" (#259) and
+      "gmean", "gsd", "gmeansd", "gmeanCI" (#260) and "Npct" (#263) and "sum" (#281).
+  
+    - Added a more informative error message when no summary statistic is computed. (#273)
+  
+* `modelsum()`:
+
+    - Fixed "statistic.F" for family="gaussian". (#262)
+
+    - Fixed "Nevents" for family="survival". (#266)
+    
+    - Fixed vignette re: outputting to CSV. (#278)
+
+* `freqlist()`: Updated `head.summary.freqlist()` and `tail.summary.freqlist()` to comply with new R-devel definitions.
+
+* Updated "labels" vignette. (#267)
+
+* Added `escape =` argument to `formulize()`. (#282)
+
 # arsenal v3.3.0
 
 * `tableby()` / `paired()`:

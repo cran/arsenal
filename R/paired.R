@@ -169,8 +169,11 @@ paired <- function(formula, data, id, na.action, subset=NULL, strata, control = 
     TP2 <- TP2[idx2, cn, drop = FALSE]
     modeldf[["(id)"]] <- NULL
 
-    yList <- list(stats=c(table(factor(by.col, levels=by.levels), exclude=NA), Difference=length(ids.both)),
-                  label=labelBy, term=termBy)
+    if(is.null(difflab <- control$stats.labels$difference)) difflab <- "Difference"
+    ystats <- c(table(factor(by.col, levels=by.levels), exclude=NA), Difference=length(ids.both))
+    names(ystats)[names(ystats) == "Difference"] <- difflab
+    yList <- list(stats=ystats, label=labelBy, term=termBy)
+
 
     ## find which columnss of modeldf have specials assigned to known specials
     specialIndices <- unlist(attr(Terms, "specials")) - attributes(Terms)$response
@@ -284,9 +287,10 @@ paired <- function(formula, data, id, na.action, subset=NULL, strata, control = 
         TP2.eff <- TP2.eff[strata.col2 == strat]
         if(!anyNA(currcol) && "Nmiss" %in% currstats) currstats <- currstats[currstats != "Nmiss"]
         statList <- list()
-        for(statfun in currstats) {
+        for(statfun2 in currstats) {
+          statfun <- get_stat_function(statfun2)
           bystatlist <- list()
-          if(statfun %in% c("countrowpct", "countcellpct", "rowbinomCI"))
+          if(statfun %in% c("countrowpct", "countcellpct", "rowbinomCI", "Npct"))
           {
             bystatlist <- do.call(statfun, list(currcol, levels = xlevels,
                                                 by = by.col, by.levels = by.levels, na.rm = TRUE))
@@ -301,23 +305,28 @@ paired <- function(formula, data, id, na.action, subset=NULL, strata, control = 
           if(statfun %in% c("countpct", "countrowpct", "countcellpct"))
           {
             # countrowpct to get the right percentages
-            bystatlist$Difference <- countrowpct(TP1.eff, levels = xlevels, by = TP1.eff == TP2.eff,
+            bystatlist[[difflab]] <- countrowpct(TP1.eff, levels = xlevels, by = TP1.eff == TP2.eff,
                                                  by.levels = c(TRUE, FALSE), na.rm = TRUE)[[2]]
           } else if(statfun == "count")
           {
             # this doesn't have percentages
-            bystatlist$Difference <- count(replace(TP1.eff, TP1.eff == TP2.eff, NA), levels = xlevels, na.rm = TRUE)
+            bystatlist[[difflab]] <- count(replace(TP1.eff, TP1.eff == TP2.eff, NA), levels = xlevels, na.rm = TRUE)
           } else if(statfun %in% c("binomCI", "rowbinomCI"))
           {
-            bystatlist$Difference <- rowbinomCI(TP1.eff, levels = xlevels, by = TP1.eff == TP2.eff,
+            bystatlist[[difflab]] <- rowbinomCI(TP1.eff, levels = xlevels, by = TP1.eff == TP2.eff,
                                                 by.levels = c(TRUE, FALSE), na.rm = TRUE, conf.level = control$conf.level)[[2]]
+          } else if(statfun == "Npct")
+          {
+            # get the right percentages
+            bystatlist[[difflab]] <- Npct(TP1.eff, levels = xlevels, by = TP1.eff == TP2.eff, by.levels = c(TRUE, FALSE), na.rm = TRUE)[[2]]
           } else
           {
-            bystatlist$Difference <- do.call(statfun, list(as.numeric(TP2.eff) - as.numeric(TP1.eff),
+            bystatlist[[difflab]] <- do.call(statfun, list(as.numeric(TP2.eff) - as.numeric(TP1.eff),
                                                            levels=xlevels, na.rm=TRUE, conf.level = control$conf.level))
           }
-          statList[[statfun]] <- bystatlist
+          statList[[statfun2]] <- bystatlist
         }
+        if(length(statList) == 0) stop(paste0("Nothing to show for variable '", names(xTerms)[eff], "'"))
 
         currtest <- if(nchar(specialTests[eff]) > 0) specialTests[eff] else currtest
         testout <- if(control$test) {
