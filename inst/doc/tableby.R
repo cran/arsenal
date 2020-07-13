@@ -287,13 +287,34 @@ summary(tableby(arm ~ chisq(sex, digits.pct=1) + anova(age, digits=4) +
                   anova(fu.time, digits = 1), data=mockstudy))
 
 ## ---- results='asis'------------------------------------------------------------------------------
-myfunc <- function(x, weights=rep(1,length(x)), ...){
+trim10 <- function(x, weights=rep(1,length(x)), ...){
   mean(x, trim=.1, ...)
 }
 
 summary(tableby(sex ~ hgb, data=mockstudy, 
-                control=tableby.control(numeric.stats=c("Nmiss","myfunc"), numeric.test="kwt",
-                    stats.labels=list(Nmiss='Missing values', myfunc="Trimmed Mean, 10%"))))
+                control=tableby.control(numeric.stats=c("Nmiss","trim10"), numeric.test="kwt",
+                    stats.labels=list(Nmiss='Missing values', trim10="Trimmed Mean, 10%"))))
+
+## ---- results='asis'------------------------------------------------------------------------------
+trim510comma <- function(x, weights=rep(1,length(x)), ...){
+  tmp <- c(mean(x, trim = 0.05, ...), mean(x, trim = 0.1, ...))
+  as.tbstat(tmp, sep = ", ")
+}
+trim510bracket <- function(x, weights=rep(1,length(x)), ...){
+  tmp <- c(mean(x, trim = 0.05, ...), mean(x, trim = 0.1, ...))
+  as.tbstat(tmp, sep = " ", parens = c("[", "]"))
+}
+
+summary(tableby(sex ~ hgb, data=mockstudy, numeric.stats=c("Nmiss", "trim510comma"), test = FALSE))
+summary(tableby(sex ~ hgb, data=mockstudy, numeric.stats=c("Nmiss", "trim510bracket"), test = FALSE))
+
+## ----results='asis'-------------------------------------------------------------------------------
+trim10pct <- function(x, weights=rep(1,length(x)), ...){
+  tmp <- mean(x, trim = 0.05, ...)
+  as.countpct(c(tmp, 10), sep = " ", parens = c("(", ")"), which.count = 0, which.pct = 2, pct = "%")
+}
+summary(tableby(sex ~ hgb, data=mockstudy, numeric.stats=c("Nmiss", "trim10pct"),
+                digits = 2, digits.pct = 0, test = FALSE))
 
 
 ## -------------------------------------------------------------------------------------------------

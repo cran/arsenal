@@ -217,6 +217,15 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, strata,
         by.col[by.col == ""] <- " "
         by.levels <- unique(replace(by.levels, by.levels == "", " "))
       }
+      reserved <- c("group.term", "group.label", "strata.term", "strata.value", "variable", "term",
+                    "label", "variable.type", "test", "p.value")
+      if(any(by.levels %in% reserved))
+      {
+        stop("One or more reserved word found in by-variable: ",
+             paste0(intersect(by.levels, reserved), collapse = ", "),
+             ". Please use a different word")
+      }
+
       if(length(by.levels) < 2 && control$test)
       {
         warning("The by-variable has fewer than two levels; statistical tests are ignored")
@@ -347,6 +356,9 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, strata,
         statList <- list()
         for(statfun2 in currstats) {
           statfun <- get_stat_function(statfun2)
+          tmp <- get0(statfun, mode = "function")
+          statfun <- if(is.null(tmp)) get(statfun, parent.frame(), mode = "function") else tmp
+
           bystatlist <- list()
           if(statfun2 %in% c("countrowpct", "countcellpct", "rowbinomCI", "Npct"))
           {

@@ -1429,3 +1429,128 @@ test_that("12/20/2019: Npct (#263)", {
 test_that("12/27/2019: informative error when no stats are computed (#273)", {
   expect_error(summary(tableby(~ sex, data = mockstudy, cat.stats = "Nmiss")), "Nothing to show for variable")
 })
+
+test_that("02/28/2020: as.tbstat and as.countpct are better described (#283)", {
+  trim510bracket <- function(x, weights=rep(1,length(x)), ...){
+    tmp <- c(mean(x, trim = 0.05, ...), mean(x, trim = 0.1, ...))
+    as.tbstat(tmp, sep = " ", parens = c("[", "]"))
+  }
+  trim10pct <- function(x, weights=rep(1,length(x)), ...){
+    tmp <- mean(x, trim = 0.05, ...)
+    as.countpct(c(tmp, 10), sep = " ", parens = c("(", ")"), which.count = 0, which.pct = 2, pct = "%")
+  }
+  expect_identical(
+    capture.kable(summary(tableby(sex ~ hgb, data=mockstudy, numeric.stats=c("Nmiss", "trim510bracket"),
+                                  stats.labels = list(Nmiss = "N-Missing", trim510bracket = "Trimmed means"),
+                                  digits.count = 0, digits = 2), text = TRUE)),
+    c("|                 | Male (N=916)  | Female (N=583) | Total (N=1499) | p value|",
+      "|:----------------|:-------------:|:--------------:|:--------------:|-------:|",
+      "|hgb              |               |                |                | < 0.001|",
+      "|-  N-Missing     |      162      |      104       |      266       |        |",
+      "|-  Trimmed means | 12.57 [12.56] | 11.92 [11.91]  | 12.31 [12.29]  |        |"
+    )
+  )
+  expect_identical(
+    capture.kable(summary(tableby(sex ~ hgb, data=mockstudy, numeric.stats=c("Nmiss", "trim10pct"),
+                                  digits = 2, digits.pct = 0, digits.count = 1), text = TRUE)),
+    c("|             | Male (N=916) | Female (N=583) | Total (N=1499) | p value|",
+      "|:------------|:------------:|:--------------:|:--------------:|-------:|",
+      "|hgb          |              |                |                | < 0.001|",
+      "|-  N-Miss    |    162.0     |     104.0      |     266.0      |        |",
+      "|-  trim10pct | 12.57 (10%)  |  11.92 (10%)   |  12.31 (10%)   |        |"
+    )
+  )
+})
+
+test_that("Warn if reserved word is used in tableby by-variable (#277)", {
+  for(v in c("group.term", "group.label", "strata.term", "strata.value", "variable", "term",
+             "label", "variable.type", "test", "p.value"))
+  {
+    expect_error(tableby(y ~ x, data = data.frame(y = rep(c("hi", v), each = 5), x = 1:10)), v)
+  }
+  expect_identical(
+    capture.kable(summary(tableby(y ~ x, data = data.frame(y = rep(c("hi", "test "), each = 5), x = 1:10)), text = TRUE)),
+    c("|             |   hi (N=5)    |  test  (N=5)   |  Total (N=10)  | p value|",
+      "|:------------|:-------------:|:--------------:|:--------------:|-------:|",
+      "|x            |               |                |                |   0.001|",
+      "|-  Mean (SD) | 3.000 (1.581) | 8.000 (1.581)  | 5.500 (3.028)  |        |",
+      "|-  Range     | 1.000 - 5.000 | 6.000 - 10.000 | 1.000 - 10.000 |        |"
+    )
+  )
+})
+
+
+test_that("HTML footnotes (#298)", {
+  expect_identical(
+    capture.output(summary(tableby(sex ~ age + arm, data = mockstudy), text = "html", pfootnote = "html")),
+    c("<table>"                                                                ,
+      " <thead>"                                                               ,
+      "  <tr>"                                                                 ,
+      "   <th style=\"text-align:left;\">  </th>"                              ,
+      "   <th style=\"text-align:center;\"> Male (N=916) </th>"                ,
+      "   <th style=\"text-align:center;\"> Female (N=583) </th>"              ,
+      "   <th style=\"text-align:center;\"> Total (N=1499) </th>"              ,
+      "   <th style=\"text-align:right;\"> p value </th>"                      ,
+      "  </tr>"                                                                ,
+      " </thead>"                                                              ,
+      "<tbody>"                                                                ,
+      "  <tr>"                                                                 ,
+      "   <td style=\"text-align:left;\"> <strong>Age in Years</strong> </td>" ,
+      "   <td style=\"text-align:center;\">  </td>"                            ,
+      "   <td style=\"text-align:center;\">  </td>"                            ,
+      "   <td style=\"text-align:center;\">  </td>"                            ,
+      "   <td style=\"text-align:right;\"> 0.048<sup>1</sup> </td>"            ,
+      "  </tr>"                                                                ,
+      "  <tr>"                                                                 ,
+      "   <td style=\"text-align:left;\"> &nbsp;&nbsp;&nbsp;Mean (SD) </td>"   ,
+      "   <td style=\"text-align:center;\"> 60.455 (11.369) </td>"             ,
+      "   <td style=\"text-align:center;\"> 59.247 (11.722) </td>"             ,
+      "   <td style=\"text-align:center;\"> 59.985 (11.519) </td>"             ,
+      "   <td style=\"text-align:right;\">  </td>"                             ,
+      "  </tr>"                                                                ,
+      "  <tr>"                                                                 ,
+      "   <td style=\"text-align:left;\"> &nbsp;&nbsp;&nbsp;Range </td>"       ,
+      "   <td style=\"text-align:center;\"> 19.000 - 88.000 </td>"             ,
+      "   <td style=\"text-align:center;\"> 22.000 - 88.000 </td>"             ,
+      "   <td style=\"text-align:center;\"> 19.000 - 88.000 </td>"             ,
+      "   <td style=\"text-align:right;\">  </td>"                             ,
+      "  </tr>"                                                                ,
+      "  <tr>"                                                                 ,
+      "   <td style=\"text-align:left;\"> <strong>Treatment Arm</strong> </td>",
+      "   <td style=\"text-align:center;\">  </td>"                            ,
+      "   <td style=\"text-align:center;\">  </td>"                            ,
+      "   <td style=\"text-align:center;\">  </td>"                            ,
+      "   <td style=\"text-align:right;\"> 0.190<sup>2</sup> </td>"            ,
+      "  </tr>"                                                                ,
+      "  <tr>"                                                                 ,
+      "   <td style=\"text-align:left;\"> &nbsp;&nbsp;&nbsp;A: IFL </td>"      ,
+      "   <td style=\"text-align:center;\"> 277 (30.2%) </td>"                 ,
+      "   <td style=\"text-align:center;\"> 151 (25.9%) </td>"                 ,
+      "   <td style=\"text-align:center;\"> 428 (28.6%) </td>"                 ,
+      "   <td style=\"text-align:right;\">  </td>"                             ,
+      "  </tr>"                                                                ,
+      "  <tr>"                                                                 ,
+      "   <td style=\"text-align:left;\"> &nbsp;&nbsp;&nbsp;F: FOLFOX </td>"   ,
+      "   <td style=\"text-align:center;\"> 411 (44.9%) </td>"                 ,
+      "   <td style=\"text-align:center;\"> 280 (48.0%) </td>"                 ,
+      "   <td style=\"text-align:center;\"> 691 (46.1%) </td>"                 ,
+      "   <td style=\"text-align:right;\">  </td>"                             ,
+      "  </tr>"                                                                ,
+      "  <tr>"                                                                 ,
+      "   <td style=\"text-align:left;\"> &nbsp;&nbsp;&nbsp;G: IROX </td>"     ,
+      "   <td style=\"text-align:center;\"> 228 (24.9%) </td>"                 ,
+      "   <td style=\"text-align:center;\"> 152 (26.1%) </td>"                 ,
+      "   <td style=\"text-align:center;\"> 380 (25.4%) </td>"                 ,
+      "   <td style=\"text-align:right;\">  </td>"                             ,
+      "  </tr>"                                                                ,
+      "</tbody>"                                                               ,
+      "</table>"                                                               ,
+      "<ol>"                                                                   ,
+      "<li>Linear Model ANOVA</li>"                                            ,
+      "<li>Pearson's Chi-squared test</li>"                                    ,
+      "</ol>"                                                                  ,
+      ""
+    )
+  )
+})
+

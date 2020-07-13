@@ -7,20 +7,14 @@
 #'
 #' The not-in operator for R.
 #'
-#' @inheritParams base::`%in%`
-#' @return The negation of \code{\link{\%in\%}}.
+#' @param x vector or \code{NULL}: the values to be matched.
+#' @param table vector or \code{NULL}: the values to be matched against.
+#' @return The negation of \code{\link[base:match]{\%in\%}}.
 #' @examples
 #' 1 %nin% 2:10
 #' c("a", "b") %nin% c("a", "c", "d")
-#' @seealso \code{\link{\%in\%}}
+#' @seealso \code{\link[base:match]{\%in\%}}
 #' @author Raymond Moore
 #' @aliases nin
 #' @export
-
-## The not-in operator for R
-## From Raymond Moore, 6/2015, who found it on google
-## '%nin%' <- Negate('%in%')
-
-## sorry guys--Ethan changed this on 7/26/16
-
 `%nin%` <- function(x, table) match(x, table, nomatch = 0L) == 0L

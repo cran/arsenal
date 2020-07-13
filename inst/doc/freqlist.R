@@ -30,11 +30,7 @@ summary(example1, title="Basic freqlist output")
 head(as.data.frame(summary(example1)))
 
 ## ----results='asis'-----------------------------------------------------------
-### this works in R >= 3.4.0
-# summary(freqlist(~ arm + sex + mdquality.s, data = mockstudy, addNA = TRUE))
-
-### This one is backwards-compatible
-summary(freqlist(~ arm + sex + addNA(mdquality.s), data = mockstudy))
+summary(freqlist(~ arm + sex + mdquality.s, data = mockstudy))
 
 ## ----results='asis'-----------------------------------------------------------
 summary(freqlist(~ arm + sex + includeNA(mdquality.s, "Missing"), data = mockstudy))

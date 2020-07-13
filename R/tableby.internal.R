@@ -55,11 +55,13 @@ format.tbstat <- function(x, digits = NULL, ...)
 }
 
 #' @export
-format.tbstat_countpct <- function(x, digits.count = NULL, digits.pct = NULL, ...)
+format.tbstat_countpct <- function(x, digits.count = NULL, digits.pct = NULL, digits = NULL, ...)
 {
   att <- attributes(x)
-  if(is.null(att$which.pct)) att$which.pct <- 0
-  x <- vapply(seq_along(x), function(i) formatC(x[i], digits = if(i %in% att$which.pct) digits.pct else digits.count, format = "f"), NA_character_)
+  x <- vapply(seq_along(x), function(i) {
+    d <- if(i %in% att$which.pct) digits.pct else if(i %in% att$which.count) digits.count else digits
+    formatC(x[i], digits = d, format = "f")
+  }, NA_character_)
   x <- trimws(x)
   attributes(x) <- att
   NextMethod("format")
@@ -73,13 +75,18 @@ format.tbstat_countpct <- function(x, digits.count = NULL, digits.pct = NULL, ..
 #' @param sep The separator between \code{x[1]} and the rest of the vector.
 #' @param parens A length-2 vector denoting parentheses to use around \code{x[2]} and \code{x[3]}.
 #' @param sep2 The separator between \code{x[2]} and \code{x[3]}.
-#' @param pct The symbol to use after percents.
+#' @param pct For statistics of length 2, the symbol to use after the second one. (It's called
+#'   "pct" because usually the first statistic is never a percent, but the second often is.)
 #' @param which.pct Which statistics are percents? The default is 0, indicating that none are.
+#' @param which.count Which statistics are counts? The default is everything except the things that are percents.
 #' @param ... arguments to pass to \code{as.tbstat}.
 #' @details
+#'   The vignette has an example on how to use these.
+#'
 #'   \code{as.tbstat} defines a tableby statistic with its appropriate formatting.
 #'
-#'   \code{as.countpct} adds another class to \code{as.tbstat} to use different "digits" arguments. See \code{\link{tableby.control}}.
+#'   \code{as.countpct} adds another class to \code{as.tbstat} to use different "digits" arguments
+#'   (i.e., \code{digits.count} or \code{digits.pct}). See \code{\link{tableby.control}}.
 #'
 #'   \code{as.tbstat_multirow} marks an object (usually a list) for multiple-row printing.
 #' @name tableby.stats.internal
@@ -96,9 +103,9 @@ as.tbstat <- function(x, oldClass = NULL, sep = NULL, parens = NULL, sep2 = NULL
 
 #' @rdname tableby.stats.internal
 #' @export
-as.countpct <- function(x, ..., which.pct = 0L)
+as.countpct <- function(x, ..., which.count = setdiff(seq_along(x), which.pct), which.pct = 0L)
 {
-  tmp <- as.tbstat(x, ..., which.pct = which.pct)
+  tmp <- as.tbstat(x, ..., which.count = which.count, which.pct = which.pct)
   class(tmp) <- c("tbstat_countpct", class(tmp))
   tmp
 }
@@ -154,13 +161,13 @@ extract2_tbstat <- function(x, ...)
 #' @param e1,e2 \code{\link{tableby}} objects, or numbers to compare them to.
 #' @param use.pname Logical, denoting whether the column name in \code{pdata} corresponding to the p-values should be used
 #'   in the output of the object.
-#' @param n A single integer. See \code{\link[utils]{head}} or \code{\link[utils]{tail}} for more details
+#' @param n A single integer. See \code{\link[utils]{head}} or \code{\link[utils:head]{tail}} for more details
 #' @param lhs Logical, denoting whether to remove \code{NA}s from the first column of the data.frame (the "left-hand side")
 #' @return \code{na.tableby} returns a subsetted version of \code{object} (with attributes). \code{Ops.tableby} returns
 #'   a logical vector. \code{xtfrm.tableby} returns the p-values (which are ordered by \code{\link{order}} to \code{\link{sort}}).
 #' @details
 #' Logical comparisons are implemented for \code{Ops.tableby}.
-#' @seealso \code{\link{arsenal_table}}, \code{\link{sort}}, \code{\link[utils]{head}}, \code{\link[utils]{tail}},
+#' @seealso \code{\link{arsenal_table}}, \code{\link{sort}}, \code{\link[utils]{head}}, \code{\link[utils:head]{tail}},
 #'   \code{\link{tableby}}, \code{\link{summary.tableby}}, \code{\link{tableby.control}}
 #' @name tableby.internal
 NULL

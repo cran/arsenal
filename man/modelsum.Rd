@@ -21,16 +21,17 @@ modelsum(
 \item{formula}{an object of class \code{\link{formula}}; a symbolic description of the variables to be modeled.  See "Details" for more information.}
 
 \item{family}{similar mechanism to \code{\link[stats]{glm}}, where the model to be fit is driven by the family.
-Options include: binomial, gaussian, survival, poisson, negbin, and ordinal. These can be passed as a string, as a function,
+Options include: binomial, gaussian, survival, poisson, negbin, clog, and ordinal. These can be passed as a string, as a function,
 or as a list resulting from a call to one of the functions. See \code{\link{modelsum.family}} for details on
-survival and ordinal families.}
+survival, ordinal, negbin, and clog families.}
 
 \item{data}{an optional data.frame, list or environment (or object coercible by \code{\link[base]{as.data.frame}} to a data frame) containing the
 variables in the model. If not found in \code{data}, the variables are taken from \code{environment(formula)}, typically
 the environment from which \code{modelsum} is called.}
 
-\item{adjust}{an object of class \code{\link{formula}}, listing variables to adjust by in all models. Specify as a one-sided formula,
-like: \code{~Age+ Sex}.}
+\item{adjust}{an object of class \code{\link{formula}} or a list of formulas, listing variables to adjust by in all models.
+Specify as a one-sided formula, like: \code{~Age+ Sex}. If a list, the names are used for the summary function. Unadjusted models
+can be specified as \code{~ 1} or as a list: \code{list(Unadjusted = NULL)}.}
 
 \item{na.action}{a function which indicates what should happen when the data contain \code{NA}s.
 The default (\code{NULL}) is to use the defaults of \code{\link[stats]{lm}}, \code{\link[stats]{glm}}, or \code{\link[survival]{coxph}},
@@ -41,7 +42,8 @@ If \code{strata} is missing, this works as vector of logicals or an index; other
 
 \item{weights}{an optional vector specifying the weights to apply to each data observation (rows of \code{data})}
 
-\item{strata}{a vector of strata to separate model summaries by an additional group.}
+\item{strata}{a vector of strata to separate model summaries by an additional group. Note that for families like "clog",
+the "usual" strata term to indicate subject groupings should be given in the \code{adjust} argument.}
 
 \item{control}{control parameters to handle optional settings within \code{modelsum}.  Arguments for \code{modelsum.control}
 can be passed to \code{modelsum} via the \code{...} argument, but if a control object and \code{...} arguments are both supplied,

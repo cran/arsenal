@@ -17,11 +17,6 @@
 NULL
 #> NULL
 
-starts_with <- function(x, prefix)
-{
-  substring(x, 1, nchar(prefix)) == prefix # this function is optimized in R >= 3.3 (startsWith)
-}
-
 join_formula <- function(x, y)
 {
   x <- stats::formula(x)
@@ -104,7 +99,8 @@ modelsum_guts <- function(fam, temp.call, envir, conf.level, scope, anyna)
   try_lrt <- function(f, s, a)
   {
     if(a) return(NA_real_)
-    setdiff(stats::drop1(f, scope = s, test = "Chisq")[["Pr(>Chi)"]], NA_real_)
+    out <- setdiff(stats::drop1(f, scope = s, test = "Chisq")[["Pr(>Chi)"]], NA_real_)
+    if(length(out) == 1) out else NA_real_
   }
 
   ## y is ordered factor
@@ -114,12 +110,12 @@ modelsum_guts <- function(fam, temp.call, envir, conf.level, scope, anyna)
     temp.call$method <- fam$method
     fit <- eval(temp.call, envir)
     coeffORTidy <- broom::tidy(fit, exponentiate=TRUE, conf.int=TRUE, conf.level=conf.level)
-    coeffORTidy[coeffORTidy$coefficient_type == "zeta", names(coeffORTidy) %nin% c("term", "coefficient_type")] <- NA
+    coeffORTidy[coeffORTidy$coef.type != "coefficient", names(coeffORTidy) %nin% c("term", "coef.type")] <- NA
     coeffTidy <- broom::tidy(fit, exponentiate=FALSE, conf.int=TRUE, conf.level=conf.level)
     coeffTidy$p.value <- 2*stats::pnorm(abs(coeffTidy$statistic), lower.tail = FALSE)
     coeffTidy <- cbind(coeffTidy, OR=coeffORTidy$estimate, CI.lower.OR=coeffORTidy$conf.low, CI.upper.OR=coeffORTidy$conf.high)
     # sort so that zeta comes first, but hold all else fixed
-    coeffTidy <- coeffTidy[order(coeffTidy$coefficient_type == "coefficient", seq_len(nrow(coeffTidy))), ]
+    coeffTidy <- coeffTidy[order(coeffTidy$coef.type == "coefficient", seq_len(nrow(coeffTidy))), ]
     modelGlance <- broom::glance(fit)
     modelGlance$p.value.lrt <- try_lrt(fit, scope, anyna)
 
@@ -154,7 +150,9 @@ modelsum_guts <- function(fam, temp.call, envir, conf.level, scope, anyna)
     coeffORTidy[coeffORTidy$term == "Intercept", -1] <- NA
     coeffTidy <- broom::tidy(fit, exponentiate=FALSE, conf.int=TRUE, conf.level=conf.level)
 
-    waldTidy <- broom::confint_tidy(fit, conf.level=conf.level, func = stats::confint.default)
+    waldTidy <- suppressMessages(stats::confint.default(fit, conf.level=conf.level))
+    all_na <- apply(waldTidy, 1, allNA)
+    waldTidy <- stats::setNames(as.data.frame(waldTidy[!all_na, , drop = FALSE]), c("conf.low", "conf.high"))
 
     coeffTidy <- cbind(coeffTidy, OR=coeffORTidy$estimate, CI.lower.OR=coeffORTidy$conf.low, CI.upper.OR=coeffORTidy$conf.high,
                        CI.lower.wald=waldTidy$conf.low, CI.upper.wald=waldTidy$conf.high,
@@ -192,6 +190,18 @@ modelsum_guts <- function(fam, temp.call, envir, conf.level, scope, anyna)
     modelGlance$SE.theta <- fit$SE.theta
     modelGlance$p.value.lrt <- try_lrt(fit, scope, anyna)
 
+  } else if(fam$family == "clog") {
+
+    temp.call[[1]] <- quote(survival::clogit)
+    fit <- eval(temp.call, envir)
+    ## use tidy to get both CIs, merge
+    coeffORTidy <- broom::tidy(fit, exponentiate=TRUE, conf.int=conf.level)
+    coeffTidy <- broom::tidy(fit, exponentiate=FALSE, conf.int=conf.level)
+    coeffTidy <- cbind(coeffTidy, OR=coeffORTidy$estimate, CI.lower.OR=coeffORTidy$conf.low, CI.upper.OR=coeffORTidy$conf.high)
+    modelGlance <-  broom::glance(fit)
+    names(modelGlance)[names(modelGlance) == "nevent"] <- "Nevents"
+    modelGlance$p.value.lrt <- try_lrt(fit, scope, anyna)
+
   } else if(fam$family == "survival") {
 
     temp.call[[1]] <- quote(survival::coxph)
@@ -207,6 +217,7 @@ modelsum_guts <- function(fam, temp.call, envir, conf.level, scope, anyna)
 
   names(coeffTidy)[names(coeffTidy) == "conf.low"] <- "CI.lower.estimate"
   names(coeffTidy)[names(coeffTidy) == "conf.high"] <- "CI.upper.estimate"
+  modelGlance[] <- lapply(modelGlance, unname)
   list(coeffTidy = coeffTidy, modelGlance = modelGlance, fit = fit)
 }
 
