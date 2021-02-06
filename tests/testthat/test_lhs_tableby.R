@@ -425,3 +425,132 @@ test_that("06/11/2019: retaining control.list with merge() (#221)", {
     )
   )
 })
+
+test_that("Multiple labels work (#310)", {
+  tb <- tableby(list(sex, arm) ~ age, data = mockstudy)
+  expect_identical(
+    capture.kable(summary(tb, title = "Just one", text=TRUE)),
+    c("Table: Just one"                                                                                   ,
+      ""                                                                                                  ,
+      "|             |  Male (N=916)   | Female (N=583)  | Total (N=1499)  | p value|"                    ,
+      "|:------------|:---------------:|:---------------:|:---------------:|-------:|"                    ,
+      "|Age in Years |                 |                 |                 |   0.048|"                    ,
+      "|-  Mean (SD) | 60.455 (11.369) | 59.247 (11.722) | 59.985 (11.519) |        |"                    ,
+      "|-  Range     | 19.000 - 88.000 | 22.000 - 88.000 | 19.000 - 88.000 |        |"                    ,
+      ""                                                                                                  ,
+      ""                                                                                                  ,
+      "|             | A: IFL (N=428)  | F: FOLFOX (N=691) | G: IROX (N=380) | Total (N=1499)  | p value|",
+      "|:------------|:---------------:|:-----------------:|:---------------:|:---------------:|-------:|",
+      "|Age in Years |                 |                   |                 |                 |   0.614|",
+      "|-  Mean (SD) | 59.673 (11.365) |  60.301 (11.632)  | 59.763 (11.499) | 59.985 (11.519) |        |",
+      "|-  Range     | 27.000 - 88.000 |  19.000 - 88.000  | 26.000 - 85.000 | 19.000 - 88.000 |        |"
+    )
+  )
+  expect_identical(
+    capture.kable(summary(tb, title = c("Just one", "both"), text=TRUE)),
+    c("Table: Just one"                                                                                   ,
+      ""                                                                                                  ,
+      "|             |  Male (N=916)   | Female (N=583)  | Total (N=1499)  | p value|"                    ,
+      "|:------------|:---------------:|:---------------:|:---------------:|-------:|"                    ,
+      "|Age in Years |                 |                 |                 |   0.048|"                    ,
+      "|-  Mean (SD) | 60.455 (11.369) | 59.247 (11.722) | 59.985 (11.519) |        |"                    ,
+      "|-  Range     | 19.000 - 88.000 | 22.000 - 88.000 | 19.000 - 88.000 |        |"                    ,
+      ""                                                                                                  ,
+      ""                                                                                                  ,
+      "Table: both"                                                                                       ,
+      ""                                                                                                  ,
+      "|             | A: IFL (N=428)  | F: FOLFOX (N=691) | G: IROX (N=380) | Total (N=1499)  | p value|",
+      "|:------------|:---------------:|:-----------------:|:---------------:|:---------------:|-------:|",
+      "|Age in Years |                 |                   |                 |                 |   0.614|",
+      "|-  Mean (SD) | 59.673 (11.365) |  60.301 (11.632)  | 59.763 (11.499) | 59.985 (11.519) |        |",
+      "|-  Range     | 27.000 - 88.000 |  19.000 - 88.000  | 26.000 - 85.000 | 19.000 - 88.000 |        |"
+    )
+  )
+  expect_identical(
+    capture.kable(summary(tb, title = list(NULL, "both"), text=TRUE)),
+    c("|             |  Male (N=916)   | Female (N=583)  | Total (N=1499)  | p value|"                    ,
+      "|:------------|:---------------:|:---------------:|:---------------:|-------:|"                    ,
+      "|Age in Years |                 |                 |                 |   0.048|"                    ,
+      "|-  Mean (SD) | 60.455 (11.369) | 59.247 (11.722) | 59.985 (11.519) |        |"                    ,
+      "|-  Range     | 19.000 - 88.000 | 22.000 - 88.000 | 19.000 - 88.000 |        |"                    ,
+      ""                                                                                                  ,
+      ""                                                                                                  ,
+      "Table: both"                                                                                       ,
+      ""                                                                                                  ,
+      "|             | A: IFL (N=428)  | F: FOLFOX (N=691) | G: IROX (N=380) | Total (N=1499)  | p value|",
+      "|:------------|:---------------:|:-----------------:|:---------------:|:---------------:|-------:|",
+      "|Age in Years |                 |                   |                 |                 |   0.614|",
+      "|-  Mean (SD) | 59.673 (11.365) |  60.301 (11.632)  | 59.763 (11.499) | 59.985 (11.519) |        |",
+      "|-  Range     | 27.000 - 88.000 |  19.000 - 88.000  | 26.000 - 85.000 | 19.000 - 88.000 |        |"
+    )
+  )
+})
+
+
+test_that("total.pos = 'before' (#320)", {
+  expect_identical(
+    capture.kable(summary(tableby(sex ~ age, data = mockstudy, strata = arm, total.pos = "before"), text = TRUE)),
+    c("|Treatment Arm |             | Total (N=1499)  |  Male (N=916)   | Female (N=583)  | p value |",
+      "|:-------------|:------------|:---------------:|:---------------:|:---------------:|:-------:|",
+      "|A: IFL        |Age in Years |                 |                 |                 |  0.572  |",
+      "|              |-  Mean (SD) | 59.673 (11.365) | 59.903 (11.347) | 59.252 (11.422) |         |",
+      "|              |-  Range     | 27.000 - 88.000 | 28.000 - 83.000 | 27.000 - 88.000 |         |",
+      "|F: FOLFOX     |Age in Years |                 |                 |                 |  0.286  |",
+      "|              |-  Mean (SD) | 60.301 (11.632) | 60.691 (11.598) | 59.729 (11.679) |         |",
+      "|              |-  Range     | 19.000 - 88.000 | 19.000 - 88.000 | 22.000 - 83.000 |         |",
+      "|G: IROX       |Age in Years |                 |                 |                 |  0.051  |",
+      "|              |-  Mean (SD) | 59.763 (11.499) | 60.702 (10.999) | 58.355 (12.113) |         |",
+      "|              |-  Range     | 26.000 - 85.000 | 29.000 - 85.000 | 26.000 - 82.000 |         |"
+    )
+  )
+})
+
+
+
+test_that("cat.droplevels (#318)", {
+  d <- data.frame(
+    z = rep(LETTERS[1:3], each = 10),
+    x = rep(c("a", "b", "b"), each = 10),
+    y = rep(LETTERS[1:3], times = 10),
+    stringsAsFactors = FALSE
+  )
+  expect_identical(
+    capture.kable(summary(tableby(y ~ x, data = d, strata = z, cat.droplevels = FALSE), text = TRUE)),
+    c("|z  |     |  A (N=10)  |  B (N=10)  |  C (N=10)  | Total (N=30) | p value |",
+      "|:--|:----|:----------:|:----------:|:----------:|:------------:|:-------:|",
+      "|A  |x    |            |            |            |              |         |",
+      "|   |-  a | 4 (100.0%) | 3 (100.0%) | 3 (100.0%) | 10 (100.0%)  |         |",
+      "|   |-  b |  0 (0.0%)  |  0 (0.0%)  |  0 (0.0%)  |   0 (0.0%)   |         |",
+      "|B  |x    |            |            |            |              |         |",
+      "|   |-  a |  0 (0.0%)  |  0 (0.0%)  |  0 (0.0%)  |   0 (0.0%)   |         |",
+      "|   |-  b | 3 (100.0%) | 4 (100.0%) | 3 (100.0%) | 10 (100.0%)  |         |",
+      "|C  |x    |            |            |            |              |         |",
+      "|   |-  a |  0 (0.0%)  |  0 (0.0%)  |  0 (0.0%)  |   0 (0.0%)   |         |",
+      "|   |-  b | 3 (100.0%) | 3 (100.0%) | 4 (100.0%) | 10 (100.0%)  |         |"
+    )
+  )
+  expect_identical(
+    capture.kable(summary(tableby(y ~ x, data = d, strata = z, cat.droplevels = TRUE), text = TRUE)),
+    c("|z  |     |  A (N=10)  |  B (N=10)  |  C (N=10)  | Total (N=30) | p value |",
+      "|:--|:----|:----------:|:----------:|:----------:|:------------:|:-------:|",
+      "|A  |x    |            |            |            |              |         |",
+      "|   |-  a | 4 (100.0%) | 3 (100.0%) | 3 (100.0%) | 10 (100.0%)  |         |",
+      "|B  |x    |            |            |            |              |         |",
+      "|   |-  b | 3 (100.0%) | 4 (100.0%) | 3 (100.0%) | 10 (100.0%)  |         |",
+      "|C  |x    |            |            |            |              |         |",
+      "|   |-  b | 3 (100.0%) | 3 (100.0%) | 4 (100.0%) | 10 (100.0%)  |         |"
+    )
+  )
+  expect_identical(
+    capture.kable(summary(tableby(y ~ x, data = d, strata = z, cat.droplevels = TRUE), text = TRUE)),
+    capture.kable(summary(tableby(y ~ chisq(x, cat.droplevels = TRUE), data = d, strata = z), text = TRUE))
+  )
+  expect_identical(
+    capture.kable(summary(tableby(y ~ x, data = d, strata = z, cat.droplevels = TRUE, test.always = TRUE), text = TRUE)),
+    capture.kable(summary(tableby(y ~ chisq(x, cat.droplevels = TRUE), data = d, strata = z, test.always = TRUE), text = TRUE))
+  )
+  expect_identical(
+    capture.kable(summary(tableby(y ~ x, data = d, strata = z, cat.droplevels = TRUE, test.always = TRUE), text = TRUE)),
+    capture.kable(summary(tableby(y ~ x, data = d, strata = z, test.always = TRUE), text = TRUE))[c(1:4, 6, 8:9, 11)]
+  )
+})

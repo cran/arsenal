@@ -14,7 +14,6 @@ vignette: |
 ```{r, echo=FALSE, message=FALSE, results='hide', warning=FALSE}
 require(knitr)
 require(broom)
-require(gam)
 require(MASS)
 require(pROC)
 require(rpart)
@@ -42,7 +41,7 @@ so the tables could be displayed within an R markdown report.
 This report provides step-by-step directions for using the functions associated with `modelsum`.
 All functions presented here are available within the `arsenal` package.  An assumption is made that users
 are somewhat familiar with R markdown documents.  For those who are new to the topic, a good initial
-resource is available at [rmarkdown.rstudio.com](http://rmarkdown.rstudio.com). 
+resource is available at [rmarkdown.rstudio.com](https://rmarkdown.rstudio.com/). 
 
 # Simple Example
 
@@ -138,7 +137,7 @@ plot(fit2)
 Finally, look to see whether there there is a non-linear relationship with age.
 
 ```{r}
-require(gam)
+require(splines)
 fit3 <- lm(log(alk.phos) ~ arm + ns(age, df=2) + sex, data=mockstudy)
 
 # test whether there is a difference between models 

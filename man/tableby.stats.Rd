@@ -9,6 +9,7 @@
 \alias{arsenal_sd}
 \alias{arsenal_var}
 \alias{meansd}
+\alias{meanse}
 \alias{meanCI}
 \alias{medianrange}
 \alias{medianmad}
@@ -53,6 +54,8 @@ arsenal_sd(x, na.rm = TRUE, weights = NULL, ...)
 arsenal_var(x, na.rm = TRUE, weights = NULL, ...)
 
 meansd(x, na.rm = TRUE, weights = NULL, ...)
+
+meanse(x, na.rm = TRUE, weights = NULL, ...)
 
 meanCI(x, na.rm = TRUE, weights = NULL, conf.level = 0.95, ...)
 
@@ -103,7 +106,8 @@ Npct(
   by.levels = sort(unique(by)),
   na.rm = TRUE,
   weights = NULL,
-  ...
+  ...,
+  totallab = "Total"
 )
 
 count(x, levels = NULL, na.rm = TRUE, weights = NULL, ...)
@@ -119,7 +123,8 @@ countrowpct(
   by.levels = sort(unique(by)),
   na.rm = TRUE,
   weights = NULL,
-  ...
+  ...,
+  totallab = "Total"
 )
 
 countcellpct(
@@ -129,7 +134,8 @@ countcellpct(
   by.levels = sort(unique(by)),
   na.rm = TRUE,
   weights = NULL,
-  ...
+  ...,
+  totallab = "Total"
 )
 
 binomCI(x, levels = NULL, na.rm = TRUE, weights = NULL, conf.level = 0.95, ...)
@@ -142,7 +148,8 @@ rowbinomCI(
   na.rm = TRUE,
   weights = NULL,
   conf.level = 0.95,
-  ...
+  ...,
+  totallab = "Total"
 )
 }
 \arguments{
@@ -163,6 +170,8 @@ rowbinomCI(
 \item{by}{a vector of the by-values.}
 
 \item{by.levels}{a vector of the levels of \code{by}.}
+
+\item{totallab}{What to call the total "column"}
 }
 \value{
 Usually a vector of the appropriate numbers.

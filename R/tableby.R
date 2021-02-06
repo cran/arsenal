@@ -55,6 +55,9 @@
 #'     variables. When LHS variable has two levels, equivalent to Wilcoxon test.
 #'   }
 #'   \item{
+#'     \code{wt}: An explicit Wilcoxon test.
+#'   }
+#'   \item{
 #'     \code{chisq}: chi-square goodness of fit test for equal counts of a
 #'     categorical variable across categories; the default for categorical
 #'     or factor variables
@@ -86,7 +89,7 @@
 #'
 #' @return An object with class \code{c("tableby", "arsenal_table")}
 #' @seealso \code{\link{arsenal_table}}, \code{\link[stats]{anova}}, \code{\link[stats]{chisq.test}}, \code{\link{tableby.control}},
-#'   \code{\link{summary.tableby}}, \code{\link{tableby.internal}}, \code{\link{formulize}}
+#'   \code{\link{summary.tableby}}, \code{\link{tableby.internal}}, \code{\link{formulize}}, \code{\link{selectall}}
 #'
 #' @examples
 #' data(mockstudy)
@@ -127,7 +130,7 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, strata,
   indx <- match(c("formula", "data", "subset", "weights", "na.action", "strata"), names(Call), nomatch = 0)
   if(indx[1] == 0) stop("A formula argument is required")
 
-  special <- c("anova", "kwt", "chisq", "fe", "logrank", "trend", "notest")
+  special <- c("anova", "kwt", "wt", "chisq", "fe", "logrank", "trend", "notest")
 
   out.tables <- list()
   formula.list <- as_list_formula(formula)
@@ -245,9 +248,8 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, strata,
     if(is.null(totallab <- control$stats.labels$total)) totallab <- "Total"
     ystats <- if(hasWeights)
     {
-      c(stats::xtabs(weights ~ factor(by.col, levels=by.levels), exclude = NA), Total = sum(weights[!is.na(by.col)]))
-    } else c(table(factor(by.col, levels=by.levels), exclude=NA), Total=sum(!is.na(by.col)))
-    names(ystats)[names(ystats) == "Total"] <- totallab
+      c(stats::xtabs(weights ~ factor(by.col, levels=by.levels), exclude = NA), stats::setNames(sum(weights[!is.na(by.col)]), totallab))
+    } else c(table(factor(by.col, levels=by.levels), exclude=NA), stats::setNames(sum(!is.na(by.col)), totallab))
     yList <- list(stats=ystats, label=labelBy, term=termBy)
 
     ## find which columnss of modeldf have specials assigned to known specials
@@ -322,7 +324,14 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, strata,
           currtest <- control$date.test
           vartype <- "Date"
 
-        } else if(survival::is.Surv(currcol)) {
+        } else if(is.selectall(currcol)) {
+          xlevels <- colnames(currcol)
+
+          currstats <- control$selectall.stats
+          currtest <- control$selectall.test
+          vartype <- "selectall"
+
+        } else if(inherits(currcol, "Surv")) {
           ##### Survival (time to event) #######
           xlevels <- NULL
           if(any(currcol[, 2] %nin% c(0:1, NA))) stop("Survival endpoint may not be coded 0/1.")
@@ -352,6 +361,18 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, strata,
 
         # now finally subset
         currcol <- currcol[strata.col == strat]
+
+        if(vartype == "categorical") {
+          tmpdl <- control.list[[eff]]$cat.droplevels
+          if(is.null(tmpdl)) tmpdl <- control$cat.droplevels
+          if(tmpdl) {
+            currcol <- droplevels(currcol)
+            xlevels <- levels(currcol)
+            if(length(xlevels) == 0) stop(paste0("Zero-length levels found for ", names(xTerms)[eff]))
+            if(!control$test.always) specialTests[eff] <- "notest"
+          }
+        }
+
         if(!anyNA(currcol) && "Nmiss" %in% currstats) currstats <- currstats[currstats != "Nmiss"]
         statList <- list()
         for(statfun2 in currstats) {
@@ -362,9 +383,13 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, strata,
           bystatlist <- list()
           if(statfun2 %in% c("countrowpct", "countcellpct", "rowbinomCI", "Npct"))
           {
-            bystatlist <- do.call(statfun, list(currcol, levels = xlevels,
-                                                by = bycol, by.levels = by.levels, weights = weightscol, na.rm = TRUE))
-            names(bystatlist)[names(bystatlist) == "Total"] <- totallab
+            bystatlist <- do.call(statfun, list(
+              currcol, levels = xlevels,
+              by = bycol, by.levels = by.levels,
+              weights = weightscol,
+              na.rm = TRUE,
+              totallab = totallab
+            ))
           } else
           {
             for(bylev in by.levels) {
@@ -383,7 +408,9 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, strata,
         currtest <- if(nchar(specialTests[eff]) > 0) specialTests[eff] else currtest
         testout <- if(control$test) {
           eval(call(currtest, currcol, factor(bycol, levels = by.levels),
-                    chisq.correct=control$chisq.correct, simulate.p.value=control$simulate.p.value, B=control$B, test.always=control$test.always))
+                    chisq.correct=control$chisq.correct, simulate.p.value=control$simulate.p.value, B=control$B,
+                    wilcox.correct = control$wilcox.correct, wilcox.exact = control$wilcox.exact,
+                    test.always=control$test.always))
         } else notest()
 
         xList[[eff]] <- list(stats=statList, test=testout, type=vartype)

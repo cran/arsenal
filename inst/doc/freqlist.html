@@ -15,13 +15,77 @@
 
 <title>The freqlist function</title>
 
+<script>// Hide empty <a> tag within highlighted CodeBlock for screen reader accessibility (see https://github.com/jgm/pandoc/issues/6352#issuecomment-626106786) -->
+// v0.0.1
+// Written by JooYoung Seo (jooyoung@psu.edu) and Atsushi Yasumoto on June 1st, 2020.
+
+document.addEventListener('DOMContentLoaded', function() {
+  const codeList = document.getElementsByClassName("sourceCode");
+  for (var i = 0; i < codeList.length; i++) {
+    var linkList = codeList[i].getElementsByTagName('a');
+    for (var j = 0; j < linkList.length; j++) {
+      if (linkList[j].innerHTML === "") {
+        linkList[j].setAttribute('aria-hidden', 'true');
+      }
+    }
+  }
+});
+</script>
+<style type="text/css">
+a.anchor-section {margin-left: 10px; visibility: hidden; color: inherit;}
+a.anchor-section::before {content: '#';}
+.hasAnchor:hover a.anchor-section {visibility: visible;}
+</style>
+<script>// Anchor sections v1.0 written by Atsushi Yasumoto on Oct 3rd, 2020.
+document.addEventListener('DOMContentLoaded', function() {
+  // Do nothing if AnchorJS is used
+  if (typeof window.anchors === 'object' && anchors.hasOwnProperty('hasAnchorJSLink')) {
+    return;
+  }
+
+  const h = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+  // Do nothing if sections are already anchored
+  if (Array.from(h).some(x => x.classList.contains('hasAnchor'))) {
+    return null;
+  }
+
+  // Use section id when pandoc runs with --section-divs
+  const section_id = function(x) {
+    return ((x.classList.contains('section') || (x.tagName === 'SECTION'))
+            ? x.id : '');
+  };
+
+  // Add anchors
+  h.forEach(function(x) {
+    const id = x.id || section_id(x.parentElement);
+    if (id === '') {
+      return null;
+    }
+    let anchor = document.createElement('a');
+    anchor.href = '#' + id;
+    anchor.classList = ['anchor-section'];
+    x.classList.add('hasAnchor');
+    x.appendChild(anchor);
+  });
+});
+</script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
 
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css" data-origin="pandoc">
-a.sourceLine { display: inline-block; line-height: 1.25; }
-a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
-a.sourceLine:empty { height: 1.2em; }
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
 div.sourceCode { margin: 1em 0; }
@@ -31,14 +95,16 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 code.sourceCode { white-space: pre-wrap; }
-a.sourceLine { text-indent: -1em; padding-left: 1em; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
-pre.numberSource a.sourceLine
-  { position: relative; left: -4em; }
-pre.numberSource a.sourceLine::before
-  { content: attr(data-line-number);
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; pointer-events: all; display: inline-block;
+    border: none; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
@@ -47,9 +113,9 @@ pre.numberSource a.sourceLine::before
   }
 pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
 div.sourceCode
-  {  }
+  {   }
 @media screen {
-a.sourceLine::before { text-decoration: underline; }
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
@@ -330,23 +396,23 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <div id="overview" class="section level1">
 <h1>Overview</h1>
 <p><code>freqlist()</code> is a function meant to produce output similar to SAS’s <code>PROC FREQ</code> procedure when using the <code>/list</code> option of the <code>TABLE</code> statement. <code>freqlist()</code> provides options for handling missing or sparse data and can provide cumulative counts and percentages based on subgroups. It depends on the <code>knitr</code> package for printing.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">require</span>(arsenal)</a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw">require</span>(arsenal)</span></code></pre></div>
 <div id="sample-dataset" class="section level2">
 <h2>Sample dataset</h2>
 <p>For our examples, we’ll load the <code>mockstudy</code> data included with this package and use it to create a basic table. Because they have fewer levels, for brevity, we’ll use the variables arm, sex, and mdquality.s to create the example table. We’ll retain NAs in the table creation. See the appendix for notes regarding default NA handling and other useful information regarding tables in R.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="co"># load the data</span></a>
-<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="kw">data</span>(mockstudy)</a>
-<a class="sourceLine" id="cb2-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb2-4" data-line-number="4"><span class="co"># retain NAs when creating the table using the useNA argument</span></a>
-<a class="sourceLine" id="cb2-5" data-line-number="5">tab.ex &lt;-<span class="st"> </span><span class="kw">table</span>(mockstudy[, <span class="kw">c</span>(<span class="st">&quot;arm&quot;</span>, <span class="st">&quot;sex&quot;</span>, <span class="st">&quot;mdquality.s&quot;</span>)], <span class="dt">useNA =</span> <span class="st">&quot;ifany&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="co"># load the data</span></span>
+<span id="cb2-2"><a href="#cb2-2"></a><span class="kw">data</span>(mockstudy)</span>
+<span id="cb2-3"><a href="#cb2-3"></a></span>
+<span id="cb2-4"><a href="#cb2-4"></a><span class="co"># retain NAs when creating the table using the useNA argument</span></span>
+<span id="cb2-5"><a href="#cb2-5"></a>tab.ex &lt;-<span class="st"> </span><span class="kw">table</span>(mockstudy[, <span class="kw">c</span>(<span class="st">&quot;arm&quot;</span>, <span class="st">&quot;sex&quot;</span>, <span class="st">&quot;mdquality.s&quot;</span>)], <span class="dt">useNA =</span> <span class="st">&quot;ifany&quot;</span>)</span></code></pre></div>
 </div>
 </div>
 <div id="the-freqlist-object" class="section level1">
 <h1>The <code>freqlist</code> object</h1>
 <p>The <code>freqlist()</code> function is an S3 generic (with methods for tables and formulas) which returns an object of class <code>&quot;freqlist&quot;</code>.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">example1 &lt;-<span class="st"> </span><span class="kw">freqlist</span>(tab.ex)</a>
-<a class="sourceLine" id="cb3-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb3-3" data-line-number="3"><span class="kw">str</span>(example1)</a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>example1 &lt;-<span class="st"> </span><span class="kw">freqlist</span>(tab.ex)</span>
+<span id="cb3-2"><a href="#cb3-2"></a></span>
+<span id="cb3-3"><a href="#cb3-3"></a><span class="kw">str</span>(example1)</span></code></pre></div>
 <pre><code>List of 3
  $ Call   : language freqlist.table(object = tab.ex)
  $ control:List of 5
@@ -395,7 +461,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
   .. .. .. ..$ label   : chr &quot;Cumulative Percent&quot;
   .. .. .. ..$ term    : chr &quot;cumPercent&quot;
   .. ..$ tables    :List of 1
-  .. .. ..$ :'data.frame':  18 obs. of  7 variables:
+  .. .. ..$ :&#39;data.frame&#39;:  18 obs. of  7 variables:
   .. .. .. ..$ arm        : Factor w/ 3 levels &quot;A: IFL&quot;,&quot;F: FOLFOX&quot;,..: 1 1 1 1 1 1 2 2 2 2 ...
   .. .. .. ..$ sex        : Factor w/ 2 levels &quot;Male&quot;,&quot;Female&quot;: 1 1 1 2 2 2 1 1 1 2 ...
   .. .. .. ..$ mdquality.s: Factor w/ 2 levels &quot;0&quot;,&quot;1&quot;: 1 2 NA 1 2 NA 1 2 NA 1 ...
@@ -406,8 +472,8 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
   .. ..$ hasWeights: logi FALSE
   .. ..$ na.options: chr &quot;include&quot;
  - attr(*, &quot;class&quot;)= chr [1:2] &quot;freqlist&quot; &quot;arsenal_table&quot;</code></pre>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="co"># view the data frame portion of freqlist output</span></a>
-<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="kw">head</span>(<span class="kw">as.data.frame</span>(example1))  <span class="co">## or use as.data.frame(example1)</span></a></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="co"># view the data frame portion of freqlist output</span></span>
+<span id="cb5-2"><a href="#cb5-2"></a><span class="kw">head</span>(<span class="kw">as.data.frame</span>(example1))  <span class="co">## or use as.data.frame(example1)</span></span></code></pre></div>
 <pre><code>     arm    sex mdquality.s Freq cumFreq freqPercent cumPercent
 1 A: IFL   Male           0   29      29   1.9346231   1.934623
 2 A: IFL   Male           1  214     243  14.2761841  16.210807
@@ -420,7 +486,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <h1>Basic output using <code>summary()</code></h1>
 <p>The <code>summary</code> method for <code>freqlist()</code> relies on the <code>kable()</code> function (in the <code>knitr</code> package) for printing. <code>knitr::kable()</code> converts the output to markdown which can be printed in the console or easily rendered in Word, PDF, or HTML documents.</p>
 <p>Note that you must supply <code>results=&quot;asis&quot;</code> to properly format the markdown output.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw">summary</span>(example1)</a></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="kw">summary</span>(example1)</span></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -599,7 +665,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 </tbody>
 </table>
 <p>You can print a title for the table using the <code>title=</code> argument.</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw">summary</span>(example1, <span class="dt">title =</span> <span class="st">&quot;Basic freqlist output&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="kw">summary</span>(example1, <span class="dt">title =</span> <span class="st">&quot;Basic freqlist output&quot;</span>)</span></code></pre></div>
 <table>
 <caption>Basic freqlist output</caption>
 <thead>
@@ -779,7 +845,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 </tbody>
 </table>
 <p>You can also easily pull out the <code>freqlist</code> data frame for more complicated formatting or manipulation (e.g. with another function such as <code>xtable()</code> or <code>pander()</code>) using <code>as.data.frame(summary())</code>:</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw">head</span>(<span class="kw">as.data.frame</span>(<span class="kw">summary</span>(example1)))</a></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="kw">head</span>(<span class="kw">as.data.frame</span>(<span class="kw">summary</span>(example1)))</span></code></pre></div>
 <pre><code>     arm    sex mdquality.s Freq Cumulative Freq Percent Cumulative Percent
 1 A: IFL   Male           0   29              29    1.93               1.93
 2                         1  214             243   14.28              16.21
@@ -792,7 +858,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <h1>Using a formula with <code>freqlist</code></h1>
 <p>Instead of passing a pre-computed table to <code>freqlist()</code>, you can instead pass a formula, which will be in turn passed to the <code>xtabs()</code> function. Additional <code>freqlist()</code> arguments are passed through the <code>...</code> to the <code>freqlist()</code> table method.</p>
 <p>Note that <code>freqlist()</code> sets the <code>addNA=TRUE</code> argument by default:</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="kw">summary</span>(<span class="kw">freqlist</span>(<span class="op">~</span>arm <span class="op">+</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span>mdquality.s, <span class="dt">data =</span> mockstudy))</a></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="kw">summary</span>(<span class="kw">freqlist</span>(<span class="op">~</span>arm <span class="op">+</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span>mdquality.s, <span class="dt">data =</span> mockstudy))</span></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -971,7 +1037,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 </tbody>
 </table>
 <p>One can also set NAs to an explicit value using <code>includeNA()</code>.</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="kw">summary</span>(<span class="kw">freqlist</span>(<span class="op">~</span>arm <span class="op">+</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span><span class="kw">includeNA</span>(mdquality.s, <span class="st">&quot;Missing&quot;</span>), <span class="dt">data =</span> mockstudy))</a></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a><span class="kw">summary</span>(<span class="kw">freqlist</span>(<span class="op">~</span>arm <span class="op">+</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span><span class="kw">includeNA</span>(mdquality.s, <span class="st">&quot;Missing&quot;</span>), <span class="dt">data =</span> mockstudy))</span></code></pre></div>
 <table style="width:100%;">
 <colgroup>
 <col width="13%"></col>
@@ -1159,8 +1225,8 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 </tbody>
 </table>
 <p>In fact, since <code>xtabs()</code> allows for left-hand-side weights, so does <code>freqlist()</code>!</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1">mockstudy<span class="op">$</span>weights &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">10000</span>, <span class="kw">rep</span>(<span class="dv">1</span>, <span class="kw">nrow</span>(mockstudy) <span class="op">-</span><span class="st"> </span><span class="dv">1</span>))</a>
-<a class="sourceLine" id="cb13-2" data-line-number="2"><span class="kw">summary</span>(<span class="kw">freqlist</span>(weights <span class="op">~</span><span class="st"> </span>arm <span class="op">+</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span><span class="kw">addNA</span>(mdquality.s), <span class="dt">data =</span> mockstudy))</a></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a>mockstudy<span class="op">$</span>weights &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">10000</span>, <span class="kw">rep</span>(<span class="dv">1</span>, <span class="kw">nrow</span>(mockstudy) <span class="op">-</span><span class="st"> </span><span class="dv">1</span>))</span>
+<span id="cb13-2"><a href="#cb13-2"></a><span class="kw">summary</span>(<span class="kw">freqlist</span>(weights <span class="op">~</span><span class="st"> </span>arm <span class="op">+</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span><span class="kw">addNA</span>(mdquality.s), <span class="dt">data =</span> mockstudy))</span></code></pre></div>
 <table style="width:100%;">
 <colgroup>
 <col width="15%"></col>
@@ -1348,8 +1414,8 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 </tbody>
 </table>
 <p>You can also specify multiple weights:</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1">mockstudy<span class="op">$</span>weights2 &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="kw">rep</span>(<span class="dv">1</span>, <span class="kw">nrow</span>(mockstudy) <span class="op">-</span><span class="st"> </span><span class="dv">1</span>), <span class="dv">10000</span>)</a>
-<a class="sourceLine" id="cb14-2" data-line-number="2"><span class="kw">summary</span>(<span class="kw">freqlist</span>(<span class="kw">list</span>(weights, weights2) <span class="op">~</span><span class="st"> </span>arm <span class="op">+</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span><span class="kw">addNA</span>(mdquality.s), <span class="dt">data =</span> mockstudy))</a></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a>mockstudy<span class="op">$</span>weights2 &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="kw">rep</span>(<span class="dv">1</span>, <span class="kw">nrow</span>(mockstudy) <span class="op">-</span><span class="st"> </span><span class="dv">1</span>), <span class="dv">10000</span>)</span>
+<span id="cb14-2"><a href="#cb14-2"></a><span class="kw">summary</span>(<span class="kw">freqlist</span>(<span class="kw">list</span>(weights, weights2) <span class="op">~</span><span class="st"> </span>arm <span class="op">+</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span><span class="kw">addNA</span>(mdquality.s), <span class="dt">data =</span> mockstudy))</span></code></pre></div>
 <table style="width:100%;">
 <colgroup>
 <col width="15%"></col>
@@ -1726,9 +1792,9 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <div id="rounding-percentage-digits-or-changing-variable-names-for-printing" class="section level1">
 <h1>Rounding percentage digits or changing variable names for printing</h1>
 <p>The <code>digits.pct=</code> argument takes a single numeric value and controls the number of digits of percentages in the output. The <code>digits.count=</code> argument takes a similar argument and controls the number of digits of the count columns. The <code>labelTranslations=</code> argument is a named character vector or list. Both options are applied in the following example.</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1">example2 &lt;-<span class="st"> </span><span class="kw">freqlist</span>(tab.ex, <span class="dt">labelTranslations =</span> <span class="kw">c</span>(<span class="dt">arm =</span> <span class="st">&quot;Treatment Arm&quot;</span>, <span class="dt">sex =</span> <span class="st">&quot;Gender&quot;</span>, </a>
-<a class="sourceLine" id="cb15-2" data-line-number="2">    <span class="dt">mdquality.s =</span> <span class="st">&quot;LASA QOL&quot;</span>), <span class="dt">digits.pct =</span> <span class="dv">1</span>, <span class="dt">digits.count =</span> <span class="dv">1</span>)</a>
-<a class="sourceLine" id="cb15-3" data-line-number="3"><span class="kw">summary</span>(example2)</a></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a>example2 &lt;-<span class="st"> </span><span class="kw">freqlist</span>(tab.ex, <span class="dt">labelTranslations =</span> <span class="kw">c</span>(<span class="dt">arm =</span> <span class="st">&quot;Treatment Arm&quot;</span>, <span class="dt">sex =</span> <span class="st">&quot;Gender&quot;</span>, </span>
+<span id="cb15-2"><a href="#cb15-2"></a>    <span class="dt">mdquality.s =</span> <span class="st">&quot;LASA QOL&quot;</span>), <span class="dt">digits.pct =</span> <span class="dv">1</span>, <span class="dt">digits.count =</span> <span class="dv">1</span>)</span>
+<span id="cb15-3"><a href="#cb15-3"></a><span class="kw">summary</span>(example2)</span></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -1912,7 +1978,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <div id="including-combinations-with-frequencies-of-zero" class="section level2">
 <h2>Including combinations with frequencies of zero</h2>
 <p>The <code>sparse=</code> argument takes a single logical value as input. The default option is <code>FALSE</code>. If set to <code>TRUE</code>, the sparse option will include combinations with frequencies of zero in the list of results. As our initial table did not have any such levels, we create a second table to use in our example.</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1"><span class="kw">summary</span>(<span class="kw">freqlist</span>(<span class="op">~</span>race <span class="op">+</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span>arm, <span class="dt">data =</span> mockstudy, <span class="dt">sparse =</span> <span class="ot">TRUE</span>, <span class="dt">digits.pct =</span> <span class="dv">1</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a><span class="kw">summary</span>(<span class="kw">freqlist</span>(<span class="op">~</span>race <span class="op">+</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span>arm, <span class="dt">data =</span> mockstudy, <span class="dt">sparse =</span> <span class="ot">TRUE</span>, <span class="dt">digits.pct =</span> <span class="dv">1</span>))</span></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -2364,7 +2430,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <div id="options-for-na-handling" class="section level2">
 <h2>Options for NA handling</h2>
 <p>The various <code>na.options=</code> allow you to include or exclude data with missing values for one or more factor levels in the counts and percentages, as well as show the missing data but exclude it from the cumulative counts and percentages. The default option is to include all combinations with missing values.</p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1"><span class="kw">summary</span>(<span class="kw">freqlist</span>(tab.ex, <span class="dt">na.options =</span> <span class="st">&quot;include&quot;</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a><span class="kw">summary</span>(<span class="kw">freqlist</span>(tab.ex, <span class="dt">na.options =</span> <span class="st">&quot;include&quot;</span>))</span></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -2542,7 +2608,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1"><span class="kw">summary</span>(<span class="kw">freqlist</span>(tab.ex, <span class="dt">na.options =</span> <span class="st">&quot;showexclude&quot;</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a><span class="kw">summary</span>(<span class="kw">freqlist</span>(tab.ex, <span class="dt">na.options =</span> <span class="st">&quot;showexclude&quot;</span>))</span></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -2720,7 +2786,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" data-line-number="1"><span class="kw">summary</span>(<span class="kw">freqlist</span>(tab.ex, <span class="dt">na.options =</span> <span class="st">&quot;remove&quot;</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a><span class="kw">summary</span>(<span class="kw">freqlist</span>(tab.ex, <span class="dt">na.options =</span> <span class="st">&quot;remove&quot;</span>))</span></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -2848,8 +2914,8 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <div id="frequency-counts-and-percentages-subset-by-factor-levels" class="section level2">
 <h2>Frequency counts and percentages subset by factor levels</h2>
 <p>The <code>strata=</code> argument internally subsets the data by the specified factor prior to calculating cumulative counts and percentages. By default, when used each subset will print in a separate table. Using the <code>single = TRUE</code> option when printing will collapse the subsetted result into a single table.</p>
-<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" data-line-number="1">example3 &lt;-<span class="st"> </span><span class="kw">freqlist</span>(tab.ex, <span class="dt">strata =</span> <span class="kw">c</span>(<span class="st">&quot;arm&quot;</span>, <span class="st">&quot;sex&quot;</span>))</a>
-<a class="sourceLine" id="cb20-2" data-line-number="2"><span class="kw">summary</span>(example3)</a></code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1"></a>example3 &lt;-<span class="st"> </span><span class="kw">freqlist</span>(tab.ex, <span class="dt">strata =</span> <span class="kw">c</span>(<span class="st">&quot;arm&quot;</span>, <span class="st">&quot;sex&quot;</span>))</span>
+<span id="cb20-2"><a href="#cb20-2"></a><span class="kw">summary</span>(example3)</span></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -3102,9 +3168,9 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" data-line-number="1"><span class="co"># using the single = TRUE argument will collapse results into a single table for</span></a>
-<a class="sourceLine" id="cb21-2" data-line-number="2"><span class="co"># printing</span></a>
-<a class="sourceLine" id="cb21-3" data-line-number="3"><span class="kw">summary</span>(example3, <span class="dt">single =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a><span class="co"># using the single = TRUE argument will collapse results into a single table for</span></span>
+<span id="cb21-2"><a href="#cb21-2"></a><span class="co"># printing</span></span>
+<span id="cb21-3"><a href="#cb21-3"></a><span class="kw">summary</span>(example3, <span class="dt">single =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -3286,7 +3352,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <div id="show-only-the-n-most-common-combinations-in-each-table-head-and-sort" class="section level2">
 <h2>Show only the “n” most common combinations in each table (<code>head()</code> and <code>sort()</code>)</h2>
 <p>You can now sort <code>freqlist()</code> objects, and, by taking the <code>head()</code> of the summary, output the most common frequencies. This looks the prettiest with <code>dupLabels=TRUE</code>.</p>
-<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb22-1" data-line-number="1"><span class="kw">head</span>(<span class="kw">summary</span>(<span class="kw">sort</span>(example1, <span class="dt">decreasing =</span> <span class="ot">TRUE</span>), <span class="dt">dupLabels =</span> <span class="ot">TRUE</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1"></a><span class="kw">head</span>(<span class="kw">summary</span>(<span class="kw">sort</span>(example1, <span class="dt">decreasing =</span> <span class="ot">TRUE</span>), <span class="dt">dupLabels =</span> <span class="ot">TRUE</span>))</span></code></pre></div>
 <pre><code>
 
 |arm       |sex    |mdquality.s | Freq| Cumulative Freq| Percent| Cumulative Percent|
@@ -3300,9 +3366,9 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 </div>
 <div id="change-labels-on-the-fly" class="section level2">
 <h2>Change labels on the fly</h2>
-<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb24-1" data-line-number="1">labs &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dt">arm =</span> <span class="st">&quot;Arm&quot;</span>, <span class="dt">sex =</span> <span class="st">&quot;Sex&quot;</span>, <span class="dt">mdquality.s =</span> <span class="st">&quot;QOL&quot;</span>, <span class="dt">freqPercent =</span> <span class="st">&quot;%&quot;</span>)</a>
-<a class="sourceLine" id="cb24-2" data-line-number="2"><span class="kw">labels</span>(example1) &lt;-<span class="st"> </span>labs</a>
-<a class="sourceLine" id="cb24-3" data-line-number="3"><span class="kw">summary</span>(example1)</a></code></pre></div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1"></a>labs &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dt">arm =</span> <span class="st">&quot;Arm&quot;</span>, <span class="dt">sex =</span> <span class="st">&quot;Sex&quot;</span>, <span class="dt">mdquality.s =</span> <span class="st">&quot;QOL&quot;</span>, <span class="dt">freqPercent =</span> <span class="st">&quot;%&quot;</span>)</span>
+<span id="cb24-2"><a href="#cb24-2"></a><span class="kw">labels</span>(example1) &lt;-<span class="st"> </span>labs</span>
+<span id="cb24-3"><a href="#cb24-3"></a><span class="kw">summary</span>(example1)</span></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -3481,7 +3547,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 </tbody>
 </table>
 <p>You can also supply <code>labelTranslations=</code> to <code>summary()</code>.</p>
-<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb25-1" data-line-number="1"><span class="kw">summary</span>(example1, <span class="dt">labelTranslations =</span> labs)</a></code></pre></div>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1"></a><span class="kw">summary</span>(example1, <span class="dt">labelTranslations =</span> labs)</span></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -3663,19 +3729,19 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <div id="using-xtable-to-format-and-print-freqlist-results" class="section level2">
 <h2>Using <code>xtable()</code> to format and print <code>freqlist()</code> results</h2>
 <p>Fair warning: <code>xtable()</code> has kind of a steep learning curve. These examples are given without explanation, for more advanced users.</p>
-<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb26-1" data-line-number="1"><span class="kw">require</span>(xtable)</a></code></pre></div>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1"></a><span class="kw">require</span>(xtable)</span></code></pre></div>
 <pre><code>Loading required package: xtable</code></pre>
-<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb28-1" data-line-number="1"><span class="co"># set up custom function for xtable text</span></a>
-<a class="sourceLine" id="cb28-2" data-line-number="2">italic &lt;-<span class="st"> </span><span class="cf">function</span>(x) <span class="kw">paste0</span>(<span class="st">&quot;&lt;i&gt;&quot;</span>, x, <span class="st">&quot;&lt;/i&gt;&quot;</span>)</a>
-<a class="sourceLine" id="cb28-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb28-4" data-line-number="4">xftbl &lt;-<span class="st"> </span><span class="kw">xtable</span>(<span class="kw">as.data.frame</span>(<span class="kw">summary</span>(example1)), <span class="dt">caption =</span> <span class="st">&quot;xtable formatted output of freqlist data frame&quot;</span>, </a>
-<a class="sourceLine" id="cb28-5" data-line-number="5">    <span class="dt">align =</span> <span class="st">&quot;|r|r|r|r|c|c|c|r|&quot;</span>)</a>
-<a class="sourceLine" id="cb28-6" data-line-number="6"></a>
-<a class="sourceLine" id="cb28-7" data-line-number="7"><span class="co"># change the column names</span></a>
-<a class="sourceLine" id="cb28-8" data-line-number="8"><span class="kw">names</span>(xftbl)[<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>] &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Arm&quot;</span>, <span class="st">&quot;Gender&quot;</span>, <span class="st">&quot;LASA QOL&quot;</span>)</a>
-<a class="sourceLine" id="cb28-9" data-line-number="9"></a>
-<a class="sourceLine" id="cb28-10" data-line-number="10"><span class="kw">print</span>(xftbl, <span class="dt">sanitize.colnames.function =</span> italic, <span class="dt">include.rownames =</span> <span class="ot">FALSE</span>, <span class="dt">type =</span> <span class="st">&quot;html&quot;</span>, </a>
-<a class="sourceLine" id="cb28-11" data-line-number="11">    <span class="dt">comment =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1"></a><span class="co"># set up custom function for xtable text</span></span>
+<span id="cb28-2"><a href="#cb28-2"></a>italic &lt;-<span class="st"> </span><span class="cf">function</span>(x) <span class="kw">paste0</span>(<span class="st">&quot;&lt;i&gt;&quot;</span>, x, <span class="st">&quot;&lt;/i&gt;&quot;</span>)</span>
+<span id="cb28-3"><a href="#cb28-3"></a></span>
+<span id="cb28-4"><a href="#cb28-4"></a>xftbl &lt;-<span class="st"> </span><span class="kw">xtable</span>(<span class="kw">as.data.frame</span>(<span class="kw">summary</span>(example1)), <span class="dt">caption =</span> <span class="st">&quot;xtable formatted output of freqlist data frame&quot;</span>, </span>
+<span id="cb28-5"><a href="#cb28-5"></a>    <span class="dt">align =</span> <span class="st">&quot;|r|r|r|r|c|c|c|r|&quot;</span>)</span>
+<span id="cb28-6"><a href="#cb28-6"></a></span>
+<span id="cb28-7"><a href="#cb28-7"></a><span class="co"># change the column names</span></span>
+<span id="cb28-8"><a href="#cb28-8"></a><span class="kw">names</span>(xftbl)[<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>] &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Arm&quot;</span>, <span class="st">&quot;Gender&quot;</span>, <span class="st">&quot;LASA QOL&quot;</span>)</span>
+<span id="cb28-9"><a href="#cb28-9"></a></span>
+<span id="cb28-10"><a href="#cb28-10"></a><span class="kw">print</span>(xftbl, <span class="dt">sanitize.colnames.function =</span> italic, <span class="dt">include.rownames =</span> <span class="ot">FALSE</span>, <span class="dt">type =</span> <span class="st">&quot;html&quot;</span>, </span>
+<span id="cb28-11"><a href="#cb28-11"></a>    <span class="dt">comment =</span> <span class="ot">FALSE</span>)</span></code></pre></div>
 <table border="1">
 <caption align="bottom">
 xtable formatted output of freqlist data frame
@@ -4089,7 +4155,7 @@ Female
 <div id="use-freqlist-in-bookdown" class="section level2">
 <h2>Use <code>freqlist</code> in bookdown</h2>
 <p>Since the backbone of <code>freqlist()</code> is <code>knitr::kable()</code>, tables still render well in bookdown. However, <code>print.summary.freqlist()</code> doesn’t use the <code>caption=</code> argument of <code>kable()</code>, so some tables may not have a properly numbered caption. To fix this, use the method described <a href="https://bookdown.org/yihui/bookdown/tables.html">on the bookdown site</a> to give the table a tag/ID.</p>
-<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb29-1" data-line-number="1"><span class="kw">summary</span>(<span class="kw">freqlist</span>(<span class="op">~</span>sex <span class="op">+</span><span class="st"> </span>age, <span class="dt">data =</span> mockstudy), <span class="dt">title =</span> <span class="st">&quot;(</span><span class="ch">\\</span><span class="st">#tab:mytableby) Caption here&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1"></a><span class="kw">summary</span>(<span class="kw">freqlist</span>(<span class="op">~</span>sex <span class="op">+</span><span class="st"> </span>age, <span class="dt">data =</span> mockstudy), <span class="dt">title =</span> <span class="st">&quot;(</span><span class="ch">\\</span><span class="st">#tab:mytableby) Caption here&quot;</span>)</span></code></pre></div>
 </div>
 </div>
 <div id="appendix-notes-regarding-table-options-in-r" class="section level1">
@@ -4097,9 +4163,9 @@ Female
 <div id="nas" class="section level2">
 <h2>NAs</h2>
 <p>There are several widely used options for basic tables in R. The <code>table()</code> function in base R is probably the most common; by default it excludes NA values. You can change NA handling in <code>base::table()</code> using the <code>useNA=</code> or <code>exclude=</code> arguments.</p>
-<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb30-1" data-line-number="1"><span class="co"># base table default removes NAs</span></a>
-<a class="sourceLine" id="cb30-2" data-line-number="2">tab.d1 &lt;-<span class="st"> </span>base<span class="op">::</span><span class="kw">table</span>(mockstudy[, <span class="kw">c</span>(<span class="st">&quot;arm&quot;</span>, <span class="st">&quot;sex&quot;</span>, <span class="st">&quot;mdquality.s&quot;</span>)], <span class="dt">useNA =</span> <span class="st">&quot;ifany&quot;</span>)</a>
-<a class="sourceLine" id="cb30-3" data-line-number="3">tab.d1</a></code></pre></div>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1"></a><span class="co"># base table default removes NAs</span></span>
+<span id="cb30-2"><a href="#cb30-2"></a>tab.d1 &lt;-<span class="st"> </span>base<span class="op">::</span><span class="kw">table</span>(mockstudy[, <span class="kw">c</span>(<span class="st">&quot;arm&quot;</span>, <span class="st">&quot;sex&quot;</span>, <span class="st">&quot;mdquality.s&quot;</span>)], <span class="dt">useNA =</span> <span class="st">&quot;ifany&quot;</span>)</span>
+<span id="cb30-3"><a href="#cb30-3"></a>tab.d1</span></code></pre></div>
 <pre><code>, , mdquality.s = 0
 
            sex
@@ -4124,9 +4190,9 @@ arm         Male Female
   F: FOLFOX   95     61
   G: IROX     24     17</code></pre>
 <p><code>xtabs()</code> is similar to <code>table()</code>, but uses a formula-based syntax. However, NAs must be explicitly added to each factor using the <code>addNA()</code> function or using the argument <code>addNA = TRUE</code>.</p>
-<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb32-1" data-line-number="1"><span class="co"># without specifying addNA</span></a>
-<a class="sourceLine" id="cb32-2" data-line-number="2">tab.d2 &lt;-<span class="st"> </span><span class="kw">xtabs</span>(<span class="dt">formula =</span> <span class="op">~</span>arm <span class="op">+</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span>mdquality.s, <span class="dt">data =</span> mockstudy)</a>
-<a class="sourceLine" id="cb32-3" data-line-number="3">tab.d2</a></code></pre></div>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1"></a><span class="co"># without specifying addNA</span></span>
+<span id="cb32-2"><a href="#cb32-2"></a>tab.d2 &lt;-<span class="st"> </span><span class="kw">xtabs</span>(<span class="dt">formula =</span> <span class="op">~</span>arm <span class="op">+</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span>mdquality.s, <span class="dt">data =</span> mockstudy)</span>
+<span id="cb32-3"><a href="#cb32-3"></a>tab.d2</span></code></pre></div>
 <pre><code>, , mdquality.s = 0
 
            sex
@@ -4142,9 +4208,9 @@ arm         Male Female
   A: IFL     214    118
   F: FOLFOX  285    198
   G: IROX    187    121</code></pre>
-<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb34-1" data-line-number="1"><span class="co"># now with addNA</span></a>
-<a class="sourceLine" id="cb34-2" data-line-number="2">tab.d3 &lt;-<span class="st"> </span><span class="kw">xtabs</span>(<span class="op">~</span>arm <span class="op">+</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span><span class="kw">addNA</span>(mdquality.s), <span class="dt">data =</span> mockstudy)</a>
-<a class="sourceLine" id="cb34-3" data-line-number="3">tab.d3</a></code></pre></div>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1"></a><span class="co"># now with addNA</span></span>
+<span id="cb34-2"><a href="#cb34-2"></a>tab.d3 &lt;-<span class="st"> </span><span class="kw">xtabs</span>(<span class="op">~</span>arm <span class="op">+</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span><span class="kw">addNA</span>(mdquality.s), <span class="dt">data =</span> mockstudy)</span>
+<span id="cb34-3"><a href="#cb34-3"></a>tab.d3</span></code></pre></div>
 <pre><code>, , addNA(mdquality.s) = 0
 
            sex
@@ -4174,8 +4240,8 @@ arm         Male Female
 <h2>Table dimname names (dnn)</h2>
 <p>Supplying a data.frame to the <code>table()</code> function without giving columns individually will create a contingency table using all variables in the data.frame.</p>
 <p>However, if the columns of a data.frame or matrix are supplied separately (i.e., as vectors), column names will not be preserved.</p>
-<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb36-1" data-line-number="1"><span class="co"># providing variables separately (as vectors) drops column names</span></a>
-<a class="sourceLine" id="cb36-2" data-line-number="2"><span class="kw">table</span>(mockstudy<span class="op">$</span>arm, mockstudy<span class="op">$</span>sex, mockstudy<span class="op">$</span>mdquality.s)</a></code></pre></div>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1"></a><span class="co"># providing variables separately (as vectors) drops column names</span></span>
+<span id="cb36-2"><a href="#cb36-2"></a><span class="kw">table</span>(mockstudy<span class="op">$</span>arm, mockstudy<span class="op">$</span>sex, mockstudy<span class="op">$</span>mdquality.s)</span></code></pre></div>
 <pre><code>, ,  = 0
 
            
@@ -4192,9 +4258,9 @@ arm         Male Female
   F: FOLFOX  285    198
   G: IROX    187    121</code></pre>
 <p>If desired, you can use the <code>dnn=</code> argument to pass variable names.</p>
-<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb38-1" data-line-number="1"><span class="co"># add the column name labels back using dnn option in base::table</span></a>
-<a class="sourceLine" id="cb38-2" data-line-number="2"><span class="kw">table</span>(mockstudy<span class="op">$</span>arm, mockstudy<span class="op">$</span>sex, mockstudy<span class="op">$</span>mdquality.s, <span class="dt">dnn =</span> <span class="kw">c</span>(<span class="st">&quot;Arm&quot;</span>, <span class="st">&quot;Sex&quot;</span>, </a>
-<a class="sourceLine" id="cb38-3" data-line-number="3">    <span class="st">&quot;QOL&quot;</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1"></a><span class="co"># add the column name labels back using dnn option in base::table</span></span>
+<span id="cb38-2"><a href="#cb38-2"></a><span class="kw">table</span>(mockstudy<span class="op">$</span>arm, mockstudy<span class="op">$</span>sex, mockstudy<span class="op">$</span>mdquality.s, <span class="dt">dnn =</span> <span class="kw">c</span>(<span class="st">&quot;Arm&quot;</span>, <span class="st">&quot;Sex&quot;</span>, </span>
+<span id="cb38-3"><a href="#cb38-3"></a>    <span class="st">&quot;QOL&quot;</span>))</span></code></pre></div>
 <pre><code>, , QOL = 0
 
            Sex
@@ -4211,7 +4277,7 @@ Arm         Male Female
   F: FOLFOX  285    198
   G: IROX    187    121</code></pre>
 <p>You can also name the arguments to <code>table()</code>:</p>
-<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb40-1" data-line-number="1"><span class="kw">table</span>(<span class="dt">Arm =</span> mockstudy<span class="op">$</span>arm, <span class="dt">Sex =</span> mockstudy<span class="op">$</span>sex, <span class="dt">QOL =</span> mockstudy<span class="op">$</span>mdquality.s)</a></code></pre></div>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1"></a><span class="kw">table</span>(<span class="dt">Arm =</span> mockstudy<span class="op">$</span>arm, <span class="dt">Sex =</span> mockstudy<span class="op">$</span>sex, <span class="dt">QOL =</span> mockstudy<span class="op">$</span>mdquality.s)</span></code></pre></div>
 <pre><code>, , QOL = 0
 
            Sex

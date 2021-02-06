@@ -128,7 +128,7 @@ test_that("offset() works", {
 
 test_that("strata() works", {
   skip_if_not(getRversion() >= "3.3.0")
-  skip_if_not_installed("survival", "2.41-3")
+  skip_if_not_installed("survival", "2.43-1")
   require(survival)
 
   expect_identical(
@@ -672,5 +672,22 @@ test_that("Nevents works (#266)", {
       "|**sex Female** |1.002 |0.975   |1356    |1499 |"
     )
   )
+})
+
+test_that("relrisk works (#279)", {
+  skip_if_not(getRversion() >= "3.5.0")
+  opts <- options()
+  expect_identical(
+    capture.kable(summary(modelsum(mdquality.s ~ arm + sex, data = mockstudy, id = case, family = "relrisk"))),
+    c("|                            |RR    |CI.lower.RR |CI.upper.RR |p.value |Nmiss |",
+      "|:---------------------------|:-----|:-----------|:-----------|:-------|:-----|",
+      "|(Intercept)                 |0.890 |0.859       |0.922       |< 0.001 |252   |",
+      "|**Treatment Arm F: FOLFOX** |1.014 |0.969       |1.061       |0.538   |      |",
+      "|**Treatment Arm G: IROX**   |1.021 |0.972       |1.072       |0.412   |      |",
+      "|(Intercept)                 |0.899 |0.878       |0.921       |< 0.001 |252   |",
+      "|**sex Female**              |1.004 |0.967       |1.043       |0.826   |      |"
+    )
+  )
+  options(opts)
 })
 

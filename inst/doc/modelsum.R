@@ -1,7 +1,6 @@
 ## ---- echo=FALSE, message=FALSE, results='hide', warning=FALSE----------------
 require(knitr)
 require(broom)
-require(gam)
 require(MASS)
 require(pROC)
 require(rpart)
@@ -47,7 +46,7 @@ summary(fit2)
 plot(fit2)
 
 ## -----------------------------------------------------------------------------
-require(gam)
+require(splines)
 fit3 <- lm(log(alk.phos) ~ arm + ns(age, df=2) + sex, data=mockstudy)
 
 # test whether there is a difference between models 

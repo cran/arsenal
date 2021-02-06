@@ -32,7 +32,7 @@ so the tables could be displayed within an R markdown report.
 This report provides step-by-step directions for using the functions associated with `tableby()`.
 All functions presented here are available within the `arsenal` package.  An assumption is made that users
 are somewhat familiar with R Markdown documents.  For those who are new to the topic, a good initial resource
-is available at [rmarkdown.rstudio.com](http://rmarkdown.rstudio.com). 
+is available at [rmarkdown.rstudio.com](https://rmarkdown.rstudio.com/). 
 
 # Simple Example
 
@@ -505,6 +505,12 @@ t1 <- tableby(arm ~ sex + age, data=mockstudy)
 summary(t1, title='Demographics')
 ```
 
+With multiple left-hand sides, you can pass a vector or list to determine labels for each table:
+
+```{r, results='asis'}
+summary(tableby(list(arm, sex) ~ age, data = mockstudy), title = c("arm table", "sex table"))
+```
+
 ## 13. Modify how missing values are displayed
 
 Depending on the report you are writing you have the following options:
@@ -712,6 +718,13 @@ summary(tableby(arm ~ anova(age, "meansd", numeric.simplify=TRUE) +
                   chisq(sex, cat.simplify=TRUE), data = mockstudy))
 ```
 
+The `cat.simplify` and `ord.simplify` argument also accept the special string `"label"`, which appends the shown level's label to the overall label:
+
+```{r results='asis'}
+summary(tableby(arm ~ sex, cat.simplify = "label", data = mockstudy))
+```
+
+
 ## 19. Use `tableby` within an Sweave document
 
 For those users who wish to create tables within an Sweave document, the following code seems to work.
@@ -854,6 +867,7 @@ There are a number of extra functions defined specifically for the tableby funct
 * `Nmiss`: only show the count of the number of missing values if there are some missing values
 * `Nmiss2`: always show a count of the number of missing values for a variable within each group
 * `meansd`: print the mean and standard deviation in the format `mean(sd)`
+* `meanse`: print the mean and standard error in the format `mean(se)`
 * `meanCI`: print the mean and a (t) confidence interval
 * `count`: print the number of values in a category
 * `countN`: print the number of values in a category plus the total N for the group in the format `N/Total`
@@ -896,6 +910,8 @@ The following tests are accepted:
 * `kwt`: Kruskal-Wallis test, optional test for continuous
     variables. When the grouping variable has two levels, it is equivalent to the Wilcoxon Rank Sum test.
 
+* `wt`: An explicit Wilcoxcon test.
+    
 * `chisq`: chi-square goodness of fit test for equal counts of a
     categorical variable across categories; the default for categorical
     or factor variables

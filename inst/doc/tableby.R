@@ -253,6 +253,9 @@ summary(merge(
 t1 <- tableby(arm ~ sex + age, data=mockstudy)
 summary(t1, title='Demographics')
 
+## ---- results='asis'------------------------------------------------------------------------------
+summary(tableby(list(arm, sex) ~ age, data = mockstudy), title = c("arm table", "sex table"))
+
 ## -------------------------------------------------------------------------------------------------
 ## look at how many missing values there are for each variable
 apply(is.na(mockstudy),2,sum)
@@ -366,6 +369,9 @@ summary(tableby(arm ~ age + ast, data = mockstudy,
 ## ----results='asis'-------------------------------------------------------------------------------
 summary(tableby(arm ~ anova(age, "meansd", numeric.simplify=TRUE) +
                   chisq(sex, cat.simplify=TRUE), data = mockstudy))
+
+## ----results='asis'-------------------------------------------------------------------------------
+summary(tableby(arm ~ sex, cat.simplify = "label", data = mockstudy))
 
 ## -------------------------------------------------------------------------------------------------
 tab1 <- summary(tableby(arm~sex+age, data=mockstudy), text = NULL)

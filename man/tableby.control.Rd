@@ -7,9 +7,11 @@
 tableby.control(
   test = TRUE,
   total = TRUE,
+  total.pos = c("after", "before"),
   test.pname = NULL,
   numeric.simplify = FALSE,
   cat.simplify = FALSE,
+  cat.droplevels = FALSE,
   ordered.simplify = FALSE,
   date.simplify = FALSE,
   numeric.test = "anova",
@@ -17,20 +19,15 @@ tableby.control(
   ordered.test = "trend",
   surv.test = "logrank",
   date.test = "kwt",
+  selectall.test = "notest",
   test.always = FALSE,
   numeric.stats = c("Nmiss", "meansd", "range"),
   cat.stats = c("Nmiss", "countpct"),
   ordered.stats = c("Nmiss", "countpct"),
   surv.stats = c("Nmiss", "Nevents", "medSurv"),
   date.stats = c("Nmiss", "median", "range"),
-  stats.labels = list(Nmiss = "N-Miss", Nmiss2 = "N-Miss", meansd = "Mean (SD)",
-    medianrange = "Median (Range)", median = "Median", medianq1q3 = "Median (Q1, Q3)",
-    q1q3 = "Q1, Q3", iqr = "IQR", mean = "Mean", sd = "SD", var = "Var", max = "Max", min
-    = "Min", meanCI = "Mean (CI)", sum = "Sum", gmean = "Geom Mean", gsd = "Geom SD",
-    gmeansd = "Geom Mean (Geom SD)", gmeanCI = "Geom Mean (CI)", range = "Range", Npct =
-    "N (Pct)", Nevents = "Events", medSurv = "Median Survival", medTime =
-    "Median Follow-Up", medianmad = "Median (MAD)",      overall = "Overall", total =
-    "Total", difference = "Difference"),
+  selectall.stats = c("Nmiss", "countpct"),
+  stats.labels = list(),
   digits = 3L,
   digits.count = 0L,
   digits.pct = 1L,
@@ -38,6 +35,8 @@ tableby.control(
   format.p = TRUE,
   digits.n = 0L,
   conf.level = 0.95,
+  wilcox.correct = FALSE,
+  wilcox.exact = NULL,
   chisq.correct = FALSE,
   simulate.p.value = FALSE,
   B = 2000,
@@ -50,6 +49,8 @@ tableby.control(
 
 \item{total}{logical, telling \code{tableby} whether to calculate a column of totals across group variable.}
 
+\item{total.pos}{One of \code{"before"} or \code{"after"}, denoting where to put the total column relative to the by-variable columns.}
+
 \item{test.pname}{character string denoting the p-value column name in \code{\link{summary.tableby}}.
 Modifiable also with \code{\link{modpval.tableby}}.}
 
@@ -59,8 +60,12 @@ In particular, if \code{Nmiss} is specified and there are missings, then the out
 
 \item{cat.simplify, ordered.simplify}{logical, tell \code{tableby} whether to remove the first level of the categorical/ordinal variable if binary.
 If \code{TRUE}, only the summary stats of the second level are reported (unless there's only one level, in which case it's reported).
+If \code{"label"}, the second level's label is additionally appended to the label.
 NOTE: this only simplifies to one line if there is only one statistic reported, such as \code{countpct}.
 In particular, if \code{Nmiss} is specified and there are missings, then the output is not simplified.}
+
+\item{cat.droplevels}{Should levels be dropped for categorical variables? If set to true, p-values will not be displayed
+unless \code{test.always = TRUE} as well.}
 
 \item{numeric.test}{name of test for numeric RHS variables in \code{tableby}: anova, kwt (Kruskal-Wallis).
 If no LHS variable exists, then a mean is required for a univariate test.}
@@ -73,15 +78,17 @@ If no LHS variable exists, then a mean is required for a univariate test.}
 
 \item{date.test}{name of test for date variables: kwt}
 
+\item{selectall.test}{name of test for date variables: notest}
+
 \item{test.always}{Should the test be performed even if one or more by-group has 0 observations? Relevant
 for kwt and anova.}
 
-\item{numeric.stats, cat.stats, ordered.stats, surv.stats, date.stats}{summary statistics to include for the respective class of RHS variables
+\item{numeric.stats, cat.stats, ordered.stats, surv.stats, date.stats, selectall.stats}{summary statistics to include for the respective class of RHS variables
 within the levels of the group LHS variable.}
 
 \item{stats.labels}{A named list of labels for all the statistics function names, where the function name is the named element in the list
 and the value that goes with it is a string containing the formal name that will be printed in all printed renderings of the output,
-e.g., \code{list(countpct="Count (Pct)")}.}
+e.g., \code{list(countpct="Count (Pct)")}. Any unnamed elements will be ignored. Passing \code{NULL} will disable labels.}
 
 \item{digits}{Number of decimal places for numeric values.}
 
@@ -97,6 +104,8 @@ e.g., \code{list(countpct="Count (Pct)")}.}
 
 \item{conf.level}{Numeric, denoting what confidence level to use for confidence intervals.
 (See, e.g., \code{\link{binomCI}})}
+
+\item{wilcox.correct, wilcox.exact}{See \code{\link[stats]{wilcox.test}}}
 
 \item{chisq.correct}{logical, correction factor for chisq.test}
 

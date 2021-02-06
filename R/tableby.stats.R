@@ -17,6 +17,7 @@
 #' @param by.levels a vector of the levels of \code{by}.
 #' @param conf.level Numeric, denoting what confidence level to use for confidence intervals.
 #' @param ... Other arguments.
+#' @param totallab What to call the total "column"
 #' @return Usually a vector of the appropriate numbers.
 #' @details Not all these functions are exported, in order to avoid conflicting NAMESPACES.
 #'   Note also that the functions prefixed with \code{"arsenal_"} can be referred to by their short names
@@ -102,6 +103,21 @@ meansd <- function(x, na.rm=TRUE, weights = NULL, ...) {
   } else {
     m <- wtd.mean(x, weights=weights, na.rm=na.rm)
     s <- sqrt(wtd.var(x, weights=weights, na.rm=na.rm))
+    if(is.Date(x)) list(as.character(m), as.difftime(s, units = "days")) else c(m, s)
+  }
+  as.tbstat(y, parens = c("(", ")"))
+}
+
+#' @rdname tableby.stats
+#' @export
+meanse <- function(x, na.rm=TRUE, weights = NULL, ...) {
+  y <- if(na.rm && allNA(x))
+  {
+    NA_real_
+  } else {
+    if(!is.null(weights)) stop("'meanse' can only be used without weights")
+    m <- mean(x, na.rm=na.rm)
+    s <- stats::sd(x, na.rm=na.rm)/sqrt(sum(!is.na(x)))
     if(is.Date(x)) list(as.character(m), as.difftime(s, units = "days")) else c(m, s)
   }
   as.tbstat(y, parens = c("(", ")"))
@@ -240,6 +256,7 @@ Nevents <- function(x, na.rm = TRUE, weights = NULL, ...) {
   {
     NA_real_
   } else {
+    check_pkg("survival")
     mat <- summary(survival::survfit(x ~ 1, weights = weights))$table
     as.numeric(mat["events"])
   }
@@ -254,6 +271,7 @@ medSurv <- function(x, na.rm = TRUE, weights = NULL, ...) {
   {
     NA_real_
   } else {
+    check_pkg("survival")
     mat <- summary(survival::survfit(x ~ 1, weights = weights))$table
     as.numeric(mat["median"]) # if we don't hit the median, or if all obs are censors, this is NA
   }
@@ -268,6 +286,7 @@ NeventsSurv <- function(x, na.rm = TRUE, weights = NULL, times=1:5, ...) {
     matrix(NA_real_, nrow = 1, ncol = length(times))
   } else
   {
+    check_pkg("survival")
     xsumm <- summary(survival::survfit(x ~ 1, weights = weights), times=times)
     t(cbind(cumsum(xsumm$n.event), 100*xsumm$surv))
   }
@@ -283,6 +302,7 @@ NriskSurv <- function(x, na.rm = TRUE, weights = NULL, times=1:5, ...) {
     matrix(NA_real_, nrow = 1, ncol = length(times))
   } else
   {
+    check_pkg("survival")
     xsumm <- summary(survival::survfit(x ~ 1, weights = weights), times=times)
     t(cbind(xsumm$n.risk, 100*xsumm$surv))
   }
@@ -296,7 +316,11 @@ Nrisk <- function(x, na.rm = TRUE, weights = NULL, times=1:5, ...) {
   y <- if(na.rm && allNA(x))
   {
     rep(NA_real_, times = length(times))
-  } else summary(survival::survfit(x ~ 1, weights = weights), times=times)$n.risk
+  } else
+  {
+    check_pkg("survival")
+    summary(survival::survfit(x ~ 1, weights = weights), times=times)$n.risk
+  }
   out <- stats::setNames(as.list(y), paste0("time = ", times))
   as.tbstat_multirow(lapply(out, as.countpct))
 }
@@ -311,6 +335,7 @@ medTime <- function(x, na.rm = TRUE, weights = NULL, ...)
   } else
   {
     x[, 2] <- 1 - x[, 2] # censor events instead
+    check_pkg("survival")
     mat <- summary(survival::survfit(x ~ 1, weights = weights))$table
     as.numeric(mat["median"]) # if we don't hit the median, or if all obs are events, this is NA
   }
@@ -353,7 +378,7 @@ iqr <- function(x, na.rm=TRUE, weights = NULL, ...) {
 #' @rdname tableby.stats
 #' @export
 Nmiss <- function(x, na.rm=TRUE, weights = NULL, ...) {
-  if(is.null(weights)) weights <- rep(1, length(x))
+  if(is.null(weights)) weights <- rep(1, NROW(x))
   as.countpct(sum(weights[is.na(x)]))
 }
 
@@ -367,13 +392,13 @@ Nmiss2 <- Nmiss
 #' @rdname tableby.stats
 #' @export
 N <- function(x, na.rm=TRUE, weights = NULL, ...) {
-  if(is.null(weights)) weights <- rep(1, length(x))
+  if(is.null(weights)) weights <- rep(1, NROW(x))
   as.countpct(sum(weights[!is.na(x)]))
 }
 
 #' @rdname tableby.stats
 #' @export
-Npct <- function(x, levels=NULL, by, by.levels=sort(unique(by)), na.rm=TRUE, weights = NULL, ...) {
+Npct <- function(x, levels=NULL, by, by.levels=sort(unique(by)), na.rm=TRUE, weights = NULL, ..., totallab = "Total") {
   if(is.null(levels)) levels <- sort(unique(x))
   if(na.rm)
   {
@@ -385,7 +410,7 @@ Npct <- function(x, levels=NULL, by, by.levels=sort(unique(by)), na.rm=TRUE, wei
   }
 
   tmp <- wtd.table(factor(by, levels = by.levels), weights = weights)
-  wtbl <- c(tmp, Total = sum(tmp))
+  wtbl <- c(tmp, stats::setNames(sum(tmp), totallab))
   lapply(wtbl, function(elt) as.countpct(c(elt, 100*elt/sum(tmp)), parens = c("(", ")"), pct = "%", which.pct = 2L))
 }
 
@@ -393,7 +418,19 @@ Npct <- function(x, levels=NULL, by, by.levels=sort(unique(by)), na.rm=TRUE, wei
 #' @rdname tableby.stats
 count <- function (x, levels=NULL, na.rm = TRUE, weights = NULL, ...)  {
   if(is.null(levels)) levels <- sort(unique(x))
-  as.tbstat_multirow(lapply(as.list(wtd.table(factor(x[!is.na(x)], levels = levels), weights = weights[!is.na(x)])), as.countpct))
+  if(na.rm)
+  {
+    idx <- !is.na(x)
+    if(!is.null(weights)) idx <- idx & !is.na(weights)
+    x <- x[idx]
+    weights <- weights[idx]
+  }
+  if(is.selectall(x))
+  {
+    if(is.null(weights)) weights <- rep(1, nrow(x))
+    wtbl <- apply(as.matrix(x) == 1, 2, function(y) sum(weights[y]))
+  } else wtbl <- wtd.table(factor(x, levels=levels), weights=weights)
+  as.tbstat_multirow(lapply(as.list(wtbl), as.countpct))
 }
 
 ## count (pct) where pct is within group variable total
@@ -401,8 +438,24 @@ count <- function (x, levels=NULL, na.rm = TRUE, weights = NULL, ...)  {
 #' @export
 countpct <- function(x, levels=NULL, na.rm=TRUE, weights = NULL, ...) {
   if(is.null(levels)) levels <- sort(unique(x))
-  wtbl <- wtd.table(factor(x[!is.na(x)], levels=levels), weights=weights[!is.na(x)])
-  as.tbstat_multirow(lapply(Map(c, wtbl, if(any(wtbl > 0)) 100*wtbl/sum(wtbl) else rep(list(NULL), times = length(wtbl))),
+  if(na.rm)
+  {
+    idx <- !is.na(x)
+    if(!is.null(weights)) idx <- idx & !is.na(weights)
+    x <- x[idx]
+    weights <- weights[idx]
+  }
+  if(is.selectall(x))
+  {
+    if(is.null(weights)) weights <- rep(1, nrow(x))
+    wtbl <- apply(as.matrix(x) == 1, 2, function(y) sum(weights[y]))
+    denom <- sum(weights)
+  } else
+  {
+    wtbl <- wtd.table(factor(x, levels=levels), weights=weights)
+    denom <- sum(wtbl)
+  }
+  as.tbstat_multirow(lapply(Map(c, wtbl, if(any(wtbl > 0)) 100*wtbl/denom else rep(list(NULL), times = length(wtbl))),
                             as.countpct, parens = c("(", ")"), pct = "%", which.pct = 2L))
 }
 
@@ -421,7 +474,7 @@ transpose_list <- function(x, levels, by.levels)
 
 #' @rdname tableby.stats
 #' @export
-countrowpct <- function(x, levels=NULL, by, by.levels=sort(unique(by)), na.rm=TRUE, weights = NULL, ...) {
+countrowpct <- function(x, levels=NULL, by, by.levels=sort(unique(by)), na.rm=TRUE, weights = NULL, ..., totallab = "Total") {
   if(is.null(levels)) levels <- sort(unique(x))
   if(na.rm)
   {
@@ -434,15 +487,15 @@ countrowpct <- function(x, levels=NULL, by, by.levels=sort(unique(by)), na.rm=TR
 
   wtbls <- lapply(levels, function(L) {
     tmp <- wtd.table(factor(by[x == L], levels = by.levels), weights = weights[x == L])
-    wtbl <- c(tmp, Total = sum(tmp))
+    wtbl <- c(tmp, stats::setNames(sum(tmp), totallab))
     lapply(wtbl, function(elt) as.countpct(c(elt, 100*elt/sum(tmp)), parens = c("(", ")"), pct = "%", which.pct = 2L))
   })
-  transpose_list(wtbls, levels, c(by.levels, "Total"))
+  transpose_list(wtbls, levels, c(by.levels, totallab))
 }
 
 #' @rdname tableby.stats
 #' @export
-countcellpct <- function(x, levels=NULL, by, by.levels=sort(unique(by)), na.rm=TRUE, weights = NULL, ...) {
+countcellpct <- function(x, levels=NULL, by, by.levels=sort(unique(by)), na.rm=TRUE, weights = NULL, ..., totallab = "Total") {
   if(is.null(levels)) levels <- sort(unique(x))
   if(na.rm)
   {
@@ -459,10 +512,10 @@ countcellpct <- function(x, levels=NULL, by, by.levels=sort(unique(by)), na.rm=T
 
   wtbls <- lapply(levels, function(L) {
     tmp <- wtd.table(factor(by[x == L], levels = by.levels), weights = weights[x == L])
-    wtbl <- c(tmp, Total = sum(tmp))
+    wtbl <- c(tmp, stats::setNames(sum(tmp), totallab))
     lapply(wtbl, function(elt) as.countpct(c(elt, 100*elt/tot), parens = c("(", ")"), pct = "%", which.pct = 2L))
   })
-  transpose_list(wtbls, levels, c(by.levels, "Total"))
+  transpose_list(wtbls, levels, c(by.levels, totallab))
 }
 
 get_binom_est_ci <- function(x, tot, setNA, conf.level = 0.95) {
@@ -484,7 +537,7 @@ binomCI <- function(x, levels=NULL, na.rm=TRUE, weights = NULL, conf.level = 0.9
 
 #' @rdname tableby.stats
 #' @export
-rowbinomCI <- function(x, levels=NULL, by, by.levels=sort(unique(by)), na.rm=TRUE, weights = NULL, conf.level = 0.95, ...) {
+rowbinomCI <- function(x, levels=NULL, by, by.levels=sort(unique(by)), na.rm=TRUE, weights = NULL, conf.level = 0.95, ..., totallab = "Total") {
   if(is.null(levels)) levels <- sort(unique(x))
   wts <- !is.null(weights)
   if(na.rm)
@@ -498,12 +551,12 @@ rowbinomCI <- function(x, levels=NULL, by, by.levels=sort(unique(by)), na.rm=TRU
 
   wtbls <- lapply(levels, function(L) {
     tmp <- wtd.table(factor(by[x == L], levels = by.levels), weights = weights[x == L])
-    wtbl <- c(tmp, Total = sum(tmp))
+    wtbl <- c(tmp, stats::setNames(sum(tmp), totallab))
     wtbl <- lapply(wtbl, get_binom_est_ci, tot = sum(tmp), setNA = wts, conf.level = conf.level)
     lapply(wtbl, as.tbstat, parens = c("(", ")"), sep2 = ", ")
   })
   # as.tbstat_multirow(lapply(wtbl, f))
-  transpose_list(wtbls, levels, c(by.levels, "Total"))
+  transpose_list(wtbls, levels, c(by.levels, totallab))
 }
 
 ######## internal functions that we use above ########

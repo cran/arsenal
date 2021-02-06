@@ -1,8 +1,8 @@
 Package: arsenal
 Title: An Arsenal of 'R' Functions for Large-Scale Statistical
         Summaries
-Version: 3.5.0
-Date: 2020-07-10
+Version: 3.6.1
+Date: 2021-02-05
 Authors@R: c(
     person("Ethan", "Heinzen", email = "heinzen.ethan@mayo.edu", role = c("aut", "cre")),
     person("Jason", "Sinnwell", role="aut"),
@@ -28,9 +28,9 @@ Description: An Arsenal of 'R' functions for large-scale statistical summaries,
   freqlist(), a powerful frequency table across many categorical variables;
   comparedf(), a function for comparing data.frames; and
   write2(), a function to output tables to a document.
-Suggests: broom (>= 0.7.0), stringr, magrittr, rmarkdown, testthat,
-        xtable, pander, survival (>= 2.41-3), coin, pROC, MASS, gam,
-        rpart, yaml
+Suggests: broom (>= 0.7.1), magrittr, rmarkdown, testthat, xtable,
+        pander, survival (>= 2.43-1), coin, pROC, MASS, splines, rpart,
+        yaml, geepack
 Depends: R (>= 3.4.0), stats (>= 3.4.0)
 Imports: knitr (>= 1.29), utils (>= 3.4.0)
 URL: https://github.com/mayoverse/arsenal,
@@ -39,11 +39,11 @@ URL: https://github.com/mayoverse/arsenal,
 BugReports: https://github.com/mayoverse/arsenal/issues
 VignetteBuilder: knitr
 License: GPL (>= 2)
-RoxygenNote: 7.1.0
+RoxygenNote: 7.1.1
 LazyData: true
 Encoding: UTF-8
 NeedsCompilation: no
-Packaged: 2020-07-13 15:26:55 UTC; m144326
+Packaged: 2021-02-05 15:53:08 UTC; m144326
 Author: Ethan Heinzen [aut, cre],
   Jason Sinnwell [aut],
   Elizabeth Atkinson [aut],
@@ -58,4 +58,4 @@ Author: Ethan Heinzen [aut, cre],
   Maddie McCullough [art]
 Maintainer: Ethan Heinzen <heinzen.ethan@mayo.edu>
 Repository: CRAN
-Date/Publication: 2020-07-13 18:10:13 UTC
+Date/Publication: 2021-02-06 07:20:11 UTC

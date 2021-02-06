@@ -15,13 +15,77 @@
 
 <title>A Few Notes on Labels</title>
 
+<script>// Hide empty <a> tag within highlighted CodeBlock for screen reader accessibility (see https://github.com/jgm/pandoc/issues/6352#issuecomment-626106786) -->
+// v0.0.1
+// Written by JooYoung Seo (jooyoung@psu.edu) and Atsushi Yasumoto on June 1st, 2020.
+
+document.addEventListener('DOMContentLoaded', function() {
+  const codeList = document.getElementsByClassName("sourceCode");
+  for (var i = 0; i < codeList.length; i++) {
+    var linkList = codeList[i].getElementsByTagName('a');
+    for (var j = 0; j < linkList.length; j++) {
+      if (linkList[j].innerHTML === "") {
+        linkList[j].setAttribute('aria-hidden', 'true');
+      }
+    }
+  }
+});
+</script>
+<style type="text/css">
+a.anchor-section {margin-left: 10px; visibility: hidden; color: inherit;}
+a.anchor-section::before {content: '#';}
+.hasAnchor:hover a.anchor-section {visibility: visible;}
+</style>
+<script>// Anchor sections v1.0 written by Atsushi Yasumoto on Oct 3rd, 2020.
+document.addEventListener('DOMContentLoaded', function() {
+  // Do nothing if AnchorJS is used
+  if (typeof window.anchors === 'object' && anchors.hasOwnProperty('hasAnchorJSLink')) {
+    return;
+  }
+
+  const h = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+  // Do nothing if sections are already anchored
+  if (Array.from(h).some(x => x.classList.contains('hasAnchor'))) {
+    return null;
+  }
+
+  // Use section id when pandoc runs with --section-divs
+  const section_id = function(x) {
+    return ((x.classList.contains('section') || (x.tagName === 'SECTION'))
+            ? x.id : '');
+  };
+
+  // Add anchors
+  h.forEach(function(x) {
+    const id = x.id || section_id(x.parentElement);
+    if (id === '') {
+      return null;
+    }
+    let anchor = document.createElement('a');
+    anchor.href = '#' + id;
+    anchor.classList = ['anchor-section'];
+    x.classList.add('hasAnchor');
+    x.appendChild(anchor);
+  });
+});
+</script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
 
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css" data-origin="pandoc">
-a.sourceLine { display: inline-block; line-height: 1.25; }
-a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
-a.sourceLine:empty { height: 1.2em; }
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
 div.sourceCode { margin: 1em 0; }
@@ -31,14 +95,16 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 code.sourceCode { white-space: pre-wrap; }
-a.sourceLine { text-indent: -1em; padding-left: 1em; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
-pre.numberSource a.sourceLine
-  { position: relative; left: -4em; }
-pre.numberSource a.sourceLine::before
-  { content: attr(data-line-number);
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; pointer-events: all; display: inline-block;
+    border: none; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
@@ -47,9 +113,9 @@ pre.numberSource a.sourceLine::before
   }
 pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
 div.sourceCode
-  {  }
+  {   }
 @media screen {
-a.sourceLine::before { text-decoration: underline; }
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
@@ -318,20 +384,20 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <h1>Introduction</h1>
 <p>The <code>arsenal</code> package relies somewhat heavily on variable labels to make output more “pretty”. A <code>label</code> here is understood to be a single character string with “pretty” text (i.e., not an “ugly” variable name). Three of the main <code>arsenal</code> function use labels in their <code>summary()</code> output. There are several ways to set these labels.</p>
 <p>We’ll use the <code>mockstudy</code> dataset for all examples here:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">library</span>(arsenal)</a>
-<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw">data</span>(mockstudy)</a>
-<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="kw">library</span>(magrittr)</a>
-<a class="sourceLine" id="cb1-4" data-line-number="4"></a>
-<a class="sourceLine" id="cb1-5" data-line-number="5"><span class="co"># for 'freqlist' examples</span></a>
-<a class="sourceLine" id="cb1-6" data-line-number="6">tab.ex &lt;-<span class="st"> </span><span class="kw">table</span>(mockstudy[<span class="kw">c</span>(<span class="st">&quot;arm&quot;</span>, <span class="st">&quot;sex&quot;</span>, <span class="st">&quot;mdquality.s&quot;</span>)], <span class="dt">useNA=</span><span class="st">&quot;ifany&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw">library</span>(arsenal)</span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="kw">data</span>(mockstudy)</span>
+<span id="cb1-3"><a href="#cb1-3"></a><span class="kw">library</span>(magrittr)</span></code></pre></div>
+<pre><code>## Warning: package &#39;magrittr&#39; was built under R version 4.0.2</code></pre>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="co"># for &#39;freqlist&#39; examples</span></span>
+<span id="cb3-2"><a href="#cb3-2"></a>tab.ex &lt;-<span class="st"> </span><span class="kw">table</span>(mockstudy[<span class="kw">c</span>(<span class="st">&quot;arm&quot;</span>, <span class="st">&quot;sex&quot;</span>, <span class="st">&quot;mdquality.s&quot;</span>)], <span class="dt">useNA=</span><span class="st">&quot;ifany&quot;</span>)</span></code></pre></div>
 </div>
 <div id="examples" class="section level1">
 <h1>Examples</h1>
 <div id="set-labels-in-the-function-call" class="section level2">
 <h2>Set labels in the function call</h2>
 <p>The <code>summary()</code> method for <code>tableby()</code>, <code>modelsum()</code>, and <code>freqlist()</code> objects contains a <code>labelTranslations =</code> argument to specify labels in the function call. Note that the <code>freqlist()</code> function matches labels in order, whereas the other two match labels by name. The labels can be input as a list or a character vector.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw">summary</span>(<span class="kw">freqlist</span>(tab.ex),</a>
-<a class="sourceLine" id="cb2-2" data-line-number="2">        <span class="dt">labelTranslations =</span> <span class="kw">c</span>(<span class="dt">arm =</span> <span class="st">&quot;Treatment Arm&quot;</span>, <span class="dt">sex =</span> <span class="st">&quot;Gender&quot;</span>, <span class="dt">mdquality.s =</span> <span class="st">&quot;LASA QOL&quot;</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="kw">summary</span>(<span class="kw">freqlist</span>(tab.ex),</span>
+<span id="cb4-2"><a href="#cb4-2"></a>        <span class="dt">labelTranslations =</span> <span class="kw">c</span>(<span class="dt">arm =</span> <span class="st">&quot;Treatment Arm&quot;</span>, <span class="dt">sex =</span> <span class="st">&quot;Gender&quot;</span>, <span class="dt">mdquality.s =</span> <span class="st">&quot;LASA QOL&quot;</span>))</span></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -509,8 +575,8 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw">summary</span>(<span class="kw">tableby</span>(arm <span class="op">~</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span>age, <span class="dt">data =</span> mockstudy),</a>
-<a class="sourceLine" id="cb3-2" data-line-number="2">        <span class="dt">labelTranslations =</span> <span class="kw">c</span>(<span class="dt">sex =</span> <span class="st">&quot;SEX&quot;</span>, <span class="dt">age =</span> <span class="st">&quot;Age, yrs&quot;</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="kw">summary</span>(<span class="kw">tableby</span>(arm <span class="op">~</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span>age, <span class="dt">data =</span> mockstudy),</span>
+<span id="cb5-2"><a href="#cb5-2"></a>        <span class="dt">labelTranslations =</span> <span class="kw">c</span>(<span class="dt">sex =</span> <span class="st">&quot;SEX&quot;</span>, <span class="dt">age =</span> <span class="st">&quot;Age, yrs&quot;</span>))</span></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -573,8 +639,8 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw">summary</span>(<span class="kw">modelsum</span>(bmi <span class="op">~</span><span class="st"> </span>age, <span class="dt">adjust =</span> <span class="op">~</span>sex, <span class="dt">data =</span> mockstudy),</a>
-<a class="sourceLine" id="cb4-2" data-line-number="2">        <span class="dt">labelTranslations =</span> <span class="kw">list</span>(<span class="dt">sexFemale =</span> <span class="st">&quot;Female&quot;</span>, <span class="dt">age =</span> <span class="st">&quot;Age, yrs&quot;</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="kw">summary</span>(<span class="kw">modelsum</span>(bmi <span class="op">~</span><span class="st"> </span>age, <span class="dt">adjust =</span> <span class="op">~</span>sex, <span class="dt">data =</span> mockstudy),</span>
+<span id="cb6-2"><a href="#cb6-2"></a>        <span class="dt">labelTranslations =</span> <span class="kw">list</span>(<span class="dt">sexFemale =</span> <span class="st">&quot;Female&quot;</span>, <span class="dt">age =</span> <span class="st">&quot;Age, yrs&quot;</span>))</span></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -617,10 +683,10 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <div id="modify-labels-after-the-fact" class="section level2">
 <h2>Modify labels after the fact</h2>
 <p>Another option is to add labels after you have created the object. To do this, you can use the form <code>labels(x) &lt;- value</code> or use the pipe-able version, <code>set_labels()</code>.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="co"># the non-pipe version; somewhat clunky</span></a>
-<a class="sourceLine" id="cb5-2" data-line-number="2">tmp &lt;-<span class="st"> </span><span class="kw">freqlist</span>(tab.ex)</a>
-<a class="sourceLine" id="cb5-3" data-line-number="3"><span class="kw">labels</span>(tmp) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dt">arm =</span> <span class="st">&quot;Treatment Arm&quot;</span>, <span class="dt">sex =</span> <span class="st">&quot;Gender&quot;</span>, <span class="dt">mdquality.s =</span> <span class="st">&quot;LASA QOL&quot;</span>)</a>
-<a class="sourceLine" id="cb5-4" data-line-number="4"><span class="kw">summary</span>(tmp)</a></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="co"># the non-pipe version; somewhat clunky</span></span>
+<span id="cb7-2"><a href="#cb7-2"></a>tmp &lt;-<span class="st"> </span><span class="kw">freqlist</span>(tab.ex)</span>
+<span id="cb7-3"><a href="#cb7-3"></a><span class="kw">labels</span>(tmp) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dt">arm =</span> <span class="st">&quot;Treatment Arm&quot;</span>, <span class="dt">sex =</span> <span class="st">&quot;Gender&quot;</span>, <span class="dt">mdquality.s =</span> <span class="st">&quot;LASA QOL&quot;</span>)</span>
+<span id="cb7-4"><a href="#cb7-4"></a><span class="kw">summary</span>(tmp)</span></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -798,11 +864,11 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="co"># piped--much cleaner</span></a>
-<a class="sourceLine" id="cb6-2" data-line-number="2">mockstudy <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb6-3" data-line-number="3"><span class="st">  </span><span class="kw">tableby</span>(arm <span class="op">~</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span>age, <span class="dt">data =</span> .) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb6-4" data-line-number="4"><span class="st">  </span><span class="kw">set_labels</span>(<span class="kw">c</span>(<span class="dt">sex =</span> <span class="st">&quot;SEX&quot;</span>, <span class="dt">age =</span> <span class="st">&quot;Age, yrs&quot;</span>)) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb6-5" data-line-number="5"><span class="st">  </span><span class="kw">summary</span>()</a></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="co"># piped--much cleaner</span></span>
+<span id="cb8-2"><a href="#cb8-2"></a>mockstudy <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb8-3"><a href="#cb8-3"></a><span class="st">  </span><span class="kw">tableby</span>(arm <span class="op">~</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span>age, <span class="dt">data =</span> .) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb8-4"><a href="#cb8-4"></a><span class="st">  </span><span class="kw">set_labels</span>(<span class="kw">c</span>(<span class="dt">sex =</span> <span class="st">&quot;SEX&quot;</span>, <span class="dt">age =</span> <span class="st">&quot;Age, yrs&quot;</span>)) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb8-5"><a href="#cb8-5"></a><span class="st">  </span><span class="kw">summary</span>()</span></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -865,10 +931,10 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">mockstudy <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="st">  </span><span class="kw">modelsum</span>(bmi <span class="op">~</span><span class="st"> </span>age, <span class="dt">adjust =</span> <span class="op">~</span><span class="st"> </span>sex, <span class="dt">data =</span> .) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb7-3" data-line-number="3"><span class="st">  </span><span class="kw">set_labels</span>(<span class="kw">list</span>(<span class="dt">sexFemale =</span> <span class="st">&quot;Female&quot;</span>, <span class="dt">age =</span> <span class="st">&quot;Age, yrs&quot;</span>)) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb7-4" data-line-number="4"><span class="st">  </span><span class="kw">summary</span>()</a></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a>mockstudy <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb9-2"><a href="#cb9-2"></a><span class="st">  </span><span class="kw">modelsum</span>(bmi <span class="op">~</span><span class="st"> </span>age, <span class="dt">adjust =</span> <span class="op">~</span><span class="st"> </span>sex, <span class="dt">data =</span> .) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb9-3"><a href="#cb9-3"></a><span class="st">  </span><span class="kw">set_labels</span>(<span class="kw">list</span>(<span class="dt">sexFemale =</span> <span class="st">&quot;Female&quot;</span>, <span class="dt">age =</span> <span class="st">&quot;Age, yrs&quot;</span>)) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb9-4"><a href="#cb9-4"></a><span class="st">  </span><span class="kw">summary</span>()</span></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -911,20 +977,20 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <div id="add-labels-to-a-data.frame" class="section level2">
 <h2>Add labels to a <code>data.frame</code></h2>
 <p><code>tableby()</code> and <code>modelsum()</code> also allow you to have label attributes on the data. Note that by default these attributes usually get dropped upon subsetting, but <code>tableby()</code> and <code>modelsum()</code> use the <code>keep.labels()</code> function to retain them.</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">mockstudy.lab &lt;-<span class="st"> </span><span class="kw">keep.labels</span>(mockstudy)</a>
-<a class="sourceLine" id="cb8-2" data-line-number="2"><span class="kw">class</span>(mockstudy<span class="op">$</span>age)</a></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a>mockstudy.lab &lt;-<span class="st"> </span><span class="kw">keep.labels</span>(mockstudy)</span>
+<span id="cb10-2"><a href="#cb10-2"></a><span class="kw">class</span>(mockstudy<span class="op">$</span>age)</span></code></pre></div>
 <p>[1] “integer”</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw">class</span>(mockstudy.lab<span class="op">$</span>age)</a></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="kw">class</span>(mockstudy.lab<span class="op">$</span>age)</span></code></pre></div>
 <p>[1] “keep_labels” “integer”</p>
 <p>To undo this, simply <code>loosen.labels()</code>:</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="kw">class</span>(<span class="kw">loosen.labels</span>(mockstudy.lab)<span class="op">$</span>age)</a></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a><span class="kw">class</span>(<span class="kw">loosen.labels</span>(mockstudy.lab)<span class="op">$</span>age)</span></code></pre></div>
 <p>[1] “integer”</p>
 <p>You can set attributes one at a time in two ways:</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="kw">attr</span>(mockstudy.lab<span class="op">$</span>sex, <span class="st">&quot;label&quot;</span>) &lt;-<span class="st"> &quot;Sex&quot;</span></a>
-<a class="sourceLine" id="cb11-2" data-line-number="2"><span class="kw">labels</span>(mockstudy.lab<span class="op">$</span>age) &lt;-<span class="st"> &quot;Age, yrs&quot;</span></a></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a><span class="kw">attr</span>(mockstudy.lab<span class="op">$</span>sex, <span class="st">&quot;label&quot;</span>) &lt;-<span class="st"> &quot;Sex&quot;</span></span>
+<span id="cb13-2"><a href="#cb13-2"></a><span class="kw">labels</span>(mockstudy.lab<span class="op">$</span>age) &lt;-<span class="st"> &quot;Age, yrs&quot;</span></span></code></pre></div>
 <p>…or all at once:</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="kw">labels</span>(mockstudy.lab) &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">sex =</span> <span class="st">&quot;Sex&quot;</span>, <span class="dt">age =</span> <span class="st">&quot;Age, yrs&quot;</span>)</a>
-<a class="sourceLine" id="cb12-2" data-line-number="2"><span class="kw">summary</span>(<span class="kw">tableby</span>(arm <span class="op">~</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span>age, <span class="dt">data =</span> mockstudy.lab))</a></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a><span class="kw">labels</span>(mockstudy.lab) &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">sex =</span> <span class="st">&quot;Sex&quot;</span>, <span class="dt">age =</span> <span class="st">&quot;Age, yrs&quot;</span>)</span>
+<span id="cb14-2"><a href="#cb14-2"></a><span class="kw">summary</span>(<span class="kw">tableby</span>(arm <span class="op">~</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span>age, <span class="dt">data =</span> mockstudy.lab))</span></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -988,10 +1054,10 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 </tbody>
 </table>
 <p>You can pipe this, too.</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1">mockstudy <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb13-2" data-line-number="2"><span class="st">  </span><span class="kw">set_labels</span>(<span class="kw">list</span>(<span class="dt">sex =</span> <span class="st">&quot;SEX&quot;</span>, <span class="dt">age =</span> <span class="st">&quot;Age, yrs&quot;</span>)) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb13-3" data-line-number="3"><span class="st">  </span><span class="kw">modelsum</span>(bmi <span class="op">~</span><span class="st"> </span>age, <span class="dt">adjust =</span> <span class="op">~</span><span class="st"> </span>sex, <span class="dt">data =</span> .) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb13-4" data-line-number="4"><span class="st">  </span><span class="kw">summary</span>()</a></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a>mockstudy <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb15-2"><a href="#cb15-2"></a><span class="st">  </span><span class="kw">set_labels</span>(<span class="kw">list</span>(<span class="dt">sex =</span> <span class="st">&quot;SEX&quot;</span>, <span class="dt">age =</span> <span class="st">&quot;Age, yrs&quot;</span>)) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb15-3"><a href="#cb15-3"></a><span class="st">  </span><span class="kw">modelsum</span>(bmi <span class="op">~</span><span class="st"> </span>age, <span class="dt">adjust =</span> <span class="op">~</span><span class="st"> </span>sex, <span class="dt">data =</span> .) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb15-4"><a href="#cb15-4"></a><span class="st">  </span><span class="kw">summary</span>()</span></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -1031,7 +1097,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 </tbody>
 </table>
 <p>To extract labels from a <code>data.frame</code>, simply use the <code>labels()</code> function:</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1"><span class="kw">labels</span>(mockstudy.lab)</a></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a><span class="kw">labels</span>(mockstudy.lab)</span></code></pre></div>
 <pre><code>## $case
 ## NULL
 ## 
@@ -1077,11 +1143,11 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <div id="when-labels-get-long" class="section level2">
 <h2>When labels get long</h2>
 <p><code>tableby()</code> and <code>modelsum()</code> both support the wrapping of long labels. Consider the <code>width=</code> argument in the <code>print()</code> function:</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1">mockstudy <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb16-2" data-line-number="2"><span class="st">  </span><span class="kw">set_labels</span>(<span class="kw">list</span>(<span class="dt">age =</span> <span class="st">&quot;This is a really long label for the arm variable&quot;</span>)) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb16-3" data-line-number="3"><span class="st">  </span><span class="kw">tableby</span>(sex <span class="op">~</span><span class="st"> </span>age, <span class="dt">data =</span> .) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb16-4" data-line-number="4"><span class="st">  </span><span class="kw">summary</span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb16-5" data-line-number="5"><span class="st">  </span><span class="kw">print</span>(<span class="dt">width =</span> <span class="dv">20</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a>mockstudy <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb18-2"><a href="#cb18-2"></a><span class="st">  </span><span class="kw">set_labels</span>(<span class="kw">list</span>(<span class="dt">age =</span> <span class="st">&quot;This is a really long label for the arm variable&quot;</span>)) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb18-3"><a href="#cb18-3"></a><span class="st">  </span><span class="kw">tableby</span>(sex <span class="op">~</span><span class="st"> </span>age, <span class="dt">data =</span> .) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb18-4"><a href="#cb18-4"></a><span class="st">  </span><span class="kw">summary</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb18-5"><a href="#cb18-5"></a><span class="st">  </span><span class="kw">print</span>(<span class="dt">width =</span> <span class="dv">20</span>)</span></code></pre></div>
 <table>
 <thead>
 <tr class="header">

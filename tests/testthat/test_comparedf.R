@@ -385,6 +385,10 @@ test_that("helper functions are working correctly", {
 
 })
 
+test_that("diff.obs() works (#305)", {
+  expect_identical(diffs(comparedf(df1, df2, by = "id"), what = "observations"), diffs(summary(comparedf(df1, df2, by = "id")), what = "observations"))
+})
+
 ###########################################################################################################
 #### Summary output
 ###########################################################################################################
@@ -676,6 +680,16 @@ test_that("2019/05/22: vectors that share a class are still compared (#216)", {
   expect_true(nrow(cmp$vars.nc.table) == 0)
   expect_true(nrow(cmp$diffs.table) == 0)
 })
+
+test_that("Inf (#306)", {
+  dat <- data.frame(x = c(2, Inf, -Inf, Inf, NA))
+  dat2 <- data.frame(x = c(2, Inf, -Inf, -Inf, Inf))
+  cmp <- summary(comparedf(dat, dat2))
+  expect_true(nrow(cmp$diffs.table) == 2)
+  cmp <- summary(comparedf(dat, dat2, tol.num = "pct"))
+  expect_true(nrow(cmp$diffs.table) == 2)
+})
+
 
 
 

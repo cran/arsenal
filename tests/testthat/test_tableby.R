@@ -1289,13 +1289,37 @@ test_that("10/09/2019: change title for overall and total (#253, #261, #272)", {
       "|-  Male      |   916 (61.1%)   |",
       "|-  Female    |   583 (38.9%)   |",
       "|Age in Years |                 |",
-      "|-  meansd    | 59.985 (11.519) |",
-      "|-  range     | 19.000 - 88.000 |"
+      "|-  Mean (SD) | 59.985 (11.519) |",
+      "|-  Range     | 19.000 - 88.000 |"
     )
   )
   expect_identical(
     capture.kable(summary(tab1, text = TRUE)),
     sub("Hello", "Total", capture.kable(summary(tab2, text = TRUE)))
+  )
+
+  d <- data.frame(
+    x = 10:1,
+    by = factor(rep(c("b", "Total"), each = 5), levels = c("b", "Total"))
+  )
+  tab <- tableby(by ~ x, data = d, stats.labels = list(total = "Total 2"))
+  expect_identical(
+    capture.kable(summary(tab, text = TRUE)),
+    c("|             |    b (N=5)     |  Total (N=5)  | Total 2 (N=10) | p value|",
+      "|:------------|:--------------:|:-------------:|:--------------:|-------:|",
+      "|x            |                |               |                |   0.001|",
+      "|-  Mean (SD) | 8.000 (1.581)  | 3.000 (1.581) | 5.500 (3.028)  |        |",
+      "|-  Range     | 6.000 - 10.000 | 1.000 - 5.000 | 1.000 - 10.000 |        |"
+    )
+  )
+  expect_identical(
+    capture.kable(summary(tab, text = TRUE, total = FALSE)),
+    c("|             |    b (N=5)     |  Total (N=5)  | p value|",
+      "|:------------|:--------------:|:-------------:|-------:|",
+      "|x            |                |               |   0.001|",
+      "|-  Mean (SD) | 8.000 (1.581)  | 3.000 (1.581) |        |",
+      "|-  Range     | 6.000 - 10.000 | 1.000 - 5.000 |        |"
+    )
   )
 
   tab3 <- tableby(sex ~ age + arm, data = mockstudy, stats.labels = list(total = "Overa"), cat.stats = c("countpct", "countrowpct", "rowbinomCI"))
@@ -1306,8 +1330,8 @@ test_that("10/09/2019: change title for overall and total (#253, #261, #272)", {
     c("|              |     Male (N=916)     |    Female (N=583)    |    Total (N=1499)    | p value|",
       "|:-------------|:--------------------:|:--------------------:|:--------------------:|-------:|",
       "|Age in Years  |                      |                      |                      |   0.048|",
-      "|-  meansd     |   60.455 (11.369)    |   59.247 (11.722)    |   59.985 (11.519)    |        |",
-      "|-  range      |   19.000 - 88.000    |   22.000 - 88.000    |   19.000 - 88.000    |        |",
+      "|-  Mean (SD)  |   60.455 (11.369)    |   59.247 (11.722)    |   59.985 (11.519)    |        |",
+      "|-  Range      |   19.000 - 88.000    |   22.000 - 88.000    |   19.000 - 88.000    |        |",
       "|Treatment Arm |                      |                      |                      |   0.190|",
       "|-  A: IFL     |     277 (30.2%)      |     151 (25.9%)      |     428 (28.6%)      |        |",
       "|-  F: FOLFOX  |     411 (44.9%)      |     280 (48.0%)      |     691 (46.1%)      |        |",
@@ -1346,8 +1370,8 @@ test_that("11/05/2019: remove N's in title (#256)", {
   )
 })
 
-test_that("11/12/2019: base summary stats work (#259, #281)", {
-  allstats <- c("min", "max", "range", "mean", "sd", "meansd", "meanCI", "var", "median", "medianrange", "sum")
+test_that("11/12/2019: base summary stats work (#259, #281); meanse (#315)", {
+  allstats <- c("min", "max", "range", "mean", "sd", "meansd", "meanse", "meanCI", "var", "median", "medianrange", "sum")
   expect_identical(
     capture.kable(summary(tableby(Sex ~ Age, data = mdat, numeric.stats = allstats), text = TRUE)),
     c("|                  |      Female (N=46)      |       Male (N=44)       |      Total (N=90)       | p value|",
@@ -1359,6 +1383,7 @@ test_that("11/12/2019: base summary stats work (#259, #281)", {
       "|-  Mean           |         39.826          |         39.568          |         39.700          |        |",
       "|-  SD             |          5.259          |          5.315          |          5.258          |        |",
       "|-  Mean (SD)      |     39.826 (5.259)      |     39.568 (5.315)      |     39.700 (5.258)      |        |",
+      "|-  Mean (SE)      |     39.826 (0.775)      |     39.568 (0.801)      |     39.700 (0.554)      |        |",
       "|-  Mean (CI)      | 39.826 (38.264, 41.388) | 39.568 (37.952, 41.184) | 39.700 (38.599, 40.801) |        |",
       "|-  Var            |         27.658          |         28.251          |         27.651          |        |",
       "|-  Median         |         39.000          |         39.500          |         39.000          |        |",
@@ -1378,6 +1403,7 @@ test_that("11/12/2019: base summary stats work (#259, #281)", {
       "|-  Mean           |             1949-06-11              |             1950-07-14              |             1949-12-23              |        |",
       "|-  SD             |            1981.348 days            |            2227.654 days            |            2103.010 days            |        |",
       "|-  Mean (SD)      |     1949-06-11 (1981.348 days)      |     1950-07-14 (2227.654 days)      |     1949-12-23 (2103.010 days)      |        |",
+      "|-  Mean (SE)      |      1949-06-11 (292.134 days)      |      1950-07-14 (335.832 days)      |      1949-12-23 (221.677 days)      |        |",
       "|-  Mean (CI)      | 1949-06-11 (1947-10-31, 1951-01-20) | 1950-07-14 (1948-09-05, 1952-05-22) | 1949-12-23 (1948-10-08, 1951-03-08) |        |",
       "|-  Var            |             3925741.628             |             4962443.482             |             4422652.929             |        |",
       "|-  Median         |             1948-12-07              |             1951-03-26              |             1949-10-07              |        |",
@@ -1554,3 +1580,128 @@ test_that("HTML footnotes (#298)", {
   )
 })
 
+
+test_that("selectall", {
+  d <- data.frame(
+    grp = rep(c("A", "B"), each = 5),
+    option1 = c(rep(1, 4), rep(0, 6)),
+    option2 = c(0, 1, 0, 0, 0, 1, 1, 1, 0, 0),
+    option3 = 1,
+    option4 = c(rep(0, 9), NA)
+  )
+  d$s <- selectall(`Option 1` = d$option1, `Option 2` = d$option2, `Option 3` = d$option3, `Option 4` = d$option4)
+  expect_identical(
+    capture.kable(summary(tableby(grp ~ s, data = d[1:9, ]), text = TRUE)),
+    c("|            |  A (N=5)   |  B (N=4)   | Total (N=9) | p value|",
+      "|:-----------|:----------:|:----------:|:-----------:|-------:|",
+      "|s           |            |            |             |        |",
+      "|-  Option 1 | 4 (80.0%)  |  0 (0.0%)  |  4 (44.4%)  |        |",
+      "|-  Option 2 | 1 (20.0%)  | 3 (75.0%)  |  4 (44.4%)  |        |",
+      "|-  Option 3 | 5 (100.0%) | 4 (100.0%) | 9 (100.0%)  |        |",
+      "|-  Option 4 |  0 (0.0%)  |  0 (0.0%)  |  0 (0.0%)   |        |"
+    )
+  )
+  expect_identical(
+    capture.kable(summary(tableby(grp ~ notest(s, "count", "Nmiss"), data = d), text = TRUE)),
+    c("|            | A (N=5) | B (N=5) | Total (N=10) | p value|",
+      "|:-----------|:-------:|:-------:|:------------:|-------:|",
+      "|s           |         |         |              |        |",
+      "|-  Option 1 |    4    |    0    |      4       |        |",
+      "|-  Option 2 |    1    |    3    |      4       |        |",
+      "|-  Option 3 |    5    |    4    |      9       |        |",
+      "|-  Option 4 |    0    |    0    |      0       |        |",
+      "|-  N-Miss   |    0    |    1    |      1       |        |"
+    )
+  )
+})
+
+test_that("Labels work for cat.simplify and ord.simplify (#288)", {
+  expect_identical(
+    capture.kable(summary(tableby(arm ~ sex + as.character(fu.stat), data = mockstudy, cat.simplify = "label"), text = TRUE)),
+    c("|                          | A: IFL (N=428) | F: FOLFOX (N=691) | G: IROX (N=380) | Total (N=1499) | p value|",
+      "|:-------------------------|:--------------:|:-----------------:|:---------------:|:--------------:|-------:|",
+      "|sex (Female)              |  151 (35.3%)   |    280 (40.5%)    |   152 (40.0%)   |  583 (38.9%)   |   0.190|",
+      "|as.character(fu.stat) (2) |  410 (95.8%)   |    592 (85.7%)    |   354 (93.2%)   |  1356 (90.5%)  | < 0.001|"
+    )
+  )
+  expect_identical(
+    capture.kable(summary(tableby(arm ~ sex + notest(as.character(fu.stat), cat.simplify = "label"), data = mockstudy, cat.simplify = TRUE), text = TRUE)),
+    c("|                          | A: IFL (N=428) | F: FOLFOX (N=691) | G: IROX (N=380) | Total (N=1499) | p value|",
+      "|:-------------------------|:--------------:|:-----------------:|:---------------:|:--------------:|-------:|",
+      "|sex                       |  151 (35.3%)   |    280 (40.5%)    |   152 (40.0%)   |  583 (38.9%)   |   0.190|",
+      "|as.character(fu.stat) (2) |  410 (95.8%)   |    592 (85.7%)    |   354 (93.2%)   |  1356 (90.5%)  |        |"
+    )
+  )
+})
+
+
+test_that("Titles work with knitr::kable(caption=) (#310)", {
+  expect_identical(
+    capture.kable(summary(tableby(arm ~ sex + age, data = mockstudy), title = "My cool table", text = TRUE)),
+    c("Table: My cool table"                                                                              ,
+      ""                                                                                                  ,
+      "|             | A: IFL (N=428)  | F: FOLFOX (N=691) | G: IROX (N=380) | Total (N=1499)  | p value|",
+      "|:------------|:---------------:|:-----------------:|:---------------:|:---------------:|-------:|",
+      "|sex          |                 |                   |                 |                 |   0.190|",
+      "|-  Male      |   277 (64.7%)   |    411 (59.5%)    |   228 (60.0%)   |   916 (61.1%)   |        |",
+      "|-  Female    |   151 (35.3%)   |    280 (40.5%)    |   152 (40.0%)   |   583 (38.9%)   |        |",
+      "|Age in Years |                 |                   |                 |                 |   0.614|",
+      "|-  Mean (SD) | 59.673 (11.365) |  60.301 (11.632)  | 59.763 (11.499) | 59.985 (11.519) |        |",
+      "|-  Range     | 27.000 - 88.000 |  19.000 - 88.000  | 26.000 - 85.000 | 19.000 - 88.000 |        |"
+    )
+  )
+  expect_identical(
+    capture.kable(print(summary(tableby(arm ~ sex + age, data = mockstudy), title = "My cool table", text = TRUE), format = "pandoc")),
+    c("Table: My cool table"                                                                                 ,
+      ""                                                                                                     ,
+      "                A: IFL (N=428)     F: FOLFOX (N=691)    G: IROX (N=380)    Total (N=1499)     p value",
+      "-------------  -----------------  -------------------  -----------------  -----------------  --------",
+      "sex                                                                                             0.190",
+      "-  Male           277 (64.7%)         411 (59.5%)         228 (60.0%)        916 (61.1%)             ",
+      "-  Female         151 (35.3%)         280 (40.5%)         152 (40.0%)        583 (38.9%)             ",
+      "Age in Years                                                                                    0.614",
+      "-  Mean (SD)    59.673 (11.365)     60.301 (11.632)     59.763 (11.499)    59.985 (11.519)           ",
+      "-  Range        27.000 - 88.000     19.000 - 88.000     26.000 - 85.000    19.000 - 88.000           "
+    )
+  )
+  expect_true(any(grepl("<caption>", capture.output(print(summary(tableby(arm ~ sex, data = mockstudy), title = "hi"), format = "html")))))
+  expect_true(any(grepl("\\\\caption", capture.output(print(summary(tableby(arm ~ sex, data = mockstudy), title = "hi"), format = "latex")))))
+})
+
+
+test_that("stats.labels doesn't overwrite existing labels (#316)", {
+  expect_identical(
+    capture.kable(summary(tableby(sex ~ age, data = mockstudy, stats.labels=list(medSurv = 'Median')), text = TRUE)),
+    c("|             |  Male (N=916)   | Female (N=583)  | Total (N=1499)  | p value|",
+      "|:------------|:---------------:|:---------------:|:---------------:|-------:|",
+      "|Age in Years |                 |                 |                 |   0.048|",
+      "|-  Mean (SD) | 60.455 (11.369) | 59.247 (11.722) | 59.985 (11.519) |        |",
+      "|-  Range     | 19.000 - 88.000 | 22.000 - 88.000 | 19.000 - 88.000 |        |"
+    )
+  )
+  expect_identical(
+    capture.kable(summary(tableby(sex ~ age, data = mockstudy, stats.labels=NULL), text = TRUE)),
+    c("|             |  Male (N=916)   | Female (N=583)  | Total (N=1499)  | p value|",
+      "|:------------|:---------------:|:---------------:|:---------------:|-------:|",
+      "|Age in Years |                 |                 |                 |   0.048|",
+      "|-  meansd    | 60.455 (11.369) | 59.247 (11.722) | 59.985 (11.519) |        |",
+      "|-  range     | 19.000 - 88.000 | 22.000 - 88.000 | 19.000 - 88.000 |        |"
+    )
+  )
+})
+
+test_that("wt (#321)", {
+  expect_identical(
+    capture.kable(summary(tableby(sex ~ kwt(age), data = mockstudy), text = TRUE)),
+    capture.kable(summary(tableby(sex ~ wt(age), data = mockstudy), text = TRUE))
+  )
+  expect_identical(
+    capture.kable(summary(tableby(sex ~ wt(age), data = head(mockstudy, 10), wilcox.correct = TRUE, wilcox.exact = FALSE), text = TRUE)),
+    c("|             |   Male (N=5)    |  Female (N=5)   |  Total (N=10)   | p value|",
+      "|:------------|:---------------:|:---------------:|:---------------:|-------:|",
+      "|age          |                 |                 |                 |   0.463|",
+      "|-  Mean (SD) | 58.600 (6.580)  | 63.000 (11.554) | 60.800 (9.163)  |        |",
+      "|-  Range     | 50.000 - 67.000 | 50.000 - 74.000 | 50.000 - 74.000 |        |"
+    )
+  )
+})

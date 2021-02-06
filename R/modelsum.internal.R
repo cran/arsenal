@@ -96,6 +96,8 @@ make_ms_term_labels <- function(mf, trms)
 
 modelsum_guts <- function(fam, temp.call, envir, conf.level, scope, anyna)
 {
+  check_pkg("broom")
+
   try_lrt <- function(f, s, a)
   {
     if(a) return(NA_real_)
@@ -105,6 +107,7 @@ modelsum_guts <- function(fam, temp.call, envir, conf.level, scope, anyna)
 
   ## y is ordered factor
   if (fam$family == "ordinal") {
+    check_pkg("MASS")
     temp.call[[1]] <- quote(MASS::polr)
     temp.call$Hess <- TRUE
     temp.call$method <- fam$method
@@ -140,6 +143,7 @@ modelsum_guts <- function(fam, temp.call, envir, conf.level, scope, anyna)
   } else if (fam$family == "binomial" || fam$family == "quasibinomial") {
     ## These families are used in glm
 
+    check_pkg("pROC")
     temp.call[[1]] <- quote(stats::glm)
     temp.call$x <- TRUE
     temp.call$family <- fam
@@ -177,21 +181,23 @@ modelsum_guts <- function(fam, temp.call, envir, conf.level, scope, anyna)
 
   } else if (fam$family == "negbin") {
     ## Also uses glm
+    check_pkg("MASS")
     temp.call[[1]] <- quote(MASS::glm.nb)
     temp.call$x <- TRUE
     temp.call$link <- fam$link
     fit <- eval(temp.call, envir)
-    coeffRRTidy <- broom::tidy(fit, exponentiate=TRUE, conf.int=TRUE, conf.level=conf.level)
+    coeffRRTidy <- suppressWarnings(broom::tidy(fit, exponentiate=TRUE, conf.int=TRUE, conf.level=conf.level))
     coeffRRTidy[coeffRRTidy$term == "Intercept", -1] <- NA
-    coeffTidy <- broom::tidy(fit, exponentiate=FALSE, conf.int=TRUE, conf.level=conf.level)
+    coeffTidy <- suppressWarnings(broom::tidy(fit, exponentiate=FALSE, conf.int=TRUE, conf.level=conf.level))
     coeffTidy <- cbind(coeffTidy, RR=coeffRRTidy$estimate, CI.lower.RR=coeffRRTidy$conf.low, CI.upper.RR=coeffRRTidy$conf.high)
-    modelGlance <- broom::glance(fit)
+    modelGlance <- suppressWarnings(broom::glance(fit))
     modelGlance$theta <- fit$theta
     modelGlance$SE.theta <- fit$SE.theta
     modelGlance$p.value.lrt <- try_lrt(fit, scope, anyna)
 
   } else if(fam$family == "clog") {
 
+    check_pkg("survival")
     temp.call[[1]] <- quote(survival::clogit)
     fit <- eval(temp.call, envir)
     ## use tidy to get both CIs, merge
@@ -202,13 +208,27 @@ modelsum_guts <- function(fam, temp.call, envir, conf.level, scope, anyna)
     names(modelGlance)[names(modelGlance) == "nevent"] <- "Nevents"
     modelGlance$p.value.lrt <- try_lrt(fit, scope, anyna)
 
+  } else if (fam$family == "relrisk") {
+
+    check_pkg("geepack")
+    temp.call[[1]] <- quote(geepack::geeglm)
+    temp.call$family <- stats::poisson(fam$link)
+    temp.call$corstr <- "independence"
+    fit <- eval(temp.call, envir)
+    coeffRRTidy <- broom::tidy(fit, exponentiate=TRUE, conf.int=TRUE, conf.level=conf.level)
+    coeffRRTidy[coeffRRTidy$term == "Intercept", -1] <- NA
+    coeffTidy <- broom::tidy(fit, exponentiate=FALSE, conf.int=TRUE, conf.level=conf.level)
+    coeffTidy <- cbind(coeffTidy, RR=coeffRRTidy$estimate, CI.lower.RR=coeffRRTidy$conf.low, CI.upper.RR=coeffRRTidy$conf.high)
+    modelGlance <- broom::glance(fit)
+
   } else if(fam$family == "survival") {
 
+    check_pkg("survival")
     temp.call[[1]] <- quote(survival::coxph)
     fit <- eval(temp.call, envir)
     ## use tidy to get both CIs, merge
-    coeffHRTidy <- broom::tidy(fit, exponentiate=TRUE, conf.int=conf.level)
-    coeffTidy <- broom::tidy(fit, exponentiate=FALSE, conf.int=conf.level)
+    coeffHRTidy <- broom::tidy(fit, exponentiate=TRUE, conf.int=TRUE, conf.level=conf.level)
+    coeffTidy <- broom::tidy(fit, exponentiate=FALSE, conf.int=TRUE, conf.level=conf.level)
     coeffTidy <- cbind(coeffTidy, HR=coeffHRTidy$estimate, CI.lower.HR=coeffHRTidy$conf.low, CI.upper.HR=coeffHRTidy$conf.high)
     modelGlance <-  broom::glance(fit)
     names(modelGlance)[names(modelGlance) == "nevent"] <- "Nevents"
