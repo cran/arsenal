@@ -18,7 +18,7 @@
 #' @param numeric.simplify,date.simplify logical, tell \code{tableby} whether to condense numeric/date output to a single line.
 #'   NOTE: this only simplifies to one line if there is only one statistic reported, such as \code{meansd}.
 #'   In particular, if \code{Nmiss} is specified and there are missings, then the output is not simplified.
-#' @param numeric.test name of test for numeric RHS variables in \code{tableby}: anova, kwt (Kruskal-Wallis).
+#' @param numeric.test name of test for numeric RHS variables in \code{tableby}: anova, kwt (Kruskal-Wallis), medtest (median test).
 #'   If no LHS variable exists, then a mean is required for a univariate test.
 #' @param numeric.stats,cat.stats,ordered.stats,surv.stats,date.stats,selectall.stats summary statistics to include for the respective class of RHS variables
 #'  within the levels of the group LHS variable.
@@ -147,7 +147,7 @@ add_tbc_stats_labels <- function(x) {
     mean = "Mean", sd = "SD", var = "Var", max = "Max", min = "Min", meanCI = "Mean (CI)", sum = "Sum",
     gmean = "Geom Mean", gsd = "Geom SD", gmeansd = "Geom Mean (Geom SD)", gmeanCI = "Geom Mean (CI)",
     range="Range", Npct="N (Pct)", Nevents="Events", medSurv="Median Survival",
-    medTime = "Median Follow-Up", medianmad="Median (MAD)",
+    medTime = "Median Follow-Up", medianmad="Median (MAD)", Nsigntest = "N (sign test)",
     overall = "Overall", total = "Total", difference = "Difference"
   )
   nms <- setdiff(names(x), "")

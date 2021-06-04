@@ -15,61 +15,9 @@
 
 <title>The tableby function</title>
 
-<script>// Hide empty <a> tag within highlighted CodeBlock for screen reader accessibility (see https://github.com/jgm/pandoc/issues/6352#issuecomment-626106786) -->
-// v0.0.1
-// Written by JooYoung Seo (jooyoung@psu.edu) and Atsushi Yasumoto on June 1st, 2020.
-
-document.addEventListener('DOMContentLoaded', function() {
-  const codeList = document.getElementsByClassName("sourceCode");
-  for (var i = 0; i < codeList.length; i++) {
-    var linkList = codeList[i].getElementsByTagName('a');
-    for (var j = 0; j < linkList.length; j++) {
-      if (linkList[j].innerHTML === "") {
-        linkList[j].setAttribute('aria-hidden', 'true');
-      }
-    }
-  }
-});
-</script>
-<style type="text/css">
-a.anchor-section {margin-left: 10px; visibility: hidden; color: inherit;}
-a.anchor-section::before {content: '#';}
-.hasAnchor:hover a.anchor-section {visibility: visible;}
-</style>
-<script>// Anchor sections v1.0 written by Atsushi Yasumoto on Oct 3rd, 2020.
-document.addEventListener('DOMContentLoaded', function() {
-  // Do nothing if AnchorJS is used
-  if (typeof window.anchors === 'object' && anchors.hasOwnProperty('hasAnchorJSLink')) {
-    return;
-  }
-
-  const h = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
-
-  // Do nothing if sections are already anchored
-  if (Array.from(h).some(x => x.classList.contains('hasAnchor'))) {
-    return null;
-  }
-
-  // Use section id when pandoc runs with --section-divs
-  const section_id = function(x) {
-    return ((x.classList.contains('section') || (x.tagName === 'SECTION'))
-            ? x.id : '');
-  };
-
-  // Add anchors
-  h.forEach(function(x) {
-    const id = x.id || section_id(x.parentElement);
-    if (id === '') {
-      return null;
-    }
-    let anchor = document.createElement('a');
-    anchor.href = '#' + id;
-    anchor.classList = ['anchor-section'];
-    x.classList.add('hasAnchor');
-    x.appendChild(anchor);
-  });
-});
-</script>
+<script src="data:application/javascript;base64,Ly8gUGFuZG9jIDIuOSBhZGRzIGF0dHJpYnV0ZXMgb24gYm90aCBoZWFkZXIgYW5kIGRpdi4gV2UgcmVtb3ZlIHRoZSBmb3JtZXIgKHRvCi8vIGJlIGNvbXBhdGlibGUgd2l0aCB0aGUgYmVoYXZpb3Igb2YgUGFuZG9jIDwgMi44KS4KZG9jdW1lbnQuYWRkRXZlbnRMaXN0ZW5lcignRE9NQ29udGVudExvYWRlZCcsIGZ1bmN0aW9uKGUpIHsKICB2YXIgaHMgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yQWxsKCJkaXYuc2VjdGlvbltjbGFzcyo9J2xldmVsJ10gPiA6Zmlyc3QtY2hpbGQiKTsKICB2YXIgaSwgaCwgYTsKICBmb3IgKGkgPSAwOyBpIDwgaHMubGVuZ3RoOyBpKyspIHsKICAgIGggPSBoc1tpXTsKICAgIGlmICghL15oWzEtNl0kL2kudGVzdChoLnRhZ05hbWUpKSBjb250aW51ZTsgIC8vIGl0IHNob3VsZCBiZSBhIGhlYWRlciBoMS1oNgogICAgYSA9IGguYXR0cmlidXRlczsKICAgIHdoaWxlIChhLmxlbmd0aCA+IDApIGgucmVtb3ZlQXR0cmlidXRlKGFbMF0ubmFtZSk7CiAgfQp9KTsK"></script>
+<link href="data:text/css,%0Aa%2Eanchor%2Dsection%20%7Bmargin%2Dleft%3A%2010px%3B%20visibility%3A%20hidden%3B%20color%3A%20inherit%3B%7D%0Aa%2Eanchor%2Dsection%3A%3Abefore%20%7Bcontent%3A%20%27%23%27%3B%7D%0A%2EhasAnchor%3Ahover%20a%2Eanchor%2Dsection%20%7Bvisibility%3A%20visible%3B%7D%0A" rel="stylesheet" />
+<script src="data:application/javascript;base64,Ly8gQW5jaG9yIHNlY3Rpb25zIHYxLjAgd3JpdHRlbiBieSBBdHN1c2hpIFlhc3Vtb3RvIG9uIE9jdCAzcmQsIDIwMjAuCmRvY3VtZW50LmFkZEV2ZW50TGlzdGVuZXIoJ0RPTUNvbnRlbnRMb2FkZWQnLCBmdW5jdGlvbigpIHsKICAvLyBEbyBub3RoaW5nIGlmIEFuY2hvckpTIGlzIHVzZWQKICBpZiAodHlwZW9mIHdpbmRvdy5hbmNob3JzID09PSAnb2JqZWN0JyAmJiBhbmNob3JzLmhhc093blByb3BlcnR5KCdoYXNBbmNob3JKU0xpbmsnKSkgewogICAgcmV0dXJuOwogIH0KCiAgY29uc3QgaCA9IGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3JBbGwoJ2gxLCBoMiwgaDMsIGg0LCBoNSwgaDYnKTsKCiAgLy8gRG8gbm90aGluZyBpZiBzZWN0aW9ucyBhcmUgYWxyZWFkeSBhbmNob3JlZAogIGlmIChBcnJheS5mcm9tKGgpLnNvbWUoeCA9PiB4LmNsYXNzTGlzdC5jb250YWlucygnaGFzQW5jaG9yJykpKSB7CiAgICByZXR1cm4gbnVsbDsKICB9CgogIC8vIFVzZSBzZWN0aW9uIGlkIHdoZW4gcGFuZG9jIHJ1bnMgd2l0aCAtLXNlY3Rpb24tZGl2cwogIGNvbnN0IHNlY3Rpb25faWQgPSBmdW5jdGlvbih4KSB7CiAgICByZXR1cm4gKCh4LmNsYXNzTGlzdC5jb250YWlucygnc2VjdGlvbicpIHx8ICh4LnRhZ05hbWUgPT09ICdTRUNUSU9OJykpCiAgICAgICAgICAgID8geC5pZCA6ICcnKTsKICB9OwoKICAvLyBBZGQgYW5jaG9ycwogIGguZm9yRWFjaChmdW5jdGlvbih4KSB7CiAgICBjb25zdCBpZCA9IHguaWQgfHwgc2VjdGlvbl9pZCh4LnBhcmVudEVsZW1lbnQpOwogICAgaWYgKGlkID09PSAnJykgewogICAgICByZXR1cm4gbnVsbDsKICAgIH0KICAgIGxldCBhbmNob3IgPSBkb2N1bWVudC5jcmVhdGVFbGVtZW50KCdhJyk7CiAgICBhbmNob3IuaHJlZiA9ICcjJyArIGlkOwogICAgYW5jaG9yLmNsYXNzTGlzdCA9IFsnYW5jaG9yLXNlY3Rpb24nXTsKICAgIHguY2xhc3NMaXN0LmFkZCgnaGFzQW5jaG9yJyk7CiAgICB4LmFwcGVuZENoaWxkKGFuY2hvcik7CiAgfSk7Cn0pOwo="></script>
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -83,19 +31,19 @@ document.addEventListener('DOMContentLoaded', function() {
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css" data-origin="pandoc">
-code.sourceCode > span { display: inline-block; line-height: 1.25; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-code.sourceCode > span:empty { height: 1.2em; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; position: relative; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
 div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
 }
 @media print {
-code.sourceCode { white-space: pre-wrap; }
-code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -115,7 +63,7 @@ pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-le
 div.sourceCode
   {   }
 @media screen {
-code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
@@ -172,187 +120,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 
 
-<style type="text/css">body {
-background-color: #fff;
-margin: 1em auto;
-max-width: 700px;
-overflow: visible;
-padding-left: 2em;
-padding-right: 2em;
-font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
-font-size: 14px;
-line-height: 1.35;
-}
-#TOC {
-clear: both;
-margin: 0 0 10px 10px;
-padding: 4px;
-width: 400px;
-border: 1px solid #CCCCCC;
-border-radius: 5px;
-background-color: #f6f6f6;
-font-size: 13px;
-line-height: 1.3;
-}
-#TOC .toctitle {
-font-weight: bold;
-font-size: 15px;
-margin-left: 5px;
-}
-#TOC ul {
-padding-left: 40px;
-margin-left: -1.5em;
-margin-top: 5px;
-margin-bottom: 5px;
-}
-#TOC ul ul {
-margin-left: -2em;
-}
-#TOC li {
-line-height: 16px;
-}
-table {
-margin: 1em auto;
-border-width: 1px;
-border-color: #DDDDDD;
-border-style: outset;
-border-collapse: collapse;
-}
-table th {
-border-width: 2px;
-padding: 5px;
-border-style: inset;
-}
-table td {
-border-width: 1px;
-border-style: inset;
-line-height: 18px;
-padding: 5px 5px;
-}
-table, table th, table td {
-border-left-style: none;
-border-right-style: none;
-}
-table thead, table tr.even {
-background-color: #f7f7f7;
-}
-p {
-margin: 0.5em 0;
-}
-blockquote {
-background-color: #f6f6f6;
-padding: 0.25em 0.75em;
-}
-hr {
-border-style: solid;
-border: none;
-border-top: 1px solid #777;
-margin: 28px 0;
-}
-dl {
-margin-left: 0;
-}
-dl dd {
-margin-bottom: 13px;
-margin-left: 13px;
-}
-dl dt {
-font-weight: bold;
-}
-ul {
-margin-top: 0;
-}
-ul li {
-list-style: circle outside;
-}
-ul ul {
-margin-bottom: 0;
-}
-pre, code {
-background-color: #f7f7f7;
-border-radius: 3px;
-color: #333;
-white-space: pre-wrap; 
-}
-pre {
-border-radius: 3px;
-margin: 5px 0px 10px 0px;
-padding: 10px;
-}
-pre:not([class]) {
-background-color: #f7f7f7;
-}
-code {
-font-family: Consolas, Monaco, 'Courier New', monospace;
-font-size: 85%;
-}
-p > code, li > code {
-padding: 2px 0px;
-}
-div.figure {
-text-align: center;
-}
-img {
-background-color: #FFFFFF;
-padding: 2px;
-border: 1px solid #DDDDDD;
-border-radius: 3px;
-border: 1px solid #CCCCCC;
-margin: 0 5px;
-}
-h1 {
-margin-top: 0;
-font-size: 35px;
-line-height: 40px;
-}
-h2 {
-border-bottom: 4px solid #f7f7f7;
-padding-top: 10px;
-padding-bottom: 2px;
-font-size: 145%;
-}
-h3 {
-border-bottom: 2px solid #f7f7f7;
-padding-top: 10px;
-font-size: 120%;
-}
-h4 {
-border-bottom: 1px solid #f7f7f7;
-margin-left: 8px;
-font-size: 105%;
-}
-h5, h6 {
-border-bottom: 1px solid #ccc;
-font-size: 105%;
-}
-a {
-color: #0033dd;
-text-decoration: none;
-}
-a:hover {
-color: #6666ff; }
-a:visited {
-color: #800080; }
-a:visited:hover {
-color: #BB00BB; }
-a[href^="http:"] {
-text-decoration: underline; }
-a[href^="https:"] {
-text-decoration: underline; }
-
-code > span.kw { color: #555; font-weight: bold; } 
-code > span.dt { color: #902000; } 
-code > span.dv { color: #40a070; } 
-code > span.bn { color: #d14; } 
-code > span.fl { color: #d14; } 
-code > span.ch { color: #d14; } 
-code > span.st { color: #d14; } 
-code > span.co { color: #888888; font-style: italic; } 
-code > span.ot { color: #007020; } 
-code > span.al { color: #ff0000; font-weight: bold; } 
-code > span.fu { color: #900; font-weight: bold; } 
-code > span.er { color: #a61717; background-color: #e3d2d2; } 
-</style>
+<link rel="stylesheet" href="data:text/css,body%20%7B%0Abackground%2Dcolor%3A%20%23fff%3B%0Amargin%3A%201em%20auto%3B%0Amax%2Dwidth%3A%20700px%3B%0Aoverflow%3A%20visible%3B%0Apadding%2Dleft%3A%202em%3B%0Apadding%2Dright%3A%202em%3B%0Afont%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0Afont%2Dsize%3A%2014px%3B%0Aline%2Dheight%3A%201%2E35%3B%0A%7D%0A%23TOC%20%7B%0Aclear%3A%20both%3B%0Amargin%3A%200%200%2010px%2010px%3B%0Apadding%3A%204px%3B%0Awidth%3A%20400px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Aborder%2Dradius%3A%205px%3B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Afont%2Dsize%3A%2013px%3B%0Aline%2Dheight%3A%201%2E3%3B%0A%7D%0A%23TOC%20%2Etoctitle%20%7B%0Afont%2Dweight%3A%20bold%3B%0Afont%2Dsize%3A%2015px%3B%0Amargin%2Dleft%3A%205px%3B%0A%7D%0A%23TOC%20ul%20%7B%0Apadding%2Dleft%3A%2040px%3B%0Amargin%2Dleft%3A%20%2D1%2E5em%3B%0Amargin%2Dtop%3A%205px%3B%0Amargin%2Dbottom%3A%205px%3B%0A%7D%0A%23TOC%20ul%20ul%20%7B%0Amargin%2Dleft%3A%20%2D2em%3B%0A%7D%0A%23TOC%20li%20%7B%0Aline%2Dheight%3A%2016px%3B%0A%7D%0Atable%20%7B%0Amargin%3A%201em%20auto%3B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dcolor%3A%20%23DDDDDD%3B%0Aborder%2Dstyle%3A%20outset%3B%0Aborder%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0Aborder%2Dwidth%3A%202px%3B%0Apadding%3A%205px%3B%0Aborder%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dstyle%3A%20inset%3B%0Aline%2Dheight%3A%2018px%3B%0Apadding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0Aborder%2Dleft%2Dstyle%3A%20none%3B%0Aborder%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Ap%20%7B%0Amargin%3A%200%2E5em%200%3B%0A%7D%0Ablockquote%20%7B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Apadding%3A%200%2E25em%200%2E75em%3B%0A%7D%0Ahr%20%7B%0Aborder%2Dstyle%3A%20solid%3B%0Aborder%3A%20none%3B%0Aborder%2Dtop%3A%201px%20solid%20%23777%3B%0Amargin%3A%2028px%200%3B%0A%7D%0Adl%20%7B%0Amargin%2Dleft%3A%200%3B%0A%7D%0Adl%20dd%20%7B%0Amargin%2Dbottom%3A%2013px%3B%0Amargin%2Dleft%3A%2013px%3B%0A%7D%0Adl%20dt%20%7B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Aul%20%7B%0Amargin%2Dtop%3A%200%3B%0A%7D%0Aul%20li%20%7B%0Alist%2Dstyle%3A%20circle%20outside%3B%0A%7D%0Aul%20ul%20%7B%0Amargin%2Dbottom%3A%200%3B%0A%7D%0Apre%2C%20code%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0Aborder%2Dradius%3A%203px%3B%0Acolor%3A%20%23333%3B%0Awhite%2Dspace%3A%20pre%2Dwrap%3B%20%0A%7D%0Apre%20%7B%0Aborder%2Dradius%3A%203px%3B%0Amargin%3A%205px%200px%2010px%200px%3B%0Apadding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Acode%20%7B%0Afont%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0Afont%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0Apadding%3A%202px%200px%3B%0A%7D%0Adiv%2Efigure%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0Abackground%2Dcolor%3A%20%23FFFFFF%3B%0Apadding%3A%202px%3B%0Aborder%3A%201px%20solid%20%23DDDDDD%3B%0Aborder%2Dradius%3A%203px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Amargin%3A%200%205px%3B%0A%7D%0Ah1%20%7B%0Amargin%2Dtop%3A%200%3B%0Afont%2Dsize%3A%2035px%3B%0Aline%2Dheight%3A%2040px%3B%0A%7D%0Ah2%20%7B%0Aborder%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Apadding%2Dbottom%3A%202px%3B%0Afont%2Dsize%3A%20145%25%3B%0A%7D%0Ah3%20%7B%0Aborder%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Afont%2Dsize%3A%20120%25%3B%0A%7D%0Ah4%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0Amargin%2Dleft%3A%208px%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Ah5%2C%20h6%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23ccc%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Aa%20%7B%0Acolor%3A%20%230033dd%3B%0Atext%2Ddecoration%3A%20none%3B%0A%7D%0Aa%3Ahover%20%7B%0Acolor%3A%20%236666ff%3B%20%7D%0Aa%3Avisited%20%7B%0Acolor%3A%20%23800080%3B%20%7D%0Aa%3Avisited%3Ahover%20%7B%0Acolor%3A%20%23BB00BB%3B%20%7D%0Aa%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0Aa%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%0A" type="text/css" />
 
 
 
@@ -371,20 +139,23 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <div id="TOC">
 <ul>
 <li><a href="#introduction">Introduction</a></li>
-<li><a href="#simple-example">Simple Example</a><ul>
+<li><a href="#simple-example">Simple Example</a>
+<ul>
 <li><a href="#pretty-text-version-of-table">Pretty text version of table</a></li>
 <li><a href="#pretty-rmarkdown-version-of-table">Pretty Rmarkdown version of table</a></li>
 <li><a href="#data-frame-version-of-table">Data frame version of table</a></li>
 <li><a href="#summaries-using-standard-r-code">Summaries using standard R code</a></li>
 </ul></li>
-<li><a href="#modifying-output">Modifying Output</a><ul>
+<li><a href="#modifying-output">Modifying Output</a>
+<ul>
 <li><a href="#add-labels">Add labels</a></li>
 <li><a href="#change-summary-statistics-globally">Change summary statistics globally</a></li>
 <li><a href="#change-summary-statistics-within-the-formula">Change summary statistics within the formula</a></li>
 <li><a href="#controlling-options-for-categorical-tests-chisq-and-fishers">Controlling Options for Categorical Tests (Chisq and Fisher’s)</a></li>
 <li><a href="#modifying-the-look-feel-in-word-documents">Modifying the look &amp; feel in Word documents</a></li>
 </ul></li>
-<li><a href="#additional-examples">Additional Examples</a><ul>
+<li><a href="#additional-examples">Additional Examples</a>
+<ul>
 <li><a href="#summarize-without-a-groupby-variable">1. Summarize without a group/by variable</a></li>
 <li><a href="#display-footnotes-indicating-which-test-was-used">2. Display footnotes indicating which “test” was used</a></li>
 <li><a href="#summarize-an-ordered-factor">3. Summarize an ordered factor</a></li>
@@ -412,7 +183,8 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <li><a href="#tabulate-multiple-endpoints">25. Tabulate multiple endpoints</a></li>
 <li><a href="#tabulate-data-by-a-non-test-group-strata">26. Tabulate data by a non-test group (strata)</a></li>
 </ul></li>
-<li><a href="#available-function-options">Available Function Options</a><ul>
+<li><a href="#available-function-options">Available Function Options</a>
+<ul>
 <li><a href="#summary-statistics">Summary statistics</a></li>
 <li><a href="#testing-options">Testing options</a></li>
 <li><a href="#tableby.control-settings"><code>tableby.control</code> settings</a></li>
@@ -430,14 +202,14 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <div id="simple-example" class="section level1">
 <h1>Simple Example</h1>
 <p>The first step when using the <code>tableby</code> function is to load the <code>arsenal</code> package. All the examples in this report use a dataset called <code>mockstudy</code> made available by Paul Novotny which includes a variety of types of variables (character, numeric, factor, ordered factor, survival) to use as examples.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw">library</span>(arsenal)</span>
-<span id="cb1-2"><a href="#cb1-2"></a><span class="kw">require</span>(knitr)</span>
-<span id="cb1-3"><a href="#cb1-3"></a><span class="kw">require</span>(survival)</span>
-<span id="cb1-4"><a href="#cb1-4"></a><span class="kw">data</span>(mockstudy) <span class="co">##load data</span></span>
-<span id="cb1-5"><a href="#cb1-5"></a><span class="kw">dim</span>(mockstudy)  <span class="co">##look at how many subjects and variables are in the dataset </span></span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(arsenal)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">require</span>(knitr)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">require</span>(survival)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(mockstudy) <span class="do">##load data</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(mockstudy)  <span class="do">##look at how many subjects and variables are in the dataset </span></span></code></pre></div>
 <pre><code>## [1] 1499   14</code></pre>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="co"># help(mockstudy) ##learn more about the dataset and variables</span></span>
-<span id="cb3-2"><a href="#cb3-2"></a><span class="kw">str</span>(mockstudy) <span class="co">##quick look at the data</span></span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># help(mockstudy) ##learn more about the dataset and variables</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(mockstudy) <span class="do">##quick look at the data</span></span></code></pre></div>
 <pre><code>## &#39;data.frame&#39;:    1499 obs. of  14 variables:
 ##  $ case       : int  110754 99706 105271 105001 112263 86205 99508 90158 88989 90515 ...
 ##  $ age        : int  67 74 50 71 69 56 50 57 51 63 ...
@@ -458,12 +230,12 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 ##  $ mdquality.s: int  NA 1 1 1 NA 1 1 1 1 1 ...
 ##  $ age.ord    : Ord.factor w/ 8 levels &quot;10-19&quot;&lt;&quot;20-29&quot;&lt;..: 6 7 4 7 6 5 4 5 5 6 ...</code></pre>
 <p>To create a simple table stratified by treatment arm, use a formula statement to specify the variables that you want summarized. The example below uses age (a continuous variable) and sex (a factor).</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>tab1 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span class="op">~</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span>age, <span class="dt">data=</span>mockstudy)</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>tab1 <span class="ot">&lt;-</span> <span class="fu">tableby</span>(arm <span class="sc">~</span> sex <span class="sc">+</span> age, <span class="at">data=</span>mockstudy)</span></code></pre></div>
 <p>If you want to take a quick look at the table, you can use <code>summary()</code> on your tableby object and the table will print out as text in your R console window. If you use <code>summary()</code> without any options you will see a number of <span class="math inline">\(\&amp;nbsp;\)</span> statements which translates to “space” in HTML.</p>
 <div id="pretty-text-version-of-table" class="section level2">
 <h2>Pretty text version of table</h2>
 <p>If you want a nicer version in your console window then add the <code>text=TRUE</code> option.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="kw">summary</span>(tab1, <span class="dt">text=</span><span class="ot">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(tab1, <span class="at">text=</span><span class="cn">TRUE</span>)</span></code></pre></div>
 <pre><code>## 
 ## 
 ## |             | A: IFL (N=428)  | F: FOLFOX (N=691) | G: IROX (N=380) | Total (N=1499)  | p value|
@@ -478,7 +250,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <div id="pretty-rmarkdown-version-of-table" class="section level2">
 <h2>Pretty Rmarkdown version of table</h2>
 <p>In order for the report to look nice within an R markdown (knitr) report, you just need to specify <code>results=&quot;asis&quot;</code> when creating the R chunk. This changes the layout slightly (compresses it) and bolds the variable names.</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="kw">summary</span>(tab1)</span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(tab1)</span></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -545,7 +317,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <div id="data-frame-version-of-table" class="section level2">
 <h2>Data frame version of table</h2>
 <p>If you want a data.frame version, simply use <code>as.data.frame</code>.</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="kw">as.data.frame</span>(tab1)</span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">as.data.frame</span>(tab1)</span></code></pre></div>
 <pre><code>##   group.term   group.label strata.term variable     term        label variable.type
 ## 1        arm Treatment Arm                  sex      sex          sex   categorical
 ## 2        arm Treatment Arm                  sex countpct         Male   categorical
@@ -570,22 +342,22 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 </div>
 <div id="summaries-using-standard-r-code" class="section level2">
 <h2>Summaries using standard R code</h2>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="co">## base R frequency example</span></span>
-<span id="cb11-2"><a href="#cb11-2"></a>tmp &lt;-<span class="st"> </span><span class="kw">table</span>(<span class="dt">Gender=</span>mockstudy<span class="op">$</span>sex, <span class="st">&quot;Study Arm&quot;</span>=mockstudy<span class="op">$</span>arm)</span>
-<span id="cb11-3"><a href="#cb11-3"></a>tmp</span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="do">## base R frequency example</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>tmp <span class="ot">&lt;-</span> <span class="fu">table</span>(<span class="at">Gender=</span>mockstudy<span class="sc">$</span>sex, <span class="st">&quot;Study Arm&quot;</span><span class="ot">=</span>mockstudy<span class="sc">$</span>arm)</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>tmp</span></code></pre></div>
 <pre><code>##         Study Arm
 ## Gender   A: IFL F: FOLFOX G: IROX
 ##   Male      277       411     228
 ##   Female    151       280     152</code></pre>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a><span class="co"># Note: The continuity correction is applied by default in R (not used in %table)</span></span>
-<span id="cb13-2"><a href="#cb13-2"></a><span class="kw">chisq.test</span>(tmp)</span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Note: The continuity correction is applied by default in R (not used in %table)</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">chisq.test</span>(tmp)</span></code></pre></div>
 <pre><code>## 
 ##  Pearson&#39;s Chi-squared test
 ## 
 ## data:  tmp
 ## X-squared = 3.3168, df = 2, p-value = 0.1904</code></pre>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a><span class="co">## base R numeric summary example</span></span>
-<span id="cb15-2"><a href="#cb15-2"></a><span class="kw">tapply</span>(mockstudy<span class="op">$</span>age, mockstudy<span class="op">$</span>arm, summary)</span></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="do">## base R numeric summary example</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tapply</span>(mockstudy<span class="sc">$</span>age, mockstudy<span class="sc">$</span>arm, summary)</span></code></pre></div>
 <pre><code>## $`A: IFL`
 ##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
 ##   27.00   53.00   61.00   59.67   68.00   88.00 
@@ -597,7 +369,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 ## $`G: IROX`
 ##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
 ##   26.00   52.00   61.00   59.76   68.00   85.00</code></pre>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a><span class="kw">summary</span>(<span class="kw">aov</span>(age <span class="op">~</span><span class="st"> </span>arm, <span class="dt">data=</span>mockstudy))</span></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">aov</span>(age <span class="sc">~</span> arm, <span class="at">data=</span>mockstudy))</span></code></pre></div>
 <pre><code>##               Df Sum Sq Mean Sq F value Pr(&gt;F)
 ## arm            2    129    64.7   0.487  0.614
 ## Residuals   1496 198628   132.8</code></pre>
@@ -608,21 +380,21 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <div id="add-labels" class="section level2">
 <h2>Add labels</h2>
 <p>In the above example, age is shown with a label (Age in Years), but sex is listed “as is” with lower case letters. This is because the data was created in SAS and in the SAS dataset, age had a label but sex did not. The label is stored as an attribute within R.</p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a><span class="co">## Look at one variable&#39;s label</span></span>
-<span id="cb19-2"><a href="#cb19-2"></a><span class="kw">attr</span>(mockstudy<span class="op">$</span>age,<span class="st">&#39;label&#39;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Look at one variable&#39;s label</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="fu">attr</span>(mockstudy<span class="sc">$</span>age,<span class="st">&#39;label&#39;</span>)</span></code></pre></div>
 <pre><code>## [1] &quot;Age in Years&quot;</code></pre>
-<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a><span class="co">## See all the variables with a label</span></span>
-<span id="cb21-2"><a href="#cb21-2"></a><span class="kw">unlist</span>(<span class="kw">lapply</span>(mockstudy,<span class="st">&#39;attr&#39;</span>,<span class="st">&#39;label&#39;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="do">## See all the variables with a label</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="fu">unlist</span>(<span class="fu">lapply</span>(mockstudy,<span class="st">&#39;attr&#39;</span>,<span class="st">&#39;label&#39;</span>))</span></code></pre></div>
 <pre><code>##                        age                        arm                       race 
 ##             &quot;Age in Years&quot;            &quot;Treatment Arm&quot;                     &quot;Race&quot; 
 ##                        bmi 
 ## &quot;Body Mass Index (kg/m^2)&quot;</code></pre>
-<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a><span class="co"># Can also use labels(mockstudy)</span></span></code></pre></div>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Can also use labels(mockstudy)</span></span></code></pre></div>
 <p>If you want to add labels to other variables, there are a couple of options. First, you could add labels to the variables in your dataset.</p>
-<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1"></a><span class="kw">attr</span>(mockstudy<span class="op">$</span>sex,<span class="st">&#39;label&#39;</span>)  &lt;-<span class="st"> &#39;Gender&#39;</span></span>
-<span id="cb24-2"><a href="#cb24-2"></a></span>
-<span id="cb24-3"><a href="#cb24-3"></a>tab1 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span class="op">~</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span>age, <span class="dt">data=</span>mockstudy)</span>
-<span id="cb24-4"><a href="#cb24-4"></a><span class="kw">summary</span>(tab1)</span></code></pre></div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">attr</span>(mockstudy<span class="sc">$</span>sex,<span class="st">&#39;label&#39;</span>)  <span class="ot">&lt;-</span> <span class="st">&#39;Gender&#39;</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>tab1 <span class="ot">&lt;-</span> <span class="fu">tableby</span>(arm <span class="sc">~</span> sex <span class="sc">+</span> age, <span class="at">data=</span>mockstudy)</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(tab1)</span></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -686,10 +458,10 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 </tbody>
 </table>
 <p>You can also use the built-in <code>data.frame</code> method for <code>labels&lt;-</code>:</p>
-<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1"></a><span class="kw">labels</span>(mockstudy)  &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dt">age =</span> <span class="st">&#39;Age, yrs&#39;</span>, <span class="dt">sex =</span> <span class="st">&quot;Gender&quot;</span>)</span>
-<span id="cb25-2"><a href="#cb25-2"></a></span>
-<span id="cb25-3"><a href="#cb25-3"></a>tab1 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span class="op">~</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span>age, <span class="dt">data=</span>mockstudy)</span>
-<span id="cb25-4"><a href="#cb25-4"></a><span class="kw">summary</span>(tab1)</span></code></pre></div>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">labels</span>(mockstudy)  <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="at">age =</span> <span class="st">&#39;Age, yrs&#39;</span>, <span class="at">sex =</span> <span class="st">&quot;Gender&quot;</span>)</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>tab1 <span class="ot">&lt;-</span> <span class="fu">tableby</span>(arm <span class="sc">~</span> sex <span class="sc">+</span> age, <span class="at">data=</span>mockstudy)</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(tab1)</span></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -753,8 +525,8 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 </tbody>
 </table>
 <p>Another option is to add labels after you have created the table</p>
-<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1"></a>mylabels &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">sex =</span> <span class="st">&quot;SEX&quot;</span>, <span class="dt">age =</span> <span class="st">&quot;Age, yrs&quot;</span>)</span>
-<span id="cb26-2"><a href="#cb26-2"></a><span class="kw">summary</span>(tab1, <span class="dt">labelTranslations =</span> mylabels)</span></code></pre></div>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>mylabels <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">sex =</span> <span class="st">&quot;SEX&quot;</span>, <span class="at">age =</span> <span class="st">&quot;Age, yrs&quot;</span>)</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(tab1, <span class="at">labelTranslations =</span> mylabels)</span></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -818,14 +590,14 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 </tbody>
 </table>
 <p>Alternatively, you can check the variable labels and manipulate them with a function called <code>labels</code>, which works on the <code>tableby</code> object.</p>
-<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1"></a><span class="kw">labels</span>(tab1)</span></code></pre></div>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">labels</span>(tab1)</span></code></pre></div>
 <pre><code>##             arm             sex             age 
 ## &quot;Treatment Arm&quot;        &quot;Gender&quot;      &quot;Age, yrs&quot;</code></pre>
-<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1"></a><span class="kw">labels</span>(tab1) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dt">arm=</span><span class="st">&quot;Treatment Assignment&quot;</span>, <span class="dt">age=</span><span class="st">&quot;Baseline Age (yrs)&quot;</span>)</span>
-<span id="cb29-2"><a href="#cb29-2"></a><span class="kw">labels</span>(tab1)</span></code></pre></div>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">labels</span>(tab1) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="at">arm=</span><span class="st">&quot;Treatment Assignment&quot;</span>, <span class="at">age=</span><span class="st">&quot;Baseline Age (yrs)&quot;</span>)</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="fu">labels</span>(tab1)</span></code></pre></div>
 <pre><code>##                    arm                    sex                    age 
 ## &quot;Treatment Assignment&quot;               &quot;Gender&quot;   &quot;Baseline Age (yrs)&quot;</code></pre>
-<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1"></a><span class="kw">summary</span>(tab1)</span></code></pre></div>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(tab1)</span></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -892,13 +664,13 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <div id="change-summary-statistics-globally" class="section level2">
 <h2>Change summary statistics globally</h2>
 <p>Currently the default behavior is to summarize continuous variables with: Number of missing values, Mean (SD), 25th - 75th quantiles, and Minimum-Maximum values with an ANOVA (t-test with equal variances) p-value. For categorical variables the default is to show: Number of missing values and count (column percent) with a chi-square p-value. This behavior can be modified using the tableby.control function. In fact, you can save your standard settings and use that for future tables. Note that <code>test=FALSE</code> and <code>total=FALSE</code> results in the total column and p-value column not being printed.</p>
-<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1"></a>mycontrols  &lt;-<span class="st"> </span><span class="kw">tableby.control</span>(<span class="dt">test=</span><span class="ot">FALSE</span>, <span class="dt">total=</span><span class="ot">FALSE</span>,</span>
-<span id="cb32-2"><a href="#cb32-2"></a>                               <span class="dt">numeric.test=</span><span class="st">&quot;kwt&quot;</span>, <span class="dt">cat.test=</span><span class="st">&quot;chisq&quot;</span>,</span>
-<span id="cb32-3"><a href="#cb32-3"></a>                               <span class="dt">numeric.stats=</span><span class="kw">c</span>(<span class="st">&quot;N&quot;</span>, <span class="st">&quot;median&quot;</span>, <span class="st">&quot;q1q3&quot;</span>),</span>
-<span id="cb32-4"><a href="#cb32-4"></a>                               <span class="dt">cat.stats=</span><span class="kw">c</span>(<span class="st">&quot;countpct&quot;</span>),</span>
-<span id="cb32-5"><a href="#cb32-5"></a>                               <span class="dt">stats.labels=</span><span class="kw">list</span>(<span class="dt">N=</span><span class="st">&#39;Count&#39;</span>, <span class="dt">median=</span><span class="st">&#39;Median&#39;</span>, <span class="dt">q1q3=</span><span class="st">&#39;Q1,Q3&#39;</span>))</span>
-<span id="cb32-6"><a href="#cb32-6"></a>tab2 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span class="op">~</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span>age, <span class="dt">data=</span>mockstudy, <span class="dt">control=</span>mycontrols)</span>
-<span id="cb32-7"><a href="#cb32-7"></a><span class="kw">summary</span>(tab2)</span></code></pre></div>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>mycontrols  <span class="ot">&lt;-</span> <span class="fu">tableby.control</span>(<span class="at">test=</span><span class="cn">FALSE</span>, <span class="at">total=</span><span class="cn">FALSE</span>,</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>                               <span class="at">numeric.test=</span><span class="st">&quot;kwt&quot;</span>, <span class="at">cat.test=</span><span class="st">&quot;chisq&quot;</span>,</span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>                               <span class="at">numeric.stats=</span><span class="fu">c</span>(<span class="st">&quot;N&quot;</span>, <span class="st">&quot;median&quot;</span>, <span class="st">&quot;q1q3&quot;</span>),</span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>                               <span class="at">cat.stats=</span><span class="fu">c</span>(<span class="st">&quot;countpct&quot;</span>),</span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>                               <span class="at">stats.labels=</span><span class="fu">list</span>(<span class="at">N=</span><span class="st">&#39;Count&#39;</span>, <span class="at">median=</span><span class="st">&#39;Median&#39;</span>, <span class="at">q1q3=</span><span class="st">&#39;Q1,Q3&#39;</span>))</span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>tab2 <span class="ot">&lt;-</span> <span class="fu">tableby</span>(arm <span class="sc">~</span> sex <span class="sc">+</span> age, <span class="at">data=</span>mockstudy, <span class="at">control=</span>mycontrols)</span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(tab2)</span></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -954,9 +726,9 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 </tbody>
 </table>
 <p>You can also change these settings directly in the tableby call.</p>
-<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1"></a>tab3 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span class="op">~</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span>age, <span class="dt">data=</span>mockstudy, <span class="dt">test=</span><span class="ot">FALSE</span>, <span class="dt">total=</span><span class="ot">FALSE</span>, </span>
-<span id="cb33-2"><a href="#cb33-2"></a>                <span class="dt">numeric.stats=</span><span class="kw">c</span>(<span class="st">&quot;median&quot;</span>,<span class="st">&quot;q1q3&quot;</span>), <span class="dt">numeric.test=</span><span class="st">&quot;kwt&quot;</span>)</span>
-<span id="cb33-3"><a href="#cb33-3"></a><span class="kw">summary</span>(tab3)</span></code></pre></div>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>tab3 <span class="ot">&lt;-</span> <span class="fu">tableby</span>(arm <span class="sc">~</span> sex <span class="sc">+</span> age, <span class="at">data=</span>mockstudy, <span class="at">test=</span><span class="cn">FALSE</span>, <span class="at">total=</span><span class="cn">FALSE</span>, </span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>                <span class="at">numeric.stats=</span><span class="fu">c</span>(<span class="st">&quot;median&quot;</span>,<span class="st">&quot;q1q3&quot;</span>), <span class="at">numeric.test=</span><span class="st">&quot;kwt&quot;</span>)</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(tab3)</span></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -1010,13 +782,13 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <h2>Change summary statistics within the formula</h2>
 <p>In addition to modifying summary options globally, it is possible to modify the test and summary statistics for specific variables within the formula statement. For example, both the kwt (Kruskal-Wallis rank-based) and anova (asymptotic analysis of variance) tests apply to numeric variables, and we can use one for the variable “age”, another for the variable “bmi”, and no test for the variable “ast”. A list of all the options is shown at the end of the vignette.</p>
 <p>The <code>tests</code> function can do a quick check on what tests were performed on each variable in tableby.</p>
-<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1"></a>tab.test &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span class="op">~</span><span class="st"> </span><span class="kw">kwt</span>(age) <span class="op">+</span><span class="st"> </span><span class="kw">anova</span>(bmi) <span class="op">+</span><span class="st"> </span><span class="kw">notest</span>(ast), <span class="dt">data=</span>mockstudy)</span>
-<span id="cb34-2"><a href="#cb34-2"></a><span class="kw">tests</span>(tab.test)</span></code></pre></div>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>tab.test <span class="ot">&lt;-</span> <span class="fu">tableby</span>(arm <span class="sc">~</span> <span class="fu">kwt</span>(age) <span class="sc">+</span> <span class="fu">anova</span>(bmi) <span class="sc">+</span> <span class="fu">notest</span>(ast), <span class="at">data=</span>mockstudy)</span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tests</span>(tab.test)</span></code></pre></div>
 <pre><code>##           Group Variable   p.value                       Method
 ## 1 Treatment Arm      age 0.6390614 Kruskal-Wallis rank sum test
 ## 2 Treatment Arm      bmi 0.8916552           Linear Model ANOVA
 ## 3 Treatment Arm      ast        NA                      No test</code></pre>
-<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1"></a><span class="kw">summary</span>(tab.test)</span></code></pre></div>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(tab.test)</span></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -1120,9 +892,9 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 </tbody>
 </table>
 <p>Summary statistics for any individual variable can also be modified, but it must be done as secondary arguments to the test function. The function names must be strings that are functions already written for tableby, built-in R functions like mean and range, or user-defined functions.</p>
-<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1"></a>tab.test &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span class="op">~</span><span class="st"> </span><span class="kw">kwt</span>(ast, <span class="st">&quot;Nmiss2&quot;</span>,<span class="st">&quot;median&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">anova</span>(age, <span class="st">&quot;N&quot;</span>,<span class="st">&quot;mean&quot;</span>) <span class="op">+</span></span>
-<span id="cb37-2"><a href="#cb37-2"></a><span class="st">                    </span><span class="kw">notest</span>(bmi, <span class="st">&quot;Nmiss&quot;</span>,<span class="st">&quot;median&quot;</span>), <span class="dt">data=</span>mockstudy)</span>
-<span id="cb37-3"><a href="#cb37-3"></a><span class="kw">summary</span>(tab.test)</span></code></pre></div>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>tab.test <span class="ot">&lt;-</span> <span class="fu">tableby</span>(arm <span class="sc">~</span> <span class="fu">kwt</span>(ast, <span class="st">&quot;Nmiss2&quot;</span>,<span class="st">&quot;median&quot;</span>) <span class="sc">+</span> <span class="fu">anova</span>(age, <span class="st">&quot;N&quot;</span>,<span class="st">&quot;mean&quot;</span>) <span class="sc">+</span></span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>                    <span class="fu">notest</span>(bmi, <span class="st">&quot;Nmiss&quot;</span>,<span class="st">&quot;median&quot;</span>), <span class="at">data=</span>mockstudy)</span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(tab.test)</span></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -1213,19 +985,19 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <div id="controlling-options-for-categorical-tests-chisq-and-fishers" class="section level2">
 <h2>Controlling Options for Categorical Tests (Chisq and Fisher’s)</h2>
 <p>The formal tests for categorical variables against the levels of the by variable, chisq and fe, have options to simulate p-values. We show how to turn on the simulations for these with 500 replicates for the Fisher’s test (fe).</p>
-<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1"></a><span class="kw">set.seed</span>(<span class="dv">100</span>)</span>
-<span id="cb38-2"><a href="#cb38-2"></a>tab.catsim &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span class="op">~</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span>race, <span class="dt">cat.test=</span><span class="st">&quot;fe&quot;</span>, <span class="dt">simulate.p.value=</span><span class="ot">TRUE</span>, <span class="dt">B=</span><span class="dv">500</span>, <span class="dt">data=</span>mockstudy)</span>
-<span id="cb38-3"><a href="#cb38-3"></a><span class="kw">tests</span>(tab.catsim)</span></code></pre></div>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">100</span>)</span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>tab.catsim <span class="ot">&lt;-</span> <span class="fu">tableby</span>(arm <span class="sc">~</span> sex <span class="sc">+</span> race, <span class="at">cat.test=</span><span class="st">&quot;fe&quot;</span>, <span class="at">simulate.p.value=</span><span class="cn">TRUE</span>, <span class="at">B=</span><span class="dv">500</span>, <span class="at">data=</span>mockstudy)</span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a><span class="fu">tests</span>(tab.catsim)</span></code></pre></div>
 <pre><code>      Group Variable   p.value</code></pre>
 <p>1 Treatment Arm sex 0.2195609 2 Treatment Arm race 0.3093812 Method 1 Fisher’s Exact Test for Count Data with simulated p-valuebased on 500 replicates) 2 Fisher’s Exact Test for Count Data with simulated p-valuebased on 500 replicates)</p>
 <p>The chi-square test on 2x2 tables applies Yates’ continuity correction by default, so we provide an option to turn off the correction. We show the results with and without the correction that is applied to treatment arm by sex, if we use subset to ignore one of the three treatment arms.</p>
-<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1"></a>cat.correct &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span class="op">~</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span>race, <span class="dt">cat.test=</span><span class="st">&quot;chisq&quot;</span>, <span class="dt">subset =</span> <span class="op">!</span><span class="kw">grepl</span>(<span class="st">&quot;^F&quot;</span>, arm), <span class="dt">data=</span>mockstudy)</span>
-<span id="cb40-2"><a href="#cb40-2"></a><span class="kw">tests</span>(cat.correct)</span></code></pre></div>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>cat.correct <span class="ot">&lt;-</span> <span class="fu">tableby</span>(arm <span class="sc">~</span> sex <span class="sc">+</span> race, <span class="at">cat.test=</span><span class="st">&quot;chisq&quot;</span>, <span class="at">subset =</span> <span class="sc">!</span><span class="fu">grepl</span>(<span class="st">&quot;^F&quot;</span>, arm), <span class="at">data=</span>mockstudy)</span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tests</span>(cat.correct)</span></code></pre></div>
 <pre><code>      Group Variable   p.value                     Method</code></pre>
 <p>1 Treatment Arm sex 0.1666280 Pearson’s Chi-squared test 2 Treatment Arm race 0.8108543 Pearson’s Chi-squared test</p>
-<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1"></a>cat.nocorrect &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span class="op">~</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span>race, <span class="dt">cat.test=</span><span class="st">&quot;chisq&quot;</span>, <span class="dt">subset =</span> <span class="op">!</span><span class="kw">grepl</span>(<span class="st">&quot;^F&quot;</span>, arm),</span>
-<span id="cb42-2"><a href="#cb42-2"></a>     <span class="dt">chisq.correct=</span><span class="ot">FALSE</span>, <span class="dt">data=</span>mockstudy)</span>
-<span id="cb42-3"><a href="#cb42-3"></a><span class="kw">tests</span>(cat.nocorrect)</span></code></pre></div>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>cat.nocorrect <span class="ot">&lt;-</span> <span class="fu">tableby</span>(arm <span class="sc">~</span> sex <span class="sc">+</span> race, <span class="at">cat.test=</span><span class="st">&quot;chisq&quot;</span>, <span class="at">subset =</span> <span class="sc">!</span><span class="fu">grepl</span>(<span class="st">&quot;^F&quot;</span>, arm),</span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">chisq.correct=</span><span class="cn">FALSE</span>, <span class="at">data=</span>mockstudy)</span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a><span class="fu">tests</span>(cat.nocorrect)</span></code></pre></div>
 <pre><code>      Group Variable   p.value                     Method</code></pre>
 <p>1 Treatment Arm sex 0.1666280 Pearson’s Chi-squared test 2 Treatment Arm race 0.8108543 Pearson’s Chi-squared test</p>
 </div>
@@ -1243,8 +1015,8 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <p>Here are multiple examples showing how to use some of the different options.</p>
 <div id="summarize-without-a-groupby-variable" class="section level2">
 <h2>1. Summarize without a group/by variable</h2>
-<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1"></a>tab.noby &lt;-<span class="st"> </span><span class="kw">tableby</span>(<span class="op">~</span><span class="st"> </span>bmi <span class="op">+</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span>age, <span class="dt">data=</span>mockstudy)</span>
-<span id="cb45-2"><a href="#cb45-2"></a><span class="kw">summary</span>(tab.noby)</span></code></pre></div>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>tab.noby <span class="ot">&lt;-</span> <span class="fu">tableby</span>(<span class="sc">~</span> bmi <span class="sc">+</span> sex <span class="sc">+</span> age, <span class="at">data=</span>mockstudy)</span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(tab.noby)</span></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -1298,7 +1070,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 </div>
 <div id="display-footnotes-indicating-which-test-was-used" class="section level2">
 <h2>2. Display footnotes indicating which “test” was used</h2>
-<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1"></a><span class="kw">summary</span>(tab.test, <span class="dt">pfootnote=</span><span class="ot">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(tab.test, <span class="at">pfootnote=</span><span class="cn">TRUE</span>)</span></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -1393,8 +1165,8 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <div id="summarize-an-ordered-factor" class="section level2">
 <h2>3. Summarize an ordered factor</h2>
 <p>When comparing groups of ordered data there are a couple of options. The <strong>default</strong> uses a general independence test available from the <code>coin</code> package. For two-group comparisons, this is essentially the Armitage trend test. The other option is to specify the Kruskal Wallis test. The example below shows both options.</p>
-<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1"></a>mockstudy<span class="op">$</span>age.ordnew &lt;-<span class="st"> </span><span class="kw">ordered</span>(<span class="kw">c</span>(<span class="st">&quot;a&quot;</span>,<span class="ot">NA</span>,<span class="kw">as.character</span>(mockstudy<span class="op">$</span>age.ord[<span class="op">-</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>)])))</span>
-<span id="cb47-2"><a href="#cb47-2"></a><span class="kw">table</span>(mockstudy<span class="op">$</span>age.ord, mockstudy<span class="op">$</span>sex)</span></code></pre></div>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>mockstudy<span class="sc">$</span>age.ordnew <span class="ot">&lt;-</span> <span class="fu">ordered</span>(<span class="fu">c</span>(<span class="st">&quot;a&quot;</span>,<span class="cn">NA</span>,<span class="fu">as.character</span>(mockstudy<span class="sc">$</span>age.ord[<span class="sc">-</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>)])))</span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(mockstudy<span class="sc">$</span>age.ord, mockstudy<span class="sc">$</span>sex)</span></code></pre></div>
 <pre><code>##        
 ##         Male Female
 ##   10-19    1      0
@@ -1405,7 +1177,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 ##   60-69  298    170
 ##   70-79  168    101
 ##   80-89   20      9</code></pre>
-<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1"></a><span class="kw">table</span>(mockstudy<span class="op">$</span>age.ordnew, mockstudy<span class="op">$</span>sex)</span></code></pre></div>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(mockstudy<span class="sc">$</span>age.ordnew, mockstudy<span class="sc">$</span>sex)</span></code></pre></div>
 <pre><code>##        
 ##         Male Female
 ##   10-19    1      0
@@ -1417,9 +1189,9 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 ##   70-79  168    100
 ##   80-89   20      9
 ##   a        1      0</code></pre>
-<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1"></a><span class="kw">class</span>(mockstudy<span class="op">$</span>age.ord)</span></code></pre></div>
+<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(mockstudy<span class="sc">$</span>age.ord)</span></code></pre></div>
 <pre><code>## [1] &quot;ordered&quot; &quot;factor&quot;</code></pre>
-<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1"></a><span class="kw">summary</span>(<span class="kw">tableby</span>(sex <span class="op">~</span><span class="st"> </span>age.ordnew, <span class="dt">data =</span> mockstudy), <span class="dt">pfootnote =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">tableby</span>(sex <span class="sc">~</span> age.ordnew, <span class="at">data =</span> mockstudy), <span class="at">pfootnote =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -1513,7 +1285,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <ol style="list-style-type: decimal">
 <li>Trend test for ordinal variables</li>
 </ol>
-<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1"></a><span class="kw">summary</span>(<span class="kw">tableby</span>(sex <span class="op">~</span><span class="st"> </span>age.ord, <span class="dt">data =</span> mockstudy), <span class="dt">pfootnote =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">tableby</span>(sex <span class="sc">~</span> age.ord, <span class="at">data =</span> mockstudy), <span class="at">pfootnote =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -1597,13 +1369,13 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <div id="summarize-a-survival-variable" class="section level2">
 <h2>4. Summarize a survival variable</h2>
 <p>First look at the information that is presented by the <code>survfit()</code> function, then see how the same results can be seen with tableby. The default is to show the median survival (time at which the probability of survival = 50%).</p>
-<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1"></a><span class="kw">survfit</span>(<span class="kw">Surv</span>(fu.time, fu.stat)<span class="op">~</span>sex, <span class="dt">data=</span>mockstudy)</span></code></pre></div>
+<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="fu">survfit</span>(<span class="fu">Surv</span>(fu.time, fu.stat)<span class="sc">~</span>sex, <span class="at">data=</span>mockstudy)</span></code></pre></div>
 <pre><code>## Call: survfit(formula = Surv(fu.time, fu.stat) ~ sex, data = mockstudy)
 ## 
 ##              n events median 0.95LCL 0.95UCL
 ## sex=Male   916    829    550     515     590
 ## sex=Female 583    527    543     511     575</code></pre>
-<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1"></a><span class="kw">survdiff</span>(<span class="kw">Surv</span>(fu.time, fu.stat)<span class="op">~</span>sex, <span class="dt">data=</span>mockstudy)</span></code></pre></div>
+<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="fu">survdiff</span>(<span class="fu">Surv</span>(fu.time, fu.stat)<span class="sc">~</span>sex, <span class="at">data=</span>mockstudy)</span></code></pre></div>
 <pre><code>## Call:
 ## survdiff(formula = Surv(fu.time, fu.stat) ~ sex, data = mockstudy)
 ## 
@@ -1612,7 +1384,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 ## sex=Female 583      527      526  0.000583  0.000956
 ## 
 ##  Chisq= 0  on 1 degrees of freedom, p= 1</code></pre>
-<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1"></a><span class="kw">summary</span>(<span class="kw">tableby</span>(sex <span class="op">~</span><span class="st"> </span><span class="kw">Surv</span>(fu.time, fu.stat), <span class="dt">data=</span>mockstudy))</span></code></pre></div>
+<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">tableby</span>(sex <span class="sc">~</span> <span class="fu">Surv</span>(fu.time, fu.stat), <span class="at">data=</span>mockstudy))</span></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -1648,7 +1420,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 </tbody>
 </table>
 <p>It is also possible to obtain summaries of the % survival at certain time points (say the probability of surviving 1-year).</p>
-<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1"></a><span class="kw">summary</span>(<span class="kw">survfit</span>(<span class="kw">Surv</span>(fu.time<span class="op">/</span><span class="fl">365.25</span>, fu.stat)<span class="op">~</span>sex, <span class="dt">data=</span>mockstudy), <span class="dt">times=</span><span class="dv">1</span><span class="op">:</span><span class="dv">5</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">survfit</span>(<span class="fu">Surv</span>(fu.time<span class="sc">/</span><span class="fl">365.25</span>, fu.stat)<span class="sc">~</span>sex, <span class="at">data=</span>mockstudy), <span class="at">times=</span><span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>)</span></code></pre></div>
 <pre><code>## Call: survfit(formula = Surv(fu.time/365.25, fu.stat) ~ sex, data = mockstudy)
 ## 
 ##                 sex=Male 
@@ -1666,7 +1438,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 ##     3     95      90   0.1701  0.0157       0.1420        0.204
 ##     4     51      32   0.1093  0.0133       0.0861        0.139
 ##     5     18      12   0.0745  0.0126       0.0534        0.104</code></pre>
-<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1"></a><span class="kw">summary</span>(<span class="kw">tableby</span>(sex <span class="op">~</span><span class="st"> </span><span class="kw">Surv</span>(fu.time<span class="op">/</span><span class="fl">365.25</span>, fu.stat), <span class="dt">data=</span>mockstudy, <span class="dt">times=</span><span class="dv">1</span><span class="op">:</span><span class="dv">5</span>, <span class="dt">surv.stats=</span><span class="kw">c</span>(<span class="st">&quot;NeventsSurv&quot;</span>,<span class="st">&quot;NriskSurv&quot;</span>)))</span></code></pre></div>
+<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">tableby</span>(sex <span class="sc">~</span> <span class="fu">Surv</span>(fu.time<span class="sc">/</span><span class="fl">365.25</span>, fu.stat), <span class="at">data=</span>mockstudy, <span class="at">times=</span><span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>, <span class="at">surv.stats=</span><span class="fu">c</span>(<span class="st">&quot;NeventsSurv&quot;</span>,<span class="st">&quot;NriskSurv&quot;</span>)))</span></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -1761,18 +1533,18 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <div id="summarize-date-variables" class="section level2">
 <h2>5. Summarize date variables</h2>
 <p>Date variables by default are summarized with the number of missing values, the median, and the range. For example purposes we’ve created a random date. Missing values are introduced for impossible February dates.</p>
-<div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1"></a><span class="kw">set.seed</span>(<span class="dv">100</span>)</span>
-<span id="cb63-2"><a href="#cb63-2"></a>N &lt;-<span class="st"> </span><span class="kw">nrow</span>(mockstudy)</span>
-<span id="cb63-3"><a href="#cb63-3"></a>mockstudy<span class="op">$</span>dtentry &lt;-<span class="st"> </span><span class="kw">mdy.Date</span>(<span class="dt">month=</span><span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">12</span>,N,<span class="dt">replace=</span>T), <span class="dt">day=</span><span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">29</span>,N,<span class="dt">replace=</span>T), </span>
-<span id="cb63-4"><a href="#cb63-4"></a>                              <span class="dt">year=</span><span class="kw">sample</span>(<span class="dv">2005</span><span class="op">:</span><span class="dv">2009</span>,N,<span class="dt">replace=</span>T))</span>
-<span id="cb63-5"><a href="#cb63-5"></a><span class="kw">summary</span>(<span class="kw">tableby</span>(sex <span class="op">~</span><span class="st"> </span>dtentry, <span class="dt">data=</span>mockstudy))</span></code></pre></div>
+<div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">100</span>)</span>
+<span id="cb63-2"><a href="#cb63-2" aria-hidden="true" tabindex="-1"></a>N <span class="ot">&lt;-</span> <span class="fu">nrow</span>(mockstudy)</span>
+<span id="cb63-3"><a href="#cb63-3" aria-hidden="true" tabindex="-1"></a>mockstudy<span class="sc">$</span>dtentry <span class="ot">&lt;-</span> <span class="fu">mdy.Date</span>(<span class="at">month=</span><span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>,N,<span class="at">replace=</span>T), <span class="at">day=</span><span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">29</span>,N,<span class="at">replace=</span>T), </span>
+<span id="cb63-4"><a href="#cb63-4" aria-hidden="true" tabindex="-1"></a>                              <span class="at">year=</span><span class="fu">sample</span>(<span class="dv">2005</span><span class="sc">:</span><span class="dv">2009</span>,N,<span class="at">replace=</span>T))</span>
+<span id="cb63-5"><a href="#cb63-5" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">tableby</span>(sex <span class="sc">~</span> dtentry, <span class="at">data=</span>mockstudy))</span></code></pre></div>
 <table>
 <colgroup>
-<col width="23%"></col>
-<col width="23%"></col>
-<col width="23%"></col>
-<col width="23%"></col>
-<col width="7%"></col>
+<col width="23%" />
+<col width="23%" />
+<col width="23%" />
+<col width="23%" />
+<col width="7%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -1818,19 +1590,19 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <div id="summarize-multiple-variables-without-typing-them-out" class="section level2">
 <h2>6. Summarize multiple variables without typing them out</h2>
 <p>Often one wants to summarize a number of variables. Instead of typing by hand each individual variable, an alternative approach is to create a formula using the <code>paste</code> command with the <code>collapse=&quot;+&quot;</code> option.</p>
-<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1"></a><span class="co">## create a vector specifying the variable names</span></span>
-<span id="cb64-2"><a href="#cb64-2"></a>myvars &lt;-<span class="st"> </span><span class="kw">names</span>(mockstudy)</span>
-<span id="cb64-3"><a href="#cb64-3"></a></span>
-<span id="cb64-4"><a href="#cb64-4"></a><span class="co">## select the 8th through the last variables</span></span>
-<span id="cb64-5"><a href="#cb64-5"></a><span class="co">## paste them together, separated by the + sign</span></span>
-<span id="cb64-6"><a href="#cb64-6"></a>RHS &lt;-<span class="st"> </span><span class="kw">paste</span>(myvars[<span class="dv">8</span><span class="op">:</span><span class="dv">10</span>], <span class="dt">collapse=</span><span class="st">&quot;+&quot;</span>)</span>
-<span id="cb64-7"><a href="#cb64-7"></a>RHS</span></code></pre></div>
+<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a><span class="do">## create a vector specifying the variable names</span></span>
+<span id="cb64-2"><a href="#cb64-2" aria-hidden="true" tabindex="-1"></a>myvars <span class="ot">&lt;-</span> <span class="fu">names</span>(mockstudy)</span>
+<span id="cb64-3"><a href="#cb64-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb64-4"><a href="#cb64-4" aria-hidden="true" tabindex="-1"></a><span class="do">## select the 8th through the last variables</span></span>
+<span id="cb64-5"><a href="#cb64-5" aria-hidden="true" tabindex="-1"></a><span class="do">## paste them together, separated by the + sign</span></span>
+<span id="cb64-6"><a href="#cb64-6" aria-hidden="true" tabindex="-1"></a>RHS <span class="ot">&lt;-</span> <span class="fu">paste</span>(myvars[<span class="dv">8</span><span class="sc">:</span><span class="dv">10</span>], <span class="at">collapse=</span><span class="st">&quot;+&quot;</span>)</span>
+<span id="cb64-7"><a href="#cb64-7" aria-hidden="true" tabindex="-1"></a>RHS</span></code></pre></div>
 <p>[1] “ps+hgb+bmi”</p>
-<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1"></a><span class="co">## create a formula using the as.formula function</span></span>
-<span id="cb65-2"><a href="#cb65-2"></a><span class="kw">as.formula</span>(<span class="kw">paste</span>(<span class="st">&#39;arm ~ &#39;</span>, RHS))</span></code></pre></div>
+<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a><span class="do">## create a formula using the as.formula function</span></span>
+<span id="cb65-2"><a href="#cb65-2" aria-hidden="true" tabindex="-1"></a><span class="fu">as.formula</span>(<span class="fu">paste</span>(<span class="st">&#39;arm ~ &#39;</span>, RHS))</span></code></pre></div>
 <p>arm ~ ps + hgb + bmi</p>
-<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1"></a><span class="co">## use the formula in the tableby function</span></span>
-<span id="cb66-2"><a href="#cb66-2"></a><span class="kw">summary</span>(<span class="kw">tableby</span>(<span class="kw">as.formula</span>(<span class="kw">paste</span>(<span class="st">&#39;arm ~&#39;</span>, RHS)), <span class="dt">data=</span>mockstudy))</span></code></pre></div>
+<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a><span class="do">## use the formula in the tableby function</span></span>
+<span id="cb66-2"><a href="#cb66-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">tableby</span>(<span class="fu">as.formula</span>(<span class="fu">paste</span>(<span class="st">&#39;arm ~&#39;</span>, RHS)), <span class="at">data=</span>mockstudy))</span></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -1942,15 +1714,15 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 </tbody>
 </table>
 <p>These steps can also be done using the <code>formulize</code> function.</p>
-<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1"></a><span class="co">## The formulize function does the paste and as.formula steps</span></span>
-<span id="cb67-2"><a href="#cb67-2"></a>tmp &lt;-<span class="st"> </span><span class="kw">formulize</span>(<span class="st">&#39;arm&#39;</span>,myvars[<span class="dv">8</span><span class="op">:</span><span class="dv">10</span>])</span>
-<span id="cb67-3"><a href="#cb67-3"></a>tmp</span></code></pre></div>
+<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a><span class="do">## The formulize function does the paste and as.formula steps</span></span>
+<span id="cb67-2"><a href="#cb67-2" aria-hidden="true" tabindex="-1"></a>tmp <span class="ot">&lt;-</span> <span class="fu">formulize</span>(<span class="st">&#39;arm&#39;</span>,myvars[<span class="dv">8</span><span class="sc">:</span><span class="dv">10</span>])</span>
+<span id="cb67-3"><a href="#cb67-3" aria-hidden="true" tabindex="-1"></a>tmp</span></code></pre></div>
 <p>arm ~ ps + hgb + bmi</p>
-<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1"></a><span class="co">## More complex formulas could also be written using formulize</span></span>
-<span id="cb68-2"><a href="#cb68-2"></a>tmp2 &lt;-<span class="st"> </span><span class="kw">formulize</span>(<span class="st">&#39;arm&#39;</span>,<span class="kw">c</span>(<span class="st">&#39;ps&#39;</span>,<span class="st">&#39;hgb^2&#39;</span>,<span class="st">&#39;bmi&#39;</span>))</span>
-<span id="cb68-3"><a href="#cb68-3"></a></span>
-<span id="cb68-4"><a href="#cb68-4"></a><span class="co">## use the formula in the tableby function</span></span>
-<span id="cb68-5"><a href="#cb68-5"></a><span class="kw">summary</span>(<span class="kw">tableby</span>(tmp, <span class="dt">data=</span>mockstudy))</span></code></pre></div>
+<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a><span class="do">## More complex formulas could also be written using formulize</span></span>
+<span id="cb68-2"><a href="#cb68-2" aria-hidden="true" tabindex="-1"></a>tmp2 <span class="ot">&lt;-</span> <span class="fu">formulize</span>(<span class="st">&#39;arm&#39;</span>,<span class="fu">c</span>(<span class="st">&#39;ps&#39;</span>,<span class="st">&#39;hgb^2&#39;</span>,<span class="st">&#39;bmi&#39;</span>))</span>
+<span id="cb68-3"><a href="#cb68-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb68-4"><a href="#cb68-4" aria-hidden="true" tabindex="-1"></a><span class="do">## use the formula in the tableby function</span></span>
+<span id="cb68-5"><a href="#cb68-5" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">tableby</span>(tmp, <span class="at">data=</span>mockstudy))</span></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -2062,19 +1834,19 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 </tbody>
 </table>
 <p>To change summary statistics or statistical tests en masse, consider using <code>paste0()</code> together with <code>formulize()</code>:</p>
-<div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1"></a>varlist1 &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;age&#39;</span>,<span class="st">&#39;sex&#39;</span>,<span class="st">&#39;hgb&#39;</span>)</span>
-<span id="cb69-2"><a href="#cb69-2"></a>varlist2 &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;anova(&quot;</span>, <span class="kw">c</span>(<span class="st">&#39;bmi&#39;</span>,<span class="st">&#39;alk.phos&#39;</span>,<span class="st">&#39;ast&#39;</span>), <span class="st">&quot;, &#39;meansd&#39;)&quot;</span>)</span>
-<span id="cb69-3"><a href="#cb69-3"></a></span>
-<span id="cb69-4"><a href="#cb69-4"></a><span class="kw">summary</span>(<span class="kw">tableby</span>(<span class="kw">formulize</span>(<span class="st">&quot;arm&quot;</span>, <span class="kw">c</span>(varlist1, varlist2)),</span>
-<span id="cb69-5"><a href="#cb69-5"></a>                <span class="dt">data =</span> mockstudy, <span class="dt">numeric.test =</span> <span class="st">&quot;kwt&quot;</span>), <span class="dt">pfootnote =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a>varlist1 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&#39;age&#39;</span>,<span class="st">&#39;sex&#39;</span>,<span class="st">&#39;hgb&#39;</span>)</span>
+<span id="cb69-2"><a href="#cb69-2" aria-hidden="true" tabindex="-1"></a>varlist2 <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">&quot;anova(&quot;</span>, <span class="fu">c</span>(<span class="st">&#39;bmi&#39;</span>,<span class="st">&#39;alk.phos&#39;</span>,<span class="st">&#39;ast&#39;</span>), <span class="st">&quot;, &#39;meansd&#39;)&quot;</span>)</span>
+<span id="cb69-3"><a href="#cb69-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb69-4"><a href="#cb69-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">tableby</span>(<span class="fu">formulize</span>(<span class="st">&quot;arm&quot;</span>, <span class="fu">c</span>(varlist1, varlist2)),</span>
+<span id="cb69-5"><a href="#cb69-5" aria-hidden="true" tabindex="-1"></a>                <span class="at">data =</span> mockstudy, <span class="at">numeric.test =</span> <span class="st">&quot;kwt&quot;</span>), <span class="at">pfootnote =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 <table style="width:100%;">
 <colgroup>
-<col width="25%"></col>
-<col width="16%"></col>
-<col width="16%"></col>
-<col width="16%"></col>
-<col width="16%"></col>
-<col width="7%"></col>
+<col width="25%" />
+<col width="16%" />
+<col width="16%" />
+<col width="16%" />
+<col width="16%" />
+<col width="7%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -2229,18 +2001,18 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <ul>
 <li>The first approach uses the subset function applied to the dataset <code>mockstudy</code>. This example also selects a subset of variables. The <code>tableby</code> function is then applied to this subsetted data.</li>
 </ul>
-<div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1"></a>newdata &lt;-<span class="st"> </span><span class="kw">subset</span>(mockstudy, <span class="dt">subset=</span>age<span class="op">&gt;</span><span class="dv">50</span> <span class="op">&amp;</span><span class="st"> </span>arm<span class="op">==</span><span class="st">&#39;F: FOLFOX&#39;</span>, <span class="dt">select =</span> <span class="kw">c</span>(sex,ps<span class="op">:</span>bmi))</span>
-<span id="cb70-2"><a href="#cb70-2"></a><span class="kw">dim</span>(mockstudy)</span></code></pre></div>
+<div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a>newdata <span class="ot">&lt;-</span> <span class="fu">subset</span>(mockstudy, <span class="at">subset=</span>age<span class="sc">&gt;</span><span class="dv">50</span> <span class="sc">&amp;</span> arm<span class="sc">==</span><span class="st">&#39;F: FOLFOX&#39;</span>, <span class="at">select =</span> <span class="fu">c</span>(sex,ps<span class="sc">:</span>bmi))</span>
+<span id="cb70-2"><a href="#cb70-2" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(mockstudy)</span></code></pre></div>
 <pre><code>## [1] 1499   16</code></pre>
-<div class="sourceCode" id="cb72"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1"></a><span class="kw">table</span>(mockstudy<span class="op">$</span>arm)</span></code></pre></div>
+<div class="sourceCode" id="cb72"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(mockstudy<span class="sc">$</span>arm)</span></code></pre></div>
 <pre><code>## 
 ##    A: IFL F: FOLFOX   G: IROX 
 ##       428       691       380</code></pre>
-<div class="sourceCode" id="cb74"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1"></a><span class="kw">dim</span>(newdata)</span></code></pre></div>
+<div class="sourceCode" id="cb74"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(newdata)</span></code></pre></div>
 <pre><code>## [1] 557   4</code></pre>
-<div class="sourceCode" id="cb76"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb76-1"><a href="#cb76-1"></a><span class="kw">names</span>(newdata)</span></code></pre></div>
+<div class="sourceCode" id="cb76"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb76-1"><a href="#cb76-1" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(newdata)</span></code></pre></div>
 <pre><code>## [1] &quot;sex&quot; &quot;ps&quot;  &quot;hgb&quot; &quot;bmi&quot;</code></pre>
-<div class="sourceCode" id="cb78"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb78-1"><a href="#cb78-1"></a><span class="kw">summary</span>(<span class="kw">tableby</span>(sex <span class="op">~</span><span class="st"> </span>., <span class="dt">data=</span>newdata))</span></code></pre></div>
+<div class="sourceCode" id="cb78"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb78-1"><a href="#cb78-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">tableby</span>(sex <span class="sc">~</span> ., <span class="at">data=</span>newdata))</span></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -2341,7 +2113,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <ul>
 <li>The second approach does the same analysis but uses the subset argument within <code>tableby</code> to subset the data.</li>
 </ul>
-<div class="sourceCode" id="cb79"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb79-1"><a href="#cb79-1"></a><span class="kw">summary</span>(<span class="kw">tableby</span>(sex <span class="op">~</span><span class="st"> </span>ps <span class="op">+</span><span class="st"> </span>hgb <span class="op">+</span><span class="st"> </span>bmi, <span class="dt">subset=</span>age<span class="op">&gt;</span><span class="dv">50</span> <span class="op">&amp;</span><span class="st"> </span>arm<span class="op">==</span><span class="st">&quot;F: FOLFOX&quot;</span>, <span class="dt">data=</span>mockstudy))</span></code></pre></div>
+<div class="sourceCode" id="cb79"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb79-1"><a href="#cb79-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">tableby</span>(sex <span class="sc">~</span> ps <span class="sc">+</span> hgb <span class="sc">+</span> bmi, <span class="at">subset=</span>age<span class="sc">&gt;</span><span class="dv">50</span> <span class="sc">&amp;</span> arm<span class="sc">==</span><span class="st">&quot;F: FOLFOX&quot;</span>, <span class="at">data=</span>mockstudy))</span></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -2442,12 +2214,12 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 </div>
 <div id="create-combinations-of-variables-on-the-fly" class="section level2">
 <h2>8. Create combinations of variables on the fly</h2>
-<div class="sourceCode" id="cb80"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb80-1"><a href="#cb80-1"></a><span class="co">## create a variable combining the levels of mdquality.s and sex</span></span>
-<span id="cb80-2"><a href="#cb80-2"></a><span class="kw">with</span>(mockstudy, <span class="kw">table</span>(<span class="kw">interaction</span>(mdquality.s,sex)))</span></code></pre></div>
+<div class="sourceCode" id="cb80"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb80-1"><a href="#cb80-1" aria-hidden="true" tabindex="-1"></a><span class="do">## create a variable combining the levels of mdquality.s and sex</span></span>
+<span id="cb80-2"><a href="#cb80-2" aria-hidden="true" tabindex="-1"></a><span class="fu">with</span>(mockstudy, <span class="fu">table</span>(<span class="fu">interaction</span>(mdquality.s,sex)))</span></code></pre></div>
 <pre><code>## 
 ##   0.Male   1.Male 0.Female 1.Female 
 ##       77      686       47      437</code></pre>
-<div class="sourceCode" id="cb82"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb82-1"><a href="#cb82-1"></a><span class="kw">summary</span>(<span class="kw">tableby</span>(arm <span class="op">~</span><span class="st"> </span><span class="kw">interaction</span>(mdquality.s,sex), <span class="dt">data=</span>mockstudy))</span></code></pre></div>
+<div class="sourceCode" id="cb82"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb82-1"><a href="#cb82-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">tableby</span>(arm <span class="sc">~</span> <span class="fu">interaction</span>(mdquality.s,sex), <span class="at">data=</span>mockstudy))</span></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -2510,17 +2282,17 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb83"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb83-1"><a href="#cb83-1"></a><span class="co">## create a new grouping variable with combined levels of arm and sex</span></span>
-<span id="cb83-2"><a href="#cb83-2"></a><span class="kw">summary</span>(<span class="kw">tableby</span>(<span class="kw">interaction</span>(mdquality.s, sex) <span class="op">~</span><span class="st">  </span>age <span class="op">+</span><span class="st"> </span>bmi, <span class="dt">data=</span>mockstudy, <span class="dt">subset=</span>arm<span class="op">==</span><span class="st">&quot;F: FOLFOX&quot;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb83"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb83-1"><a href="#cb83-1" aria-hidden="true" tabindex="-1"></a><span class="do">## create a new grouping variable with combined levels of arm and sex</span></span>
+<span id="cb83-2"><a href="#cb83-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">tableby</span>(<span class="fu">interaction</span>(mdquality.s, sex) <span class="sc">~</span>  age <span class="sc">+</span> bmi, <span class="at">data=</span>mockstudy, <span class="at">subset=</span>arm<span class="sc">==</span><span class="st">&quot;F: FOLFOX&quot;</span>))</span></code></pre></div>
 <table>
 <colgroup>
-<col width="23%"></col>
-<col width="13%"></col>
-<col width="13%"></col>
-<col width="13%"></col>
-<col width="14%"></col>
-<col width="13%"></col>
-<col width="6%"></col>
+<col width="23%" />
+<col width="13%" />
+<col width="13%" />
+<col width="13%" />
+<col width="14%" />
+<col width="13%" />
+<col width="6%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -2603,9 +2375,9 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <div id="transform-variables-on-the-fly" class="section level2">
 <h2>9. Transform variables on the fly</h2>
 <p>Certain transformations need to be surrounded by <code>I()</code> so that R knows to treat it as a variable transformation and not some special model feature. If the transformation includes any of the symbols <code>/ - + ^ *</code> then surround the new variable by <code>I()</code>.</p>
-<div class="sourceCode" id="cb84"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb84-1"><a href="#cb84-1"></a>trans &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span class="op">~</span><span class="st"> </span><span class="kw">I</span>(age<span class="op">/</span><span class="dv">10</span>) <span class="op">+</span><span class="st"> </span><span class="kw">log</span>(bmi) <span class="op">+</span><span class="st"> </span><span class="kw">factor</span>(mdquality.s, <span class="dt">levels=</span><span class="dv">0</span><span class="op">:</span><span class="dv">1</span>, <span class="dt">labels=</span><span class="kw">c</span>(<span class="st">&#39;N&#39;</span>,<span class="st">&#39;Y&#39;</span>)),</span>
-<span id="cb84-2"><a href="#cb84-2"></a>                 <span class="dt">data=</span>mockstudy)</span>
-<span id="cb84-3"><a href="#cb84-3"></a><span class="kw">summary</span>(trans)</span></code></pre></div>
+<div class="sourceCode" id="cb84"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb84-1"><a href="#cb84-1" aria-hidden="true" tabindex="-1"></a>trans <span class="ot">&lt;-</span> <span class="fu">tableby</span>(arm <span class="sc">~</span> <span class="fu">I</span>(age<span class="sc">/</span><span class="dv">10</span>) <span class="sc">+</span> <span class="fu">log</span>(bmi) <span class="sc">+</span> <span class="fu">factor</span>(mdquality.s, <span class="at">levels=</span><span class="dv">0</span><span class="sc">:</span><span class="dv">1</span>, <span class="at">labels=</span><span class="fu">c</span>(<span class="st">&#39;N&#39;</span>,<span class="st">&#39;Y&#39;</span>)),</span>
+<span id="cb84-2"><a href="#cb84-2" aria-hidden="true" tabindex="-1"></a>                 <span class="at">data=</span>mockstudy)</span>
+<span id="cb84-3"><a href="#cb84-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(trans)</span></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -2709,7 +2481,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 </tbody>
 </table>
 <p>The labels for these variables aren’t exactly what we’d like, so we can change modify those after the fact. Instead of typing out the very long variable names, you can modify specific labels by position.</p>
-<div class="sourceCode" id="cb85"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb85-1"><a href="#cb85-1"></a><span class="kw">labels</span>(trans)</span></code></pre></div>
+<div class="sourceCode" id="cb85"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb85-1"><a href="#cb85-1" aria-hidden="true" tabindex="-1"></a><span class="fu">labels</span>(trans)</span></code></pre></div>
 <pre><code>##                                                           arm 
 ##                                               &quot;Treatment Arm&quot; 
 ##                                                     I(age/10) 
@@ -2718,8 +2490,8 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 ##                                    &quot;Body Mass Index (kg/m^2)&quot; 
 ##       factor(mdquality.s, levels = 0:1, labels = c(&quot;N&quot;, &quot;Y&quot;)) 
 ## &quot;factor(mdquality.s, levels = 0:1, labels = c(\&quot;N\&quot;, \&quot;Y\&quot;))&quot;</code></pre>
-<div class="sourceCode" id="cb87"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb87-1"><a href="#cb87-1"></a><span class="kw">labels</span>(trans)[<span class="dv">2</span><span class="op">:</span><span class="dv">4</span>] &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;Age per 10 yrs&#39;</span>, <span class="st">&#39;log(BMI)&#39;</span>, <span class="st">&#39;MD Quality&#39;</span>)</span>
-<span id="cb87-2"><a href="#cb87-2"></a><span class="kw">labels</span>(trans)</span></code></pre></div>
+<div class="sourceCode" id="cb87"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb87-1"><a href="#cb87-1" aria-hidden="true" tabindex="-1"></a><span class="fu">labels</span>(trans)[<span class="dv">2</span><span class="sc">:</span><span class="dv">4</span>] <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&#39;Age per 10 yrs&#39;</span>, <span class="st">&#39;log(BMI)&#39;</span>, <span class="st">&#39;MD Quality&#39;</span>)</span>
+<span id="cb87-2"><a href="#cb87-2" aria-hidden="true" tabindex="-1"></a><span class="fu">labels</span>(trans)</span></code></pre></div>
 <pre><code>##                                                     arm 
 ##                                         &quot;Treatment Arm&quot; 
 ##                                               I(age/10) 
@@ -2728,7 +2500,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 ##                                              &quot;log(BMI)&quot; 
 ## factor(mdquality.s, levels = 0:1, labels = c(&quot;N&quot;, &quot;Y&quot;)) 
 ##                                            &quot;MD Quality&quot;</code></pre>
-<div class="sourceCode" id="cb89"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb89-1"><a href="#cb89-1"></a><span class="kw">summary</span>(trans)</span></code></pre></div>
+<div class="sourceCode" id="cb89"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb89-1"><a href="#cb89-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(trans)</span></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -2832,9 +2604,9 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 </tbody>
 </table>
 <p>Note that if we had not changed <code>mdquality.s</code> to a factor, it would have been summarized as though it were a continuous variable.</p>
-<div class="sourceCode" id="cb90"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb90-1"><a href="#cb90-1"></a><span class="kw">class</span>(mockstudy<span class="op">$</span>mdquality.s)</span></code></pre></div>
+<div class="sourceCode" id="cb90"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb90-1"><a href="#cb90-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(mockstudy<span class="sc">$</span>mdquality.s)</span></code></pre></div>
 <p>[1] “integer”</p>
-<div class="sourceCode" id="cb91"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb91-1"><a href="#cb91-1"></a><span class="kw">summary</span>(<span class="kw">tableby</span>(arm<span class="op">~</span>mdquality.s, <span class="dt">data=</span>mockstudy))</span></code></pre></div>
+<div class="sourceCode" id="cb91"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb91-1"><a href="#cb91-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">tableby</span>(arm<span class="sc">~</span>mdquality.s, <span class="at">data=</span>mockstudy))</span></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -2882,7 +2654,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 </tbody>
 </table>
 <p>Another option would be to specify the test and summary statistics. In fact, if I had a set of variables coded 0/1 and that was all I was summarizing, then I could change the global option for continuous variables to use the chi-square test and show countpct.</p>
-<div class="sourceCode" id="cb92"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb92-1"><a href="#cb92-1"></a><span class="kw">summary</span>(<span class="kw">tableby</span>(arm <span class="op">~</span><span class="st"> </span><span class="kw">chisq</span>(mdquality.s, <span class="st">&quot;Nmiss&quot;</span>,<span class="st">&quot;countpct&quot;</span>), <span class="dt">data=</span>mockstudy))</span></code></pre></div>
+<div class="sourceCode" id="cb92"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb92-1"><a href="#cb92-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">tableby</span>(arm <span class="sc">~</span> <span class="fu">chisq</span>(mdquality.s, <span class="st">&quot;Nmiss&quot;</span>,<span class="st">&quot;countpct&quot;</span>), <span class="at">data=</span>mockstudy))</span></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -2932,17 +2704,17 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 </div>
 <div id="subsetting-change-the-ordering-of-the-variables-delete-a-variable-sort-by-p-value-filter-by-p-value" class="section level2">
 <h2>10. Subsetting (change the ordering of the variables, delete a variable, sort by p-value, filter by p-value)</h2>
-<div class="sourceCode" id="cb93"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb93-1"><a href="#cb93-1"></a>mytab &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span class="op">~</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span>alk.phos <span class="op">+</span><span class="st"> </span>age, <span class="dt">data=</span>mockstudy)</span>
-<span id="cb93-2"><a href="#cb93-2"></a>mytab2 &lt;-<span class="st"> </span>mytab[<span class="kw">c</span>(<span class="st">&#39;age&#39;</span>,<span class="st">&#39;sex&#39;</span>,<span class="st">&#39;alk.phos&#39;</span>)]</span>
-<span id="cb93-3"><a href="#cb93-3"></a><span class="kw">summary</span>(mytab2)</span></code></pre></div>
+<div class="sourceCode" id="cb93"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb93-1"><a href="#cb93-1" aria-hidden="true" tabindex="-1"></a>mytab <span class="ot">&lt;-</span> <span class="fu">tableby</span>(arm <span class="sc">~</span> sex <span class="sc">+</span> alk.phos <span class="sc">+</span> age, <span class="at">data=</span>mockstudy)</span>
+<span id="cb93-2"><a href="#cb93-2" aria-hidden="true" tabindex="-1"></a>mytab2 <span class="ot">&lt;-</span> mytab[<span class="fu">c</span>(<span class="st">&#39;age&#39;</span>,<span class="st">&#39;sex&#39;</span>,<span class="st">&#39;alk.phos&#39;</span>)]</span>
+<span id="cb93-3"><a href="#cb93-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mytab2)</span></code></pre></div>
 <table>
 <colgroup>
-<col width="25%"></col>
-<col width="16%"></col>
-<col width="16%"></col>
-<col width="16%"></col>
-<col width="16%"></col>
-<col width="7%"></col>
+<col width="25%" />
+<col width="16%" />
+<col width="16%" />
+<col width="16%" />
+<col width="16%" />
+<col width="7%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -3037,7 +2809,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb94"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb94-1"><a href="#cb94-1"></a><span class="kw">summary</span>(mytab[<span class="kw">c</span>(<span class="st">&#39;age&#39;</span>,<span class="st">&#39;sex&#39;</span>)], <span class="dt">digits =</span> <span class="dv">2</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb94"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb94-1"><a href="#cb94-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mytab[<span class="fu">c</span>(<span class="st">&#39;age&#39;</span>,<span class="st">&#39;sex&#39;</span>)], <span class="at">digits =</span> <span class="dv">2</span>)</span></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -3100,7 +2872,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb95"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb95-1"><a href="#cb95-1"></a><span class="kw">summary</span>(mytab[<span class="kw">c</span>(<span class="dv">3</span>,<span class="dv">1</span>)], <span class="dt">digits =</span> <span class="dv">3</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb95"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb95-1"><a href="#cb95-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mytab[<span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">1</span>)], <span class="at">digits =</span> <span class="dv">3</span>)</span></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -3163,15 +2935,15 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb96"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb96-1"><a href="#cb96-1"></a><span class="kw">summary</span>(<span class="kw">sort</span>(mytab, <span class="dt">decreasing =</span> <span class="ot">TRUE</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb96"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb96-1"><a href="#cb96-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">sort</span>(mytab, <span class="at">decreasing =</span> <span class="cn">TRUE</span>))</span></code></pre></div>
 <table>
 <colgroup>
-<col width="25%"></col>
-<col width="16%"></col>
-<col width="16%"></col>
-<col width="16%"></col>
-<col width="16%"></col>
-<col width="7%"></col>
+<col width="25%" />
+<col width="16%" />
+<col width="16%" />
+<col width="16%" />
+<col width="16%" />
+<col width="7%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -3266,15 +3038,15 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb97"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb97-1"><a href="#cb97-1"></a><span class="kw">summary</span>(mytab[mytab <span class="op">&lt;</span><span class="st"> </span><span class="fl">0.5</span>])</span></code></pre></div>
+<div class="sourceCode" id="cb97"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb97-1"><a href="#cb97-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mytab[mytab <span class="sc">&lt;</span> <span class="fl">0.5</span>])</span></code></pre></div>
 <table>
 <colgroup>
-<col width="25%"></col>
-<col width="16%"></col>
-<col width="16%"></col>
-<col width="16%"></col>
-<col width="16%"></col>
-<col width="7%"></col>
+<col width="25%" />
+<col width="16%" />
+<col width="16%" />
+<col width="16%" />
+<col width="16%" />
+<col width="7%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -3345,7 +3117,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb98"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb98-1"><a href="#cb98-1"></a><span class="kw">head</span>(mytab, <span class="dv">1</span>) <span class="co"># can also use tail()</span></span></code></pre></div>
+<div class="sourceCode" id="cb98"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb98-1"><a href="#cb98-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(mytab, <span class="dv">1</span>) <span class="co"># can also use tail()</span></span></code></pre></div>
 <p>tableby Object</p>
 <p>Function Call: tableby(formula = arm ~ sex + alk.phos + age, data = mockstudy)</p>
 <p>Variable(s): arm ~ sex</p>
@@ -3353,17 +3125,17 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <div id="merge-two-tableby-objects-together" class="section level2">
 <h2>11. Merge two <code>tableby</code> objects together</h2>
 <p>It is possible to combine two tableby objects so that they print out together. Overlapping by-variables will have their x-variables concatenated, and (if <code>all=TRUE</code>) non-overlapping by-variables will have their tables printed separately.</p>
-<div class="sourceCode" id="cb99"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb99-1"><a href="#cb99-1"></a><span class="co">## demographics</span></span>
-<span id="cb99-2"><a href="#cb99-2"></a>tab1 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span class="op">~</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span>age, <span class="dt">data=</span>mockstudy,</span>
-<span id="cb99-3"><a href="#cb99-3"></a>                <span class="dt">control=</span><span class="kw">tableby.control</span>(<span class="dt">numeric.stats=</span><span class="kw">c</span>(<span class="st">&quot;Nmiss&quot;</span>,<span class="st">&quot;meansd&quot;</span>), <span class="dt">total=</span><span class="ot">FALSE</span>))</span>
-<span id="cb99-4"><a href="#cb99-4"></a><span class="co">## lab data</span></span>
-<span id="cb99-5"><a href="#cb99-5"></a>tab2 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span class="op">~</span><span class="st"> </span>hgb <span class="op">+</span><span class="st"> </span>alk.phos, <span class="dt">data=</span>mockstudy,</span>
-<span id="cb99-6"><a href="#cb99-6"></a>                <span class="dt">control=</span><span class="kw">tableby.control</span>(<span class="dt">numeric.stats=</span><span class="kw">c</span>(<span class="st">&quot;Nmiss&quot;</span>,<span class="st">&quot;median&quot;</span>,<span class="st">&quot;q1q3&quot;</span>),</span>
-<span id="cb99-7"><a href="#cb99-7"></a>                                        <span class="dt">numeric.test=</span><span class="st">&quot;kwt&quot;</span>, <span class="dt">total=</span><span class="ot">FALSE</span>))</span>
-<span id="cb99-8"><a href="#cb99-8"></a>tab12 &lt;-<span class="st"> </span><span class="kw">merge</span>(tab1, tab2)</span>
-<span id="cb99-9"><a href="#cb99-9"></a><span class="kw">class</span>(tab12)</span></code></pre></div>
+<div class="sourceCode" id="cb99"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb99-1"><a href="#cb99-1" aria-hidden="true" tabindex="-1"></a><span class="do">## demographics</span></span>
+<span id="cb99-2"><a href="#cb99-2" aria-hidden="true" tabindex="-1"></a>tab1 <span class="ot">&lt;-</span> <span class="fu">tableby</span>(arm <span class="sc">~</span> sex <span class="sc">+</span> age, <span class="at">data=</span>mockstudy,</span>
+<span id="cb99-3"><a href="#cb99-3" aria-hidden="true" tabindex="-1"></a>                <span class="at">control=</span><span class="fu">tableby.control</span>(<span class="at">numeric.stats=</span><span class="fu">c</span>(<span class="st">&quot;Nmiss&quot;</span>,<span class="st">&quot;meansd&quot;</span>), <span class="at">total=</span><span class="cn">FALSE</span>))</span>
+<span id="cb99-4"><a href="#cb99-4" aria-hidden="true" tabindex="-1"></a><span class="do">## lab data</span></span>
+<span id="cb99-5"><a href="#cb99-5" aria-hidden="true" tabindex="-1"></a>tab2 <span class="ot">&lt;-</span> <span class="fu">tableby</span>(arm <span class="sc">~</span> hgb <span class="sc">+</span> alk.phos, <span class="at">data=</span>mockstudy,</span>
+<span id="cb99-6"><a href="#cb99-6" aria-hidden="true" tabindex="-1"></a>                <span class="at">control=</span><span class="fu">tableby.control</span>(<span class="at">numeric.stats=</span><span class="fu">c</span>(<span class="st">&quot;Nmiss&quot;</span>,<span class="st">&quot;median&quot;</span>,<span class="st">&quot;q1q3&quot;</span>),</span>
+<span id="cb99-7"><a href="#cb99-7" aria-hidden="true" tabindex="-1"></a>                                        <span class="at">numeric.test=</span><span class="st">&quot;kwt&quot;</span>, <span class="at">total=</span><span class="cn">FALSE</span>))</span>
+<span id="cb99-8"><a href="#cb99-8" aria-hidden="true" tabindex="-1"></a>tab12 <span class="ot">&lt;-</span> <span class="fu">merge</span>(tab1, tab2)</span>
+<span id="cb99-9"><a href="#cb99-9" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(tab12)</span></code></pre></div>
 <p>[1] “tableby” “arsenal_table”</p>
-<div class="sourceCode" id="cb100"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb100-1"><a href="#cb100-1"></a><span class="kw">summary</span>(tab12)</span></code></pre></div>
+<div class="sourceCode" id="cb100"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb100-1"><a href="#cb100-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(tab12)</span></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -3469,11 +3241,11 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 </tbody>
 </table>
 <p>For tables with two different outcomes, consider the <code>all=TRUE</code> argument:</p>
-<div class="sourceCode" id="cb101"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb101-1"><a href="#cb101-1"></a><span class="kw">summary</span>(<span class="kw">merge</span>(</span>
-<span id="cb101-2"><a href="#cb101-2"></a>  <span class="kw">tableby</span>(sex <span class="op">~</span><span class="st"> </span>age, <span class="dt">data =</span> mockstudy),</span>
-<span id="cb101-3"><a href="#cb101-3"></a>  <span class="kw">tableby</span>(arm <span class="op">~</span><span class="st"> </span>bmi, <span class="dt">data =</span> mockstudy),</span>
-<span id="cb101-4"><a href="#cb101-4"></a>  <span class="dt">all =</span> <span class="ot">TRUE</span></span>
-<span id="cb101-5"><a href="#cb101-5"></a>))</span></code></pre></div>
+<div class="sourceCode" id="cb101"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb101-1"><a href="#cb101-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">merge</span>(</span>
+<span id="cb101-2"><a href="#cb101-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tableby</span>(sex <span class="sc">~</span> age, <span class="at">data =</span> mockstudy),</span>
+<span id="cb101-3"><a href="#cb101-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tableby</span>(arm <span class="sc">~</span> bmi, <span class="at">data =</span> mockstudy),</span>
+<span id="cb101-4"><a href="#cb101-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">all =</span> <span class="cn">TRUE</span></span>
+<span id="cb101-5"><a href="#cb101-5" aria-hidden="true" tabindex="-1"></a>))</span></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -3558,8 +3330,8 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <div id="add-a-title-to-the-table" class="section level2">
 <h2>12. Add a title to the table</h2>
 <p>When creating a pdf the tables are automatically numbered and the title appears below the table. In Word and HTML, the titles appear un-numbered and above the table.</p>
-<div class="sourceCode" id="cb102"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb102-1"><a href="#cb102-1"></a>t1 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span class="op">~</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span>age, <span class="dt">data=</span>mockstudy)</span>
-<span id="cb102-2"><a href="#cb102-2"></a><span class="kw">summary</span>(t1, <span class="dt">title=</span><span class="st">&#39;Demographics&#39;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb102"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb102-1"><a href="#cb102-1" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> <span class="fu">tableby</span>(arm <span class="sc">~</span> sex <span class="sc">+</span> age, <span class="at">data=</span>mockstudy)</span>
+<span id="cb102-2"><a href="#cb102-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(t1, <span class="at">title=</span><span class="st">&#39;Demographics&#39;</span>)</span></code></pre></div>
 <table>
 <caption>Demographics</caption>
 <thead>
@@ -3624,7 +3396,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 </tbody>
 </table>
 <p>With multiple left-hand sides, you can pass a vector or list to determine labels for each table:</p>
-<div class="sourceCode" id="cb103"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb103-1"><a href="#cb103-1"></a><span class="kw">summary</span>(<span class="kw">tableby</span>(<span class="kw">list</span>(arm, sex) <span class="op">~</span><span class="st"> </span>age, <span class="dt">data =</span> mockstudy), <span class="dt">title =</span> <span class="kw">c</span>(<span class="st">&quot;arm table&quot;</span>, <span class="st">&quot;sex table&quot;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb103"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb103-1"><a href="#cb103-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">tableby</span>(<span class="fu">list</span>(arm, sex) <span class="sc">~</span> age, <span class="at">data =</span> mockstudy), <span class="at">title =</span> <span class="fu">c</span>(<span class="st">&quot;arm table&quot;</span>, <span class="st">&quot;sex table&quot;</span>))</span></code></pre></div>
 <table>
 <caption>arm table</caption>
 <thead>
@@ -3709,15 +3481,15 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <li><p>Show how many subjects are missing each variable only if there are any missing values</p></li>
 <li><p>Don’t indicate missing values at all</p></li>
 </ul>
-<div class="sourceCode" id="cb104"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb104-1"><a href="#cb104-1"></a><span class="co">## look at how many missing values there are for each variable</span></span>
-<span id="cb104-2"><a href="#cb104-2"></a><span class="kw">apply</span>(<span class="kw">is.na</span>(mockstudy),<span class="dv">2</span>,sum)</span></code></pre></div>
+<div class="sourceCode" id="cb104"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb104-1"><a href="#cb104-1" aria-hidden="true" tabindex="-1"></a><span class="do">## look at how many missing values there are for each variable</span></span>
+<span id="cb104-2"><a href="#cb104-2" aria-hidden="true" tabindex="-1"></a><span class="fu">apply</span>(<span class="fu">is.na</span>(mockstudy),<span class="dv">2</span>,sum)</span></code></pre></div>
 <pre><code>##        case         age         arm         sex        race     fu.time     fu.stat          ps 
 ##           0           0           0           0           7           0           0         266 
 ##         hgb         bmi    alk.phos         ast mdquality.s     age.ord  age.ordnew     dtentry 
 ##         266          33         266         266         252           0           1           5</code></pre>
-<div class="sourceCode" id="cb106"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb106-1"><a href="#cb106-1"></a><span class="co">## Show how many subjects have each variable (non-missing)</span></span>
-<span id="cb106-2"><a href="#cb106-2"></a><span class="kw">summary</span>(<span class="kw">tableby</span>(sex <span class="op">~</span><span class="st"> </span>ast <span class="op">+</span><span class="st"> </span>age, <span class="dt">data=</span>mockstudy,</span>
-<span id="cb106-3"><a href="#cb106-3"></a>                <span class="dt">control=</span><span class="kw">tableby.control</span>(<span class="dt">numeric.stats=</span><span class="kw">c</span>(<span class="st">&quot;N&quot;</span>,<span class="st">&quot;median&quot;</span>), <span class="dt">total=</span><span class="ot">FALSE</span>)))</span></code></pre></div>
+<div class="sourceCode" id="cb106"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb106-1"><a href="#cb106-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Show how many subjects have each variable (non-missing)</span></span>
+<span id="cb106-2"><a href="#cb106-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">tableby</span>(sex <span class="sc">~</span> ast <span class="sc">+</span> age, <span class="at">data=</span>mockstudy,</span>
+<span id="cb106-3"><a href="#cb106-3" aria-hidden="true" tabindex="-1"></a>                <span class="at">control=</span><span class="fu">tableby.control</span>(<span class="at">numeric.stats=</span><span class="fu">c</span>(<span class="st">&quot;N&quot;</span>,<span class="st">&quot;median&quot;</span>), <span class="at">total=</span><span class="cn">FALSE</span>)))</span></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -3766,9 +3538,9 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb107"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb107-1"><a href="#cb107-1"></a><span class="co">## Always list the number of missing values</span></span>
-<span id="cb107-2"><a href="#cb107-2"></a><span class="kw">summary</span>(<span class="kw">tableby</span>(sex <span class="op">~</span><span class="st"> </span>ast <span class="op">+</span><span class="st"> </span>age, <span class="dt">data=</span>mockstudy,</span>
-<span id="cb107-3"><a href="#cb107-3"></a>                <span class="dt">control=</span><span class="kw">tableby.control</span>(<span class="dt">numeric.stats=</span><span class="kw">c</span>(<span class="st">&quot;Nmiss2&quot;</span>,<span class="st">&quot;median&quot;</span>), <span class="dt">total=</span><span class="ot">FALSE</span>)))</span></code></pre></div>
+<div class="sourceCode" id="cb107"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb107-1"><a href="#cb107-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Always list the number of missing values</span></span>
+<span id="cb107-2"><a href="#cb107-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">tableby</span>(sex <span class="sc">~</span> ast <span class="sc">+</span> age, <span class="at">data=</span>mockstudy,</span>
+<span id="cb107-3"><a href="#cb107-3" aria-hidden="true" tabindex="-1"></a>                <span class="at">control=</span><span class="fu">tableby.control</span>(<span class="at">numeric.stats=</span><span class="fu">c</span>(<span class="st">&quot;Nmiss2&quot;</span>,<span class="st">&quot;median&quot;</span>), <span class="at">total=</span><span class="cn">FALSE</span>)))</span></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -3817,9 +3589,9 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb108"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb108-1"><a href="#cb108-1"></a><span class="co">## Only show the missing values if there are some (default)</span></span>
-<span id="cb108-2"><a href="#cb108-2"></a><span class="kw">summary</span>(<span class="kw">tableby</span>(sex <span class="op">~</span><span class="st"> </span>ast <span class="op">+</span><span class="st"> </span>age, <span class="dt">data=</span>mockstudy, </span>
-<span id="cb108-3"><a href="#cb108-3"></a>                <span class="dt">control=</span><span class="kw">tableby.control</span>(<span class="dt">numeric.stats=</span><span class="kw">c</span>(<span class="st">&quot;Nmiss&quot;</span>,<span class="st">&quot;mean&quot;</span>),<span class="dt">total=</span><span class="ot">FALSE</span>)))</span></code></pre></div>
+<div class="sourceCode" id="cb108"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb108-1"><a href="#cb108-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Only show the missing values if there are some (default)</span></span>
+<span id="cb108-2"><a href="#cb108-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">tableby</span>(sex <span class="sc">~</span> ast <span class="sc">+</span> age, <span class="at">data=</span>mockstudy, </span>
+<span id="cb108-3"><a href="#cb108-3" aria-hidden="true" tabindex="-1"></a>                <span class="at">control=</span><span class="fu">tableby.control</span>(<span class="at">numeric.stats=</span><span class="fu">c</span>(<span class="st">&quot;Nmiss&quot;</span>,<span class="st">&quot;mean&quot;</span>),<span class="at">total=</span><span class="cn">FALSE</span>)))</span></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -3862,9 +3634,9 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb109"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb109-1"><a href="#cb109-1"></a><span class="co">## Don&#39;t show N at all</span></span>
-<span id="cb109-2"><a href="#cb109-2"></a><span class="kw">summary</span>(<span class="kw">tableby</span>(sex <span class="op">~</span><span class="st"> </span>ast <span class="op">+</span><span class="st"> </span>age, <span class="dt">data=</span>mockstudy, </span>
-<span id="cb109-3"><a href="#cb109-3"></a>                <span class="dt">control=</span><span class="kw">tableby.control</span>(<span class="dt">numeric.stats=</span><span class="kw">c</span>(<span class="st">&quot;mean&quot;</span>),<span class="dt">total=</span><span class="ot">FALSE</span>)))</span></code></pre></div>
+<div class="sourceCode" id="cb109"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb109-1"><a href="#cb109-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Don&#39;t show N at all</span></span>
+<span id="cb109-2"><a href="#cb109-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">tableby</span>(sex <span class="sc">~</span> ast <span class="sc">+</span> age, <span class="at">data=</span>mockstudy, </span>
+<span id="cb109-3"><a href="#cb109-3" aria-hidden="true" tabindex="-1"></a>                <span class="at">control=</span><span class="fu">tableby.control</span>(<span class="at">numeric.stats=</span><span class="fu">c</span>(<span class="st">&quot;mean&quot;</span>),<span class="at">total=</span><span class="cn">FALSE</span>)))</span></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -3902,9 +3674,9 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 </tbody>
 </table>
 <p>One might also consider the use of <code>includeNA()</code> to include NAs in the counts and percents for categorical variables.</p>
-<div class="sourceCode" id="cb110"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb110-1"><a href="#cb110-1"></a>mockstudy<span class="op">$</span>ps.cat &lt;-<span class="st"> </span><span class="kw">factor</span>(mockstudy<span class="op">$</span>ps)</span>
-<span id="cb110-2"><a href="#cb110-2"></a><span class="kw">attr</span>(mockstudy<span class="op">$</span>ps.cat, <span class="st">&quot;label&quot;</span>) &lt;-<span class="st"> &quot;ps&quot;</span></span>
-<span id="cb110-3"><a href="#cb110-3"></a><span class="kw">summary</span>(<span class="kw">tableby</span>(sex <span class="op">~</span><span class="st"> </span><span class="kw">includeNA</span>(ps.cat), <span class="dt">data =</span> mockstudy, <span class="dt">cat.stats =</span> <span class="st">&quot;countpct&quot;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb110"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb110-1"><a href="#cb110-1" aria-hidden="true" tabindex="-1"></a>mockstudy<span class="sc">$</span>ps.cat <span class="ot">&lt;-</span> <span class="fu">factor</span>(mockstudy<span class="sc">$</span>ps)</span>
+<span id="cb110-2"><a href="#cb110-2" aria-hidden="true" tabindex="-1"></a><span class="fu">attr</span>(mockstudy<span class="sc">$</span>ps.cat, <span class="st">&quot;label&quot;</span>) <span class="ot">&lt;-</span> <span class="st">&quot;ps&quot;</span></span>
+<span id="cb110-3"><a href="#cb110-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">tableby</span>(sex <span class="sc">~</span> <span class="fu">includeNA</span>(ps.cat), <span class="at">data =</span> mockstudy, <span class="at">cat.stats =</span> <span class="st">&quot;countpct&quot;</span>))</span></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -3963,15 +3735,15 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <li><p>digits.pct: controls the number of digits after the decimal point for percents</p></li>
 <li><p>digits.p: controls the number of digits after the decimal point for p-values</p></li>
 </ul>
-<div class="sourceCode" id="cb111"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb111-1"><a href="#cb111-1"></a><span class="kw">summary</span>(<span class="kw">tableby</span>(arm <span class="op">~</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span>age <span class="op">+</span><span class="st"> </span>fu.time, <span class="dt">data=</span>mockstudy), <span class="dt">digits=</span><span class="dv">4</span>, <span class="dt">digits.p=</span><span class="dv">2</span>, <span class="dt">digits.pct=</span><span class="dv">1</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb111"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb111-1"><a href="#cb111-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">tableby</span>(arm <span class="sc">~</span> sex <span class="sc">+</span> age <span class="sc">+</span> fu.time, <span class="at">data=</span>mockstudy), <span class="at">digits=</span><span class="dv">4</span>, <span class="at">digits.p=</span><span class="dv">2</span>, <span class="at">digits.pct=</span><span class="dv">1</span>)</span></code></pre></div>
 <table>
 <colgroup>
-<col width="23%"></col>
-<col width="17%"></col>
-<col width="17%"></col>
-<col width="17%"></col>
-<col width="17%"></col>
-<col width="6%"></col>
+<col width="23%" />
+<col width="17%" />
+<col width="17%" />
+<col width="17%" />
+<col width="17%" />
+<col width="6%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -4059,16 +3831,16 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 </tbody>
 </table>
 <p>With the exception of <code>digits.p</code>, all of these can be specified on a per-variable basis using the in-formula functions that specify which tests are run:</p>
-<div class="sourceCode" id="cb112"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb112-1"><a href="#cb112-1"></a><span class="kw">summary</span>(<span class="kw">tableby</span>(arm <span class="op">~</span><span class="st"> </span><span class="kw">chisq</span>(sex, <span class="dt">digits.pct=</span><span class="dv">1</span>) <span class="op">+</span><span class="st"> </span><span class="kw">anova</span>(age, <span class="dt">digits=</span><span class="dv">4</span>) <span class="op">+</span></span>
-<span id="cb112-2"><a href="#cb112-2"></a><span class="st">                  </span><span class="kw">anova</span>(fu.time, <span class="dt">digits =</span> <span class="dv">1</span>), <span class="dt">data=</span>mockstudy))</span></code></pre></div>
+<div class="sourceCode" id="cb112"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb112-1"><a href="#cb112-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">tableby</span>(arm <span class="sc">~</span> <span class="fu">chisq</span>(sex, <span class="at">digits.pct=</span><span class="dv">1</span>) <span class="sc">+</span> <span class="fu">anova</span>(age, <span class="at">digits=</span><span class="dv">4</span>) <span class="sc">+</span></span>
+<span id="cb112-2"><a href="#cb112-2" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">anova</span>(fu.time, <span class="at">digits =</span> <span class="dv">1</span>), <span class="at">data=</span>mockstudy))</span></code></pre></div>
 <table>
 <colgroup>
-<col width="25%"></col>
-<col width="16%"></col>
-<col width="16%"></col>
-<col width="16%"></col>
-<col width="16%"></col>
-<col width="7%"></col>
+<col width="25%" />
+<col width="16%" />
+<col width="16%" />
+<col width="16%" />
+<col width="16%" />
+<col width="7%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -4159,13 +3931,13 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <div id="create-a-user-defined-summary-statistic" class="section level2">
 <h2>15. Create a user-defined summary statistic</h2>
 <p>For purposes of this example, the code below creates a trimmed mean function (trims 10%) and use that to summarize the data. Note the use of the <code>...</code> which tells R to pass extra arguments on - this is required for user-defined functions. In this case, <code>na.rm=T</code> is passed to <code>myfunc</code>. The <em>weights</em> argument is also required, even though it isn’t passed on to the internal function in this particular example.</p>
-<div class="sourceCode" id="cb113"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb113-1"><a href="#cb113-1"></a>trim10 &lt;-<span class="st"> </span><span class="cf">function</span>(x, <span class="dt">weights=</span><span class="kw">rep</span>(<span class="dv">1</span>,<span class="kw">length</span>(x)), ...){</span>
-<span id="cb113-2"><a href="#cb113-2"></a>  <span class="kw">mean</span>(x, <span class="dt">trim=</span>.<span class="dv">1</span>, ...)</span>
-<span id="cb113-3"><a href="#cb113-3"></a>}</span>
-<span id="cb113-4"><a href="#cb113-4"></a></span>
-<span id="cb113-5"><a href="#cb113-5"></a><span class="kw">summary</span>(<span class="kw">tableby</span>(sex <span class="op">~</span><span class="st"> </span>hgb, <span class="dt">data=</span>mockstudy, </span>
-<span id="cb113-6"><a href="#cb113-6"></a>                <span class="dt">control=</span><span class="kw">tableby.control</span>(<span class="dt">numeric.stats=</span><span class="kw">c</span>(<span class="st">&quot;Nmiss&quot;</span>,<span class="st">&quot;trim10&quot;</span>), <span class="dt">numeric.test=</span><span class="st">&quot;kwt&quot;</span>,</span>
-<span id="cb113-7"><a href="#cb113-7"></a>                    <span class="dt">stats.labels=</span><span class="kw">list</span>(<span class="dt">Nmiss=</span><span class="st">&#39;Missing values&#39;</span>, <span class="dt">trim10=</span><span class="st">&quot;Trimmed Mean, 10%&quot;</span>))))</span></code></pre></div>
+<div class="sourceCode" id="cb113"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb113-1"><a href="#cb113-1" aria-hidden="true" tabindex="-1"></a>trim10 <span class="ot">&lt;-</span> <span class="cf">function</span>(x, <span class="at">weights=</span><span class="fu">rep</span>(<span class="dv">1</span>,<span class="fu">length</span>(x)), ...){</span>
+<span id="cb113-2"><a href="#cb113-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mean</span>(x, <span class="at">trim=</span>.<span class="dv">1</span>, ...)</span>
+<span id="cb113-3"><a href="#cb113-3" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb113-4"><a href="#cb113-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb113-5"><a href="#cb113-5" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">tableby</span>(sex <span class="sc">~</span> hgb, <span class="at">data=</span>mockstudy, </span>
+<span id="cb113-6"><a href="#cb113-6" aria-hidden="true" tabindex="-1"></a>                <span class="at">control=</span><span class="fu">tableby.control</span>(<span class="at">numeric.stats=</span><span class="fu">c</span>(<span class="st">&quot;Nmiss&quot;</span>,<span class="st">&quot;trim10&quot;</span>), <span class="at">numeric.test=</span><span class="st">&quot;kwt&quot;</span>,</span>
+<span id="cb113-7"><a href="#cb113-7" aria-hidden="true" tabindex="-1"></a>                    <span class="at">stats.labels=</span><span class="fu">list</span>(<span class="at">Nmiss=</span><span class="st">&#39;Missing values&#39;</span>, <span class="at">trim10=</span><span class="st">&quot;Trimmed Mean, 10%&quot;</span>))))</span></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -4201,16 +3973,16 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 </tbody>
 </table>
 <p>For statistics to be formatted appropriately, you may want to use <code>as.tbstat()</code> or <code>as.countpct()</code>. For example, suppose you want to create a trimmed mean function that trims by both 5 and 10 percent. The first example shows them separated by a comma; the second puts the 10% trimmed mean in brackets</p>
-<div class="sourceCode" id="cb114"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb114-1"><a href="#cb114-1"></a>trim510comma &lt;-<span class="st"> </span><span class="cf">function</span>(x, <span class="dt">weights=</span><span class="kw">rep</span>(<span class="dv">1</span>,<span class="kw">length</span>(x)), ...){</span>
-<span id="cb114-2"><a href="#cb114-2"></a>  tmp &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="kw">mean</span>(x, <span class="dt">trim =</span> <span class="fl">0.05</span>, ...), <span class="kw">mean</span>(x, <span class="dt">trim =</span> <span class="fl">0.1</span>, ...))</span>
-<span id="cb114-3"><a href="#cb114-3"></a>  <span class="kw">as.tbstat</span>(tmp, <span class="dt">sep =</span> <span class="st">&quot;, &quot;</span>)</span>
-<span id="cb114-4"><a href="#cb114-4"></a>}</span>
-<span id="cb114-5"><a href="#cb114-5"></a>trim510bracket &lt;-<span class="st"> </span><span class="cf">function</span>(x, <span class="dt">weights=</span><span class="kw">rep</span>(<span class="dv">1</span>,<span class="kw">length</span>(x)), ...){</span>
-<span id="cb114-6"><a href="#cb114-6"></a>  tmp &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="kw">mean</span>(x, <span class="dt">trim =</span> <span class="fl">0.05</span>, ...), <span class="kw">mean</span>(x, <span class="dt">trim =</span> <span class="fl">0.1</span>, ...))</span>
-<span id="cb114-7"><a href="#cb114-7"></a>  <span class="kw">as.tbstat</span>(tmp, <span class="dt">sep =</span> <span class="st">&quot; &quot;</span>, <span class="dt">parens =</span> <span class="kw">c</span>(<span class="st">&quot;[&quot;</span>, <span class="st">&quot;]&quot;</span>))</span>
-<span id="cb114-8"><a href="#cb114-8"></a>}</span>
-<span id="cb114-9"><a href="#cb114-9"></a></span>
-<span id="cb114-10"><a href="#cb114-10"></a><span class="kw">summary</span>(<span class="kw">tableby</span>(sex <span class="op">~</span><span class="st"> </span>hgb, <span class="dt">data=</span>mockstudy, <span class="dt">numeric.stats=</span><span class="kw">c</span>(<span class="st">&quot;Nmiss&quot;</span>, <span class="st">&quot;trim510comma&quot;</span>), <span class="dt">test =</span> <span class="ot">FALSE</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb114"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb114-1"><a href="#cb114-1" aria-hidden="true" tabindex="-1"></a>trim510comma <span class="ot">&lt;-</span> <span class="cf">function</span>(x, <span class="at">weights=</span><span class="fu">rep</span>(<span class="dv">1</span>,<span class="fu">length</span>(x)), ...){</span>
+<span id="cb114-2"><a href="#cb114-2" aria-hidden="true" tabindex="-1"></a>  tmp <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">mean</span>(x, <span class="at">trim =</span> <span class="fl">0.05</span>, ...), <span class="fu">mean</span>(x, <span class="at">trim =</span> <span class="fl">0.1</span>, ...))</span>
+<span id="cb114-3"><a href="#cb114-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.tbstat</span>(tmp, <span class="at">sep =</span> <span class="st">&quot;, &quot;</span>)</span>
+<span id="cb114-4"><a href="#cb114-4" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb114-5"><a href="#cb114-5" aria-hidden="true" tabindex="-1"></a>trim510bracket <span class="ot">&lt;-</span> <span class="cf">function</span>(x, <span class="at">weights=</span><span class="fu">rep</span>(<span class="dv">1</span>,<span class="fu">length</span>(x)), ...){</span>
+<span id="cb114-6"><a href="#cb114-6" aria-hidden="true" tabindex="-1"></a>  tmp <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">mean</span>(x, <span class="at">trim =</span> <span class="fl">0.05</span>, ...), <span class="fu">mean</span>(x, <span class="at">trim =</span> <span class="fl">0.1</span>, ...))</span>
+<span id="cb114-7"><a href="#cb114-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.tbstat</span>(tmp, <span class="at">sep =</span> <span class="st">&quot; &quot;</span>, <span class="at">parens =</span> <span class="fu">c</span>(<span class="st">&quot;[&quot;</span>, <span class="st">&quot;]&quot;</span>))</span>
+<span id="cb114-8"><a href="#cb114-8" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb114-9"><a href="#cb114-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb114-10"><a href="#cb114-10" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">tableby</span>(sex <span class="sc">~</span> hgb, <span class="at">data=</span>mockstudy, <span class="at">numeric.stats=</span><span class="fu">c</span>(<span class="st">&quot;Nmiss&quot;</span>, <span class="st">&quot;trim510comma&quot;</span>), <span class="at">test =</span> <span class="cn">FALSE</span>))</span></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -4241,7 +4013,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb115"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb115-1"><a href="#cb115-1"></a><span class="kw">summary</span>(<span class="kw">tableby</span>(sex <span class="op">~</span><span class="st"> </span>hgb, <span class="dt">data=</span>mockstudy, <span class="dt">numeric.stats=</span><span class="kw">c</span>(<span class="st">&quot;Nmiss&quot;</span>, <span class="st">&quot;trim510bracket&quot;</span>), <span class="dt">test =</span> <span class="ot">FALSE</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb115"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb115-1"><a href="#cb115-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">tableby</span>(sex <span class="sc">~</span> hgb, <span class="at">data=</span>mockstudy, <span class="at">numeric.stats=</span><span class="fu">c</span>(<span class="st">&quot;Nmiss&quot;</span>, <span class="st">&quot;trim510bracket&quot;</span>), <span class="at">test =</span> <span class="cn">FALSE</span>))</span></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -4273,12 +4045,12 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 </tbody>
 </table>
 <p>Or perhaps it’s useful to put the amount of trimming in parentheses. Since it is a percent, we can flag it as such:</p>
-<div class="sourceCode" id="cb116"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb116-1"><a href="#cb116-1"></a>trim10pct &lt;-<span class="st"> </span><span class="cf">function</span>(x, <span class="dt">weights=</span><span class="kw">rep</span>(<span class="dv">1</span>,<span class="kw">length</span>(x)), ...){</span>
-<span id="cb116-2"><a href="#cb116-2"></a>  tmp &lt;-<span class="st"> </span><span class="kw">mean</span>(x, <span class="dt">trim =</span> <span class="fl">0.05</span>, ...)</span>
-<span id="cb116-3"><a href="#cb116-3"></a>  <span class="kw">as.countpct</span>(<span class="kw">c</span>(tmp, <span class="dv">10</span>), <span class="dt">sep =</span> <span class="st">&quot; &quot;</span>, <span class="dt">parens =</span> <span class="kw">c</span>(<span class="st">&quot;(&quot;</span>, <span class="st">&quot;)&quot;</span>), <span class="dt">which.count =</span> <span class="dv">0</span>, <span class="dt">which.pct =</span> <span class="dv">2</span>, <span class="dt">pct =</span> <span class="st">&quot;%&quot;</span>)</span>
-<span id="cb116-4"><a href="#cb116-4"></a>}</span>
-<span id="cb116-5"><a href="#cb116-5"></a><span class="kw">summary</span>(<span class="kw">tableby</span>(sex <span class="op">~</span><span class="st"> </span>hgb, <span class="dt">data=</span>mockstudy, <span class="dt">numeric.stats=</span><span class="kw">c</span>(<span class="st">&quot;Nmiss&quot;</span>, <span class="st">&quot;trim10pct&quot;</span>),</span>
-<span id="cb116-6"><a href="#cb116-6"></a>                <span class="dt">digits =</span> <span class="dv">2</span>, <span class="dt">digits.pct =</span> <span class="dv">0</span>, <span class="dt">test =</span> <span class="ot">FALSE</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb116"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb116-1"><a href="#cb116-1" aria-hidden="true" tabindex="-1"></a>trim10pct <span class="ot">&lt;-</span> <span class="cf">function</span>(x, <span class="at">weights=</span><span class="fu">rep</span>(<span class="dv">1</span>,<span class="fu">length</span>(x)), ...){</span>
+<span id="cb116-2"><a href="#cb116-2" aria-hidden="true" tabindex="-1"></a>  tmp <span class="ot">&lt;-</span> <span class="fu">mean</span>(x, <span class="at">trim =</span> <span class="fl">0.05</span>, ...)</span>
+<span id="cb116-3"><a href="#cb116-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.countpct</span>(<span class="fu">c</span>(tmp, <span class="dv">10</span>), <span class="at">sep =</span> <span class="st">&quot; &quot;</span>, <span class="at">parens =</span> <span class="fu">c</span>(<span class="st">&quot;(&quot;</span>, <span class="st">&quot;)&quot;</span>), <span class="at">which.count =</span> <span class="dv">0</span>, <span class="at">which.pct =</span> <span class="dv">2</span>, <span class="at">pct =</span> <span class="st">&quot;%&quot;</span>)</span>
+<span id="cb116-4"><a href="#cb116-4" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb116-5"><a href="#cb116-5" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">tableby</span>(sex <span class="sc">~</span> hgb, <span class="at">data=</span>mockstudy, <span class="at">numeric.stats=</span><span class="fu">c</span>(<span class="st">&quot;Nmiss&quot;</span>, <span class="st">&quot;trim10pct&quot;</span>),</span>
+<span id="cb116-6"><a href="#cb116-6" aria-hidden="true" tabindex="-1"></a>                <span class="at">digits =</span> <span class="dv">2</span>, <span class="at">digits.pct =</span> <span class="dv">0</span>, <span class="at">test =</span> <span class="cn">FALSE</span>))</span></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -4313,17 +4085,17 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <div id="use-case-weights-for-creating-summary-statistics" class="section level2">
 <h2>16. Use case-weights for creating summary statistics</h2>
 <p>When comparing groups, they are often unbalanced when it comes to nuisances such as age and sex. The <code>tableby</code> function allows you to create weighted summary statistics. If this option us used then p-values are not calculated (<code>test=FALSE</code>).</p>
-<div class="sourceCode" id="cb117"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb117-1"><a href="#cb117-1"></a><span class="co">##create fake group that is not balanced by age/sex </span></span>
-<span id="cb117-2"><a href="#cb117-2"></a><span class="kw">set.seed</span>(<span class="dv">200</span>)</span>
-<span id="cb117-3"><a href="#cb117-3"></a>mockstudy<span class="op">$</span>fake_arm &lt;-<span class="st"> </span><span class="kw">ifelse</span>(mockstudy<span class="op">$</span>age<span class="op">&gt;</span><span class="dv">60</span> <span class="op">&amp;</span><span class="st"> </span>mockstudy<span class="op">$</span>sex<span class="op">==</span><span class="st">&#39;Female&#39;</span>,<span class="kw">sample</span>(<span class="kw">c</span>(<span class="st">&#39;A&#39;</span>,<span class="st">&#39;B&#39;</span>),<span class="dt">replace=</span>T, <span class="dt">prob=</span><span class="kw">c</span>(.<span class="dv">2</span>,.<span class="dv">8</span>)),</span>
-<span id="cb117-4"><a href="#cb117-4"></a>                            <span class="kw">sample</span>(<span class="kw">c</span>(<span class="st">&#39;A&#39;</span>,<span class="st">&#39;B&#39;</span>),<span class="dt">replace=</span>T, <span class="dt">prob=</span><span class="kw">c</span>(.<span class="dv">8</span>,.<span class="dv">4</span>)))</span>
-<span id="cb117-5"><a href="#cb117-5"></a></span>
-<span id="cb117-6"><a href="#cb117-6"></a>mockstudy<span class="op">$</span>agegp &lt;-<span class="st"> </span><span class="kw">cut</span>(mockstudy<span class="op">$</span>age, <span class="dt">breaks=</span><span class="kw">c</span>(<span class="dv">18</span>,<span class="dv">50</span>,<span class="dv">60</span>,<span class="dv">70</span>,<span class="dv">90</span>), <span class="dt">right=</span><span class="ot">FALSE</span>)</span>
-<span id="cb117-7"><a href="#cb117-7"></a></span>
-<span id="cb117-8"><a href="#cb117-8"></a><span class="co">## create weights based on agegp and sex distribution</span></span>
-<span id="cb117-9"><a href="#cb117-9"></a>tab1 &lt;-<span class="st"> </span><span class="kw">with</span>(mockstudy,<span class="kw">table</span>(agegp, sex))</span>
-<span id="cb117-10"><a href="#cb117-10"></a>tab2 &lt;-<span class="st"> </span><span class="kw">with</span>(mockstudy, <span class="kw">table</span>(agegp, sex, fake_arm))</span>
-<span id="cb117-11"><a href="#cb117-11"></a>tab2</span></code></pre></div>
+<div class="sourceCode" id="cb117"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb117-1"><a href="#cb117-1" aria-hidden="true" tabindex="-1"></a><span class="do">##create fake group that is not balanced by age/sex </span></span>
+<span id="cb117-2"><a href="#cb117-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">200</span>)</span>
+<span id="cb117-3"><a href="#cb117-3" aria-hidden="true" tabindex="-1"></a>mockstudy<span class="sc">$</span>fake_arm <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(mockstudy<span class="sc">$</span>age<span class="sc">&gt;</span><span class="dv">60</span> <span class="sc">&amp;</span> mockstudy<span class="sc">$</span>sex<span class="sc">==</span><span class="st">&#39;Female&#39;</span>,<span class="fu">sample</span>(<span class="fu">c</span>(<span class="st">&#39;A&#39;</span>,<span class="st">&#39;B&#39;</span>),<span class="at">replace=</span>T, <span class="at">prob=</span><span class="fu">c</span>(.<span class="dv">2</span>,.<span class="dv">8</span>)),</span>
+<span id="cb117-4"><a href="#cb117-4" aria-hidden="true" tabindex="-1"></a>                            <span class="fu">sample</span>(<span class="fu">c</span>(<span class="st">&#39;A&#39;</span>,<span class="st">&#39;B&#39;</span>),<span class="at">replace=</span>T, <span class="at">prob=</span><span class="fu">c</span>(.<span class="dv">8</span>,.<span class="dv">4</span>)))</span>
+<span id="cb117-5"><a href="#cb117-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb117-6"><a href="#cb117-6" aria-hidden="true" tabindex="-1"></a>mockstudy<span class="sc">$</span>agegp <span class="ot">&lt;-</span> <span class="fu">cut</span>(mockstudy<span class="sc">$</span>age, <span class="at">breaks=</span><span class="fu">c</span>(<span class="dv">18</span>,<span class="dv">50</span>,<span class="dv">60</span>,<span class="dv">70</span>,<span class="dv">90</span>), <span class="at">right=</span><span class="cn">FALSE</span>)</span>
+<span id="cb117-7"><a href="#cb117-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb117-8"><a href="#cb117-8" aria-hidden="true" tabindex="-1"></a><span class="do">## create weights based on agegp and sex distribution</span></span>
+<span id="cb117-9"><a href="#cb117-9" aria-hidden="true" tabindex="-1"></a>tab1 <span class="ot">&lt;-</span> <span class="fu">with</span>(mockstudy,<span class="fu">table</span>(agegp, sex))</span>
+<span id="cb117-10"><a href="#cb117-10" aria-hidden="true" tabindex="-1"></a>tab2 <span class="ot">&lt;-</span> <span class="fu">with</span>(mockstudy, <span class="fu">table</span>(agegp, sex, fake_arm))</span>
+<span id="cb117-11"><a href="#cb117-11" aria-hidden="true" tabindex="-1"></a>tab2</span></code></pre></div>
 <pre><code>## , , fake_arm = A
 ## 
 ##          sex
@@ -4341,15 +4113,15 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 ##   [50,60)  130     84
 ##   [60,70)  156    166
 ##   [70,90)  109    122</code></pre>
-<div class="sourceCode" id="cb119"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb119-1"><a href="#cb119-1"></a>gpwts &lt;-<span class="st"> </span><span class="kw">rep</span>(tab1, <span class="kw">length</span>(<span class="kw">unique</span>(mockstudy<span class="op">$</span>fake_arm)))<span class="op">/</span>tab2</span>
-<span id="cb119-2"><a href="#cb119-2"></a>gpwts[gpwts<span class="op">&gt;</span><span class="dv">50</span>] &lt;-<span class="st"> </span><span class="dv">30</span></span>
-<span id="cb119-3"><a href="#cb119-3"></a></span>
-<span id="cb119-4"><a href="#cb119-4"></a><span class="co">## apply weights to subjects</span></span>
-<span id="cb119-5"><a href="#cb119-5"></a>index &lt;-<span class="st"> </span><span class="kw">with</span>(mockstudy, <span class="kw">cbind</span>(<span class="kw">as.numeric</span>(agegp), <span class="kw">as.numeric</span>(sex), <span class="kw">as.numeric</span>(<span class="kw">as.factor</span>(fake_arm)))) </span>
-<span id="cb119-6"><a href="#cb119-6"></a>mockstudy<span class="op">$</span>wts &lt;-<span class="st"> </span>gpwts[index]</span>
-<span id="cb119-7"><a href="#cb119-7"></a></span>
-<span id="cb119-8"><a href="#cb119-8"></a><span class="co">## show weights by treatment arm group</span></span>
-<span id="cb119-9"><a href="#cb119-9"></a><span class="kw">tapply</span>(mockstudy<span class="op">$</span>wts,mockstudy<span class="op">$</span>fake_arm, summary)</span></code></pre></div>
+<div class="sourceCode" id="cb119"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb119-1"><a href="#cb119-1" aria-hidden="true" tabindex="-1"></a>gpwts <span class="ot">&lt;-</span> <span class="fu">rep</span>(tab1, <span class="fu">length</span>(<span class="fu">unique</span>(mockstudy<span class="sc">$</span>fake_arm)))<span class="sc">/</span>tab2</span>
+<span id="cb119-2"><a href="#cb119-2" aria-hidden="true" tabindex="-1"></a>gpwts[gpwts<span class="sc">&gt;</span><span class="dv">50</span>] <span class="ot">&lt;-</span> <span class="dv">30</span></span>
+<span id="cb119-3"><a href="#cb119-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb119-4"><a href="#cb119-4" aria-hidden="true" tabindex="-1"></a><span class="do">## apply weights to subjects</span></span>
+<span id="cb119-5"><a href="#cb119-5" aria-hidden="true" tabindex="-1"></a>index <span class="ot">&lt;-</span> <span class="fu">with</span>(mockstudy, <span class="fu">cbind</span>(<span class="fu">as.numeric</span>(agegp), <span class="fu">as.numeric</span>(sex), <span class="fu">as.numeric</span>(<span class="fu">as.factor</span>(fake_arm)))) </span>
+<span id="cb119-6"><a href="#cb119-6" aria-hidden="true" tabindex="-1"></a>mockstudy<span class="sc">$</span>wts <span class="ot">&lt;-</span> gpwts[index]</span>
+<span id="cb119-7"><a href="#cb119-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb119-8"><a href="#cb119-8" aria-hidden="true" tabindex="-1"></a><span class="do">## show weights by treatment arm group</span></span>
+<span id="cb119-9"><a href="#cb119-9" aria-hidden="true" tabindex="-1"></a><span class="fu">tapply</span>(mockstudy<span class="sc">$</span>wts,mockstudy<span class="sc">$</span>fake_arm, summary)</span></code></pre></div>
 <pre><code>## $A
 ##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
 ##   1.774   1.894   2.069   2.276   2.082  24.714 
@@ -4357,8 +4129,8 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 ## $B
 ##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
 ##   1.000   1.042   1.924   1.677   1.985   2.292</code></pre>
-<div class="sourceCode" id="cb121"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb121-1"><a href="#cb121-1"></a>orig &lt;-<span class="st"> </span><span class="kw">tableby</span>(fake_arm <span class="op">~</span><span class="st"> </span>age <span class="op">+</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span><span class="kw">Surv</span>(fu.time<span class="op">/</span><span class="dv">365</span>, fu.stat), <span class="dt">data=</span>mockstudy, <span class="dt">test=</span><span class="ot">FALSE</span>)</span>
-<span id="cb121-2"><a href="#cb121-2"></a><span class="kw">summary</span>(orig, <span class="dt">title=</span><span class="st">&#39;No Case Weights used&#39;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb121"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb121-1"><a href="#cb121-1" aria-hidden="true" tabindex="-1"></a>orig <span class="ot">&lt;-</span> <span class="fu">tableby</span>(fake_arm <span class="sc">~</span> age <span class="sc">+</span> sex <span class="sc">+</span> <span class="fu">Surv</span>(fu.time<span class="sc">/</span><span class="dv">365</span>, fu.stat), <span class="at">data=</span>mockstudy, <span class="at">test=</span><span class="cn">FALSE</span>)</span>
+<span id="cb121-2"><a href="#cb121-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(orig, <span class="at">title=</span><span class="st">&#39;No Case Weights used&#39;</span>)</span></code></pre></div>
 <table>
 <caption>No Case Weights used</caption>
 <thead>
@@ -4426,8 +4198,8 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb122"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb122-1"><a href="#cb122-1"></a>tab1 &lt;-<span class="st"> </span><span class="kw">tableby</span>(fake_arm <span class="op">~</span><span class="st"> </span>age <span class="op">+</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span><span class="kw">Surv</span>(fu.time<span class="op">/</span><span class="dv">365</span>, fu.stat), <span class="dt">data=</span>mockstudy, <span class="dt">weights=</span>wts)</span>
-<span id="cb122-2"><a href="#cb122-2"></a><span class="kw">summary</span>(tab1, <span class="dt">title=</span><span class="st">&#39;Case Weights used&#39;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb122"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb122-1"><a href="#cb122-1" aria-hidden="true" tabindex="-1"></a>tab1 <span class="ot">&lt;-</span> <span class="fu">tableby</span>(fake_arm <span class="sc">~</span> age <span class="sc">+</span> sex <span class="sc">+</span> <span class="fu">Surv</span>(fu.time<span class="sc">/</span><span class="dv">365</span>, fu.stat), <span class="at">data=</span>mockstudy, <span class="at">weights=</span>wts)</span>
+<span id="cb122-2"><a href="#cb122-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(tab1, <span class="at">title=</span><span class="st">&#39;Case Weights used&#39;</span>)</span></code></pre></div>
 <table>
 <caption>Case Weights used</caption>
 <thead>
@@ -4500,14 +4272,14 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <h2>17. Create your own p-value and add it to the table</h2>
 <p>When using weighted summary statistics, it is often desirable to then show a p-value from a model that corresponds to the weighted analysis. It is possible to add your own p-value and modify the column title for that new p-value. Another use for this would be to add standardized differences or confidence intervals instead of a p-value.</p>
 <p>To add the p-value, you simply need to create a data frame and use the function <code>modpval.tableby()</code>. The first few columns in the data.frame are required: (1) the by-variable, (2) the strata value (if the table has a strata term), (3) the x-variable, and (4) the new p-value (or test statistic). Another optional column can be used to indicate what method was used to calculate the p-value. If you specify <code>use.pname=TRUE</code> then the column name indicating the p-value will be also be used in the tableby summary.</p>
-<div class="sourceCode" id="cb123"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb123-1"><a href="#cb123-1"></a>mypval &lt;-<span class="st"> </span><span class="kw">data.frame</span>(</span>
-<span id="cb123-2"><a href="#cb123-2"></a>  <span class="dt">byvar =</span> <span class="st">&quot;fake_arm&quot;</span>,</span>
-<span id="cb123-3"><a href="#cb123-3"></a>  <span class="dt">variable =</span> <span class="kw">c</span>(<span class="st">&#39;age&#39;</span>,<span class="st">&#39;sex&#39;</span>,<span class="st">&#39;Surv(fu.time/365, fu.stat)&#39;</span>), </span>
-<span id="cb123-4"><a href="#cb123-4"></a>  <span class="dt">adj.pvalue =</span> <span class="kw">c</span>(.<span class="dv">953</span>,.<span class="dv">811</span>,.<span class="dv">01</span>), </span>
-<span id="cb123-5"><a href="#cb123-5"></a>  <span class="dt">method =</span> <span class="kw">c</span>(<span class="st">&#39;Age/Sex adjusted model results&#39;</span>)</span>
-<span id="cb123-6"><a href="#cb123-6"></a>)</span>
-<span id="cb123-7"><a href="#cb123-7"></a>tab2 &lt;-<span class="st"> </span><span class="kw">modpval.tableby</span>(tab1, mypval, <span class="dt">use.pname=</span><span class="ot">TRUE</span>)</span>
-<span id="cb123-8"><a href="#cb123-8"></a><span class="kw">summary</span>(tab2, <span class="dt">title=</span><span class="st">&#39;Case Weights used, p-values added&#39;</span>, <span class="dt">pfootnote=</span><span class="ot">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb123"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb123-1"><a href="#cb123-1" aria-hidden="true" tabindex="-1"></a>mypval <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb123-2"><a href="#cb123-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">byvar =</span> <span class="st">&quot;fake_arm&quot;</span>,</span>
+<span id="cb123-3"><a href="#cb123-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">variable =</span> <span class="fu">c</span>(<span class="st">&#39;age&#39;</span>,<span class="st">&#39;sex&#39;</span>,<span class="st">&#39;Surv(fu.time/365, fu.stat)&#39;</span>), </span>
+<span id="cb123-4"><a href="#cb123-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">adj.pvalue =</span> <span class="fu">c</span>(.<span class="dv">953</span>,.<span class="dv">811</span>,.<span class="dv">01</span>), </span>
+<span id="cb123-5"><a href="#cb123-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">method =</span> <span class="fu">c</span>(<span class="st">&#39;Age/Sex adjusted model results&#39;</span>)</span>
+<span id="cb123-6"><a href="#cb123-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb123-7"><a href="#cb123-7" aria-hidden="true" tabindex="-1"></a>tab2 <span class="ot">&lt;-</span> <span class="fu">modpval.tableby</span>(tab1, mypval, <span class="at">use.pname=</span><span class="cn">TRUE</span>)</span>
+<span id="cb123-8"><a href="#cb123-8" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(tab2, <span class="at">title=</span><span class="st">&#39;Case Weights used, p-values added&#39;</span>, <span class="at">pfootnote=</span><span class="cn">TRUE</span>)</span></code></pre></div>
 <table>
 <caption>Case Weights used, p-values added</caption>
 <thead>
@@ -4592,8 +4364,8 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <div id="for-two-level-categorical-variables-or-one-line-numeric-variables-simplify-the-output." class="section level2">
 <h2>18. For two-level categorical variables or one-line numeric variables, simplify the output.</h2>
 <p>If the <code>cat.simplify</code> option is set to <code>TRUE</code>, then only the second level of two-level categorical varialbes is shown. In the example below, <code>sex</code> has two levels, and “Female” is the second level, hence only the counts and percents for Female are shown. Similarly, “mdquality.s” was turned to a factor, and “1” is the second level, but since there are missings, the table ignores <code>cat.simplify</code> and displays all levels (since the output can no longer be displayed on one line).</p>
-<div class="sourceCode" id="cb124"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb124-1"><a href="#cb124-1"></a>table2 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm<span class="op">~</span>sex <span class="op">+</span><span class="st"> </span><span class="kw">factor</span>(mdquality.s), <span class="dt">data=</span>mockstudy, <span class="dt">cat.simplify=</span><span class="ot">TRUE</span>)</span>
-<span id="cb124-2"><a href="#cb124-2"></a><span class="kw">summary</span>(table2, <span class="dt">labelTranslations=</span><span class="kw">c</span>(<span class="dt">sex=</span><span class="st">&quot;Female&quot;</span>, <span class="st">&quot;factor(mdquality.s)&quot;</span>=<span class="st">&quot;MD Quality&quot;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb124"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb124-1"><a href="#cb124-1" aria-hidden="true" tabindex="-1"></a>table2 <span class="ot">&lt;-</span> <span class="fu">tableby</span>(arm<span class="sc">~</span>sex <span class="sc">+</span> <span class="fu">factor</span>(mdquality.s), <span class="at">data=</span>mockstudy, <span class="at">cat.simplify=</span><span class="cn">TRUE</span>)</span>
+<span id="cb124-2"><a href="#cb124-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(table2, <span class="at">labelTranslations=</span><span class="fu">c</span>(<span class="at">sex=</span><span class="st">&quot;Female&quot;</span>, <span class="st">&quot;factor(mdquality.s)&quot;</span><span class="ot">=</span><span class="st">&quot;MD Quality&quot;</span>))</span></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -4649,16 +4421,16 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 </tbody>
 </table>
 <p>Similarly, if <code>numeric.simplify</code> is set to <code>TRUE</code>, then any numerics which only have one row of summary statistics are simplified into a single row. Note again that <code>ast</code> has missing values and so is not simplified to a single row.</p>
-<div class="sourceCode" id="cb125"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb125-1"><a href="#cb125-1"></a><span class="kw">summary</span>(<span class="kw">tableby</span>(arm <span class="op">~</span><span class="st"> </span>age <span class="op">+</span><span class="st"> </span>ast, <span class="dt">data =</span> mockstudy,</span>
-<span id="cb125-2"><a href="#cb125-2"></a>                <span class="dt">numeric.simplify=</span><span class="ot">TRUE</span>, <span class="dt">numeric.stats=</span><span class="kw">c</span>(<span class="st">&quot;Nmiss&quot;</span>, <span class="st">&quot;meansd&quot;</span>)))</span></code></pre></div>
+<div class="sourceCode" id="cb125"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb125-1"><a href="#cb125-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">tableby</span>(arm <span class="sc">~</span> age <span class="sc">+</span> ast, <span class="at">data =</span> mockstudy,</span>
+<span id="cb125-2"><a href="#cb125-2" aria-hidden="true" tabindex="-1"></a>                <span class="at">numeric.simplify=</span><span class="cn">TRUE</span>, <span class="at">numeric.stats=</span><span class="fu">c</span>(<span class="st">&quot;Nmiss&quot;</span>, <span class="st">&quot;meansd&quot;</span>)))</span></code></pre></div>
 <table style="width:100%;">
 <colgroup>
-<col width="26%"></col>
-<col width="16%"></col>
-<col width="17%"></col>
-<col width="16%"></col>
-<col width="16%"></col>
-<col width="7%"></col>
+<col width="26%" />
+<col width="16%" />
+<col width="17%" />
+<col width="16%" />
+<col width="16%" />
+<col width="7%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -4706,16 +4478,16 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 </tbody>
 </table>
 <p>The in-formula functions to change which tests are run can also be used to specify these options for each variable at a time.</p>
-<div class="sourceCode" id="cb126"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb126-1"><a href="#cb126-1"></a><span class="kw">summary</span>(<span class="kw">tableby</span>(arm <span class="op">~</span><span class="st"> </span><span class="kw">anova</span>(age, <span class="st">&quot;meansd&quot;</span>, <span class="dt">numeric.simplify=</span><span class="ot">TRUE</span>) <span class="op">+</span></span>
-<span id="cb126-2"><a href="#cb126-2"></a><span class="st">                  </span><span class="kw">chisq</span>(sex, <span class="dt">cat.simplify=</span><span class="ot">TRUE</span>), <span class="dt">data =</span> mockstudy))</span></code></pre></div>
+<div class="sourceCode" id="cb126"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb126-1"><a href="#cb126-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">tableby</span>(arm <span class="sc">~</span> <span class="fu">anova</span>(age, <span class="st">&quot;meansd&quot;</span>, <span class="at">numeric.simplify=</span><span class="cn">TRUE</span>) <span class="sc">+</span></span>
+<span id="cb126-2"><a href="#cb126-2" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">chisq</span>(sex, <span class="at">cat.simplify=</span><span class="cn">TRUE</span>), <span class="at">data =</span> mockstudy))</span></code></pre></div>
 <table>
 <colgroup>
-<col width="14%"></col>
-<col width="18%"></col>
-<col width="20%"></col>
-<col width="18%"></col>
-<col width="18%"></col>
-<col width="8%"></col>
+<col width="14%" />
+<col width="18%" />
+<col width="20%" />
+<col width="18%" />
+<col width="18%" />
+<col width="8%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -4747,7 +4519,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 </tbody>
 </table>
 <p>The <code>cat.simplify</code> and <code>ord.simplify</code> argument also accept the special string <code>&quot;label&quot;</code>, which appends the shown level’s label to the overall label:</p>
-<div class="sourceCode" id="cb127"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb127-1"><a href="#cb127-1"></a><span class="kw">summary</span>(<span class="kw">tableby</span>(arm <span class="op">~</span><span class="st"> </span>sex, <span class="dt">cat.simplify =</span> <span class="st">&quot;label&quot;</span>, <span class="dt">data =</span> mockstudy))</span></code></pre></div>
+<div class="sourceCode" id="cb127"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb127-1"><a href="#cb127-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">tableby</span>(arm <span class="sc">~</span> sex, <span class="at">cat.simplify =</span> <span class="st">&quot;label&quot;</span>, <span class="at">data =</span> mockstudy))</span></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -4806,8 +4578,8 @@ render(&quot;Test.md&quot;, pdf_document(keep_tex=TRUE))
 <div id="export-tableby-object-to-a-.csv-file" class="section level2">
 <h2>20. Export <code>tableby</code> object to a .CSV file</h2>
 <p>When looking at multiple variables it is sometimes useful to export the results to a csv file. The <code>as.data.frame</code> function creates a data frame object that can be exported or further manipulated within R.</p>
-<div class="sourceCode" id="cb129"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb129-1"><a href="#cb129-1"></a>tab1 &lt;-<span class="st"> </span><span class="kw">summary</span>(<span class="kw">tableby</span>(arm<span class="op">~</span>sex<span class="op">+</span>age, <span class="dt">data=</span>mockstudy), <span class="dt">text =</span> <span class="ot">NULL</span>)</span>
-<span id="cb129-2"><a href="#cb129-2"></a><span class="kw">as.data.frame</span>(tab1)</span></code></pre></div>
+<div class="sourceCode" id="cb129"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb129-1"><a href="#cb129-1" aria-hidden="true" tabindex="-1"></a>tab1 <span class="ot">&lt;-</span> <span class="fu">summary</span>(<span class="fu">tableby</span>(arm<span class="sc">~</span>sex<span class="sc">+</span>age, <span class="at">data=</span>mockstudy), <span class="at">text =</span> <span class="cn">NULL</span>)</span>
+<span id="cb129-2"><a href="#cb129-2" aria-hidden="true" tabindex="-1"></a><span class="fu">as.data.frame</span>(tab1)</span></code></pre></div>
 <pre><code>##              A: IFL (N=428) F: FOLFOX (N=691) G: IROX (N=380)  Total (N=1499) p value
 ## 1    Gender                                                                     0.190
 ## 2      Male     277 (64.7%)       411 (59.5%)     228 (60.0%)     916 (61.1%)        
@@ -4815,45 +4587,45 @@ render(&quot;Test.md&quot;, pdf_document(keep_tex=TRUE))
 ## 4  Age, yrs                                                                     0.614
 ## 5 Mean (SD) 59.673 (11.365)   60.301 (11.632) 59.763 (11.499) 59.985 (11.519)        
 ## 6     Range 27.000 - 88.000   19.000 - 88.000 26.000 - 85.000 19.000 - 88.000</code></pre>
-<div class="sourceCode" id="cb131"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb131-1"><a href="#cb131-1"></a><span class="co"># write.csv(tab1, &#39;/my/path/here/my_table.csv&#39;)</span></span></code></pre></div>
+<div class="sourceCode" id="cb131"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb131-1"><a href="#cb131-1" aria-hidden="true" tabindex="-1"></a><span class="co"># write.csv(tab1, &#39;/my/path/here/my_table.csv&#39;)</span></span></code></pre></div>
 </div>
 <div id="write-tableby-object-to-a-separate-word-or-html-file" class="section level2">
 <h2>21. Write <code>tableby</code> object to a separate Word or HTML file</h2>
-<div class="sourceCode" id="cb132"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb132-1"><a href="#cb132-1"></a><span class="co">## write to an HTML document</span></span>
-<span id="cb132-2"><a href="#cb132-2"></a>tab1 &lt;-<span class="st"> </span><span class="kw">tableby</span>(arm <span class="op">~</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span>age, <span class="dt">data=</span>mockstudy)</span>
-<span id="cb132-3"><a href="#cb132-3"></a><span class="kw">write2html</span>(tab1, <span class="st">&quot;~/trash.html&quot;</span>)</span>
-<span id="cb132-4"><a href="#cb132-4"></a></span>
-<span id="cb132-5"><a href="#cb132-5"></a><span class="co">## write to a Word document</span></span>
-<span id="cb132-6"><a href="#cb132-6"></a><span class="kw">write2word</span>(tab1, <span class="st">&quot;~/trash.doc&quot;</span>, <span class="dt">title=</span><span class="st">&quot;My table in Word&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb132"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb132-1"><a href="#cb132-1" aria-hidden="true" tabindex="-1"></a><span class="do">## write to an HTML document</span></span>
+<span id="cb132-2"><a href="#cb132-2" aria-hidden="true" tabindex="-1"></a>tab1 <span class="ot">&lt;-</span> <span class="fu">tableby</span>(arm <span class="sc">~</span> sex <span class="sc">+</span> age, <span class="at">data=</span>mockstudy)</span>
+<span id="cb132-3"><a href="#cb132-3" aria-hidden="true" tabindex="-1"></a><span class="fu">write2html</span>(tab1, <span class="st">&quot;~/trash.html&quot;</span>)</span>
+<span id="cb132-4"><a href="#cb132-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb132-5"><a href="#cb132-5" aria-hidden="true" tabindex="-1"></a><span class="do">## write to a Word document</span></span>
+<span id="cb132-6"><a href="#cb132-6" aria-hidden="true" tabindex="-1"></a><span class="fu">write2word</span>(tab1, <span class="st">&quot;~/trash.doc&quot;</span>, <span class="at">title=</span><span class="st">&quot;My table in Word&quot;</span>)</span></code></pre></div>
 </div>
 <div id="use-tableby-in-r-shiny" class="section level2">
 <h2>22. Use <code>tableby</code> in R Shiny</h2>
 <p>The easiest way to output a <code>tableby()</code> object in an R Shiny app is to use the <code>tableOutput()</code> UI in combination with the <code>renderTable()</code> server function and <code>as.data.frame(summary(tableby()))</code>:</p>
-<div class="sourceCode" id="cb133"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb133-1"><a href="#cb133-1"></a><span class="co"># A standalone shiny app</span></span>
-<span id="cb133-2"><a href="#cb133-2"></a><span class="kw">library</span>(shiny)</span>
-<span id="cb133-3"><a href="#cb133-3"></a><span class="kw">library</span>(arsenal)</span>
-<span id="cb133-4"><a href="#cb133-4"></a><span class="kw">data</span>(mockstudy)</span>
-<span id="cb133-5"><a href="#cb133-5"></a></span>
-<span id="cb133-6"><a href="#cb133-6"></a><span class="kw">shinyApp</span>(</span>
-<span id="cb133-7"><a href="#cb133-7"></a>  <span class="dt">ui =</span> <span class="kw">fluidPage</span>(<span class="kw">tableOutput</span>(<span class="st">&quot;table&quot;</span>)),</span>
-<span id="cb133-8"><a href="#cb133-8"></a>  <span class="dt">server =</span> <span class="cf">function</span>(input, output) {</span>
-<span id="cb133-9"><a href="#cb133-9"></a>    output<span class="op">$</span>table &lt;-<span class="st"> </span><span class="kw">renderTable</span>({</span>
-<span id="cb133-10"><a href="#cb133-10"></a>      <span class="kw">as.data.frame</span>(<span class="kw">summary</span>(<span class="kw">tableby</span>(sex <span class="op">~</span><span class="st"> </span>age, <span class="dt">data =</span> mockstudy), <span class="dt">text =</span> <span class="st">&quot;html&quot;</span>))</span>
-<span id="cb133-11"><a href="#cb133-11"></a>    }, <span class="dt">sanitize.text.function =</span> <span class="cf">function</span>(x) x)</span>
-<span id="cb133-12"><a href="#cb133-12"></a>  }</span>
-<span id="cb133-13"><a href="#cb133-13"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb133"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb133-1"><a href="#cb133-1" aria-hidden="true" tabindex="-1"></a><span class="co"># A standalone shiny app</span></span>
+<span id="cb133-2"><a href="#cb133-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(shiny)</span>
+<span id="cb133-3"><a href="#cb133-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(arsenal)</span>
+<span id="cb133-4"><a href="#cb133-4" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(mockstudy)</span>
+<span id="cb133-5"><a href="#cb133-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb133-6"><a href="#cb133-6" aria-hidden="true" tabindex="-1"></a><span class="fu">shinyApp</span>(</span>
+<span id="cb133-7"><a href="#cb133-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">ui =</span> <span class="fu">fluidPage</span>(<span class="fu">tableOutput</span>(<span class="st">&quot;table&quot;</span>)),</span>
+<span id="cb133-8"><a href="#cb133-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">server =</span> <span class="cf">function</span>(input, output) {</span>
+<span id="cb133-9"><a href="#cb133-9" aria-hidden="true" tabindex="-1"></a>    output<span class="sc">$</span>table <span class="ot">&lt;-</span> <span class="fu">renderTable</span>({</span>
+<span id="cb133-10"><a href="#cb133-10" aria-hidden="true" tabindex="-1"></a>      <span class="fu">as.data.frame</span>(<span class="fu">summary</span>(<span class="fu">tableby</span>(sex <span class="sc">~</span> age, <span class="at">data =</span> mockstudy), <span class="at">text =</span> <span class="st">&quot;html&quot;</span>))</span>
+<span id="cb133-11"><a href="#cb133-11" aria-hidden="true" tabindex="-1"></a>    }, <span class="at">sanitize.text.function =</span> <span class="cf">function</span>(x) x)</span>
+<span id="cb133-12"><a href="#cb133-12" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb133-13"><a href="#cb133-13" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
 <p>This can be especially powerful if you feed the selections from a <code>selectInput(multiple = TRUE)</code> into <code>formulize()</code> to make the table dynamic!</p>
 </div>
 <div id="use-tableby-in-bookdown" class="section level2">
 <h2>23. Use <code>tableby</code> in bookdown</h2>
 <p>Since the backbone of <code>tableby()</code> is <code>knitr::kable()</code>, tables still render well in bookdown. However, <code>print.summary.tableby()</code> doesn’t use the <code>caption=</code> argument of <code>kable()</code>, so some tables may not have a properly numbered caption. To fix this, use the method described <a href="https://bookdown.org/yihui/bookdown/tables.html">on the bookdown site</a> to give the table a tag/ID.</p>
-<div class="sourceCode" id="cb134"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb134-1"><a href="#cb134-1"></a><span class="kw">summary</span>(<span class="kw">tableby</span>(sex <span class="op">~</span><span class="st"> </span>age, <span class="dt">data =</span> mockstudy), <span class="dt">title=</span><span class="st">&quot;(</span><span class="ch">\\</span><span class="st">#tab:mytableby) Caption here&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb134"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb134-1"><a href="#cb134-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">tableby</span>(sex <span class="sc">~</span> age, <span class="at">data =</span> mockstudy), <span class="at">title=</span><span class="st">&quot;(</span><span class="sc">\\</span><span class="st">#tab:mytableby) Caption here&quot;</span>)</span></code></pre></div>
 </div>
 <div id="adjust-tableby-for-multiple-p-values" class="section level2">
 <h2>24. Adjust <code>tableby</code> for multiple p-values</h2>
 <p>The <code>padjust()</code> function is a new S3 generic piggybacking off of <code>p.adjust()</code>. It works on both <code>tableby</code> and <code>summary.tableby</code> objects:</p>
-<div class="sourceCode" id="cb135"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb135-1"><a href="#cb135-1"></a>tab &lt;-<span class="st"> </span><span class="kw">summary</span>(<span class="kw">tableby</span>(sex <span class="op">~</span><span class="st"> </span>age <span class="op">+</span><span class="st"> </span>fu.time <span class="op">+</span><span class="st"> </span>bmi <span class="op">+</span><span class="st"> </span>mdquality.s, <span class="dt">data =</span> mockstudy))</span>
-<span id="cb135-2"><a href="#cb135-2"></a>tab</span></code></pre></div>
+<div class="sourceCode" id="cb135"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb135-1"><a href="#cb135-1" aria-hidden="true" tabindex="-1"></a>tab <span class="ot">&lt;-</span> <span class="fu">summary</span>(<span class="fu">tableby</span>(sex <span class="sc">~</span> age <span class="sc">+</span> fu.time <span class="sc">+</span> bmi <span class="sc">+</span> mdquality.s, <span class="at">data =</span> mockstudy))</span>
+<span id="cb135-2"><a href="#cb135-2" aria-hidden="true" tabindex="-1"></a>tab</span></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -4965,7 +4737,7 @@ render(&quot;Test.md&quot;, pdf_document(keep_tex=TRUE))
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb136"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb136-1"><a href="#cb136-1"></a><span class="kw">padjust</span>(tab, <span class="dt">method =</span> <span class="st">&quot;bonferroni&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb136"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb136-1"><a href="#cb136-1" aria-hidden="true" tabindex="-1"></a><span class="fu">padjust</span>(tab, <span class="at">method =</span> <span class="st">&quot;bonferroni&quot;</span>)</span></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -5081,7 +4853,7 @@ render(&quot;Test.md&quot;, pdf_document(keep_tex=TRUE))
 <div id="tabulate-multiple-endpoints" class="section level2">
 <h2>25. Tabulate multiple endpoints</h2>
 <p>You can now use <code>list()</code> on the left-hand side of <code>tableby()</code> to give multiple endpoints.</p>
-<div class="sourceCode" id="cb137"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb137-1"><a href="#cb137-1"></a><span class="kw">summary</span>(<span class="kw">tableby</span>(<span class="kw">list</span>(sex, mdquality.s, ps) <span class="op">~</span><span class="st"> </span>age <span class="op">+</span><span class="st"> </span>bmi, <span class="dt">data =</span> mockstudy))</span></code></pre></div>
+<div class="sourceCode" id="cb137"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb137-1"><a href="#cb137-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">tableby</span>(<span class="fu">list</span>(sex, mdquality.s, ps) <span class="sc">~</span> age <span class="sc">+</span> bmi, <span class="at">data =</span> mockstudy))</span></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -5277,7 +5049,7 @@ render(&quot;Test.md&quot;, pdf_document(keep_tex=TRUE))
 </tbody>
 </table>
 <p>To avoid confusion about which table is which endpoint, you can set <code>term.name=TRUE</code> in <code>summary()</code>. This takes the labels for each by-variable and puts them in the top-left of the table.</p>
-<div class="sourceCode" id="cb138"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb138-1"><a href="#cb138-1"></a><span class="kw">summary</span>(<span class="kw">tableby</span>(<span class="kw">list</span>(sex, mdquality.s, ps) <span class="op">~</span><span class="st"> </span>age <span class="op">+</span><span class="st"> </span>bmi, <span class="dt">data =</span> mockstudy), <span class="dt">term.name =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb138"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb138-1"><a href="#cb138-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">tableby</span>(<span class="fu">list</span>(sex, mdquality.s, ps) <span class="sc">~</span> age <span class="sc">+</span> bmi, <span class="at">data =</span> mockstudy), <span class="at">term.name =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -5476,7 +5248,7 @@ render(&quot;Test.md&quot;, pdf_document(keep_tex=TRUE))
 <div id="tabulate-data-by-a-non-test-group-strata" class="section level2">
 <h2>26. Tabulate data by a non-test group (strata)</h2>
 <p>You can also specify a second grouping variable that doesn’t get tested (but instead separates results): a <em>strata</em> variable.</p>
-<div class="sourceCode" id="cb139"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb139-1"><a href="#cb139-1"></a><span class="kw">summary</span>(<span class="kw">tableby</span>(<span class="kw">list</span>(sex, ps) <span class="op">~</span><span class="st"> </span>age <span class="op">+</span><span class="st"> </span>bmi, <span class="dt">strata =</span> arm, <span class="dt">data =</span> mockstudy))</span></code></pre></div>
+<div class="sourceCode" id="cb139"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb139-1"><a href="#cb139-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">tableby</span>(<span class="fu">list</span>(sex, ps) <span class="sc">~</span> age <span class="sc">+</span> bmi, <span class="at">strata =</span> arm, <span class="at">data =</span> mockstudy))</span></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -5922,6 +5694,7 @@ render(&quot;Test.md&quot;, pdf_document(keep_tex=TRUE))
 <li><p><code>anova</code>: analysis of variance test; the default test for continuous variables. When the grouping variable has two levels, it is equivalent to the two-sample t-test with equal variance.</p></li>
 <li><p><code>kwt</code>: Kruskal-Wallis test, optional test for continuous variables. When the grouping variable has two levels, it is equivalent to the Wilcoxon Rank Sum test.</p></li>
 <li><p><code>wt</code>: An explicit Wilcoxcon test.</p></li>
+<li><p><code>medtest</code>: Median test test, optional test for continuous variables.</p></li>
 <li><p><code>chisq</code>: chi-square goodness of fit test for equal counts of a categorical variable across categories; the default for categorical or factor variables</p></li>
 <li><p><code>fe</code>: Fisher’s exact test for categorical variables; optional</p></li>
 <li><p><code>logrank</code>: log-rank test, the default test for time-to-event variables</p></li>
@@ -5932,7 +5705,7 @@ render(&quot;Test.md&quot;, pdf_document(keep_tex=TRUE))
 <div id="tableby.control-settings" class="section level2">
 <h2><code>tableby.control</code> settings</h2>
 <p>A quick way to see what arguments are possible to utilize in a function is to use the <code>args()</code> command. Settings involving the number of digits can be set in <code>tableby.control</code> or in <code>summary.tableby</code>.</p>
-<div class="sourceCode" id="cb140"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb140-1"><a href="#cb140-1"></a><span class="kw">args</span>(tableby.control)</span></code></pre></div>
+<div class="sourceCode" id="cb140"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb140-1"><a href="#cb140-1" aria-hidden="true" tabindex="-1"></a><span class="fu">args</span>(tableby.control)</span></code></pre></div>
 <pre><code>## function (test = TRUE, total = TRUE, total.pos = c(&quot;after&quot;, &quot;before&quot;), 
 ##     test.pname = NULL, numeric.simplify = FALSE, cat.simplify = FALSE, 
 ##     cat.droplevels = FALSE, ordered.simplify = FALSE, date.simplify = FALSE, 
@@ -5952,7 +5725,7 @@ render(&quot;Test.md&quot;, pdf_document(keep_tex=TRUE))
 <div id="summary.tableby-settings" class="section level2">
 <h2><code>summary.tableby</code> settings</h2>
 <p>The <code>summary.tableby</code> function has options that modify how the table appears (such as adding a title or modifying labels).</p>
-<div class="sourceCode" id="cb142"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb142-1"><a href="#cb142-1"></a><span class="kw">args</span>(arsenal<span class="op">:::</span>summary.tableby)</span></code></pre></div>
+<div class="sourceCode" id="cb142"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb142-1"><a href="#cb142-1" aria-hidden="true" tabindex="-1"></a><span class="fu">args</span>(arsenal<span class="sc">:::</span>summary.tableby)</span></code></pre></div>
 <pre><code>## function (object, ..., labelTranslations = NULL, text = FALSE, 
 ##     title = NULL, pfootnote = FALSE, term.name = &quot;&quot;) 
 ## NULL</code></pre>

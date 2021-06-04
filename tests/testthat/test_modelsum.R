@@ -334,7 +334,7 @@ test_that("02/07/2017: Ryan Lennon's R Markdown spacing problem. Also 02/14/2018
 
 
 test_that("02/13/2017: Krista Goergen's survival subset and NA problems", {
-  skip_if_not(getRversion() >= "3.3.0")
+  skip_if_not(getRversion() >= "3.5.0")
   skip_if_not_installed("survival", "2.41-3")
   require(survival)
   mdat.tmp <- keep.labels(mdat)
@@ -602,7 +602,7 @@ test_that("09/05/2018: correctly label contrasts for ordinal variables (#133)", 
 #################################################################################################################################
 
 test_that("08/07/2019: survival confidence limits (#245)", {
-  skip_if_not(getRversion() >= "3.3.0")
+  skip_if_not(getRversion() >= "3.5.0")
   skip_if_not_installed("survival", "2.41-3")
   require(survival)
   expect_identical(
@@ -618,7 +618,7 @@ test_that("08/07/2019: survival confidence limits (#245)", {
 #################################################################################################################################
 
 test_that("08/07/2019: p.value.lrt (#238)", {
-  skip_if_not(getRversion() >= "3.3.0")
+  skip_if_not(getRversion() >= "3.5.0")
   skip_if_not_installed("survival", "2.41-3")
   require(survival)
   expect_identical(
@@ -661,7 +661,7 @@ test_that("statistic.F works (#262)", {
 })
 
 test_that("Nevents works (#266)", {
-  skip_if_not(getRversion() >= "3.3.0")
+  skip_if_not(getRversion() >= "3.5.0")
   skip_if_not_installed("survival", "2.41-3")
   require(survival)
   tab3 <- modelsum(Surv(fu.time,fu.stat)~sex, data=mockstudy, survival.stats=c('HR','p.value','Nmiss','Nevents','N'), family = "survival")
@@ -691,3 +691,14 @@ test_that("relrisk works (#279)", {
   options(opts)
 })
 
+test_that("Nevents works for binomial (#325)", {
+  expect_identical(
+    capture.kable(summary(modelsum(fu.stat == 1 ~ age, data = mockstudy, family = "binomial",
+                                   binomial.stats = c("OR", "Nevents")))),
+    c("|                 |OR    |Nevents |",
+      "|:----------------|:-----|:-------|",
+      "|(Intercept)      |0.145 |143     |",
+      "|**Age in Years** |0.995 |        |"
+    )
+  )
+})

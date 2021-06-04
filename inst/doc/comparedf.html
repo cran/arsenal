@@ -15,61 +15,9 @@
 
 <title>The comparedf function</title>
 
-<script>// Hide empty <a> tag within highlighted CodeBlock for screen reader accessibility (see https://github.com/jgm/pandoc/issues/6352#issuecomment-626106786) -->
-// v0.0.1
-// Written by JooYoung Seo (jooyoung@psu.edu) and Atsushi Yasumoto on June 1st, 2020.
-
-document.addEventListener('DOMContentLoaded', function() {
-  const codeList = document.getElementsByClassName("sourceCode");
-  for (var i = 0; i < codeList.length; i++) {
-    var linkList = codeList[i].getElementsByTagName('a');
-    for (var j = 0; j < linkList.length; j++) {
-      if (linkList[j].innerHTML === "") {
-        linkList[j].setAttribute('aria-hidden', 'true');
-      }
-    }
-  }
-});
-</script>
-<style type="text/css">
-a.anchor-section {margin-left: 10px; visibility: hidden; color: inherit;}
-a.anchor-section::before {content: '#';}
-.hasAnchor:hover a.anchor-section {visibility: visible;}
-</style>
-<script>// Anchor sections v1.0 written by Atsushi Yasumoto on Oct 3rd, 2020.
-document.addEventListener('DOMContentLoaded', function() {
-  // Do nothing if AnchorJS is used
-  if (typeof window.anchors === 'object' && anchors.hasOwnProperty('hasAnchorJSLink')) {
-    return;
-  }
-
-  const h = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
-
-  // Do nothing if sections are already anchored
-  if (Array.from(h).some(x => x.classList.contains('hasAnchor'))) {
-    return null;
-  }
-
-  // Use section id when pandoc runs with --section-divs
-  const section_id = function(x) {
-    return ((x.classList.contains('section') || (x.tagName === 'SECTION'))
-            ? x.id : '');
-  };
-
-  // Add anchors
-  h.forEach(function(x) {
-    const id = x.id || section_id(x.parentElement);
-    if (id === '') {
-      return null;
-    }
-    let anchor = document.createElement('a');
-    anchor.href = '#' + id;
-    anchor.classList = ['anchor-section'];
-    x.classList.add('hasAnchor');
-    x.appendChild(anchor);
-  });
-});
-</script>
+<script src="data:application/javascript;base64,Ly8gUGFuZG9jIDIuOSBhZGRzIGF0dHJpYnV0ZXMgb24gYm90aCBoZWFkZXIgYW5kIGRpdi4gV2UgcmVtb3ZlIHRoZSBmb3JtZXIgKHRvCi8vIGJlIGNvbXBhdGlibGUgd2l0aCB0aGUgYmVoYXZpb3Igb2YgUGFuZG9jIDwgMi44KS4KZG9jdW1lbnQuYWRkRXZlbnRMaXN0ZW5lcignRE9NQ29udGVudExvYWRlZCcsIGZ1bmN0aW9uKGUpIHsKICB2YXIgaHMgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yQWxsKCJkaXYuc2VjdGlvbltjbGFzcyo9J2xldmVsJ10gPiA6Zmlyc3QtY2hpbGQiKTsKICB2YXIgaSwgaCwgYTsKICBmb3IgKGkgPSAwOyBpIDwgaHMubGVuZ3RoOyBpKyspIHsKICAgIGggPSBoc1tpXTsKICAgIGlmICghL15oWzEtNl0kL2kudGVzdChoLnRhZ05hbWUpKSBjb250aW51ZTsgIC8vIGl0IHNob3VsZCBiZSBhIGhlYWRlciBoMS1oNgogICAgYSA9IGguYXR0cmlidXRlczsKICAgIHdoaWxlIChhLmxlbmd0aCA+IDApIGgucmVtb3ZlQXR0cmlidXRlKGFbMF0ubmFtZSk7CiAgfQp9KTsK"></script>
+<link href="data:text/css,%0Aa%2Eanchor%2Dsection%20%7Bmargin%2Dleft%3A%2010px%3B%20visibility%3A%20hidden%3B%20color%3A%20inherit%3B%7D%0Aa%2Eanchor%2Dsection%3A%3Abefore%20%7Bcontent%3A%20%27%23%27%3B%7D%0A%2EhasAnchor%3Ahover%20a%2Eanchor%2Dsection%20%7Bvisibility%3A%20visible%3B%7D%0A" rel="stylesheet" />
+<script src="data:application/javascript;base64,Ly8gQW5jaG9yIHNlY3Rpb25zIHYxLjAgd3JpdHRlbiBieSBBdHN1c2hpIFlhc3Vtb3RvIG9uIE9jdCAzcmQsIDIwMjAuCmRvY3VtZW50LmFkZEV2ZW50TGlzdGVuZXIoJ0RPTUNvbnRlbnRMb2FkZWQnLCBmdW5jdGlvbigpIHsKICAvLyBEbyBub3RoaW5nIGlmIEFuY2hvckpTIGlzIHVzZWQKICBpZiAodHlwZW9mIHdpbmRvdy5hbmNob3JzID09PSAnb2JqZWN0JyAmJiBhbmNob3JzLmhhc093blByb3BlcnR5KCdoYXNBbmNob3JKU0xpbmsnKSkgewogICAgcmV0dXJuOwogIH0KCiAgY29uc3QgaCA9IGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3JBbGwoJ2gxLCBoMiwgaDMsIGg0LCBoNSwgaDYnKTsKCiAgLy8gRG8gbm90aGluZyBpZiBzZWN0aW9ucyBhcmUgYWxyZWFkeSBhbmNob3JlZAogIGlmIChBcnJheS5mcm9tKGgpLnNvbWUoeCA9PiB4LmNsYXNzTGlzdC5jb250YWlucygnaGFzQW5jaG9yJykpKSB7CiAgICByZXR1cm4gbnVsbDsKICB9CgogIC8vIFVzZSBzZWN0aW9uIGlkIHdoZW4gcGFuZG9jIHJ1bnMgd2l0aCAtLXNlY3Rpb24tZGl2cwogIGNvbnN0IHNlY3Rpb25faWQgPSBmdW5jdGlvbih4KSB7CiAgICByZXR1cm4gKCh4LmNsYXNzTGlzdC5jb250YWlucygnc2VjdGlvbicpIHx8ICh4LnRhZ05hbWUgPT09ICdTRUNUSU9OJykpCiAgICAgICAgICAgID8geC5pZCA6ICcnKTsKICB9OwoKICAvLyBBZGQgYW5jaG9ycwogIGguZm9yRWFjaChmdW5jdGlvbih4KSB7CiAgICBjb25zdCBpZCA9IHguaWQgfHwgc2VjdGlvbl9pZCh4LnBhcmVudEVsZW1lbnQpOwogICAgaWYgKGlkID09PSAnJykgewogICAgICByZXR1cm4gbnVsbDsKICAgIH0KICAgIGxldCBhbmNob3IgPSBkb2N1bWVudC5jcmVhdGVFbGVtZW50KCdhJyk7CiAgICBhbmNob3IuaHJlZiA9ICcjJyArIGlkOwogICAgYW5jaG9yLmNsYXNzTGlzdCA9IFsnYW5jaG9yLXNlY3Rpb24nXTsKICAgIHguY2xhc3NMaXN0LmFkZCgnaGFzQW5jaG9yJyk7CiAgICB4LmFwcGVuZENoaWxkKGFuY2hvcik7CiAgfSk7Cn0pOwo="></script>
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -83,19 +31,19 @@ document.addEventListener('DOMContentLoaded', function() {
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css" data-origin="pandoc">
-code.sourceCode > span { display: inline-block; line-height: 1.25; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-code.sourceCode > span:empty { height: 1.2em; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; position: relative; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
 div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
 }
 @media print {
-code.sourceCode { white-space: pre-wrap; }
-code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -115,7 +63,7 @@ pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-le
 div.sourceCode
   {   }
 @media screen {
-code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
@@ -172,187 +120,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 
 
-<style type="text/css">body {
-background-color: #fff;
-margin: 1em auto;
-max-width: 700px;
-overflow: visible;
-padding-left: 2em;
-padding-right: 2em;
-font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
-font-size: 14px;
-line-height: 1.35;
-}
-#TOC {
-clear: both;
-margin: 0 0 10px 10px;
-padding: 4px;
-width: 400px;
-border: 1px solid #CCCCCC;
-border-radius: 5px;
-background-color: #f6f6f6;
-font-size: 13px;
-line-height: 1.3;
-}
-#TOC .toctitle {
-font-weight: bold;
-font-size: 15px;
-margin-left: 5px;
-}
-#TOC ul {
-padding-left: 40px;
-margin-left: -1.5em;
-margin-top: 5px;
-margin-bottom: 5px;
-}
-#TOC ul ul {
-margin-left: -2em;
-}
-#TOC li {
-line-height: 16px;
-}
-table {
-margin: 1em auto;
-border-width: 1px;
-border-color: #DDDDDD;
-border-style: outset;
-border-collapse: collapse;
-}
-table th {
-border-width: 2px;
-padding: 5px;
-border-style: inset;
-}
-table td {
-border-width: 1px;
-border-style: inset;
-line-height: 18px;
-padding: 5px 5px;
-}
-table, table th, table td {
-border-left-style: none;
-border-right-style: none;
-}
-table thead, table tr.even {
-background-color: #f7f7f7;
-}
-p {
-margin: 0.5em 0;
-}
-blockquote {
-background-color: #f6f6f6;
-padding: 0.25em 0.75em;
-}
-hr {
-border-style: solid;
-border: none;
-border-top: 1px solid #777;
-margin: 28px 0;
-}
-dl {
-margin-left: 0;
-}
-dl dd {
-margin-bottom: 13px;
-margin-left: 13px;
-}
-dl dt {
-font-weight: bold;
-}
-ul {
-margin-top: 0;
-}
-ul li {
-list-style: circle outside;
-}
-ul ul {
-margin-bottom: 0;
-}
-pre, code {
-background-color: #f7f7f7;
-border-radius: 3px;
-color: #333;
-white-space: pre-wrap; 
-}
-pre {
-border-radius: 3px;
-margin: 5px 0px 10px 0px;
-padding: 10px;
-}
-pre:not([class]) {
-background-color: #f7f7f7;
-}
-code {
-font-family: Consolas, Monaco, 'Courier New', monospace;
-font-size: 85%;
-}
-p > code, li > code {
-padding: 2px 0px;
-}
-div.figure {
-text-align: center;
-}
-img {
-background-color: #FFFFFF;
-padding: 2px;
-border: 1px solid #DDDDDD;
-border-radius: 3px;
-border: 1px solid #CCCCCC;
-margin: 0 5px;
-}
-h1 {
-margin-top: 0;
-font-size: 35px;
-line-height: 40px;
-}
-h2 {
-border-bottom: 4px solid #f7f7f7;
-padding-top: 10px;
-padding-bottom: 2px;
-font-size: 145%;
-}
-h3 {
-border-bottom: 2px solid #f7f7f7;
-padding-top: 10px;
-font-size: 120%;
-}
-h4 {
-border-bottom: 1px solid #f7f7f7;
-margin-left: 8px;
-font-size: 105%;
-}
-h5, h6 {
-border-bottom: 1px solid #ccc;
-font-size: 105%;
-}
-a {
-color: #0033dd;
-text-decoration: none;
-}
-a:hover {
-color: #6666ff; }
-a:visited {
-color: #800080; }
-a:visited:hover {
-color: #BB00BB; }
-a[href^="http:"] {
-text-decoration: underline; }
-a[href^="https:"] {
-text-decoration: underline; }
-
-code > span.kw { color: #555; font-weight: bold; } 
-code > span.dt { color: #902000; } 
-code > span.dv { color: #40a070; } 
-code > span.bn { color: #d14; } 
-code > span.fl { color: #d14; } 
-code > span.ch { color: #d14; } 
-code > span.st { color: #d14; } 
-code > span.co { color: #888888; font-style: italic; } 
-code > span.ot { color: #007020; } 
-code > span.al { color: #ff0000; font-weight: bold; } 
-code > span.fu { color: #900; font-weight: bold; } 
-code > span.er { color: #a61717; background-color: #e3d2d2; } 
-</style>
+<link rel="stylesheet" href="data:text/css,body%20%7B%0Abackground%2Dcolor%3A%20%23fff%3B%0Amargin%3A%201em%20auto%3B%0Amax%2Dwidth%3A%20700px%3B%0Aoverflow%3A%20visible%3B%0Apadding%2Dleft%3A%202em%3B%0Apadding%2Dright%3A%202em%3B%0Afont%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0Afont%2Dsize%3A%2014px%3B%0Aline%2Dheight%3A%201%2E35%3B%0A%7D%0A%23TOC%20%7B%0Aclear%3A%20both%3B%0Amargin%3A%200%200%2010px%2010px%3B%0Apadding%3A%204px%3B%0Awidth%3A%20400px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Aborder%2Dradius%3A%205px%3B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Afont%2Dsize%3A%2013px%3B%0Aline%2Dheight%3A%201%2E3%3B%0A%7D%0A%23TOC%20%2Etoctitle%20%7B%0Afont%2Dweight%3A%20bold%3B%0Afont%2Dsize%3A%2015px%3B%0Amargin%2Dleft%3A%205px%3B%0A%7D%0A%23TOC%20ul%20%7B%0Apadding%2Dleft%3A%2040px%3B%0Amargin%2Dleft%3A%20%2D1%2E5em%3B%0Amargin%2Dtop%3A%205px%3B%0Amargin%2Dbottom%3A%205px%3B%0A%7D%0A%23TOC%20ul%20ul%20%7B%0Amargin%2Dleft%3A%20%2D2em%3B%0A%7D%0A%23TOC%20li%20%7B%0Aline%2Dheight%3A%2016px%3B%0A%7D%0Atable%20%7B%0Amargin%3A%201em%20auto%3B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dcolor%3A%20%23DDDDDD%3B%0Aborder%2Dstyle%3A%20outset%3B%0Aborder%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0Aborder%2Dwidth%3A%202px%3B%0Apadding%3A%205px%3B%0Aborder%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dstyle%3A%20inset%3B%0Aline%2Dheight%3A%2018px%3B%0Apadding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0Aborder%2Dleft%2Dstyle%3A%20none%3B%0Aborder%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Ap%20%7B%0Amargin%3A%200%2E5em%200%3B%0A%7D%0Ablockquote%20%7B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Apadding%3A%200%2E25em%200%2E75em%3B%0A%7D%0Ahr%20%7B%0Aborder%2Dstyle%3A%20solid%3B%0Aborder%3A%20none%3B%0Aborder%2Dtop%3A%201px%20solid%20%23777%3B%0Amargin%3A%2028px%200%3B%0A%7D%0Adl%20%7B%0Amargin%2Dleft%3A%200%3B%0A%7D%0Adl%20dd%20%7B%0Amargin%2Dbottom%3A%2013px%3B%0Amargin%2Dleft%3A%2013px%3B%0A%7D%0Adl%20dt%20%7B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Aul%20%7B%0Amargin%2Dtop%3A%200%3B%0A%7D%0Aul%20li%20%7B%0Alist%2Dstyle%3A%20circle%20outside%3B%0A%7D%0Aul%20ul%20%7B%0Amargin%2Dbottom%3A%200%3B%0A%7D%0Apre%2C%20code%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0Aborder%2Dradius%3A%203px%3B%0Acolor%3A%20%23333%3B%0Awhite%2Dspace%3A%20pre%2Dwrap%3B%20%0A%7D%0Apre%20%7B%0Aborder%2Dradius%3A%203px%3B%0Amargin%3A%205px%200px%2010px%200px%3B%0Apadding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Acode%20%7B%0Afont%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0Afont%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0Apadding%3A%202px%200px%3B%0A%7D%0Adiv%2Efigure%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0Abackground%2Dcolor%3A%20%23FFFFFF%3B%0Apadding%3A%202px%3B%0Aborder%3A%201px%20solid%20%23DDDDDD%3B%0Aborder%2Dradius%3A%203px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Amargin%3A%200%205px%3B%0A%7D%0Ah1%20%7B%0Amargin%2Dtop%3A%200%3B%0Afont%2Dsize%3A%2035px%3B%0Aline%2Dheight%3A%2040px%3B%0A%7D%0Ah2%20%7B%0Aborder%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Apadding%2Dbottom%3A%202px%3B%0Afont%2Dsize%3A%20145%25%3B%0A%7D%0Ah3%20%7B%0Aborder%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Afont%2Dsize%3A%20120%25%3B%0A%7D%0Ah4%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0Amargin%2Dleft%3A%208px%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Ah5%2C%20h6%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23ccc%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Aa%20%7B%0Acolor%3A%20%230033dd%3B%0Atext%2Ddecoration%3A%20none%3B%0A%7D%0Aa%3Ahover%20%7B%0Acolor%3A%20%236666ff%3B%20%7D%0Aa%3Avisited%20%7B%0Acolor%3A%20%23800080%3B%20%7D%0Aa%3Avisited%3Ahover%20%7B%0Acolor%3A%20%23BB00BB%3B%20%7D%0Aa%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0Aa%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%0A" type="text/css" />
 
 
 
@@ -373,12 +141,14 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <li><a href="#introduction">Introduction</a></li>
 <li><a href="#basic-examples">Basic examples</a></li>
 <li><a href="#a-larger-example">A larger example</a></li>
-<li><a href="#column-name-comparison-options">Column name comparison options</a><ul>
+<li><a href="#column-name-comparison-options">Column name comparison options</a>
+<ul>
 <li><a href="#ignoring-case">Ignoring case</a></li>
 <li><a href="#treating-dots-and-underscores-the-same-equivalence-classes">Treating dots and underscores the same (equivalence classes)</a></li>
 <li><a href="#manually-specifying-columns-to-match-together">Manually specifying columns to match together</a></li>
 </ul></li>
-<li><a href="#column-comparison-options">Column comparison options</a><ul>
+<li><a href="#column-comparison-options">Column comparison options</a>
+<ul>
 <li><a href="#logical-tolerance">Logical tolerance</a></li>
 <li><a href="#numeric-tolerance">Numeric tolerance</a></li>
 <li><a href="#factor-tolerance">Factor tolerance</a></li>
@@ -386,14 +156,16 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <li><a href="#date-tolerance">Date tolerance</a></li>
 <li><a href="#other-data-type-tolerances">Other data type tolerances</a></li>
 <li><a href="#specifying-tolerances-for-each-variable">Specifying tolerances for each variable</a></li>
-<li><a href="#user-defined-tolerance-functions">User-defined tolerance functions</a><ul>
+<li><a href="#user-defined-tolerance-functions">User-defined tolerance functions</a>
+<ul>
 <li><a href="#details">Details</a></li>
 <li><a href="#example-1">Example 1</a></li>
 <li><a href="#example-2">Example 2</a></li>
 </ul></li>
 </ul></li>
 <li><a href="#extract-differences">Extract Differences</a></li>
-<li><a href="#appendix">Appendix</a><ul>
+<li><a href="#appendix">Appendix</a>
+<ul>
 <li><a href="#stucture-of-the-object">Stucture of the Object</a></li>
 </ul></li>
 </ul>
@@ -402,7 +174,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <div id="introduction" class="section level1">
 <h1>Introduction</h1>
 <p>The <code>comparedf()</code> function can be used to determine and report differences between two data.frames. It was written in the spirit of replacing <code>PROC COMPARE</code> from SAS.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw">library</span>(arsenal)</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(arsenal)</span></code></pre></div>
 <p>Why “comparedf”? We originally called this function <code>compare.data.frame()</code>, using <code>testthat::compare()</code> as our S3 generic, but that ended up getting us in trouble because of conflicting object structures. Why this didn’t occur to us at the time remains a mystery. To replace it, we brainstormed several ideas (<code>comparedf()</code>, <code>dfcompare()</code>, <code>collate()</code>, <code>comparison()</code>) but settled on the former for three reasons:</p>
 <ol style="list-style-type: decimal">
 <li><p>There were no other objects with that generic or class (see <code>testthat::compare()</code> and <code>compare::compare()</code>).</p></li>
@@ -413,20 +185,20 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <div id="basic-examples" class="section level1">
 <h1>Basic examples</h1>
 <p>We first build two similar data.frames to compare.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>df1 &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">id =</span> <span class="kw">paste0</span>(<span class="st">&quot;person&quot;</span>, <span class="dv">1</span><span class="op">:</span><span class="dv">3</span>),</span>
-<span id="cb2-2"><a href="#cb2-2"></a>                  <span class="dt">a =</span> <span class="kw">c</span>(<span class="st">&quot;a&quot;</span>, <span class="st">&quot;b&quot;</span>, <span class="st">&quot;c&quot;</span>),</span>
-<span id="cb2-3"><a href="#cb2-3"></a>                  <span class="dt">b =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">4</span>),</span>
-<span id="cb2-4"><a href="#cb2-4"></a>                  <span class="dt">c =</span> <span class="kw">c</span>(<span class="st">&quot;f&quot;</span>, <span class="st">&quot;e&quot;</span>, <span class="st">&quot;d&quot;</span>),</span>
-<span id="cb2-5"><a href="#cb2-5"></a>                  <span class="dt">row.names =</span> <span class="kw">paste0</span>(<span class="st">&quot;rn&quot;</span>, <span class="dv">1</span><span class="op">:</span><span class="dv">3</span>),</span>
-<span id="cb2-6"><a href="#cb2-6"></a>                  <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>)</span>
-<span id="cb2-7"><a href="#cb2-7"></a>df2 &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">id =</span> <span class="kw">paste0</span>(<span class="st">&quot;person&quot;</span>, <span class="dv">3</span><span class="op">:</span><span class="dv">1</span>),</span>
-<span id="cb2-8"><a href="#cb2-8"></a>                  <span class="dt">a =</span> <span class="kw">c</span>(<span class="st">&quot;c&quot;</span>, <span class="st">&quot;b&quot;</span>, <span class="st">&quot;a&quot;</span>),</span>
-<span id="cb2-9"><a href="#cb2-9"></a>                  <span class="dt">b =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">4</span>),</span>
-<span id="cb2-10"><a href="#cb2-10"></a>                  <span class="dt">d =</span> <span class="kw">paste0</span>(<span class="st">&quot;rn&quot;</span>, <span class="dv">1</span><span class="op">:</span><span class="dv">3</span>),</span>
-<span id="cb2-11"><a href="#cb2-11"></a>                  <span class="dt">row.names =</span> <span class="kw">paste0</span>(<span class="st">&quot;rn&quot;</span>, <span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">3</span>,<span class="dv">2</span>)),</span>
-<span id="cb2-12"><a href="#cb2-12"></a>                  <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>df1 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">id =</span> <span class="fu">paste0</span>(<span class="st">&quot;person&quot;</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>),</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>                  <span class="at">a =</span> <span class="fu">c</span>(<span class="st">&quot;a&quot;</span>, <span class="st">&quot;b&quot;</span>, <span class="st">&quot;c&quot;</span>),</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>                  <span class="at">b =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">4</span>),</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>                  <span class="at">c =</span> <span class="fu">c</span>(<span class="st">&quot;f&quot;</span>, <span class="st">&quot;e&quot;</span>, <span class="st">&quot;d&quot;</span>),</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>                  <span class="at">row.names =</span> <span class="fu">paste0</span>(<span class="st">&quot;rn&quot;</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>),</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>                  <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>df2 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">id =</span> <span class="fu">paste0</span>(<span class="st">&quot;person&quot;</span>, <span class="dv">3</span><span class="sc">:</span><span class="dv">1</span>),</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>                  <span class="at">a =</span> <span class="fu">c</span>(<span class="st">&quot;c&quot;</span>, <span class="st">&quot;b&quot;</span>, <span class="st">&quot;a&quot;</span>),</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>                  <span class="at">b =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">4</span>),</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>                  <span class="at">d =</span> <span class="fu">paste0</span>(<span class="st">&quot;rn&quot;</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>),</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>                  <span class="at">row.names =</span> <span class="fu">paste0</span>(<span class="st">&quot;rn&quot;</span>, <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">3</span>,<span class="dv">2</span>)),</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>                  <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
 <p>To compare these datasets, simply pass them to the <code>comparedf()</code> function:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="kw">comparedf</span>(df1, df2)</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">comparedf</span>(df1, df2)</span></code></pre></div>
 <pre><code>Compare Object
 
 Function Call: 
@@ -438,7 +210,7 @@ Not shared: 2 variables and 0 observations.
 Differences found in 2/3 variables compared.
 0 variables compared have non-identical attributes.</code></pre>
 <p>Use <code>summary()</code> to get a more detailed summary</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="kw">summary</span>(<span class="kw">comparedf</span>(df1, df2))</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">comparedf</span>(df1, df2))</span></code></pre></div>
 <table>
 <caption>Summary of data.frames</caption>
 <thead>
@@ -660,7 +432,7 @@ Differences found in 2/3 variables compared.
 </tbody>
 </table>
 <p>By default, the datasets are compared row-by-row. To change this, use the <code>by=</code> or <code>by.x=</code> and <code>by.y=</code> arguments:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="kw">summary</span>(<span class="kw">comparedf</span>(df1, df2, <span class="dt">by =</span> <span class="st">&quot;id&quot;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">comparedf</span>(df1, df2, <span class="at">by =</span> <span class="st">&quot;id&quot;</span>))</span></code></pre></div>
 <table>
 <caption>Summary of data.frames</caption>
 <thead>
@@ -861,10 +633,10 @@ Differences found in 2/3 variables compared.
 <div id="a-larger-example" class="section level1">
 <h1>A larger example</h1>
 <p>Let’s muck up the <code>mockstudy</code> data.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="kw">data</span>(mockstudy)</span>
-<span id="cb7-2"><a href="#cb7-2"></a>mockstudy2 &lt;-<span class="st"> </span><span class="kw">muck_up_mockstudy</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(mockstudy)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>mockstudy2 <span class="ot">&lt;-</span> <span class="fu">muck_up_mockstudy</span>()</span></code></pre></div>
 <p>We’ve changed row order, so let’s compare by the case ID:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="kw">summary</span>(<span class="kw">comparedf</span>(mockstudy, mockstudy2, <span class="dt">by =</span> <span class="st">&quot;case&quot;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">comparedf</span>(mockstudy, mockstudy2, <span class="at">by =</span> <span class="st">&quot;case&quot;</span>))</span></code></pre></div>
 <table>
 <caption>Summary of data.frames</caption>
 <thead>
@@ -1381,9 +1153,9 @@ Differences found in 2/3 variables compared.
 <h2>Ignoring case</h2>
 <p>For example, to ignore case in variable names (so that <code>Arm</code> and <code>arm</code> are considered the same), pass <code>tol.vars = &quot;case&quot;</code>.</p>
 <p>You can do this using <code>comparedf.control()</code></p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="kw">summary</span>(<span class="kw">comparedf</span>(mockstudy, mockstudy2, <span class="dt">by =</span> <span class="st">&quot;case&quot;</span>, <span class="dt">control =</span> <span class="kw">comparedf.control</span>(<span class="dt">tol.vars =</span> <span class="st">&quot;case&quot;</span>)))</span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">comparedf</span>(mockstudy, mockstudy2, <span class="at">by =</span> <span class="st">&quot;case&quot;</span>, <span class="at">control =</span> <span class="fu">comparedf.control</span>(<span class="at">tol.vars =</span> <span class="st">&quot;case&quot;</span>)))</span></code></pre></div>
 <p>or pass it through the <code>...</code> arguments.</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a><span class="kw">summary</span>(<span class="kw">comparedf</span>(mockstudy, mockstudy2, <span class="dt">by =</span> <span class="st">&quot;case&quot;</span>, <span class="dt">tol.vars =</span> <span class="st">&quot;case&quot;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">comparedf</span>(mockstudy, mockstudy2, <span class="at">by =</span> <span class="st">&quot;case&quot;</span>, <span class="at">tol.vars =</span> <span class="st">&quot;case&quot;</span>))</span></code></pre></div>
 <table>
 <caption>Summary of data.frames</caption>
 <thead>
@@ -1898,9 +1670,9 @@ Differences found in 2/3 variables compared.
 <p>In short, each string in the vector is split into single characters, and the resulting set of characters is replaced by the first character in the string. For example, passing <code>c(&quot;._&quot;)</code> would replace all underscores with dots in the column names of both datasets. Similarly, passing <code>c(&quot;aA&quot;, &quot;BbCc&quot;)</code> would replace all instances of <code>&quot;A&quot;</code> with <code>&quot;a&quot;</code> and all instances of <code>&quot;b&quot;</code>, <code>&quot;C&quot;</code>, or <code>&quot;c&quot;</code> with <code>&quot;B&quot;</code>. This is one way to ignore case for certain letters. Otherwise, it’s possible to combine the equivalence classes with ignoring case, by passing (e.g.) <code>c(&quot;._&quot;, &quot;case&quot;)</code>.</p>
 <p>Passing a single character as an element this vector will replace that character with the empty string. For example, passing c(&quot; “,”.&quot;) would remove all spaces and dots from the column names.</p>
 <p>For mockstudy, let’s treat dots, underscores, and spaces as the same, and ignore case:</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="kw">summary</span>(<span class="kw">comparedf</span>(mockstudy, mockstudy2, <span class="dt">by =</span> <span class="st">&quot;case&quot;</span>,</span>
-<span id="cb11-2"><a href="#cb11-2"></a>                <span class="dt">tol.vars =</span> <span class="kw">c</span>(<span class="st">&quot;._ &quot;</span>, <span class="st">&quot;case&quot;</span>) <span class="co"># dots=underscores=spaces, ignore case</span></span>
-<span id="cb11-3"><a href="#cb11-3"></a>))</span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">comparedf</span>(mockstudy, mockstudy2, <span class="at">by =</span> <span class="st">&quot;case&quot;</span>,</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>                <span class="at">tol.vars =</span> <span class="fu">c</span>(<span class="st">&quot;._ &quot;</span>, <span class="st">&quot;case&quot;</span>) <span class="co"># dots=underscores=spaces, ignore case</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>))</span></code></pre></div>
 <table>
 <caption>Summary of data.frames</caption>
 <thead>
@@ -2401,9 +2173,9 @@ Differences found in 2/3 variables compared.
 <h2>Manually specifying columns to match together</h2>
 <p>If you pass a named vector to the <code>tol.vars=</code> argument, <code>comparedf()</code> will line up the names of that vector to the column names of <code>x</code> and the values of that vector to the column names of <code>y</code>. In this way, you can manually specify which non-identically-named columns to compare.</p>
 <p>For mockstudy, let’s specify our variables manually in this way:</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a><span class="kw">summary</span>(<span class="kw">comparedf</span>(mockstudy, mockstudy2, <span class="dt">by =</span> <span class="st">&quot;case&quot;</span>,</span>
-<span id="cb12-2"><a href="#cb12-2"></a>                <span class="dt">tol.vars =</span> <span class="kw">c</span>(<span class="dt">arm =</span> <span class="st">&quot;Arm&quot;</span>, <span class="dt">fu.stat =</span> <span class="st">&quot;fu stat&quot;</span>, <span class="dt">fu.time =</span> <span class="st">&quot;fu_time&quot;</span>)</span>
-<span id="cb12-3"><a href="#cb12-3"></a>))</span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">comparedf</span>(mockstudy, mockstudy2, <span class="at">by =</span> <span class="st">&quot;case&quot;</span>,</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>                <span class="at">tol.vars =</span> <span class="fu">c</span>(<span class="at">arm =</span> <span class="st">&quot;Arm&quot;</span>, <span class="at">fu.stat =</span> <span class="st">&quot;fu stat&quot;</span>, <span class="at">fu.time =</span> <span class="st">&quot;fu_time&quot;</span>)</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>))</span></code></pre></div>
 <table>
 <caption>Summary of data.frames</caption>
 <thead>
@@ -2911,10 +2683,10 @@ Differences found in 2/3 variables compared.
 <h2>Numeric tolerance</h2>
 <p>To allow numeric differences of a certain tolerance, use the <code>tol.num=</code> and <code>tol.num.val=</code> options. <code>tol.num.val=</code> determines the maximum (unsigned) difference tolerated if <code>tol.num=&quot;absolute&quot;</code> (default), and determines the maximum (unsigned) percent difference tolerated if <code>tol.num=&quot;percent&quot;</code>.</p>
 <p>Also note the option <code>int.as.num=</code>, which determines whether integers and numerics should be compared despite their class difference. If <code>TRUE</code>, the integers are coerced to numeric. Note that <code>mockstudy$ast</code> is integer, while <code>mockstudy2$ast</code> is numeric:</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a><span class="kw">summary</span>(<span class="kw">comparedf</span>(mockstudy, mockstudy2, <span class="dt">by =</span> <span class="st">&quot;case&quot;</span>,</span>
-<span id="cb13-2"><a href="#cb13-2"></a>                <span class="dt">tol.vars =</span> <span class="kw">c</span>(<span class="st">&quot;._ &quot;</span>, <span class="st">&quot;case&quot;</span>), <span class="co"># dots=underscores=spaces, ignore case</span></span>
-<span id="cb13-3"><a href="#cb13-3"></a>                <span class="dt">int.as.num =</span> <span class="ot">TRUE</span>            <span class="co"># compare integers and numerics</span></span>
-<span id="cb13-4"><a href="#cb13-4"></a>))</span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">comparedf</span>(mockstudy, mockstudy2, <span class="at">by =</span> <span class="st">&quot;case&quot;</span>,</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>                <span class="at">tol.vars =</span> <span class="fu">c</span>(<span class="st">&quot;._ &quot;</span>, <span class="st">&quot;case&quot;</span>), <span class="co"># dots=underscores=spaces, ignore case</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>                <span class="at">int.as.num =</span> <span class="cn">TRUE</span>            <span class="co"># compare integers and numerics</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>))</span></code></pre></div>
 <table>
 <caption>Summary of data.frames</caption>
 <thead>
@@ -3436,11 +3208,11 @@ Differences found in 2/3 variables compared.
 </tbody>
 </table>
 <p>Suppose a tolerance of up to 10 is allowed for <code>ast</code>:</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a><span class="kw">summary</span>(<span class="kw">comparedf</span>(mockstudy, mockstudy2, <span class="dt">by =</span> <span class="st">&quot;case&quot;</span>,</span>
-<span id="cb14-2"><a href="#cb14-2"></a>                <span class="dt">tol.vars =</span> <span class="kw">c</span>(<span class="st">&quot;._ &quot;</span>, <span class="st">&quot;case&quot;</span>), <span class="co"># dots=underscores=spaces, ignore case</span></span>
-<span id="cb14-3"><a href="#cb14-3"></a>                <span class="dt">int.as.num =</span> <span class="ot">TRUE</span>,           <span class="co"># compare integers and numerics</span></span>
-<span id="cb14-4"><a href="#cb14-4"></a>                <span class="dt">tol.num.val =</span> <span class="dv">10</span>             <span class="co"># allow absolute differences &lt;= 10</span></span>
-<span id="cb14-5"><a href="#cb14-5"></a>))</span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">comparedf</span>(mockstudy, mockstudy2, <span class="at">by =</span> <span class="st">&quot;case&quot;</span>,</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>                <span class="at">tol.vars =</span> <span class="fu">c</span>(<span class="st">&quot;._ &quot;</span>, <span class="st">&quot;case&quot;</span>), <span class="co"># dots=underscores=spaces, ignore case</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>                <span class="at">int.as.num =</span> <span class="cn">TRUE</span>,           <span class="co"># compare integers and numerics</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>                <span class="at">tol.num.val =</span> <span class="dv">10</span>             <span class="co"># allow absolute differences &lt;= 10</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>))</span></code></pre></div>
 <table>
 <caption>Summary of data.frames</caption>
 <thead>
@@ -3947,12 +3719,12 @@ Differences found in 2/3 variables compared.
 <div id="factor-tolerance" class="section level2">
 <h2>Factor tolerance</h2>
 <p>By default, factors are compared to each other based on both the labels and the underlying numeric levels. Set <code>tol.factor=&quot;levels&quot;</code> to match only the numeric levels, or set <code>tol.factor=&quot;labels&quot;</code> to match only the labels.</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a><span class="kw">summary</span>(<span class="kw">comparedf</span>(mockstudy, mockstudy2, <span class="dt">by =</span> <span class="st">&quot;case&quot;</span>,</span>
-<span id="cb15-2"><a href="#cb15-2"></a>                <span class="dt">tol.vars =</span> <span class="kw">c</span>(<span class="st">&quot;._ &quot;</span>, <span class="st">&quot;case&quot;</span>), <span class="co"># dots=underscores=spaces, ignore case</span></span>
-<span id="cb15-3"><a href="#cb15-3"></a>                <span class="dt">int.as.num =</span> <span class="ot">TRUE</span>,           <span class="co"># compare integers and numerics</span></span>
-<span id="cb15-4"><a href="#cb15-4"></a>                <span class="dt">tol.num.val =</span> <span class="dv">10</span>,            <span class="co"># allow absolute differences &lt;= 10</span></span>
-<span id="cb15-5"><a href="#cb15-5"></a>                <span class="dt">tol.factor =</span> <span class="st">&quot;labels&quot;</span>        <span class="co"># match only factor labels</span></span>
-<span id="cb15-6"><a href="#cb15-6"></a>))</span></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">comparedf</span>(mockstudy, mockstudy2, <span class="at">by =</span> <span class="st">&quot;case&quot;</span>,</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>                <span class="at">tol.vars =</span> <span class="fu">c</span>(<span class="st">&quot;._ &quot;</span>, <span class="st">&quot;case&quot;</span>), <span class="co"># dots=underscores=spaces, ignore case</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>                <span class="at">int.as.num =</span> <span class="cn">TRUE</span>,           <span class="co"># compare integers and numerics</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>                <span class="at">tol.num.val =</span> <span class="dv">10</span>,            <span class="co"># allow absolute differences &lt;= 10</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>                <span class="at">tol.factor =</span> <span class="st">&quot;labels&quot;</span>        <span class="co"># match only factor labels</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>))</span></code></pre></div>
 <table>
 <caption>Summary of data.frames</caption>
 <thead>
@@ -4366,13 +4138,13 @@ Differences found in 2/3 variables compared.
 </tbody>
 </table>
 <p>Also note the option <code>factor.as.char=</code>, which determines whether factors and characters should be compared despite their class difference. If <code>TRUE</code>, the factors are coerced to characters. Note that <code>mockstudy$race</code> is a character, while <code>mockstudy2$race</code> is a factor:</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a><span class="kw">summary</span>(<span class="kw">comparedf</span>(mockstudy, mockstudy2, <span class="dt">by =</span> <span class="st">&quot;case&quot;</span>,</span>
-<span id="cb16-2"><a href="#cb16-2"></a>                <span class="dt">tol.vars =</span> <span class="kw">c</span>(<span class="st">&quot;._ &quot;</span>, <span class="st">&quot;case&quot;</span>), <span class="co"># dots=underscores=spaces, ignore case</span></span>
-<span id="cb16-3"><a href="#cb16-3"></a>                <span class="dt">int.as.num =</span> <span class="ot">TRUE</span>,           <span class="co"># compare integers and numerics</span></span>
-<span id="cb16-4"><a href="#cb16-4"></a>                <span class="dt">tol.num.val =</span> <span class="dv">10</span>,            <span class="co"># allow absolute differences &lt;= 10</span></span>
-<span id="cb16-5"><a href="#cb16-5"></a>                <span class="dt">tol.factor =</span> <span class="st">&quot;labels&quot;</span>,       <span class="co"># match only factor labels</span></span>
-<span id="cb16-6"><a href="#cb16-6"></a>                <span class="dt">factor.as.char =</span> <span class="ot">TRUE</span>        <span class="co"># compare factors and characters</span></span>
-<span id="cb16-7"><a href="#cb16-7"></a>))</span></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">comparedf</span>(mockstudy, mockstudy2, <span class="at">by =</span> <span class="st">&quot;case&quot;</span>,</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>                <span class="at">tol.vars =</span> <span class="fu">c</span>(<span class="st">&quot;._ &quot;</span>, <span class="st">&quot;case&quot;</span>), <span class="co"># dots=underscores=spaces, ignore case</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>                <span class="at">int.as.num =</span> <span class="cn">TRUE</span>,           <span class="co"># compare integers and numerics</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>                <span class="at">tol.num.val =</span> <span class="dv">10</span>,            <span class="co"># allow absolute differences &lt;= 10</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>                <span class="at">tol.factor =</span> <span class="st">&quot;labels&quot;</span>,       <span class="co"># match only factor labels</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>                <span class="at">factor.as.char =</span> <span class="cn">TRUE</span>        <span class="co"># compare factors and characters</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>))</span></code></pre></div>
 <table>
 <caption>Summary of data.frames</caption>
 <thead>
@@ -4870,14 +4642,14 @@ Differences found in 2/3 variables compared.
 <div id="character-tolerance" class="section level2">
 <h2>Character tolerance</h2>
 <p>Use the <code>tol.char=</code> argument to change how character variables are compared. By default, they are compared as-is, but they can be compared after ignoring case or trimming whitespace or both.</p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a><span class="kw">summary</span>(<span class="kw">comparedf</span>(mockstudy, mockstudy2, <span class="dt">by =</span> <span class="st">&quot;case&quot;</span>,</span>
-<span id="cb17-2"><a href="#cb17-2"></a>                <span class="dt">tol.vars =</span> <span class="kw">c</span>(<span class="st">&quot;._ &quot;</span>, <span class="st">&quot;case&quot;</span>), <span class="co"># dots=underscores=spaces, ignore case</span></span>
-<span id="cb17-3"><a href="#cb17-3"></a>                <span class="dt">int.as.num =</span> <span class="ot">TRUE</span>,           <span class="co"># compare integers and numerics</span></span>
-<span id="cb17-4"><a href="#cb17-4"></a>                <span class="dt">tol.num.val =</span> <span class="dv">10</span>,            <span class="co"># allow absolute differences &lt;= 10</span></span>
-<span id="cb17-5"><a href="#cb17-5"></a>                <span class="dt">tol.factor =</span> <span class="st">&quot;labels&quot;</span>,       <span class="co"># match only factor labels</span></span>
-<span id="cb17-6"><a href="#cb17-6"></a>                <span class="dt">factor.as.char =</span> <span class="ot">TRUE</span>,       <span class="co"># compare factors and characters</span></span>
-<span id="cb17-7"><a href="#cb17-7"></a>                <span class="dt">tol.char =</span> <span class="st">&quot;case&quot;</span>            <span class="co"># ignore case in character vectors</span></span>
-<span id="cb17-8"><a href="#cb17-8"></a>))</span></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">comparedf</span>(mockstudy, mockstudy2, <span class="at">by =</span> <span class="st">&quot;case&quot;</span>,</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>                <span class="at">tol.vars =</span> <span class="fu">c</span>(<span class="st">&quot;._ &quot;</span>, <span class="st">&quot;case&quot;</span>), <span class="co"># dots=underscores=spaces, ignore case</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>                <span class="at">int.as.num =</span> <span class="cn">TRUE</span>,           <span class="co"># compare integers and numerics</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>                <span class="at">tol.num.val =</span> <span class="dv">10</span>,            <span class="co"># allow absolute differences &lt;= 10</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>                <span class="at">tol.factor =</span> <span class="st">&quot;labels&quot;</span>,       <span class="co"># match only factor labels</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>                <span class="at">factor.as.char =</span> <span class="cn">TRUE</span>,       <span class="co"># compare factors and characters</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>                <span class="at">tol.char =</span> <span class="st">&quot;case&quot;</span>            <span class="co"># ignore case in character vectors</span></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>))</span></code></pre></div>
 <table>
 <caption>Summary of data.frames</caption>
 <thead>
@@ -5293,11 +5065,11 @@ Differences found in 2/3 variables compared.
 <div id="specifying-tolerances-for-each-variable" class="section level2">
 <h2>Specifying tolerances for each variable</h2>
 <p>You can also provide a list of tolerance functions to <code>comparedf()</code>:</p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a><span class="kw">comparedf.control</span>(<span class="dt">tol.char =</span> <span class="kw">list</span>(</span>
-<span id="cb18-2"><a href="#cb18-2"></a>  <span class="st">&quot;none&quot;</span>,      <span class="co"># the default</span></span>
-<span id="cb18-3"><a href="#cb18-3"></a>  <span class="dt">x1 =</span> <span class="st">&quot;case&quot;</span>, <span class="co"># be case-insensitive for the variable &quot;x1&quot;</span></span>
-<span id="cb18-4"><a href="#cb18-4"></a>  <span class="dt">x2 =</span> <span class="cf">function</span>(x, y) <span class="kw">tol.NA</span>(x, y, x <span class="op">!=</span><span class="st"> </span>y <span class="op">|</span><span class="st"> </span>y <span class="op">==</span><span class="st"> &quot;NA&quot;</span>) <span class="co"># a custom-defined tolerance</span></span>
-<span id="cb18-5"><a href="#cb18-5"></a>))</span></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">comparedf.control</span>(<span class="at">tol.char =</span> <span class="fu">list</span>(</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;none&quot;</span>,      <span class="co"># the default</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">x1 =</span> <span class="st">&quot;case&quot;</span>, <span class="co"># be case-insensitive for the variable &quot;x1&quot;</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">x2 =</span> <span class="cf">function</span>(x, y) <span class="fu">tol.NA</span>(x, y, x <span class="sc">!=</span> y <span class="sc">|</span> y <span class="sc">==</span> <span class="st">&quot;NA&quot;</span>) <span class="co"># a custom-defined tolerance</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>))</span></code></pre></div>
 </div>
 <div id="user-defined-tolerance-functions" class="section level2">
 <h2>User-defined tolerance functions</h2>
@@ -5311,40 +5083,40 @@ Differences found in 2/3 variables compared.
 <div id="example-1" class="section level3">
 <h3>Example 1</h3>
 <p>Suppose we want to ignore any dates which are later in the second dataset than the first. We define a custom tolerance function.</p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a>my.tol &lt;-<span class="st"> </span><span class="cf">function</span>(x, y, tol)</span>
-<span id="cb19-2"><a href="#cb19-2"></a>{</span>
-<span id="cb19-3"><a href="#cb19-3"></a>  <span class="kw">tol.NA</span>(x, y, x <span class="op">&gt;</span><span class="st"> </span>y)</span>
-<span id="cb19-4"><a href="#cb19-4"></a>}</span>
-<span id="cb19-5"><a href="#cb19-5"></a></span>
-<span id="cb19-6"><a href="#cb19-6"></a>date.df1 &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">dt =</span> <span class="kw">as.Date</span>(<span class="kw">c</span>(<span class="st">&quot;2017-09-07&quot;</span>, <span class="st">&quot;2017-08-08&quot;</span>, <span class="st">&quot;2017-07-09&quot;</span>, <span class="ot">NA</span>)))</span>
-<span id="cb19-7"><a href="#cb19-7"></a>date.df2 &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">dt =</span> <span class="kw">as.Date</span>(<span class="kw">c</span>(<span class="st">&quot;2017-10-01&quot;</span>, <span class="st">&quot;2017-08-08&quot;</span>, <span class="st">&quot;2017-07-10&quot;</span>, <span class="st">&quot;2017-01-01&quot;</span>)))</span>
-<span id="cb19-8"><a href="#cb19-8"></a><span class="kw">n.diffs</span>(<span class="kw">comparedf</span>(date.df1, date.df2)) <span class="co"># default finds any differences</span></span></code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>my.tol <span class="ot">&lt;-</span> <span class="cf">function</span>(x, y, tol)</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tol.NA</span>(x, y, x <span class="sc">&gt;</span> y)</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>date.df1 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">dt =</span> <span class="fu">as.Date</span>(<span class="fu">c</span>(<span class="st">&quot;2017-09-07&quot;</span>, <span class="st">&quot;2017-08-08&quot;</span>, <span class="st">&quot;2017-07-09&quot;</span>, <span class="cn">NA</span>)))</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>date.df2 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">dt =</span> <span class="fu">as.Date</span>(<span class="fu">c</span>(<span class="st">&quot;2017-10-01&quot;</span>, <span class="st">&quot;2017-08-08&quot;</span>, <span class="st">&quot;2017-07-10&quot;</span>, <span class="st">&quot;2017-01-01&quot;</span>)))</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a><span class="fu">n.diffs</span>(<span class="fu">comparedf</span>(date.df1, date.df2)) <span class="co"># default finds any differences</span></span></code></pre></div>
 <pre><code>[1] 3</code></pre>
-<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a><span class="kw">n.diffs</span>(<span class="kw">comparedf</span>(date.df1, date.df2, <span class="dt">tol.date =</span> my.tol)) <span class="co"># our function identifies only the NA as different...</span></span></code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">n.diffs</span>(<span class="fu">comparedf</span>(date.df1, date.df2, <span class="at">tol.date =</span> my.tol)) <span class="co"># our function identifies only the NA as different...</span></span></code></pre></div>
 <pre><code>[1] 1</code></pre>
-<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a><span class="kw">n.diffs</span>(<span class="kw">comparedf</span>(date.df2, date.df1, <span class="dt">tol.date =</span> my.tol)) <span class="co"># ... until we change the argument order</span></span></code></pre></div>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">n.diffs</span>(<span class="fu">comparedf</span>(date.df2, date.df1, <span class="at">tol.date =</span> my.tol)) <span class="co"># ... until we change the argument order</span></span></code></pre></div>
 <pre><code>[1] 3</code></pre>
 </div>
 <div id="example-2" class="section level3">
 <h3>Example 2</h3>
 <p>(Continuing our mockstudy example)</p>
 <p>Suppose we’re okay with NAs getting replaced by -9.</p>
-<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1"></a>tol.minus9 &lt;-<span class="st"> </span><span class="cf">function</span>(x, y, tol)</span>
-<span id="cb25-2"><a href="#cb25-2"></a>{</span>
-<span id="cb25-3"><a href="#cb25-3"></a>  idx1 &lt;-<span class="st"> </span><span class="kw">is.na</span>(x) <span class="op">&amp;</span><span class="st"> </span><span class="op">!</span><span class="kw">is.na</span>(y) <span class="op">&amp;</span><span class="st"> </span>y <span class="op">==</span><span class="st"> </span><span class="dv">-9</span></span>
-<span id="cb25-4"><a href="#cb25-4"></a>  idx2 &lt;-<span class="st"> </span><span class="kw">tol.num.absolute</span>(x, y, tol) <span class="co"># find other absolute differences</span></span>
-<span id="cb25-5"><a href="#cb25-5"></a>  <span class="kw">return</span>(<span class="op">!</span>idx1 <span class="op">&amp;</span><span class="st"> </span>idx2)</span>
-<span id="cb25-6"><a href="#cb25-6"></a>}</span>
-<span id="cb25-7"><a href="#cb25-7"></a></span>
-<span id="cb25-8"><a href="#cb25-8"></a><span class="kw">summary</span>(<span class="kw">comparedf</span>(mockstudy, mockstudy2, <span class="dt">by =</span> <span class="st">&quot;case&quot;</span>,</span>
-<span id="cb25-9"><a href="#cb25-9"></a>                <span class="dt">tol.vars =</span> <span class="kw">c</span>(<span class="st">&quot;._ &quot;</span>, <span class="st">&quot;case&quot;</span>), <span class="co"># dots=underscores=spaces, ignore case</span></span>
-<span id="cb25-10"><a href="#cb25-10"></a>                <span class="dt">int.as.num =</span> <span class="ot">TRUE</span>,           <span class="co"># compare integers and numerics</span></span>
-<span id="cb25-11"><a href="#cb25-11"></a>                <span class="dt">tol.num.val =</span> <span class="dv">10</span>,            <span class="co"># allow absolute differences &lt;= 10</span></span>
-<span id="cb25-12"><a href="#cb25-12"></a>                <span class="dt">tol.factor =</span> <span class="st">&quot;labels&quot;</span>,       <span class="co"># match only factor labels</span></span>
-<span id="cb25-13"><a href="#cb25-13"></a>                <span class="dt">factor.as.char =</span> <span class="ot">TRUE</span>,       <span class="co"># compare factors and characters</span></span>
-<span id="cb25-14"><a href="#cb25-14"></a>                <span class="dt">tol.char =</span> <span class="st">&quot;case&quot;</span>,           <span class="co"># ignore case in character vectors</span></span>
-<span id="cb25-15"><a href="#cb25-15"></a>                <span class="dt">tol.num =</span> tol.minus9         <span class="co"># ignore NA -&gt; -9 changes</span></span>
-<span id="cb25-16"><a href="#cb25-16"></a>))</span></code></pre></div>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>tol.minus9 <span class="ot">&lt;-</span> <span class="cf">function</span>(x, y, tol)</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>  idx1 <span class="ot">&lt;-</span> <span class="fu">is.na</span>(x) <span class="sc">&amp;</span> <span class="sc">!</span><span class="fu">is.na</span>(y) <span class="sc">&amp;</span> y <span class="sc">==</span> <span class="sc">-</span><span class="dv">9</span></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>  idx2 <span class="ot">&lt;-</span> <span class="fu">tol.num.absolute</span>(x, y, tol) <span class="co"># find other absolute differences</span></span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="sc">!</span>idx1 <span class="sc">&amp;</span> idx2)</span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">comparedf</span>(mockstudy, mockstudy2, <span class="at">by =</span> <span class="st">&quot;case&quot;</span>,</span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>                <span class="at">tol.vars =</span> <span class="fu">c</span>(<span class="st">&quot;._ &quot;</span>, <span class="st">&quot;case&quot;</span>), <span class="co"># dots=underscores=spaces, ignore case</span></span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a>                <span class="at">int.as.num =</span> <span class="cn">TRUE</span>,           <span class="co"># compare integers and numerics</span></span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a>                <span class="at">tol.num.val =</span> <span class="dv">10</span>,            <span class="co"># allow absolute differences &lt;= 10</span></span>
+<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a>                <span class="at">tol.factor =</span> <span class="st">&quot;labels&quot;</span>,       <span class="co"># match only factor labels</span></span>
+<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a>                <span class="at">factor.as.char =</span> <span class="cn">TRUE</span>,       <span class="co"># compare factors and characters</span></span>
+<span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a>                <span class="at">tol.char =</span> <span class="st">&quot;case&quot;</span>,           <span class="co"># ignore case in character vectors</span></span>
+<span id="cb25-15"><a href="#cb25-15" aria-hidden="true" tabindex="-1"></a>                <span class="at">tol.num =</span> tol.minus9         <span class="co"># ignore NA -&gt; -9 changes</span></span>
+<span id="cb25-16"><a href="#cb25-16" aria-hidden="true" tabindex="-1"></a>))</span></code></pre></div>
 <table>
 <caption>Summary of data.frames</caption>
 <thead>
@@ -5664,10 +5436,10 @@ Differences found in 2/3 variables compared.
 <div id="extract-differences" class="section level1">
 <h1>Extract Differences</h1>
 <p>Differences can be easily extracted using the <code>diffs()</code> function. If you only want to determine how many differences were found, use the <code>n.diffs()</code> function.</p>
-<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1"></a>cmp &lt;-<span class="st"> </span><span class="kw">comparedf</span>(mockstudy, mockstudy2, <span class="dt">by =</span> <span class="st">&quot;case&quot;</span>, <span class="dt">tol.vars =</span> <span class="kw">c</span>(<span class="st">&quot;._ &quot;</span>, <span class="st">&quot;case&quot;</span>), <span class="dt">int.as.num =</span> <span class="ot">TRUE</span>)</span>
-<span id="cb26-2"><a href="#cb26-2"></a><span class="kw">n.diffs</span>(cmp)</span></code></pre></div>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>cmp <span class="ot">&lt;-</span> <span class="fu">comparedf</span>(mockstudy, mockstudy2, <span class="at">by =</span> <span class="st">&quot;case&quot;</span>, <span class="at">tol.vars =</span> <span class="fu">c</span>(<span class="st">&quot;._ &quot;</span>, <span class="st">&quot;case&quot;</span>), <span class="at">int.as.num =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="fu">n.diffs</span>(cmp)</span></code></pre></div>
 <pre><code>[1] 1765</code></pre>
-<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1"></a><span class="kw">head</span>(<span class="kw">diffs</span>(cmp))</span></code></pre></div>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">diffs</span>(cmp))</span></code></pre></div>
 <pre><code>  var.x var.y  case values.x values.y row.x row.y
 1   sex   sex 76170     Male     Male    26    20
 2   sex   sex 76240     Male     Male    27    21
@@ -5676,7 +5448,7 @@ Differences found in 2/3 variables compared.
 5   sex   sex 76780   Female   Female    30    24
 6   sex   sex 77066   Female   Female    31    25</code></pre>
 <p>Differences can also be summarized by variable.</p>
-<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1"></a><span class="kw">diffs</span>(cmp, <span class="dt">by.var =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">diffs</span>(cmp, <span class="at">by.var =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 <pre><code>         var.x       var.y    n NAs
 1          arm         Arm    0   0
 2          sex         sex 1495   0
@@ -5690,11 +5462,11 @@ Differences found in 2/3 variables compared.
 10 mdquality.s mdquality.s    0   0
 11     age.ord     age.ord    0   0</code></pre>
 <p>To report differences from only a few variables, one can pass a list of variable names to <code>diffs()</code>.</p>
-<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1"></a><span class="kw">diffs</span>(cmp, <span class="dt">vars =</span> <span class="kw">c</span>(<span class="st">&quot;ps&quot;</span>, <span class="st">&quot;ast&quot;</span>), <span class="dt">by.var =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">diffs</span>(cmp, <span class="at">vars =</span> <span class="fu">c</span>(<span class="st">&quot;ps&quot;</span>, <span class="st">&quot;ast&quot;</span>), <span class="at">by.var =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 <pre><code>  var.x var.y n NAs
 5    ps    ps 1   1
 9   ast   ast 3   0</code></pre>
-<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1"></a><span class="kw">diffs</span>(cmp, <span class="dt">vars =</span> <span class="kw">c</span>(<span class="st">&quot;ps&quot;</span>, <span class="st">&quot;ast&quot;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">diffs</span>(cmp, <span class="at">vars =</span> <span class="fu">c</span>(<span class="st">&quot;ps&quot;</span>, <span class="st">&quot;ast&quot;</span>))</span></code></pre></div>
 <pre><code>     var.x var.y   case values.x values.y row.x row.y
 1496    ps    ps  86205        0       NA     6     3
 1763   ast   ast  86205       27       36     6     3
@@ -5706,7 +5478,7 @@ Differences found in 2/3 variables compared.
 <div id="stucture-of-the-object" class="section level2">
 <h2>Stucture of the Object</h2>
 <p>(This section is just as much for my use as for yours!)</p>
-<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1"></a>obj &lt;-<span class="st"> </span><span class="kw">comparedf</span>(mockstudy, mockstudy2, <span class="dt">by =</span> <span class="st">&quot;case&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>obj <span class="ot">&lt;-</span> <span class="fu">comparedf</span>(mockstudy, mockstudy2, <span class="at">by =</span> <span class="st">&quot;case&quot;</span>)</span></code></pre></div>
 <p>There are two main objects in the <code>&quot;comparedf&quot;</code> object, each with its own print method.</p>
 <p>The <code>frame.summary</code> contains:</p>
 <ul>
@@ -5717,7 +5489,7 @@ Differences found in 2/3 variables compared.
 <li><p>a data.frame of by-variables and row numbers of observations not shared between datasets</p></li>
 <li><p>the number of shared observations</p></li>
 </ul>
-<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1"></a><span class="kw">print</span>(obj<span class="op">$</span>frame.summary)</span></code></pre></div>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(obj<span class="sc">$</span>frame.summary)</span></code></pre></div>
 <pre><code>  version        arg ncol nrow   by        attrs       unique n.shared
 1       x  mockstudy   14 1499 case 3 attributes 4 unique obs     1495
 2       y mockstudy2   13 1495 case 3 attributes 0 unique obs     1495</code></pre>
@@ -5737,7 +5509,7 @@ Differences found in 2/3 variables compared.
 <li><p>The actual attributes (if <code>show.attr=TRUE</code>).</p></li>
 </ul></li>
 </ul>
-<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1"></a><span class="kw">print</span>(obj<span class="op">$</span>vars.summary)</span></code></pre></div>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(obj<span class="sc">$</span>vars.summary)</span></code></pre></div>
 <pre><code>         var.x pos.x         class.x       var.y pos.y         class.y           values        attrs
 1         case     1         integer        case     1         integer      by-variable 0 attributes
 2          sex     4          factor         sex     2          factor 1495 differences 2 attributes
