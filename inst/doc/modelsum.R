@@ -1,4 +1,4 @@
-## ---- echo=FALSE, message=FALSE, results='hide', warning=FALSE----------------
+## ----echo=FALSE, message=FALSE, results='hide', warning=FALSE-----------------
 require(knitr)
 require(broom)
 require(MASS)
@@ -8,7 +8,7 @@ require(rpart)
 opts_chunk$set(comment = NA, echo=TRUE, prompt=TRUE, collapse=TRUE)
 
 
-## ---- load-data---------------------------------------------------------------
+## ----load-data----------------------------------------------------------------
 require(arsenal)
 data(mockstudy) # load data
 dim(mockstudy)  # look at how many subjects and variables are in the dataset 
@@ -62,7 +62,7 @@ tmp
 
 glance(fit3)
 
-## ---- results="asis"----------------------------------------------------------
+## ----results="asis"-----------------------------------------------------------
 ms.logy <- modelsum(log(alk.phos) ~ arm + ps + hgb, data=mockstudy, adjust= ~age + sex, 
                     family=gaussian,  
                     gaussian.stats=c("estimate","CI.lower.estimate","CI.upper.estimate","p.value"))
@@ -99,7 +99,7 @@ tidy(fit, exp=T, conf.int=T) # coefficients, p-values, conf.intervals
 
 glance(fit) # model summary statistics
 
-## ---- results="asis"----------------------------------------------------------
+## ----results="asis"-----------------------------------------------------------
 summary(modelsum(mdquality.s ~ age + bmi, data=mockstudy, adjust=~sex, family=binomial))
 
 fitall <- modelsum(mdquality.s ~ age, data=mockstudy, family=binomial,
@@ -201,13 +201,13 @@ summary(modelsum(fu.stat ~ age, adjust=~offset(log(fu.time+.01))+ sex + arm,
                  data=mockstudy, family=poisson))
                  
 
-## ---- results='asis'----------------------------------------------------------
+## ----results='asis'-----------------------------------------------------------
 mycontrols  <- modelsum.control(gaussian.stats=c("estimate","std.error","adj.r.squared","Nmiss"),
                                 show.adjust=FALSE, show.intercept=FALSE)                            
 tab2 <- modelsum(bmi ~ age, adjust=~sex, data=mockstudy, control=mycontrols)
 summary(tab2)
 
-## ---- results='asis'----------------------------------------------------------
+## ----results='asis'-----------------------------------------------------------
 tab3 <- modelsum(bmi ~  age, adjust=~sex, data=mockstudy,
                  gaussian.stats=c("estimate","std.error","adj.r.squared","Nmiss"), 
                  show.intercept=FALSE, show.adjust=FALSE)
@@ -229,32 +229,32 @@ attr(mockstudy$age,'label')  <- 'Age, yrs'
 tab1 <- modelsum(bmi ~  age, adjust=~sex, data=mockstudy)
 summary(tab1)
 
-## ---- results = 'asis'--------------------------------------------------------
+## ----results = 'asis'---------------------------------------------------------
 labels(mockstudy)  <- c(age = 'Age, yrs')
 
 tab1 <- modelsum(bmi ~  age, adjust=~sex, data=mockstudy)
 summary(tab1)
 
-## ---- results='asis'----------------------------------------------------------
+## ----results='asis'-----------------------------------------------------------
 mylabels <- list(sexFemale = "Female", age ="Age, yrs")
 summary(tab1, labelTranslations = mylabels)
 
-## ---- eval=TRUE---------------------------------------------------------------
+## ----eval=TRUE----------------------------------------------------------------
 labels(tab1)
 labels(tab1) <- c(sexFemale="Female", age="Baseline Age (yrs)")
 labels(tab1)
 
-## ---- results='asis'----------------------------------------------------------
+## ----results='asis'-----------------------------------------------------------
 summary(tab1)
 
-## ---- results='asis'----------------------------------------------------------
+## ----results='asis'-----------------------------------------------------------
 summary(modelsum(age~mdquality.s+sex, data=mockstudy), show.intercept=FALSE)
 
-## ---- results='asis'----------------------------------------------------------
+## ----results='asis'-----------------------------------------------------------
 summary(modelsum(mdquality.s ~ age + bmi, data=mockstudy, adjust=~sex, family=binomial),
         show.adjust=FALSE)  
 
-## ---- results='asis'----------------------------------------------------------
+## ----results='asis'-----------------------------------------------------------
 # create a vector specifying the variable names
 myvars <- names(mockstudy)
 
@@ -269,7 +269,7 @@ as.formula(paste('mdquality.s ~ ', RHS))
 # use the formula in the modelsum function
 summary(modelsum(as.formula(paste('mdquality.s ~', RHS)), family=binomial, data=mockstudy))
 
-## ---- results='asis'----------------------------------------------------------
+## ----results='asis'-----------------------------------------------------------
 ## The formulize function does the paste and as.formula steps
 tmp <- formulize('mdquality.s',myvars[8:10])
 tmp
@@ -287,10 +287,10 @@ table(mockstudy$arm)
 dim(newdata)
 names(newdata)
 
-## ---- results='asis'----------------------------------------------------------
+## ----results='asis'-----------------------------------------------------------
 summary(modelsum(alk.phos ~ ., data=newdata))
 
-## ---- results='asis', eval=TRUE-----------------------------------------------
+## ----results='asis', eval=TRUE------------------------------------------------
 summary(modelsum(log(alk.phos) ~ sex + ps + bmi, subset=age>50 & arm=="F: FOLFOX", data=mockstudy))
 summary(modelsum(alk.phos ~ ps + bmi, adjust=~sex, subset = age>50 & bmi<24, data=mockstudy))
 summary(modelsum(alk.phos ~ ps + bmi, adjust=~sex, subset=1:30, data=mockstudy))
@@ -299,21 +299,21 @@ summary(modelsum(alk.phos ~ ps + bmi, adjust=~sex, subset=1:30, data=mockstudy))
 ## create a variable combining the levels of mdquality.s and sex
 with(mockstudy, table(interaction(mdquality.s,sex)))
 
-## ---- results='asis'----------------------------------------------------------
+## ----results='asis'-----------------------------------------------------------
 summary(modelsum(age ~ interaction(mdquality.s,sex), data=mockstudy))
 
-## ---- results='asis'----------------------------------------------------------
+## ----results='asis'-----------------------------------------------------------
 summary(modelsum(arm=="F: FOLFOX" ~ I(age/10) + log(bmi) + mdquality.s,
                  data=mockstudy, family=binomial))
 
-## ---- results='asis'----------------------------------------------------------
+## ----results='asis'-----------------------------------------------------------
 mytab <- modelsum(bmi ~ sex + alk.phos + age, data=mockstudy)
 mytab2 <- mytab[c('age','sex','alk.phos')]
 summary(mytab2)
 summary(mytab[c('age','sex')])
 summary(mytab[c(3,1)])
 
-## ---- results="asis"----------------------------------------------------------
+## ----results="asis"-----------------------------------------------------------
 ## demographics
 tab1 <- modelsum(bmi ~ sex + age, data=mockstudy)
 ## lab data
@@ -323,7 +323,7 @@ tab12 <- merge(tab1, tab2, all = TRUE)
 class(tab12)
 summary(tab12)
 
-## ---- results='asis'----------------------------------------------------------
+## ----results='asis'-----------------------------------------------------------
 t1 <- modelsum(bmi ~ sex + age, data=mockstudy)
 summary(t1, title='Demographics')
 
@@ -331,7 +331,7 @@ summary(t1, title='Demographics')
 ## look at how many missing values there are for each variable
 apply(is.na(mockstudy),2,sum)
 
-## ---- results='asis'----------------------------------------------------------
+## ----results='asis'-----------------------------------------------------------
 ## Show how many subjects have each variable (non-missing)
 summary(modelsum(bmi ~ ast + age, data=mockstudy,
                 control=modelsum.control(gaussian.stats=c("N","estimate"))))
@@ -348,7 +348,7 @@ summary(modelsum(bmi ~ ast + age, data=mockstudy,
 summary(modelsum(bmi ~ ast + age, data=mockstudy, 
                 control=modelsum.control(gaussian.stats=c("estimate"))))
 
-## ---- results='asis'----------------------------------------------------------
+## ----results='asis'-----------------------------------------------------------
 summary(modelsum(bmi ~ sex + age + fu.time, data=mockstudy), digits=4, digits.test=2)
 
 ## -----------------------------------------------------------------------------
@@ -386,29 +386,29 @@ tmp
 # write.csv(tmp, '/my/path/here/mymodel.csv')
 
 ## ----eval = FALSE-------------------------------------------------------------
-#  ## write to an HTML document
-#  write2html(tab2, "~/ibm/trash.html")
-#  
-#  ## write to a Word document
-#  write2word(tab2, "~/ibm/trash.doc", title="My table in Word")
+# ## write to an HTML document
+# write2html(tab2, "~/ibm/trash.html")
+# 
+# ## write to a Word document
+# write2word(tab2, "~/ibm/trash.doc", title="My table in Word")
 
 ## ----eval=FALSE---------------------------------------------------------------
-#  # A standalone shiny app
-#  library(shiny)
-#  library(arsenal)
-#  data(mockstudy)
-#  
-#  shinyApp(
-#    ui = fluidPage(tableOutput("table")),
-#    server = function(input, output) {
-#      output$table <- renderTable({
-#        as.data.frame(summary(modelsum(age ~ sex, data = mockstudy), text = "html"))
-#      }, sanitize.text.function = function(x) x)
-#    }
-#  )
+# # A standalone shiny app
+# library(shiny)
+# library(arsenal)
+# data(mockstudy)
+# 
+# shinyApp(
+#   ui = fluidPage(tableOutput("table")),
+#   server = function(input, output) {
+#     output$table <- renderTable({
+#       as.data.frame(summary(modelsum(age ~ sex, data = mockstudy), text = "html"))
+#     }, sanitize.text.function = function(x) x)
+#   }
+# )
 
 ## ----eval=FALSE---------------------------------------------------------------
-#  summary(modelsum(age ~ sex, data = mockstudy), title="(\\#tab:mytableby) Caption here")
+# summary(modelsum(age ~ sex, data = mockstudy), title="(\\#tab:mytableby) Caption here")
 
 ## ----results='asis'-----------------------------------------------------------
 summary(modelsum(list(age, hgb) ~ bmi + sex, adjust = ~ arm, data = mockstudy))

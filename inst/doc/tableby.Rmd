@@ -213,6 +213,15 @@ tab.test <- tableby(arm ~ kwt(ast, "Nmiss2","median") + anova(age, "N","mean") +
 summary(tab.test)
 ```
 
+These can also be passed to the `stats=` argument.
+
+```{r, eval=FALSE}
+tab.test <- tableby(arm ~ kwt(ast, stats = c("Nmiss2", "median")) + anova(age, stats = c("N","mean")) +
+                    notest(bmi, stats = c("Nmiss","median")), data=mockstudy)
+summary(tab.test)
+```
+
+
 ## Controlling Options for Categorical Tests (Chisq and Fisher's)
 
 The formal tests for categorical variables against the levels of the by variable, chisq and fe, have
@@ -251,7 +260,7 @@ output: word_document
   reference_docx: /projects/bsi/gentools/R/lib320/arsenal/doc/WordStylesReference01.docx 
 ```
 
-For more information on changing the look/feel of your Word document, see the [Rmarkdown documentation](https://bookdown.org/yihui/rmarkdown/word-document.html) website.
+For more information on changing the look/feel of your Word document, see the [Rmarkdown documentation](https://pkg.yihui.org/rmarkdown-book/word-document.html) website.
 
 
 # Additional Examples
@@ -310,7 +319,15 @@ summary(survfit(Surv(fu.time/365.25, fu.stat)~sex, data=mockstudy), times=1:5)
 ```
 
 ```{r, results='asis', eval=ge330}
-summary(tableby(sex ~ Surv(fu.time/365.25, fu.stat), data=mockstudy, times=1:5, surv.stats=c("NeventsSurv","NriskSurv")))
+summary(tableby(sex ~ Surv(fu.time/365.25, fu.stat), data=mockstudy, times=1:3, surv.stats=c("NeventsSurv")))
+
+summary(tableby(sex ~ Surv(fu.time/365.25, fu.stat), data=mockstudy, times=1:5, surv.stats=c("NriskSurv")))
+
+summary(tableby(sex ~ Surv(fu.time/365.25, fu.stat), data=mockstudy, surv.stats="medSurvCI", survconf.type='log-log'), digits=2)
+
+summary(tableby(sex ~ Surv(fu.time/365.25, fu.stat), data=mockstudy, surv.stats="medSurvQuant"), digits=2)
+
+
 ```
 
 ## 5. Summarize date variables
@@ -455,7 +472,7 @@ summary(tableby(arm ~ chisq(mdquality.s, "Nmiss","countpct"), data=mockstudy))
 ```
 
 
-## 10. Subsetting (change the ordering of the variables, delete a variable, sort by p-value, filter by p-value)
+## 10. Subsetting (change the ordering of the variables, delete a variable, sort by p-value, filter by p-value, show only certain by-levels)
 
 ```{r, results='asis'}
 mytab <- tableby(arm ~ sex + alk.phos + age, data=mockstudy)
@@ -466,6 +483,9 @@ summary(mytab[c(3,1)], digits = 3)
 summary(sort(mytab, decreasing = TRUE))
 summary(mytab[mytab < 0.5])
 head(mytab, 1) # can also use tail()
+
+summary(tableby(list(arm, sex) ~ sex + alk.phos + age, data=mockstudy)[, "sex"])
+summary(tableby(list(arm, sex) ~ sex + alk.phos + age, data=mockstudy)[, list(sex = "Female", arm = c("F: FOLFOX", "Total"))])
 ```
 
 ## 11. Merge two `tableby` objects together 
@@ -570,12 +590,12 @@ Within tableby.control function there are 4 options for controlling the number o
 summary(tableby(arm ~ sex + age + fu.time, data=mockstudy), digits=4, digits.p=2, digits.pct=1)
 ```
 
-With the exception of `digits.p`, all of these can be specified on a per-variable basis
+All of these can be specified on a per-variable basis
 using the in-formula functions that specify which tests are run:
 
 ```{r results='asis'}
 summary(tableby(arm ~ chisq(sex, digits.pct=1) + anova(age, digits=4) +
-                  anova(fu.time, digits = 1), data=mockstudy))
+                  anova(fu.time, digits = 1, digits.p = 6, format.p = FALSE), data=mockstudy))
 ```
 
 
@@ -587,7 +607,7 @@ for user-defined functions.  In this case, `na.rm=T` is passed to `myfunc`.  The
 it isn't passed on to the internal function in this particular example.   
 
 ```{r, results='asis'}
-trim10 <- function(x, weights=rep(1,length(x)), ...){
+trim10 <- function(x, weights=NULL, ...){
   mean(x, trim=.1, ...)
 }
 
@@ -596,35 +616,58 @@ summary(tableby(sex ~ hgb, data=mockstudy,
                     stats.labels=list(Nmiss='Missing values', trim10="Trimmed Mean, 10%"))))
 ```
 
-For statistics to be formatted appropriately, you may want to use `as.tbstat()` or `as.countpct()`.
+For statistics to be formatted appropriately, you may want to use `as.tbstat()`.
 For example, suppose you want to create a trimmed mean function that trims by both 5 and 10 percent.
-The first example shows them separated by a comma; the second puts the 10% trimmed mean in brackets
+The first example shows them separated by a comma; the second puts the 10% trimmed mean in brackets.
+`as.tbstat()` takes a `fmt=` argument with a `glue` string specification, where the current value is exposed as
+`x` and a formatted value (using `tbfmt()`) is exposed as `y`. See `?as.tbstat` for details.
 
 ```{r, results='asis'}
-trim510comma <- function(x, weights=rep(1,length(x)), ...){
+trim510comma <- function(x, ...){
   tmp <- c(mean(x, trim = 0.05, ...), mean(x, trim = 0.1, ...))
-  as.tbstat(tmp, sep = ", ")
+  as.tbstat(tmp, fmt = "{y[1]}, {y[2]}")
 }
-trim510bracket <- function(x, weights=rep(1,length(x)), ...){
+trim510bracket <- function(x, ...){
   tmp <- c(mean(x, trim = 0.05, ...), mean(x, trim = 0.1, ...))
-  as.tbstat(tmp, sep = " ", parens = c("[", "]"))
+  as.tbstat(tmp, fmt = "{y[1]} [{y[2]}]")
 }
 
-summary(tableby(sex ~ hgb, data=mockstudy, numeric.stats=c("Nmiss", "trim510comma"), test = FALSE))
-summary(tableby(sex ~ hgb, data=mockstudy, numeric.stats=c("Nmiss", "trim510bracket"), test = FALSE))
+summary(tableby(sex ~ hgb, data=mockstudy, numeric.stats=c("Nmiss", "trim510comma", "trim510bracket"), test = FALSE))
 ```
 
 Or perhaps it's useful to put the amount of trimming in parentheses. Since it is a percent, we can
 flag it as such:
 
 ```{r results='asis'}
-trim10pct <- function(x, weights=rep(1,length(x)), ...){
+trim10pct <- function(x, ...){
   tmp <- mean(x, trim = 0.05, ...)
-  as.countpct(c(tmp, 10), sep = " ", parens = c("(", ")"), which.count = 0, which.pct = 2, pct = "%")
+  as.tbstat(c(tmp, 10), fmt = "{y[1]} ({y[2]}%)", which.pct = 2L)
 }
 summary(tableby(sex ~ hgb, data=mockstudy, numeric.stats=c("Nmiss", "trim10pct"),
                 digits = 2, digits.pct = 0, test = FALSE))
 
+```
+
+Finally, if there's a pre-computed summary statistic, you can easily change the formatting, like in `meanpmsd()`:
+
+```{r}
+meanpmsd
+```
+
+For example:
+
+```{r}
+dollarmean <- function(x, na.rm = TRUE, ...) {
+  if(na.rm && allNA(x)) {
+    as.tbstat(NA_real_)
+  } else {
+    out <- meansd(x, na.rm = na.rm, ...)
+    attr(out, "fmt") <- "${y[1]}"
+    out
+  }
+}
+
+summary(tableby(sex ~ notest(age, "dollarmean", digits = 2), data = mockstudy))
 ```
 
 ## 16. Use case-weights for creating summary statistics
@@ -810,7 +853,7 @@ the table dynamic!
 
 Since the backbone of `tableby()` is `knitr::kable()`, tables still render well in bookdown. However, `print.summary.tableby()` doesn't use
 the `caption=` argument of `kable()`, so some tables may not have a properly numbered caption. To fix this, use the method described
-[on the bookdown site](https://bookdown.org/yihui/bookdown/tables.html) to give the table a tag/ID.
+[on the bookdown site](https://pkg.yihui.org/bookdown/tables.html) to give the table a tag/ID.
 
 ```{r eval=FALSE}
 summary(tableby(sex ~ age, data = mockstudy), title="(\\#tab:mytableby) Caption here")
@@ -863,16 +906,21 @@ The **default** summary statistics, by varible type, are:
 
 There are a number of extra functions defined specifically for the tableby function.
 
-* `N`: a count of the number of observations for a particular group
+* `N`: a count of the non-missing number of observations for a particular group
+* `Npct`: a count of the non-missing number of observations and the percentage of the column total (missing + non-missing) in the format `N (%)`
+* `Nrowpct`: a count of the non-missing number of observations and the row-percentage (of non-missings) in the format `N (%)`
 * `Nmiss`: only show the count of the number of missing values if there are some missing values
 * `Nmiss2`: always show a count of the number of missing values for a variable within each group
-* `meansd`: print the mean and standard deviation in the format `mean(sd)`
+* `Nmisspct`: show the count of the number of missing values and the percentage of the column total (missing+non-missing) if there are some missing values
+* `Nmisspct2`: The same as `Nmisspct`, but always show.
 * `meanse`: print the mean and standard error in the format `mean(se)`
 * `meanCI`: print the mean and a (t) confidence interval
 * `count`: print the number of values in a category
 * `countN`: print the number of values in a category plus the total N for the group in the format `N/Total`
 * `countpct`: print the number of values in a category plus the column-percentage in the format `N (%)`
+* `pct`: print the column-percentage
 * `countrowpct`: print the number of values in a category plus the row-percentage in the format `N (%)`
+* `rowpct`: print the row-percentage
 * `countcellpct`: print the number of values in a category plus the cell-percentage in the format `N (%)`
 * `binomCI`: print the proportion in a category plus a binomial confidence interval.
 * `rowbinomCI`: print the row proportion in a category plus a binomial confidence interval.
@@ -914,8 +962,7 @@ The following tests are accepted:
     
 * `medtest`: Median test test, optional test for continuous variables.
 
-* `chisq`: chi-square goodness of fit test for equal counts of a
-    categorical variable across categories; the default for categorical
+* `chisq`: chi-square goodness of fit test or Pearson chi-squared test; the default for categorical
     or factor variables
 
 * `fe`: Fisher's exact test for categorical variables; optional 
@@ -925,6 +972,8 @@ The following tests are accepted:
 
 * `trend`: The `independence_test` function from the `coin` is used to test for trends.  Whenthe grouping variable has two levels,
   it is equivalent to the Armitage trend test.  This is the default for ordered factors
+  
+* `stddiff`: perform standardized differences.
   
 * `notest`: Don't perform a test.
 

@@ -34,7 +34,7 @@
 #'     \code{signed.rank}: a \link[stats:wilcox.test]{signed rank test}.
 #'   }
 #'   \item{
-#'     \code{sign.test}: a sign test.
+#'     \code{signtest}: a sign test.
 #'   }
 #'   \item{
 #'     \code{notest}: no test is performed.
@@ -64,7 +64,7 @@ paired <- function(formula, data, id, na.action, subset=NULL, strata, control = 
   if(length(formula) != 3) stop("'formula' must be two-sided.")
   if(indx[5] == 0) stop("An id argument is required")
 
-  special <- c("paired.t", "mcnemar", "signed.rank", "sign.test", "notest")
+  special <- c("paired.t", "mcnemar", "signed.rank", "signtest", "sign.test", "notest")
 
   out.tables <- list()
   formula.list <- as_list_formula(formula)
@@ -105,7 +105,7 @@ paired <- function(formula, data, id, na.action, subset=NULL, strata, control = 
     if(hasStrata <- "(strata)" %in% colnames(modeldf))
     {
       strata.col <- modeldf[["(strata)"]]
-      strataTerm <- deparse(Call$strata)
+      strataTerm <- paste(deparse(Call$strata), collapse = " ")
       if(is.null(strataLabel <- attr(strata.col, "label"))) strataLabel <- strataTerm
       if(is.factor(strata.col))
       {
@@ -300,13 +300,13 @@ paired <- function(formula, data, id, na.action, subset=NULL, strata, control = 
           statfun <- if(is.null(tmp)) get(statfun, parent.frame(), mode = "function") else tmp
 
           bystatlist <- list()
-          if(statfun2 %in% c("countrowpct", "countcellpct", "rowbinomCI", "Npct"))
+          if(statfun2 %in% c("countrowpct", "countcellpct", "rowbinomCI", "Nrowpct"))
           {
             bystatlist <- do.call(statfun, list(currcol, levels = xlevels,
                                                 by = by.col, by.levels = by.levels, na.rm = TRUE))
             bystatlist$Total <- NULL
           } else if(statfun2 == "Nsigntest") {
-            bystatlist <- as.countpct(NA_real_)
+            bystatlist <- as.tbstat(NA_real_, which.count = 1L)
           } else
           {
             for(bylev in by.levels) {
@@ -324,6 +324,11 @@ paired <- function(formula, data, id, na.action, subset=NULL, strata, control = 
             # countrowpct to get the right percentages
             bystatlist[[difflab]] <- countrowpct(TP1.eff, levels = xlevels, by = TP1.eff == TP2.eff,
                                                  by.levels = c(TRUE, FALSE), na.rm = TRUE)[[2]]
+          } else if(statfun2 %in% c("rowpct", "pct"))
+          {
+            # rowpct to get the right percentages
+            bystatlist[[difflab]] <- rowpct(TP1.eff, levels = xlevels, by = TP1.eff == TP2.eff,
+                                                 by.levels = c(TRUE, FALSE), na.rm = TRUE)[[2]]
           } else if(statfun2 == "count")
           {
             # this doesn't have percentages
@@ -332,10 +337,10 @@ paired <- function(formula, data, id, na.action, subset=NULL, strata, control = 
           {
             bystatlist[[difflab]] <- rowbinomCI(TP1.eff, levels = xlevels, by = TP1.eff == TP2.eff,
                                                 by.levels = c(TRUE, FALSE), na.rm = TRUE, conf.level = control$conf.level)[[2]]
-          } else if(statfun2 == "Npct")
+          } else if(statfun2 == "Nrowpct")
           {
             # get the right percentages
-            bystatlist[[difflab]] <- Npct(TP1.eff, levels = xlevels, by = TP1.eff == TP2.eff, by.levels = c(TRUE, FALSE), na.rm = TRUE)[[2]]
+            bystatlist[[difflab]] <- Nrowpct(TP1.eff, levels = xlevels, by = TP1.eff == TP2.eff, by.levels = c(TRUE, FALSE), na.rm = TRUE)[[2]]
           } else
           {
             bystatlist[[difflab]] <- do.call(statfun, list(as.numeric(TP2.eff) - as.numeric(TP1.eff),
@@ -346,6 +351,7 @@ paired <- function(formula, data, id, na.action, subset=NULL, strata, control = 
         if(length(statList) == 0) stop(paste0("Nothing to show for variable '", names(xTerms)[eff], "'"))
 
         currtest <- if(nchar(specialTests[eff]) > 0) specialTests[eff] else currtest
+        if(currtest == "sign.test") currtest <- "signtest"
         testout <- if(control$test) {
           eval(call(currtest, TP1.eff, TP2.eff, mcnemar.correct=control$mcnemar.correct,
                     signed.rank.exact = control$signed.rank.exact, signed.rank.correct = control$signed.rank.correct,

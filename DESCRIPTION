@@ -1,8 +1,8 @@
 Package: arsenal
 Title: An Arsenal of 'R' Functions for Large-Scale Statistical
         Summaries
-Version: 3.6.3
-Date: 2021-06-04
+Version: 3.7.1
+Date: 2026-07-01
 Authors@R: c(
     person("Ethan", "Heinzen", email = "heinzen.ethan@mayo.edu", role = c("aut", "cre")),
     person("Jason", "Sinnwell", role="aut"),
@@ -30,20 +30,20 @@ Description: An Arsenal of 'R' functions for large-scale statistical summaries,
   write2(), a function to output tables to a document.
 Suggests: broom (>= 0.7.1), magrittr, rmarkdown, testthat, xtable,
         pander, survival (>= 2.43-1), coin, pROC, MASS, splines, rpart,
-        yaml, geepack
+        yaml, stddiff, geepack
 Depends: R (>= 3.4.0), stats (>= 3.4.0)
-Imports: knitr (>= 1.29), utils (>= 3.4.0)
+Imports: knitr (>= 1.29), utils (>= 3.4.0), glue
 URL: https://github.com/mayoverse/arsenal,
         https://cran.r-project.org/package=arsenal,
         https://mayoverse.github.io/arsenal/
 BugReports: https://github.com/mayoverse/arsenal/issues
 VignetteBuilder: knitr
 License: GPL (>= 2)
-RoxygenNote: 7.1.1
 LazyData: true
 Encoding: UTF-8
+Config/roxygen2/version: 8.0.0
 NeedsCompilation: no
-Packaged: 2021-06-04 21:23:01 UTC; m144326
+Packaged: 2026-07-02 02:15:16 UTC; m144326
 Author: Ethan Heinzen [aut, cre],
   Jason Sinnwell [aut],
   Elizabeth Atkinson [aut],
@@ -58,4 +58,4 @@ Author: Ethan Heinzen [aut, cre],
   Maddie McCullough [art]
 Maintainer: Ethan Heinzen <heinzen.ethan@mayo.edu>
 Repository: CRAN
-Date/Publication: 2021-06-04 21:50:02 UTC
+Date/Publication: 2026-07-02 22:30:19 UTC

@@ -126,14 +126,14 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, strata,
 
   Call <- match.call()
   ## Tell user if they passed an argument that was not expected, either here or in control
-  expectArgs <- c("formula", "data", "na.action", "subset", "weights", "strata", "control", names(control), "times")
+  expectArgs <- c("formula", "data", "na.action", "subset", "weights", "strata", "control", names(control), "times","survconf.type")
   match.idx <- match(names(Call)[-1], expectArgs)
   if(anyNA(match.idx)) warning("unused arguments: ", paste(names(Call)[1+which(is.na(match.idx))], collapse=", "), "\n")
 
   indx <- match(c("formula", "data", "subset", "weights", "na.action", "strata"), names(Call), nomatch = 0)
   if(indx[1] == 0) stop("A formula argument is required")
 
-  special <- c("anova", "kwt", "wt", "medtest", "chisq", "fe", "logrank", "trend", "notest")
+  special <- c("anova", "kwt", "wt", "medtest", "chisq", "fe", "logrank", "trend", "notest", "stddiff")
 
   out.tables <- list()
   formula.list <- as_list_formula(formula)
@@ -178,7 +178,7 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, strata,
 
     if(hasWeights <- "(weights)" %in% colnames(modeldf)) {
       weights <- as.vector(stats::model.weights(modeldf))
-      if(!is.numeric(weights) || any(weights < 0)) stop("'weights' must be a numeric vector and must be non-negative")
+      if(!is.numeric(weights) || anyNA(weights) || any(weights < 0)) stop("'weights' must be a numeric vector and must be non-missing and non-negative")
       modeldf[["(weights)"]] <- NULL
       control$test <- FALSE
     } else weights <- NULL
@@ -188,7 +188,7 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, strata,
     if(hasStrata <- "(strata)" %in% colnames(modeldf))
     {
       strata.col <- modeldf[["(strata)"]]
-      strataTerm <- deparse(Call$strata)
+      strataTerm <- paste(deparse(Call$strata), collapse = " ")
       if(is.null(strataLabel <- attr(strata.col, "label"))) strataLabel <- strataTerm
       if(is.factor(strata.col))
       {
@@ -376,7 +376,10 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, strata,
           }
         }
 
-        if(!anyNA(currcol) && "Nmiss" %in% currstats) currstats <- currstats[currstats != "Nmiss"]
+        if(!anyNA(currcol)) {
+          if("Nmiss" %in% currstats) currstats <- currstats[currstats != "Nmiss"]
+          if("Nmisspct" %in% currstats) currstats <- currstats[currstats != "Nmisspct"]
+        }
         statList <- list()
         for(statfun2 in currstats) {
           statfun <- get_stat_function(statfun2)
@@ -384,7 +387,7 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, strata,
           statfun <- if(is.null(tmp)) get(statfun, parent.frame(), mode = "function") else tmp
 
           bystatlist <- list()
-          if(statfun2 %in% c("countrowpct", "countcellpct", "rowbinomCI", "Npct"))
+          if(statfun2 %in% c("countrowpct", "countcellpct", "rowbinomCI", "Nrowpct", "rowpct"))
           {
             bystatlist <- do.call(statfun, list(
               currcol, levels = xlevels,
@@ -398,11 +401,11 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, strata,
             for(bylev in by.levels) {
               idx <- bycol == bylev
               bystatlist[[bylev]] <- do.call(statfun, list(currcol[idx], levels=xlevels, na.rm=TRUE,
-                                                           weights=weightscol[idx], conf.level=control$conf.level, times=control$times))
+                                                           weights=weightscol[idx], conf.level=control$conf.level, times=control$times, survconf.type=control$survconf.type))
             }
             ## add Total
             bystatlist[[totallab]] <- do.call(statfun, list(currcol, levels=xlevels, na.rm=TRUE,
-                                                            weights=weightscol, conf.level=control$conf.level, times=control$times))
+                                                            weights=weightscol, conf.level=control$conf.level, times=control$times, survconf.type=control$survconf.type))
           }
           statList[[statfun2]] <- bystatlist
         }

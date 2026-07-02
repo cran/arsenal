@@ -38,7 +38,7 @@
 #' @param digits.count Number of decimal places for count values.
 #' @param digits.pct Number of decimal places for percents.
 #' @param digits.p Number of decimal places for p-values.
-#' @param format.p Logical, denoting whether to format p-values. See "Details", below.
+#' @param format.p Logical, denoting whether to format p-values, or character, a \code{\link[glue]{glue}} specification for how to format. See "Details", below.
 #' @param digits.n Number of decimal places for N's in the header. Set it to NA to suppress the N's.
 #' @param conf.level Numeric, denoting what confidence level to use for confidence intervals.
 #'   (See, e.g., \code{\link{binomCI}})
@@ -53,7 +53,8 @@
 #' If \code{format.p} is \code{FALSE}, \code{digits.p} denotes the number of significant digits shown. The
 #'   p-values will be in exponential notation if necessary. If \code{format.p} is \code{TRUE},
 #'   \code{digits.p} will determine the number of digits after the decimal point to show. If the p-value
-#'   is less than the resulting number of places, it will be formatted to show so.
+#'   is less than the resulting number of places, it will be formatted to show so. If \code{format.p} is a character string,
+#'   it will be treated as a \code{\link[glue]{glue}} specification: the p-value is exposed as "p", and "digits.p" as "digits.p".
 #'
 #' Options for statistics are described more thoroughly in the vignette and are listed in \link{tableby.stats}
 #'
@@ -142,11 +143,13 @@ tableby.control <- function(
 
 add_tbc_stats_labels <- function(x) {
   start <- list(
-    Nmiss="N-Miss", Nmiss2="N-Miss", meansd="Mean (SD)", meanse = "Mean (SE)", medianrange="Median (Range)",
+    Nmiss="N-Miss", Nmiss2="N-Miss", Nmisspct="N-Miss (%)", Nmisspct2="N-Miss (%)",
+    meansd="Mean (SD)", meanse = "Mean (SE)", meanpmsd="Mean &pm; SD", meanpmse = "Mean &pm; SE", medianrange="Median (Range)",
     median="Median", medianq1q3="Median (Q1, Q3)", q1q3="Q1, Q3", iqr = "IQR",
     mean = "Mean", sd = "SD", var = "Var", max = "Max", min = "Min", meanCI = "Mean (CI)", sum = "Sum",
     gmean = "Geom Mean", gsd = "Geom SD", gmeansd = "Geom Mean (Geom SD)", gmeanCI = "Geom Mean (CI)",
-    range="Range", Npct="N (Pct)", Nevents="Events", medSurv="Median Survival",
+    range="Range", Npct="N (%)", Nrowpct="N (%)", Nevents="Events", medSurv="Median Survival",
+    medSurvQuant="Median (Q1, Q3) Survival", medSurvCI="Median (CI)",
     medTime = "Median Follow-Up", medianmad="Median (MAD)", Nsigntest = "N (sign test)",
     overall = "Overall", total = "Total", difference = "Difference"
   )

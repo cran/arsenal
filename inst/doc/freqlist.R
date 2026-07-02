@@ -20,10 +20,10 @@ str(example1)
 # view the data frame portion of freqlist output
 head(as.data.frame(example1)) ## or use as.data.frame(example1)
 
-## ---- results = 'asis'--------------------------------------------------------
+## ----results = 'asis'---------------------------------------------------------
 summary(example1)
 
-## ---- results = 'asis'--------------------------------------------------------
+## ----results = 'asis'---------------------------------------------------------
 summary(example1, title="Basic freqlist output")
 
 ## -----------------------------------------------------------------------------
@@ -72,7 +72,7 @@ labs <- c(arm = "Arm", sex = "Sex", mdquality.s = "QOL", freqPercent = "%")
 labels(example1) <- labs
 summary(example1)
 
-## ---- results = 'asis'--------------------------------------------------------
+## ----results = 'asis'---------------------------------------------------------
 summary(example1, labelTranslations = labs)
 
 ## ----results='asis'-----------------------------------------------------------
@@ -90,7 +90,7 @@ names(xftbl)[1:3] <- c("Arm", "Gender", "LASA QOL")
 print(xftbl, sanitize.colnames.function = italic, include.rownames = FALSE, type = "html", comment = FALSE)
 
 ## ----eval=FALSE---------------------------------------------------------------
-#  summary(freqlist(~ sex + age, data = mockstudy), title="(\\#tab:mytableby) Caption here")
+# summary(freqlist(~ sex + age, data = mockstudy), title="(\\#tab:mytableby) Caption here")
 
 ## -----------------------------------------------------------------------------
 # base table default removes NAs

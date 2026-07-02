@@ -10,6 +10,8 @@
 \alias{arsenal_var}
 \alias{meansd}
 \alias{meanse}
+\alias{meanpmsd}
+\alias{meanpmse}
 \alias{meanCI}
 \alias{medianrange}
 \alias{medianmad}
@@ -22,6 +24,8 @@
 \alias{Nsigntest}
 \alias{Nevents}
 \alias{medSurv}
+\alias{medSurvCI}
+\alias{medSurvQuant}
 \alias{NeventsSurv}
 \alias{NriskSurv}
 \alias{Nrisk}
@@ -30,13 +34,18 @@
 \alias{medianq1q3}
 \alias{iqr}
 \alias{Nmiss}
+\alias{Nmisspct}
 \alias{Nmiss2}
+\alias{Nmisspct2}
 \alias{N}
 \alias{Npct}
+\alias{Nrowpct}
 \alias{count}
 \alias{countpct}
+\alias{pct}
 \alias{countN}
 \alias{countrowpct}
+\alias{rowpct}
 \alias{countcellpct}
 \alias{binomCI}
 \alias{rowbinomCI}
@@ -57,6 +66,10 @@ arsenal_var(x, na.rm = TRUE, weights = NULL, ...)
 meansd(x, na.rm = TRUE, weights = NULL, ...)
 
 meanse(x, na.rm = TRUE, weights = NULL, ...)
+
+meanpmsd(x, na.rm = TRUE, weights = NULL, ...)
+
+meanpmse(x, na.rm = TRUE, weights = NULL, ...)
 
 meanCI(x, na.rm = TRUE, weights = NULL, conf.level = 0.95, ...)
 
@@ -82,6 +95,17 @@ Nevents(x, na.rm = TRUE, weights = NULL, ...)
 
 medSurv(x, na.rm = TRUE, weights = NULL, ...)
 
+medSurvCI(
+  x,
+  na.rm = TRUE,
+  weights = NULL,
+  robust = FALSE,
+  conf.type = "log",
+  ...
+)
+
+medSurvQuant(x, na.rm = TRUE, weights = NULL, robust = FALSE, ...)
+
 NeventsSurv(x, na.rm = TRUE, weights = NULL, times = 1:5, ...)
 
 NriskSurv(x, na.rm = TRUE, weights = NULL, times = 1:5, ...)
@@ -98,11 +122,35 @@ iqr(x, na.rm = TRUE, weights = NULL, ...)
 
 Nmiss(x, weights = NULL, ...)
 
+Nmisspct(x, weights = NULL, ...)
+
 Nmiss2(x, weights = NULL, ...)
 
-N(x, na.rm = TRUE, weights = NULL, ...)
+Nmisspct2(x, weights = NULL, ...)
 
-Npct(
+N(x, weights = NULL, ...)
+
+Npct(x, weights = NULL, ...)
+
+Nrowpct(
+  x,
+  levels = NULL,
+  by,
+  by.levels = sort(unique(by)),
+  weights = NULL,
+  ...,
+  totallab = "Total"
+)
+
+count(x, levels = NULL, na.rm = TRUE, weights = NULL, ...)
+
+countpct(x, levels = NULL, na.rm = TRUE, weights = NULL, ...)
+
+pct(x, levels = NULL, na.rm = TRUE, weights = NULL, ...)
+
+countN(x, levels = NULL, na.rm = TRUE, weights = NULL, ...)
+
+countrowpct(
   x,
   levels = NULL,
   by,
@@ -113,13 +161,7 @@ Npct(
   totallab = "Total"
 )
 
-count(x, levels = NULL, na.rm = TRUE, weights = NULL, ...)
-
-countpct(x, levels = NULL, na.rm = TRUE, weights = NULL, ...)
-
-countN(x, levels = NULL, na.rm = TRUE, weights = NULL, ...)
-
-countrowpct(
+rowpct(
   x,
   levels = NULL,
   by,
@@ -165,6 +207,8 @@ rowbinomCI(
 \item{weights}{A vector of weights.}
 
 \item{conf.level}{Numeric, denoting what confidence level to use for confidence intervals.}
+
+\item{robust, conf.type}{Passed to \code{survival::\link[survival]{survfit}}.}
 
 \item{times}{A vector of times to use for survival summaries.}
 

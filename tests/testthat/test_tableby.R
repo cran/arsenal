@@ -1441,15 +1441,15 @@ test_that("11/13/2019: geometric summaries (#260)", {
   )
 })
 
-test_that("12/20/2019: Npct (#263)", {
+test_that("12/20/2019: Nrowpct (#263)", {
   expect_identical(
-    capture.kable(summary(tableby(sex ~ arm + ps, data = mockstudy, cat.stats = "Npct", numeric.stats = c("Npct", "Nmiss")), text = TRUE)),
+    capture.kable(summary(tableby(sex ~ arm + ps, data = mockstudy, cat.stats = "Nrowpct", numeric.stats = c("Nrowpct", "Nmiss")), text = TRUE)),
     c("|              | Male (N=916) | Female (N=583) | Total (N=1499) | p value|",
       "|:-------------|:------------:|:--------------:|:--------------:|-------:|",
       "|Treatment Arm |              |                |                |   0.190|",
-      "|-  N (Pct)    | 916 (61.1%)  |  583 (38.9%)   | 1499 (100.0%)  |        |",
+      "|-  N (%)      | 916 (61.1%)  |  583 (38.9%)   | 1499 (100.0%)  |        |",
       "|ps            |              |                |                |   0.345|",
-      "|-  N (Pct)    | 754 (61.2%)  |  479 (38.8%)   | 1233 (100.0%)  |        |",
+      "|-  N (%)      | 754 (61.2%)  |  479 (38.8%)   | 1233 (100.0%)  |        |",
       "|-  N-Miss     |     162      |      104       |      266       |        |"
     )
   )
@@ -1459,14 +1459,14 @@ test_that("12/27/2019: informative error when no stats are computed (#273)", {
   expect_error(summary(tableby(~ sex, data = mockstudy, cat.stats = "Nmiss")), "Nothing to show for variable")
 })
 
-test_that("02/28/2020: as.tbstat and as.countpct are better described (#283)", {
+test_that("02/28/2020: as.tbstat is better described (#283, #351)", {
   trim510bracket <- function(x, weights=rep(1,length(x)), ...){
     tmp <- c(mean(x, trim = 0.05, ...), mean(x, trim = 0.1, ...))
-    as.tbstat(tmp, sep = " ", parens = c("[", "]"))
+    as.tbstat(tmp, fmt = "{y[1]} [{y[2]}]")
   }
   trim10pct <- function(x, weights=rep(1,length(x)), ...){
     tmp <- mean(x, trim = 0.05, ...)
-    as.countpct(c(tmp, 10), sep = " ", parens = c("(", ")"), which.count = 0, which.pct = 2, pct = "%")
+    as.tbstat(c(tmp, 10), fmt = "{y[1]} ({y[2]}%)", which.count = 0L, which.pct = 2L)
   }
   expect_identical(
     capture.kable(summary(tableby(sex ~ hgb, data=mockstudy, numeric.stats=c("Nmiss", "trim510bracket"),
@@ -1724,4 +1724,185 @@ test_that("medtest (#327)", {
     )
   )
 })
+
+test_that("rowpct and pct (#337)", {
+  expect_identical(
+    capture.kable(summary(tableby(sex ~ arm, data = mockstudy, cat.stats = c("rowpct", "pct", "countpct")), text = TRUE)),
+    c("|              | Male (N=916) | Female (N=583) | Total (N=1499) | p value|",
+      "|:-------------|:------------:|:--------------:|:--------------:|-------:|",
+      "|Treatment Arm |              |                |                |   0.190|",
+      "|-  A: IFL     |    64.7%     |     35.3%      |     100.0%     |        |",
+      "|-  F: FOLFOX  |    59.5%     |     40.5%      |     100.0%     |        |",
+      "|-  G: IROX    |    60.0%     |     40.0%      |     100.0%     |        |",
+      "|-  A: IFL     |    30.2%     |     25.9%      |     28.6%      |        |",
+      "|-  F: FOLFOX  |    44.9%     |     48.0%      |     46.1%      |        |",
+      "|-  G: IROX    |    24.9%     |     26.1%      |     25.4%      |        |",
+      "|-  A: IFL     | 277 (30.2%)  |  151 (25.9%)   |  428 (28.6%)   |        |",
+      "|-  F: FOLFOX  | 411 (44.9%)  |  280 (48.0%)   |  691 (46.1%)   |        |",
+      "|-  G: IROX    | 228 (24.9%)  |  152 (26.1%)   |  380 (25.4%)   |        |"
+    )
+  )
+})
+
+test_that("subsetting tableby (#338)", {
+  expect_identical(
+    capture.output(tableby(list(sex, arm, ps) ~ age, data = mockstudy)[, c("ps", "sex")]),
+    c("tableby Object"                                               ,
+      ""                                                             ,
+      "Function Call:"                                               ,
+      "tableby(formula = list(sex, arm, ps) ~ age, data = mockstudy)",
+      ""                                                             ,
+      "Variable(s):"                                                 ,
+      "ps ~ age"                                                     ,
+      "sex ~ age"
+    )
+  )
+})
+
+
+
+test_that("Subsetting y-levels (#336)", {
+  tb <- tableby(list(arm, ps, sex) ~ age + ast + mdquality.s, data = mockstudy)
+  expect_warning(tb[, list(arm = "F: FOLFOX", ps = c("3", "1"))], "Some indices not found")
+  expect_error(tb[, list(arm = TRUE)], "Logical vector")
+
+  expect_identical(
+    capture.kable(summary(tb["age", list(ps = "0", sex = 2:3, arm = c(TRUE, TRUE, FALSE, TRUE))], text = TRUE, term.name = TRUE)),
+    c("|ps           |    0 (N=635)    | p value|"                                      ,
+      "|:------------|:---------------:|-------:|"                                      ,
+      "|Age in Years |                 |   0.335|"                                      ,
+      "|-  Mean (SD) | 59.935 (11.261) |        |"                                      ,
+      "|-  Range     | 22.000 - 85.000 |        |"                                      ,
+      ""                                                                                ,
+      ""                                                                                ,
+      "|sex          | Female (N=583)  | Total (N=1499)  | p value|"                    ,
+      "|:------------|:---------------:|:---------------:|-------:|"                    ,
+      "|Age in Years |                 |                 |   0.048|"                    ,
+      "|-  Mean (SD) | 59.247 (11.722) | 59.985 (11.519) |        |"                    ,
+      "|-  Range     | 22.000 - 88.000 | 19.000 - 88.000 |        |"                    ,
+      ""                                                                                ,
+      ""                                                                                ,
+      "|Treatment Arm | A: IFL (N=428)  | F: FOLFOX (N=691) | Total (N=1499)  | p value|",
+      "|:-------------|:---------------:|:-----------------:|:---------------:|-------:|",
+      "|Age in Years  |                 |                   |                 |   0.614|",
+      "|-  Mean (SD)  | 59.673 (11.365) |  60.301 (11.632)  | 59.985 (11.519) |        |",
+      "|-  Range      | 27.000 - 88.000 |  19.000 - 88.000  | 19.000 - 88.000 |        |")
+  )
+})
+
+test_that("stddiff", {
+  expect_error(tableby(arm ~ stddiff(sex), data = mockstudy), "exactly two by-groups")
+  expect_error(tableby(sex ~ stddiff(age.ord), data = mockstudy), "unless the object is ")
+  expect_error(tableby(sex ~ stddiff(arm), subset = arm == "F: FOLFOX", data = mockstudy), "At least two levels")
+
+  tb <- tableby(sex ~ stddiff(arm) + stddiff(age) + stddiff(ps == 2), data = mockstudy)
+  expect_identical(
+    capture.kable(summary(tb, text = TRUE)),
+    c("|              |  Male (N=916)   | Female (N=583)  | Total (N=1499)  | p value|",
+      "|:-------------|:---------------:|:---------------:|:---------------:|-------:|",
+      "|Treatment Arm |                 |                 |                 |   0.097|",
+      "|-  A: IFL     |   277 (30.2%)   |   151 (25.9%)   |   428 (28.6%)   |        |",
+      "|-  F: FOLFOX  |   411 (44.9%)   |   280 (48.0%)   |   691 (46.1%)   |        |",
+      "|-  G: IROX    |   228 (24.9%)   |   152 (26.1%)   |   380 (25.4%)   |        |",
+      "|Age in Years  |                 |                 |                 |   0.105|",
+      "|-  Mean (SD)  | 60.455 (11.369) | 59.247 (11.722) | 59.985 (11.519) |        |",
+      "|-  Range      | 19.000 - 88.000 | 22.000 - 88.000 | 19.000 - 88.000 |        |",
+      "|ps == 2       |                 |                 |                 |   0.103|",
+      "|-  N-Miss     |       162       |       104       |       266       |        |",
+      "|-  FALSE      |   720 (95.5%)   |   446 (93.1%)   |  1166 (94.6%)   |        |",
+      "|-  TRUE       |    34 (4.5%)    |    33 (6.9%)    |    67 (5.4%)    |        |")
+  )
+})
+
+
+test_that("meanpmsd and meanpmse (#343)", {
+  tb <- tableby(sex ~ age, data = mockstudy, numeric.stats = c("meanpmsd", "meanpmse", "meansd", "meanse"))
+  expect_identical(
+    capture.kable(summary(tb, text = TRUE)),
+    c("|                |    Male (N=916)    |   Female (N=583)   |   Total (N=1499)   | p value|",
+      "|:---------------|:------------------:|:------------------:|:------------------:|-------:|",
+      "|Age in Years    |                    |                    |                    |   0.048|",
+      "|-  Mean &pm; SD | 60.455 &pm; 11.369 | 59.247 &pm; 11.722 | 59.985 &pm; 11.519 |        |",
+      "|-  Mean &pm; SE | 60.455 &pm; 0.376  | 59.247 &pm; 0.485  | 59.985 &pm; 0.298  |        |",
+      "|-  Mean (SD)    |  60.455 (11.369)   |  59.247 (11.722)   |  59.985 (11.519)   |        |",
+      "|-  Mean (SE)    |   60.455 (0.376)   |   59.247 (0.485)   |   59.985 (0.298)   |        |")
+  )
+})
+
+test_that("deparse works (#342)", {
+  this_is_a_along_variable_name_to_make_deparse_split_the_expression_into_multiple_pieces <- 1
+
+  expect_error(
+    tableby(arm ~ age, data = mockstudy, strata = paste(this_is_a_along_variable_name_to_make_deparse_split_the_expression_into_multiple_pieces, sex)),
+    NA
+  )
+})
+
+
+
+test_that("Nmisspct and Nmisspct2 (#346)", {
+  tb <- tableby(sex ~ age + ast, data = mockstudy, numeric.stats = c("Nmisspct", "Nmisspct2"))
+  expect_identical(
+    capture.kable(summary(tb, text = TRUE)),
+    c("|              | Male (N=916) | Female (N=583) | Total (N=1499) | p value|",
+      "|:-------------|:------------:|:--------------:|:--------------:|-------:|",
+      "|Age in Years  |              |                |                |   0.048|",
+      "|-  N-Miss (%) |   0 (0.0%)   |    0 (0.0%)    |    0 (0.0%)    |        |",
+      "|ast           |              |                |                |   0.921|",
+      "|-  N-Miss (%) | 162 (17.7%)  |  104 (17.8%)   |  266 (17.7%)   |        |",
+      "|-  N-Miss (%) | 162 (17.7%)  |  104 (17.8%)   |  266 (17.7%)   |        |")
+  )
+})
+
+
+test_that("Passing a character vector of stats to tableby (#348)", {
+  s1 <- c("meansd", "Nmiss2")
+  s2 <- c("medianq1q3", "range")
+  tb1 <- tableby(sex ~ notest(age, "medianq1q3", "range") + anova(ast, "meansd", "Nmiss2"), data = mockstudy)
+  tb2 <- tableby(sex ~ notest(age, stats = s2) + anova(ast, stats = s1), data = mockstudy)
+  expect_identical(
+    capture.kable(summary(tb1, text = TRUE)),
+    capture.kable(summary(tb2, text = TRUE))
+  )
+})
+
+
+test_that("Currency formatting (#209)", {
+  dollarmean <- function(x, na.rm = TRUE, ...) {
+    if(na.rm && allNA(x)) {
+      as.tbstat(NA_real_)
+    } else {
+      out <- arsenal_mean(x, na.rm = na.rm, ...)
+      attr(out, "fmt") <- "${y}"
+      out
+    }
+  }
+
+  tb <- tableby(sex ~ notest(age, "dollarmean", digits = 2), data = mockstudy)
+  expect_identical(
+    capture.kable(summary(tb, text = TRUE)),
+    c("|              | Male (N=916) | Female (N=583) | Total (N=1499) | p value|",
+      "|:-------------|:------------:|:--------------:|:--------------:|-------:|",
+      "|Age in Years  |              |                |                |        |",
+      "|-  dollarmean |    $60.46    |     $59.25     |     $59.99     |        |")
+  )
+})
+
+
+test_that("Custom p-value formatting (#345)", {
+  tb <- tableby(sex ~ stddiff(age, format.p = "{round(100*p, digits.p)}%", digits.p = 1) + ast, data = mockstudy)
+  expect_identical(
+    capture.kable(summary(tb, text = TRUE)),
+    c("|             |  Male (N=916)   |  Female (N=583)  | Total (N=1499)  | p value|",
+      "|:------------|:---------------:|:----------------:|:---------------:|-------:|",
+      "|Age in Years |                 |                  |                 |   10.5%|",
+      "|-  Mean (SD) | 60.455 (11.369) | 59.247 (11.722)  | 59.985 (11.519) |        |",
+      "|-  Range     | 19.000 - 88.000 | 22.000 - 88.000  | 19.000 - 88.000 |        |",
+      "|ast          |                 |                  |                 |   0.921|",
+      "|-  N-Miss    |       162       |       104        |       266       |        |",
+      "|-  Mean (SD) | 35.873 (26.606) | 36.029 (27.238)  | 35.933 (26.843) |        |",
+      "|-  Range     | 5.000 - 205.000 | 10.000 - 178.000 | 5.000 - 205.000 |        |")
+  )
+})
+
 

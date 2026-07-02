@@ -1,3 +1,63 @@
+# arsenal v3.7.0
+
+This is the first release in several years.
+
+* `paired()`: `sign.test()` is now officially `signtest()`, but the former
+  is supported for backwards compatibility.
+
+* Added `pct()` and `rowpct()`. (#337)
+
+* Fixed one bug in `[.arsenal_table()`. (#338)
+
+* Allowed for by-level subsetting in `tableby()` by implementing a `[.tableby()` method. (#336)
+
+* `tableby()`: implemented `stddiff()`, which computes standardized differences, instead of p-values.
+
+* Added `stddiff` as a "Suggests".
+
+* Remove `formulize()` default for `x=`.
+
+* Change logic for `escape=TRUE` when zero-length variables are involved.
+
+* Added `meanpmsd()` and `meanpmse()`. (#343)
+
+* Fixed an issue with long variable names and `deparse()`. (#342)
+
+* Missings and non-missings:
+
+    - `weights=` is no longer allowed to have NAs
+
+    - Renamed `Npct()` to `Nrowpct()` for consistency. It calculates the number of non-missing observations and the percentage of the 
+      row-total of non-missing values.
+      
+    - Removed the `na.rm=` arguments from `N()` and `Nrowpct()`
+    
+    - Added `Nmisspct()` and `Nmisspct2()`. (#346)
+    
+    - Changed the label for `Nrowpct()`
+    
+* Allowed for `stats=` argument to inline functions in `tableby()` / `paired()`. (#348)
+
+* Overhauled the `as.tbstat()` framework (#351):
+
+    - Edited some summary statistic definitions to borrow from others
+    
+    - Added `print.tbstat()`
+    
+    - Removed `as.countpct()`.
+    
+    - Added `tbfmt()`.
+    
+    - Added the `fmt=` argument and attribute, giving a `glue`-specification for how to format.
+    
+    - Added `glue` to the imports.
+    
+* Custom-formatted p-values (#345):
+
+    - `format.p=` and `digits.p=` are now arguments to the inline functions.
+
+    - `format.p=` now accepts `glue` specifications.
+
 # arsenal v3.6.3
 
 * Added `medtest()` to `tableby()` for a median test. (#327)

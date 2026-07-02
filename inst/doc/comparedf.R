@@ -36,7 +36,7 @@ mockstudy2 <- muck_up_mockstudy()
 summary(comparedf(mockstudy, mockstudy2, by = "case"))
 
 ## ----eval = FALSE-----------------------------------------------------------------------------------------------------
-#  summary(comparedf(mockstudy, mockstudy2, by = "case", control = comparedf.control(tol.vars = "case")))
+# summary(comparedf(mockstudy, mockstudy2, by = "case", control = comparedf.control(tol.vars = "case")))
 
 ## ---------------------------------------------------------------------------------------------------------------------
 summary(comparedf(mockstudy, mockstudy2, by = "case", tol.vars = "case"))
@@ -92,11 +92,11 @@ summary(comparedf(mockstudy, mockstudy2, by = "case",
 ))
 
 ## ----eval=FALSE-------------------------------------------------------------------------------------------------------
-#  comparedf.control(tol.char = list(
-#    "none",      # the default
-#    x1 = "case", # be case-insensitive for the variable "x1"
-#    x2 = function(x, y) tol.NA(x, y, x != y | y == "NA") # a custom-defined tolerance
-#  ))
+# comparedf.control(tol.char = list(
+#   "none",      # the default
+#   x1 = "case", # be case-insensitive for the variable "x1"
+#   x2 = function(x, y) tol.NA(x, y, x != y | y == "NA") # a custom-defined tolerance
+# ))
 
 ## ----results = 'markup'-----------------------------------------------------------------------------------------------
 my.tol <- function(x, y, tol)

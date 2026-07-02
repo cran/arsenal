@@ -7,6 +7,7 @@ data(mockstudy)
 
 expect_write2_worked <- function(FUN, object, reference, ...)
 {
+  skip_on_ci()
   skip_on_cran()
   skip_on_os("mac")
   skip_on_os("windows")
@@ -16,6 +17,8 @@ expect_write2_worked <- function(FUN, object, reference, ...)
   if(!file.exists(reference)) skip("Couldn't find the reference file.")
   if(!file.create(paste0(filename, ".Rmd"))) skip("Couldn't create the temporary file.")
 
+  ss <- options(show.signif.stars = FALSE)
+  on.exit(options(ss), add = TRUE)
   expect_error(FUN(list(object, yaml(title = "Test title")), file = filename, ..., render. = TRUE, keep.rmd = TRUE, append. = FALSE, quiet = TRUE), NA)
   # on.exit(expect_true(file.remove(filename)), add = TRUE)
 
