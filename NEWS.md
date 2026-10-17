@@ -1,3 +1,17 @@
+# arsenal v3.7.4
+
+* Fixed one more test that was erroring because of rounding.
+
+# arsenal v3.7.3
+
+* Corrected some errant documentation.
+
+# arsenal v3.7.2
+
+* Fixed some tests that were erroring on CRAN.
+
+* Corrected `escape=` behavior in printing tables for future versions of `knitr`. (#376)
+
 # arsenal v3.7.0
 
 This is the first release in several years.
